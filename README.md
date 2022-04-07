@@ -12,22 +12,6 @@ import {windowPopUp} from '90days-sign-sdk';
 
 For Usage
 
-
-const handleEvent = () => {
-    /* accepts optional params as {
-        url,
-        windowFaetures: {
-            width,
-            height,
-            left,
-            top
-        }
-    }
-    */
-    windowPopUp();
-}
-
-
 const Component = () => {
 
 const handleEvent = () => {
