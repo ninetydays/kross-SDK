@@ -1,35 +1,33 @@
-For Installing 
+For Installing
 yarn add 90days-sign-sdk
 
 OR
 
 npm install 90days-sign-sdk
 
-
-For Importing 
+For Importing
 import {windowPopUp} from '90days-sign-sdk';
-
 
 For Usage
 
 const Component = () => {
 
 const handleEvent = () => {
-    /* accepts optional params as {
-        url,
-        windowFaetures: {
-            width,
-            height,
-            left,
-            top
-        }
-    }
-    */
-    windowPopUp();
+/_ accepts optional params as {
+url,
+windowFaetures: {
+width,
+height,
+left,
+top
+}
+}
+_/
+windowPopUp();
 }
 
 return (
-    <button onClick={handleEvent}>Open</button>
+<button onClick={handleEvent}>Open</button>
 )
 
 }
