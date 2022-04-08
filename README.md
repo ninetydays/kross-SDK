@@ -36,3 +36,6 @@ https://codesandbox.io/s/kross-sdk-react-test-ij761l
 
 Angular Demo CodesandBox
 https://codesandbox.io/s/kross-sdk-test-angular-tvvjne
+
+Static Html CodesandBox
+https://codesandbox.io/s/kross-static-html-test-ty72yj

@@ -42,6 +42,7 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         libraryTarget: 'umd',
         umdNamedDefine: true,
+        globalObject: 'this',
     },
 
     mode: 'production',
