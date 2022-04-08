@@ -9,7 +9,6 @@ For Importing
 import {windowPopUp} from '90days-sign-sdk';
 
 For Usage
-
 const Component = () => {
 
 const handleEvent = () => {
@@ -31,3 +30,6 @@ return (
 )
 
 }
+
+React CodesandBox
+https://codesandbox.io/s/kross-sdk-react-test-ij761l
