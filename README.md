@@ -31,5 +31,8 @@ return (
 
 }
 
-React CodesandBox
+React Demo CodesandBox
 https://codesandbox.io/s/kross-sdk-react-test-ij761l
+
+Angular Demo CodesandBox
+https://codesandbox.io/s/kross-sdk-test-angular-tvvjne
