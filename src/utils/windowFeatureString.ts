@@ -1,4 +1,4 @@
-import { WindowFeatures } from './../types'
+import { WindowFeatures } from '../types'
 export const prepareWindowFeatureString = (
     windowFeatures: WindowFeatures
 ): string => {
