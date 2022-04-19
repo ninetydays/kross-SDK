@@ -1,14 +1,14 @@
 ## For Installing
 
-`yarn add 90days-sign-sdk`
+`yarn add kross-sdk`
 
 OR
 
-`npm install 90days-sign-sdk`
+`npm install kross-sdk`
 
 ## For Importing
 
-`import {windowPopUp} from '90days-sign-sdk';`
+`import {windowPopUp} from 'kross-sdk';`
 
 ## For Usage
 
