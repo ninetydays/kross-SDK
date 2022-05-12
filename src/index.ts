@@ -3,6 +3,7 @@ import { WindowDefaultParams } from './constants/index'
 import { prepareWindowFeatureString } from './utils/windowFeatureString'
 
 export * from './types'
+export * from './kross-client'
 
 export function windowPopUp(
   popUpParams: WindowPopUpParams = WindowDefaultParams
