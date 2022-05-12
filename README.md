@@ -6,29 +6,42 @@ OR
 
 `npm install kross-sdk`
 
-## For Importing
-
-`import {windowPopUp} from 'kross-sdk';`
-
 ## For Usage
 
-```js
-const Component = () => {
-    const handleEvent = () => {
-        /* accepts optional params as {
-            url,
-            windowFaetures: {
-            width,
-            height,
-            left,
-            top
-            }
-        }
-        */
-        windowPopUp()
-    }
+### API Client
 
-    return <button onClick={handleEvent}>Open</button>
+```js
+import { KrossClient } from 'kross-sdk'
+
+const client = new KrossClient({
+  baseURL: 'https://da.kross.kr'
+  accessId: 'youraccessid',
+  secretKey: 'yoursecretkey'
+});
+
+const res = await client.get('/loans'); // this is custom axios instance so you can use same options as axios'
+```
+
+### frontend SDK
+
+```js
+import { windowPopUp } from 'kross-sdk'
+const Component = () => {
+  const handleEvent = () => {
+    /* accepts optional params as {
+        url,
+        windowFaetures: {
+        width,
+        height,
+        left,
+        top
+        }
+      }
+    */
+    windowPopUp()
+  }
+
+  return <button onClick={handleEvent}>Open</button>
 }
 ```
 
