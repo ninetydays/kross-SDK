@@ -5,17 +5,17 @@ import { prepareWindowFeatureString } from './utils/windowFeatureString'
 export * from './types'
 
 export function windowPopUp(
-    popUpParams: WindowPopUpParams = WindowDefaultParams
+  popUpParams: WindowPopUpParams = WindowDefaultParams
 ) {
-    let windowRef: any = null
-    const { url, windowFeatures } = popUpParams
-    if (windowRef === null || windowRef.closed) {
-        windowRef = window.open(
-            url,
-            'Sign SDK',
-            prepareWindowFeatureString(windowFeatures)
-        )
-    } else {
-        windowRef.focus()
-    }
+  let windowRef: any = null
+  const { url, windowFeatures } = popUpParams
+  if (windowRef === null || windowRef.closed) {
+    windowRef = window.open(
+      url,
+      'Sign SDK',
+      prepareWindowFeatureString(windowFeatures)
+    )
+  } else {
+    windowRef.focus()
+  }
 }
