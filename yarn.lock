@@ -2497,11 +2497,6 @@ crypto-browserify@^3.12.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
-crypto@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/crypto/-/crypto-1.0.1.tgz#2af1b7cad8175d24c8a1b0778255794a21803037"
-  integrity sha512-VxBKmeNcqQdiUQUW2Tzq0t377b54N2bMtXO/qiLa+6eRRmmC4qT3D4OnTGoT/U6O9aklQ/jTwbOtRMTTY8G0Ig==
-
 cssom@^0.4.4:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/cssom/-/cssom-0.4.4.tgz#5a66cf93d2d0b661d80bf6a44fb65f5c2e4e0a10"
@@ -4212,6 +4207,15 @@ kleur@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
+
+kross-sdk@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/kross-sdk/-/kross-sdk-1.0.7.tgz#ab07938f4532d48e78b0a4ce53febc5aa6a1ef52"
+  integrity sha512-lnrhw4bb69SGEW+jJs5wDOgpY5u3hKsHN6Jizq0LncRpa6isvXcsz+vWuFPpit7P9lFnTWi2m0TchZr9YrzgCQ==
+  dependencies:
+    axios "^0.27.2"
+    crypto-browserify "^3.12.0"
+    stream-browserify "^3.0.0"
 
 lazy-cache@^0.2.3:
   version "0.2.7"
