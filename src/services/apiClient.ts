@@ -14,7 +14,6 @@ export const assignHeaders = (config: AxiosRequestConfig): Promise<AxiosRequestC
     Object.assign({}, config, {
       headers: {
         ...config.headers,
-        // authorization: COME from firebase
       },
     })
   );
