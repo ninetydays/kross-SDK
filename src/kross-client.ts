@@ -7,7 +7,6 @@ export class KrossClient {
   client: AxiosInstance
 
   constructor(options: KrossClientOptions) {
-    options.baseURL = process.env.REACT_APP_OLIVE_BASE_URL,
     this.client = axios.create({
       baseURL: process.env.REACT_APP_OLIVE_BASE_URL,
     })
