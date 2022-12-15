@@ -1,12 +1,11 @@
-import axios, { AxiosInstance } from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { createHmac } from 'crypto'
-import { QueryList } from './types'
+import { queryType } from './types'
 import { KrossClientOptions } from './types/index'
 
 export class KrossClient {
   client: AxiosInstance
   constructor(options: KrossClientOptions) {
-    axios.defaults.baseURL = process.env.REACT_APP_OLIVE_BASE_URL; 
     this.client = axios.create(options)
     this.client.interceptors.request.use(
       (config) => {
@@ -26,47 +25,43 @@ export class KrossClient {
       },
       (error) => Promise.reject(error)
     )
-
-    this.client.interceptors.response.use(
-      response => response,
-      error => {
-        if (error.response.status === 404){
-          throw Error(`${error.config.url} not found`);
-        }
-        throw error;
-      })
   }
 
-  async getNoteList (query : QueryList) {
-    const orderBy = query.state === 'done' ? 'doneAt' : 'issueAt';
+  async getNoteList (user_id: number, query: queryType) {
+    const orderBy = query?.state === 'done' ? 'doneAt' : 'issueAt';
+    const createdAt = {
+      gt: query?.startAt,
+      lte: query?.endAt,
+    };
+
     const params = {
-        orderBy,
-        ...query
+      createdAt,
+      orderBy,
+      ...query,
     }
     try {
-      const response = await this.client.get(`/user/${query.user_id}/notes`, {
+      return await this.client.get(`/user/${user_id}/notes`, {
         params,
-      });  
-      return response;
+      });
     }catch (error) {
       console.error(error);
       return error;
     }
   }
 
-  get(url: string, options?: KrossClientOptions) {
+  get(url: string, options?: AxiosRequestConfig) {
     return this.client.get(url, options)
   }
 
-  put(url: string, options?: KrossClientOptions) {
+  put(url: string, options?: AxiosRequestConfig) {
     return this.client.put(url, options)
   }
 
-  post(url: string, options?: KrossClientOptions) {
+  post(url: string, options?: AxiosRequestConfig) {
     return this.client.post(url, options)
   }
 
-  request(options: KrossClientOptions) {
+  request(options: AxiosRequestConfig) {
     return this.client.request(options)
   }
 }

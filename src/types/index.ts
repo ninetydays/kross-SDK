@@ -11,16 +11,18 @@ export interface WindowPopUpParams {
   windowFeatures: WindowFeatures
 }
 
-export type QueryList = {
-  user_id: any; 
-  state?: any;
+export type queryType = {
+  name?: string,
+  startAt?: Date,
+  endAt?: Date,
+  state?: string,
+  offset?: number,
+  fields?: string,
   limit?: any;
-  offset?: any;
-  sortBy?: any;
+  sortBy?: string;
 };
 
 export type KrossClientOptions = AxiosRequestConfig & {
-  baseURL: string | undefined,
   accessId: string
   secretKey: string
 }
