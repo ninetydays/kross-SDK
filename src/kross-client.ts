@@ -27,22 +27,74 @@ export class KrossClient {
     )
   }
 
-  async getNoteList (user_id: number, query: queryType) {
-    const orderBy = query?.state === 'done' ? 'doneAt' : 'issueAt';
-    const createdAt = {
-      gt: query?.startAt,
-      lte: query?.endAt,
-    };
-
+  async notes (query: queryType) {
     const params = {
-      createdAt,
-      orderBy,
+      query,
+    }
+    try {
+      return await this.client.get(`/notes`, {
+        params,
+      });
+    }catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  async getVirtualAccCertificate (query: queryType) {
+    const params = {
+      member_no: query?.member_no,
       ...query,
     }
     try {
-      return await this.client.get(`/user/${user_id}/notes`, {
+      return await this.client.get(`/users/account-certificate`, {
+        params,
+    });
+    }catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  async unRegisterMember (query: queryType) {
+    const params = {
+      member_no: query?.member_no,
+      ...query,
+    }
+    try {
+      return await this.client.patch(`/users/welcome-unregister`, {
         params,
       });
+    }catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  async releaseDepositControl(query: queryType) {
+    const params = {
+      member_no: query?.member_no,
+      ...query,
+    }
+    try {
+      return await this.client.patch(`/users/release-deposit`, {
+        params,
+      })
+    }catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  async checkVirtualAccount(user_id: number, query: queryType) {
+    const params = {
+      member_no: query?.member_no,
+      ...query,
+    }
+    try {
+      return await this.client.get(`/users/virtual-account/${user_id}`, {
+        params,
+      })
     }catch (error) {
       console.error(error);
       return error;
@@ -55,6 +107,10 @@ export class KrossClient {
 
   put(url: string, options?: AxiosRequestConfig) {
     return this.client.put(url, options)
+  }
+
+  patch(url: string, options?: AxiosRequestConfig){
+    return this.client.patch(url, options)
   }
 
   post(url: string, options?: AxiosRequestConfig) {
