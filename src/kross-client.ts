@@ -5,11 +5,9 @@ import { KrossClientOptions } from './types/index'
 
 export class KrossClient {
   client: AxiosInstance
-
   constructor(options: KrossClientOptions) {
-    this.client = axios.create({
-      baseURL: process.env.REACT_APP_OLIVE_BASE_URL,
-    })
+    axios.defaults.baseURL = process.env.REACT_APP_OLIVE_BASE_URL; 
+    this.client = axios.create(options)
     this.client.interceptors.request.use(
       (config) => {
         const { method } = config
@@ -28,6 +26,15 @@ export class KrossClient {
       },
       (error) => Promise.reject(error)
     )
+
+    this.client.interceptors.response.use(
+      response => response,
+      error => {
+        if (error.response.status === 404){
+          throw Error(`${error.config.url} not found`);
+        }
+        throw error;
+      })
   }
 
   async getNoteList (query : QueryList) {
