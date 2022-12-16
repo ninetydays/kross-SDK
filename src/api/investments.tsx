@@ -2,31 +2,39 @@ import { KrossClient } from '../kross-client'
 import { QueryType } from '../types'
 
 export class Investments extends KrossClient {
-  async notes(query: QueryType) {
+  async notes(params: QueryType) {
     try {
       return await this.client.get(`/notes`, {
-        data: {
-          query,
-        },
+        params,
       })
     } catch (error) {
       console.error(error)
       return error
     }
   }
-  async investments(query: QueryType) {
+  async getInvestments(params: QueryType) {
     try {
       return await this.client.get(`/investments`, {
-        data: {
-          query,
-        }
+        params,
       })
     }catch (error) {
       console.error(error);
       return error;
     }
   }
-  async InvestmentCancel(investment_id: number) {
+
+  async postInvestments(params: QueryType) {
+    try {
+      return await this.client.post(`/investments`, {
+        params,
+      })
+    }catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  async investmentCancel(investment_id: number) {
     try {
       return await this.client.patch(`/investments/${investment_id}/cancel`), {
         data: {
@@ -38,5 +46,19 @@ export class Investments extends KrossClient {
       return error;
     }
   }
+
+async userNoteLogs(params: QueryType) {
+    try {
+      return await this.client.patch(`/user-note-logs`), {
+        params,
+      }
+    }catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  
+
     
 }
