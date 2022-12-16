@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from "axios"
+import { AxiosRequestConfig } from 'axios'
 
 export interface WindowFeatures {
   width: number
@@ -11,19 +11,24 @@ export interface WindowPopUpParams {
   windowFeatures: WindowFeatures
 }
 
-export type queryType = {
-  name?: string,
-  member_no?: number,
-  startAt?: Date,
-  endAt?: Date,
-  state?: string,
-  offset?: number,
-  fields?: string,
-  limit?: any;
-  sortBy?: string;
-};
+export type QueryType = {
+  name?: string
+  member_no?: number
+  startAt?: Date
+  endAt?: Date
+  state?: string
+  offset?: number
+  fields?: string
+  limit?: any
+  sortBy?: string
+}
 
 export type KrossClientOptions = AxiosRequestConfig & {
+  accessId: string
+  secretKey: string
+}
+
+export type options = {
   accessId: string
   secretKey: string
 }

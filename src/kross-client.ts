@@ -1,7 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { createHmac } from 'crypto'
-import { queryType } from './types'
-import { KrossClientOptions } from './types/index'
+import { KrossClientOptions } from './types'
 
 export class KrossClient {
   client: AxiosInstance
@@ -27,80 +26,6 @@ export class KrossClient {
     )
   }
 
-  async notes (query: queryType) {
-    const params = {
-      query,
-    }
-    try {
-      return await this.client.get(`/notes`, {
-        params,
-      });
-    }catch (error) {
-      console.error(error);
-      return error;
-    }
-  }
-
-  async getVirtualAccCertificate (query: queryType) {
-    const params = {
-      member_no: query?.member_no,
-      ...query,
-    }
-    try {
-      return await this.client.get(`/users/account-certificate`, {
-        params,
-    });
-    }catch (error) {
-      console.error(error);
-      return error;
-    }
-  }
-
-  async unRegisterMember (query: queryType) {
-    const params = {
-      member_no: query?.member_no,
-      ...query,
-    }
-    try {
-      return await this.client.patch(`/users/welcome-unregister`, {
-        params,
-      });
-    }catch (error) {
-      console.error(error);
-      return error;
-    }
-  }
-
-  async releaseDepositControl(query: queryType) {
-    const params = {
-      member_no: query?.member_no,
-      ...query,
-    }
-    try {
-      return await this.client.patch(`/users/release-deposit`, {
-        params,
-      })
-    }catch (error) {
-      console.error(error);
-      return error;
-    }
-  }
-
-  async checkVirtualAccount(user_id: number, query: queryType) {
-    const params = {
-      member_no: query?.member_no,
-      ...query,
-    }
-    try {
-      return await this.client.get(`/users/virtual-account/${user_id}`, {
-        params,
-      })
-    }catch (error) {
-      console.error(error);
-      return error;
-    }
-  }
-
   get(url: string, options?: AxiosRequestConfig) {
     return this.client.get(url, options)
   }
@@ -109,7 +34,7 @@ export class KrossClient {
     return this.client.put(url, options)
   }
 
-  patch(url: string, options?: AxiosRequestConfig){
+  patch(url: string, options?: AxiosRequestConfig) {
     return this.client.patch(url, options)
   }
 
