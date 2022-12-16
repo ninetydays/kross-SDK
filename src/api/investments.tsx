@@ -26,11 +26,11 @@ export class Investments extends KrossClient {
       return error;
     }
   }
-  async InvestmentCancel(investment_id: any, query: QueryType) {
+  async InvestmentCancel(investment_id: number) {
     try {
       return await this.client.patch(`/investments/${investment_id}/cancel`), {
         data: {
-          query,
+          investment_id,
         }
       }
     }catch (error) {

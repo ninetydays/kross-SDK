@@ -1,25 +1,20 @@
 import { KrossClient } from '../kross-client'
-import { QueryType } from '../types'
 
 export class Users extends KrossClient {
-  async checkVirtualAccount(user_id: number, query: QueryType) {
+  async checkVirtualAccount(member_no: number) {
     try {
-      return await this.client.get(`/users/virtual-account/${user_id}`, {
-        data: {
-          query,
-        },
-      })
+      return await this.client.get(`/users/virtual-account/${member_no}`)
     } catch (error) {
       console.error(error)
       return error
     }
   }
 
-  async releaseDepositControl(query: QueryType) {
+  async releaseDepositControl(member_no: number) {
     try {
       return await this.client.patch(`/users/release-deposit`, {
         data: {
-          query,
+          member_no,
         },
       })
     } catch (error) {
@@ -28,11 +23,11 @@ export class Users extends KrossClient {
     }
   }
 
-  async unRegisterMember(query: QueryType) {
+  async unRegisterMember(member_no: number) {
     try {
       return await this.client.patch(`/users/welcome-unregister`, {
         data: {
-          query,
+          member_no,
         },
       })
     } catch (error) {
@@ -41,11 +36,24 @@ export class Users extends KrossClient {
     }
   }
 
-  async getVirtualAccCertificate(query: QueryType) {
+  async getVirtualAccCertificate(member_no: number) {
     try {
       return await this.client.get(`/users/account-certificate`, {
         data: {
-          query,
+          member_no,
+        },
+      })
+    } catch (error) {
+      console.error(error)
+      return error
+    }
+  }
+
+  async kftcBalance(member_no: number) {
+    try {
+      return await this.client.get(`/users/borrower-amount`, {
+        data: {
+          member_no,
         },
       })
     } catch (error) {
