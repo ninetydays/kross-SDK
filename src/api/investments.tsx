@@ -1,10 +1,8 @@
 import oliveClient from '../oliveClient'
-import { AxiosRequestConfig } from "axios";
-import { QueryType } from '../types';
-
+import { AxiosRequestConfig } from 'axios'
+import { QueryType } from '../types'
 
 export class Investments {
-
   notes = async (authToken: string, params: QueryType) => {
     const config: AxiosRequestConfig = {
       method: 'get',
@@ -15,9 +13,9 @@ export class Investments {
       data: {
         params,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
 
   getInvestments = async (authToken: string, params: QueryType) => {
@@ -30,9 +28,9 @@ export class Investments {
       data: {
         params,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
 
   postInvestments = async (authToken: string, params: QueryType) => {
@@ -45,9 +43,9 @@ export class Investments {
       data: {
         params,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
 
   investmentCancel = async (authToken: string, investment_id: number) => {
@@ -60,9 +58,9 @@ export class Investments {
       data: {
         investment_id,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
 
   userNoteLogs = async (authToken: string, params: QueryType) => {
@@ -75,8 +73,8 @@ export class Investments {
       data: {
         params,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
 }

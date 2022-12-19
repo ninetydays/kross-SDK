@@ -1,19 +1,12 @@
-import { AxiosRequestConfig } from "axios";
-import oliveClient from "../oliveClient";
+import { AxiosRequestConfig } from 'axios'
+import oliveClient from '../oliveClient'
 export class Accounts {
-  portfolioApi = async (authToken: string) => {
-    const config: AxiosRequestConfig = {
-      method: 'get',
-      headers: {
-        authorization: `Bearer ${authToken}`,
-      },
-      url: '/sienna/portfolio',
-    };
-    const response = await oliveClient(config);
-  
-    return response.data;
-  };
-  accountCheck = async (authToken: string, bankId: number, accountNumber: number, verify_code: number) => {
+  accountCheck = async (
+    authToken: string,
+    bankId: number,
+    accountNumber: number,
+    verify_code: number
+  ) => {
     const config: AxiosRequestConfig = {
       method: 'post',
       headers: {
@@ -25,12 +18,16 @@ export class Accounts {
         verify_code,
         accountNumber,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
-  
-  withdrawRequest = async (authToken: string,member_no: number, amount: number) => {
+
+  withdrawRequest = async (
+    authToken: string,
+    member_no: number,
+    amount: number
+  ) => {
     const config: AxiosRequestConfig = {
       method: 'post',
       headers: {
@@ -41,11 +38,15 @@ export class Accounts {
         member_no,
         amount,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
-  withdrawVerify = async (authToken: string,idempotency_key: number, verify_code: number) => {
+  withdrawVerify = async (
+    authToken: string,
+    idempotency_key: number,
+    verify_code: number
+  ) => {
     const config: AxiosRequestConfig = {
       method: 'post',
       headers: {
@@ -56,9 +57,9 @@ export class Accounts {
         idempotency_key,
         verify_code,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
 
   withdrawCancel = async (authToken: string, idempotency_key: number) => {
@@ -71,8 +72,8 @@ export class Accounts {
       data: {
         idempotency_key,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
-  }  
+    }
+    const response = await oliveClient(config)
+    return response.data
+  }
 }

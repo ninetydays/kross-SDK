@@ -1,7 +1,6 @@
 import oliveClient from '../oliveClient'
-import { AxiosRequestConfig } from "axios";
-import { QueryType } from '../types';
-
+import { AxiosRequestConfig } from 'axios'
+import { QueryType } from '../types'
 
 export class Users {
   users = async (authToken: string, params: QueryType) => {
@@ -14,9 +13,9 @@ export class Users {
       data: {
         params,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
   cmsTradebook = async (authToken: string, params: QueryType) => {
     const config: AxiosRequestConfig = {
@@ -28,9 +27,9 @@ export class Users {
       data: {
         params,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
 
   checkVirtualAccount = async (authToken: string, member_no: number) => {
@@ -43,9 +42,9 @@ export class Users {
       data: {
         member_no,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
 
   releaseDepositControl = async (authToken: string, member_no: number) => {
@@ -58,9 +57,9 @@ export class Users {
       data: {
         member_no,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
 
   unRegisterMember = async (authToken: string, member_no: number) => {
@@ -73,9 +72,9 @@ export class Users {
       data: {
         member_no,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
 
   getVirtualAccCertificate = async (authToken: string, member_no: number) => {
@@ -88,9 +87,9 @@ export class Users {
       data: {
         member_no,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
 
   kftcBalance = async (authToken: string, member_no: number) => {
@@ -103,9 +102,9 @@ export class Users {
       data: {
         member_no,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
 
   userAccountLogs = async (authToken: string, params: QueryType) => {
@@ -118,8 +117,8 @@ export class Users {
       data: {
         params,
       },
-    };
-    const response = await oliveClient(config);
-    return response.data;
+    }
+    const response = await oliveClient(config)
+    return response.data
   }
 }
