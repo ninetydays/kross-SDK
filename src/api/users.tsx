@@ -1,97 +1,125 @@
-import { KrossClient } from '../kross-client'
-import { QueryType } from '../types'
-export class Users extends KrossClient {
+import oliveClient from '../oliveClient'
+import { AxiosRequestConfig } from "axios";
+import { QueryType } from '../types';
 
-  async users(params: QueryType) {
-    try {
-      return await this.client.get(`/user`), {
+
+export class Users {
+  users = async (authToken: string, params: QueryType) => {
+    const config: AxiosRequestConfig = {
+      method: 'get',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/user',
+      data: {
         params,
-      }
-    } catch (error) {
-      console.error(error)
-      return error
-    }
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
   }
-  async cmsTradebook(params: QueryType) {
-    try {
-      return await this.client.get(`/cms-tradebooks`), {
+  cmsTradebook = async (authToken: string, params: QueryType) => {
+    const config: AxiosRequestConfig = {
+      method: 'get',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/cms-tradebooks',
+      data: {
         params,
-      }
-    }catch (error){
-      console.log(error);
-      return error;
-    }
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
   }
 
-
-  async checkVirtualAccount(member_no: number) {
-    try {
-      return await this.client.get(`/users/virtual-account/${member_no}`)
-    } catch (error) {
-      console.error(error);
-      return error
-    }
+  checkVirtualAccount = async (authToken: string, member_no: number) => {
+    const config: AxiosRequestConfig = {
+      method: 'get',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: `/users/virtual-account/${member_no}`,
+      data: {
+        member_no,
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
   }
 
-  async releaseDepositControl(member_no: number) {
-    try {
-      return await this.client.patch(`/users/release-deposit`, {
-        data: {
-          member_no,
-        },
-      })
-    } catch (error) {
-      console.error(error)
-      return error
-    }
+  releaseDepositControl = async (authToken: string, member_no: number) => {
+    const config: AxiosRequestConfig = {
+      method: 'patch',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/users/release-deposit',
+      data: {
+        member_no,
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
   }
 
-  async unRegisterMember(member_no: number) {
-    try {
-      return await this.client.patch(`/users/welcome-unregister`, {
-        data: {
-          member_no,
-        },
-      })
-    } catch (error) {
-      console.error(error)
-      return error
-    }
+  unRegisterMember = async (authToken: string, member_no: number) => {
+    const config: AxiosRequestConfig = {
+      method: 'patch',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/users/welcome-unregister',
+      data: {
+        member_no,
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
   }
 
-  async getVirtualAccCertificate(member_no: number) {
-    try {
-      return await this.client.get(`/users/account-certificate`, {
-        data: {
-          member_no,
-        },
-      })
-    } catch (error) {
-      console.error(error)
-      return error
-    }
+  getVirtualAccCertificate = async (authToken: string, member_no: number) => {
+    const config: AxiosRequestConfig = {
+      method: 'patch',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/users/account-certificate',
+      data: {
+        member_no,
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
   }
 
-  async kftcBalance(member_no: number) {
-    try {
-      return await this.client.get(`/users/borrower-amount`, {
-        data: {
-          member_no,
-        },
-      })
-    } catch (error) {
-      console.error(error)
-      return error
-    }
+  kftcBalance = async (authToken: string, member_no: number) => {
+    const config: AxiosRequestConfig = {
+      method: 'get',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/users/borrower-amount',
+      data: {
+        member_no,
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
   }
-  async userAccountLogs(params: QueryType) {
-    try {
-      return await this.client.get(`/user-account-logs`, {
+
+  userAccountLogs = async (authToken: string, params: QueryType) => {
+    const config: AxiosRequestConfig = {
+      method: 'get',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/user-account-logs',
+      data: {
         params,
-      })
-    } catch (error) {
-      console.error(error)
-      return error
-    }
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
   }
 }

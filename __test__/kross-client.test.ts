@@ -23,7 +23,7 @@ const { server } = polly
 
 afterAll(() => polly.stop())
 
-describe('KrossClient', () => {
+describe('KrossClient', () => { 
   let client: KrossClient
   const baseURL = 'https://jsonplaceholder.typicode.com'
   const accessId = randomBytes(8).toString('hex')
@@ -50,7 +50,7 @@ describe('KrossClient', () => {
   })
 
   it('has put method', async () => {
-    const res = await client.patch('/posts/1')
+    const res   = await client.patch('/posts/1')
     expect(res.status).toBe(200)
   })
 

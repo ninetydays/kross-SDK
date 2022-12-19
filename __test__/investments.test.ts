@@ -7,11 +7,12 @@ describe('getInvestment', () => {
   let client: Users;
 
   const OLIVE_BASE_URL = 'http://olive-dev.kross.kr';
-  const accessId = randomBytes(8).toString('hex')
-  const secretKey = randomBytes(256).toString('base64')
-
+  const token = randomBytes(8).toString('hex')
+  const refresh_token = randomBytes(256).toString('base64')
+// Current implementation is invalid for the reason we should get token/refresh-token from
+//user auth. To be continued
   beforeAll(() => {
-    client = new Users({ baseURL: OLIVE_BASE_URL, accessId, secretKey })
+    client = new Users({ baseURL: OLIVE_BASE_URL, accessId: token, secretKey: refresh_token })
     member_no = 4544;
   });
 

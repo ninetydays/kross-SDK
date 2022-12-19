@@ -1,51 +1,66 @@
-import { KrossClient } from '../kross-client'
+import oliveClient from '../oliveClient'
+import { AxiosRequestConfig } from "axios";
 import { QueryType } from '../types';
 
-export class Accounts extends KrossClient {
-  async paymentSchedule(loan_id: number) {
-    try {
-      return this.client.post(`/loans/${loan_id}/payment-schedule`, {
-        data: {
-          loan_id,
-        }
-      })
+export class Accounts {
 
-    }catch (error){
-      console.log(error);
-      return error;
-    }
-  }
-  
-  async loans(params: QueryType) {
-    try {
-      return this.client.get(`/loans`), {
-        params,
-      }
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
+  paymentSchedule = async (authToken: string, loan_id: number) => {
+    const config: AxiosRequestConfig = {
+      method: 'post',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: `/loans/${loan_id}/payment-schedule`,
+      data: {
+        loan_id,
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
   }
 
-  async loanConfigs(params: QueryType) {
-    try {
-      return this.client.get(`/loan-configs`), {
+  loans = async (authToken: string, params: QueryType) => {
+    const config: AxiosRequestConfig = {
+      method: 'get',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/loans',
+      data: {
         params,
-      }
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
   }
 
-  async loanRepayments(params: QueryType) {
-    try {
-      return this.client.get(`/loan-repayments`), {
+  loanConfigs = async (authToken: string, params: QueryType) => {
+    const config: AxiosRequestConfig = {
+      method: 'get',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/loan-configs',
+      data: {
         params,
-      }
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
+  }
+
+  loanRepayments = async (authToken: string, params: QueryType) => {
+    const config: AxiosRequestConfig = {
+      method: 'get',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/loan-repayments',
+      data: {
+        params,
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
   }
 }

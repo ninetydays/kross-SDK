@@ -5,6 +5,7 @@ import { KrossClientOptions } from './types'
 export class KrossClient {
   client: AxiosInstance
   constructor(options: KrossClientOptions) {
+    console.log("See fucking options: ", options);
     this.client = axios.create(options)
     this.client.interceptors.request.use(
       (config) => {
@@ -23,9 +24,43 @@ export class KrossClient {
         return config
       },
       (error) => Promise.reject(error)
-    )
+)
   }
 
+
+  async auth(keyid: string, password: string) {
+    try {
+      return await this.client.post('/auth/login'), {
+        data: {
+          keyid,
+          password,
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      return error
+    }
+  }
+
+  async token() {
+    try {
+      return await this.client.get(`/token`);
+    } catch (error) {
+      console.error(error)
+      return error
+    }
+  }
+
+  async refreshToken() {
+    try {
+      return await this.client.get(`/auth/login`);
+    } catch (error) {
+      console.error(error)
+      return error
+    }
+  }
+
+  
   get(url: string, options?: AxiosRequestConfig) {
     return this.client.get(url, options)
   }

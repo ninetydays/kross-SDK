@@ -1,61 +1,78 @@
-import { KrossClient } from '../kross-client'
-
-export class Accounts extends KrossClient {
-  async accountCheck(bankId: number, accountNumber: number, verify_code: number) {
-    try {
-      return this.client.post(`/accounts/check`, {
-        data: {
-          bankId,
-          verify_code,
-          accountNumber,
-        }
-      })
-
-    }catch (error){
-      console.log(error);
-      return error;
-    }
-  }
-
-  async withdrawRequest(member_no: number, amount: number) {
-    try {
-      return await this.client.post(`/accounts/withdraw/init`), {
-        data: {
-          member_no,
-          amount,
-        }
-      }
-    }catch (error){
-      console.log(error);
-      return error;
-    }
-  }
-
-  async withdrawVerify(idempotency_key: number, verify_code: number) {
-    try {
-      return await this.client.post(`/accounts/withdraw/verify`), {
-        data: {
-          idempotency_key,
-          verify_code,
-        }
-      }
-    }catch (error){
-      console.log(error);
-      return error;
-    }
-  }
-
-  async withdrawCancel(idempotency_key: number) {
-    try {
-      return await this.client.post(`/accounts/withdraw/cancel`), {
-        data: {
-          idempotency_key,
-        }
-      }
-    }catch (error){
-      console.log(error);
-      return error;
-    }
+import { AxiosRequestConfig } from "axios";
+import oliveClient from "../oliveClient";
+export class Accounts {
+  portfolioApi = async (authToken: string) => {
+    const config: AxiosRequestConfig = {
+      method: 'get',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/sienna/portfolio',
+    };
+    const response = await oliveClient(config);
+  
+    return response.data;
+  };
+  accountCheck = async (authToken: string, bankId: number, accountNumber: number, verify_code: number) => {
+    const config: AxiosRequestConfig = {
+      method: 'post',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/accounts/check',
+      data: {
+        bankId,
+        verify_code,
+        accountNumber,
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
   }
   
+  withdrawRequest = async (authToken: string,member_no: number, amount: number) => {
+    const config: AxiosRequestConfig = {
+      method: 'post',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/accounts/withdraw/init',
+      data: {
+        member_no,
+        amount,
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
+  }
+  withdrawVerify = async (authToken: string,idempotency_key: number, verify_code: number) => {
+    const config: AxiosRequestConfig = {
+      method: 'post',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/accounts/withdraw/verify',
+      data: {
+        idempotency_key,
+        verify_code,
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
+  }
+
+  withdrawCancel = async (authToken: string, idempotency_key: number) => {
+    const config: AxiosRequestConfig = {
+      method: 'post',
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+      url: '/accounts/withdraw/cancel',
+      data: {
+        idempotency_key,
+      },
+    };
+    const response = await oliveClient(config);
+    return response.data;
+  }  
 }
