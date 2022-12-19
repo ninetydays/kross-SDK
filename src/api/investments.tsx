@@ -1,7 +1,8 @@
 import { KrossClient } from '../kross-client'
 import { QueryType } from '../types'
 
-export class Investments extends KrossClient {
+
+class Investments extends KrossClient {
   async notes(params: QueryType) {
     try {
       return await this.client.get(`/notes`, {
@@ -56,9 +57,7 @@ async userNoteLogs(params: QueryType) {
       console.error(error);
       return error;
     }
-  }
-
-  
-
-    
+  }    
 }
+
+export default Investments;

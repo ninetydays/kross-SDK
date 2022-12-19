@@ -28,7 +28,6 @@ export class Users extends KrossClient {
     try {
       return await this.client.get(`/users/virtual-account/${member_no}`)
     } catch (error) {
-      console.error(error)
       return error
     }
   }

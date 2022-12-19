@@ -12,9 +12,10 @@ export interface WindowPopUpParams {
 }
 
 export type QueryType = {
+  id?: number
   user_id?: number
   name?: string
-  member_no?: number
+  member_id?: number
   startAt?: Date
   endAt?: Date
   state?: string

@@ -31,7 +31,6 @@ describe('KrossClient', () => {
 
   it('can create an instance', () => {
     client = new KrossClient({ baseURL, accessId, secretKey })
-
     expect(client).toBeDefined()
   })
 
@@ -47,6 +46,11 @@ describe('KrossClient', () => {
 
   it('has put method', async () => {
     const res = await client.put('/posts/1')
+    expect(res.status).toBe(200)
+  })
+
+  it('has put method', async () => {
+    const res = await client.patch('/posts/1')
     expect(res.status).toBe(200)
   })
 
