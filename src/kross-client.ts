@@ -1,25 +1,31 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
-import { createHmac } from 'crypto'
 import { KrossClientOptions } from './types'
+import { generateToken } from './encryptor'
 
 export class KrossClient {
   client: AxiosInstance
+  authToken?: string
+  refresh?: string
+  isLogin: boolean
   constructor(options: KrossClientOptions) {
-    console.log("See fucking options: ", options);
+    this.isLogin = false;
+    const { hmacToken, xDate }  = generateToken();
     this.client = axios.create(options)
     this.client.interceptors.request.use(
       (config) => {
-        const { method } = config
-        const date = new Date().toUTCString()
-        const hashString = hmacHashString(
-          options.secretKey,
-          [date, method].join(' ')
-        )
-
+        console.log("Config header: ", config);
+        this.isLogin ? 
         config.headers = {
           ...config.headers,
-          Authorization: `KROSS ${options.accessId}:${hashString}`,
-          'X-Date': date,
+          'client-authorization': hmacToken,
+          'X-Date': xDate, 
+          'authorization': `Bearer ${this.refresh}`,
+        }
+        :
+        config.headers = {
+          ...config.headers,
+          'client-authorization': hmacToken,
+          'X-Date': xDate,
         }
         return config
       },
@@ -27,38 +33,39 @@ export class KrossClient {
 )
   }
 
-
-  async auth(keyid: string, password: string) {
+  async login(keyid: string, password: string) {
+    let response;
     try {
-      return await this.client.post('/auth/login'), {
-        data: {
+      response =  await this.client.post(
+        '/auth/login',
+        {
           keyid,
           password,
         }
-      }
+      );
+      let {tokenAuth} = response.data
+      this.authToken = tokenAuth
+      this.isLogin = true;
     } catch (error) {
       console.error(error)
       return error
     }
-  }
-
-  async token() {
-    try {
-      return await this.client.get(`/token`);
-    } catch (error) {
-      console.error(error)
-      return error
-    }
+    return response.data;
   }
 
   async refreshToken() {
     try {
-      return await this.client.get(`/auth/login`);
+      const response = await this.client.get(`/auth/refresh`);
+      
+      let {tokenAuth} = response.data;
+      this.refresh = tokenAuth;
+      return response;
     } catch (error) {
       console.error(error)
       return error
     }
   }
+
 
   
   get(url: string, options?: AxiosRequestConfig) {
@@ -80,10 +87,4 @@ export class KrossClient {
   request(options: AxiosRequestConfig) {
     return this.client.request(options)
   }
-}
-
-export const hmacHashString = (secretKey: string, message: string) => {
-  const hmac = createHmac('sha256', secretKey)
-  hmac.update(message)
-  return hmac.digest('base64')
 }

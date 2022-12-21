@@ -29,6 +29,7 @@ export type QueryType = {
   investmentId?: number
   amount?: number
   idempotencyKey?: number,
+  loan_id?: number,
 }
 
 export type KrossClientOptions = AxiosRequestConfig & {

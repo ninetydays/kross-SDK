@@ -1,79 +1,43 @@
-import { AxiosRequestConfig } from 'axios'
-import oliveClient from '../oliveClient'
-export class Accounts {
+import { KrossClient } from '../kross-client'
+export class Accounts  extends KrossClient{
   accountCheck = async (
-    authToken: string,
     bankId: number,
     accountNumber: number,
     verify_code: number
   ) => {
-    const config: AxiosRequestConfig = {
-      method: 'post',
-      headers: {
-        authorization: `Bearer ${authToken}`,
-      },
-      url: '/accounts/check',
-      data: {
-        bankId,
-        verify_code,
-        accountNumber,
-      },
-    }
-    const response = await oliveClient(config)
+    const response = await this.client.post('/accounts/check', {
+      bankId,
+      accountNumber,
+      verify_code,
+    })
     return response.data
   }
 
   withdrawRequest = async (
-    authToken: string,
     member_no: number,
     amount: number
   ) => {
-    const config: AxiosRequestConfig = {
-      method: 'post',
-      headers: {
-        authorization: `Bearer ${authToken}`,
-      },
-      url: '/accounts/withdraw/init',
-      data: {
-        member_no,
-        amount,
-      },
-    }
-    const response = await oliveClient(config)
+    const response = await this.client.post('/accounts/withdraw/init', {
+      member_no,
+      amount,
+    })
     return response.data
   }
   withdrawVerify = async (
-    authToken: string,
     idempotency_key: number,
     verify_code: number
   ) => {
-    const config: AxiosRequestConfig = {
-      method: 'post',
-      headers: {
-        authorization: `Bearer ${authToken}`,
-      },
-      url: '/accounts/withdraw/verify',
-      data: {
-        idempotency_key,
-        verify_code,
-      },
-    }
-    const response = await oliveClient(config)
+    const response = await this.client.post('/accounts/withdraw/verify', {
+      idempotency_key,
+      verify_code,
+    })
     return response.data
   }
 
-  withdrawCancel = async (authToken: string, idempotency_key: number) => {
-    const config: AxiosRequestConfig = {
-      method: 'post',
-      headers: {
-        authorization: `Bearer ${authToken}`,
-      },
-      url: '/accounts/withdraw/cancel',
-      data: {
-        idempotency_key,
-      },
-    }
-    const response = await oliveClient(config)
+  withdrawCancel = async (idempotency_key: number) => {
+    const response = await this.client.patch('/accounts/withdraw/cancel', {
+      idempotency_key,
+    })
     return response.data
   }
 }

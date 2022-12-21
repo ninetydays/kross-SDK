@@ -1,80 +1,39 @@
-import oliveClient from '../oliveClient'
-import { AxiosRequestConfig } from 'axios'
+import { KrossClient } from '../kross-client'
 import { QueryType } from '../types'
 
-export class Investments {
-  notes = async (authToken: string, params: QueryType) => {
-    const config: AxiosRequestConfig = {
-      method: 'get',
-      headers: {
-        authorization: `Bearer ${authToken}`,
-      },
-      url: '/notes',
-      data: {
-        params,
-      },
-    }
-    const response = await oliveClient(config)
+export class Investments extends KrossClient{
+  notes = async (params: QueryType) => {
+    const response = await this.client.get('/notes', {
+      params,
+    })
     return response.data
   }
 
-  getInvestments = async (authToken: string, params: QueryType) => {
-    const config: AxiosRequestConfig = {
-      method: 'get',
-      headers: {
-        authorization: `Bearer ${authToken}`,
-      },
-      url: '/investments',
-      data: {
-        params,
-      },
-    }
-    const response = await oliveClient(config)
+  getInvestments = async (params: QueryType) => {
+    const response = await this.client.get('/investments', {
+      params,
+    })
     return response.data
   }
 
-  postInvestments = async (authToken: string, params: QueryType) => {
-    const config: AxiosRequestConfig = {
-      method: 'post',
-      headers: {
-        authorization: `Bearer ${authToken}`,
-      },
-      url: '/investments',
-      data: {
-        params,
-      },
-    }
-    const response = await oliveClient(config)
+  postInvestments = async (params: QueryType) => {
+    const response = await this.client.post('/investments', {
+      params,
+    })
+    return response.data
+
+  }
+  investmentCancel = async (investment_id: number) => {
+    const response = await this.client.patch(`/investments/${investment_id}/cancel`, {
+      investment_id,
+    })
     return response.data
   }
 
-  investmentCancel = async (authToken: string, investment_id: number) => {
-    const config: AxiosRequestConfig = {
-      method: 'patch',
-      headers: {
-        authorization: `Bearer ${authToken}`,
-      },
-      url: `/investments/${investment_id}/cancel`,
-      data: {
-        investment_id,
-      },
-    }
-    const response = await oliveClient(config)
-    return response.data
-  }
-
-  userNoteLogs = async (authToken: string, params: QueryType) => {
-    const config: AxiosRequestConfig = {
-      method: 'patch',
-      headers: {
-        authorization: `Bearer ${authToken}`,
-      },
-      url: '/user-note-logs',
-      data: {
-        params,
-      },
-    }
-    const response = await oliveClient(config)
+  userNoteLogs = async (params: QueryType) => {
+    const response = await this.client.get('/user-note-logs', {
+      params,
+    })
     return response.data
   }
 }
