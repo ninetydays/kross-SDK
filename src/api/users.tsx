@@ -3,12 +3,14 @@ import { QueryType } from '../types'
 
 export class Users extends KrossClient {
   users = async (params: QueryType) => {
+    this.method = 'get'
     const response = await this.client.get('/user', {
       params,
     })
     return response.data
   }
   cmsTradebook = async (params: QueryType) => {
+    this.method = 'get'
     const response = await this.client.get('/cms-tradebooks', {
       params,
     })
@@ -16,6 +18,7 @@ export class Users extends KrossClient {
   }
 
   checkVirtualAccount = async (member_no: number) => {
+    this.method = 'get'
     const response = await this.client.get(`/users/virtual-account/${member_no}`, {
       data: {
         member_no,
@@ -25,6 +28,7 @@ export class Users extends KrossClient {
   }
 
   releaseDepositControl = async (member_no: number) => {
+    this.method = 'patch'
     const response = await this.client.patch('/users/release-deposit', {
       member_no,
     })
@@ -32,6 +36,7 @@ export class Users extends KrossClient {
   }
 
   unRegisterMember = async (member_no: number) => {
+    this.method = 'patch'
     const response = await this.client.patch('/users/welcome-unregister', {
       member_no,
     })
@@ -39,6 +44,7 @@ export class Users extends KrossClient {
   }
 
   getVirtualAccCertificate = async (member_no: number) => {
+    this.method = 'patch'
     const response = await this.client.patch('/users/account-certificate', {
       member_no,
     })
@@ -46,6 +52,7 @@ export class Users extends KrossClient {
   }
 
   kftcBalance = async (member_no: number) => {
+    this.method = 'get'
     let response;
     try {
       response = await this.client.get(
@@ -64,6 +71,7 @@ export class Users extends KrossClient {
   }
 
   userAccountLogs = async (params: QueryType) => {
+    this.method = 'get'
     const response = await this.client.get('/user-account-logs', {
       params,
     })

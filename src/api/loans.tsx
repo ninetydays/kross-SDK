@@ -4,6 +4,7 @@ import { QueryType } from '../types'
 export class Accounts extends KrossClient {
 
   paymentSchedule = async (loan_id: number) => {
+    this.method = 'get'
     const response = await this.client.get(`/loans/${loan_id}/payment-schedule`, {
       data: {
         loan_id,
@@ -13,20 +14,35 @@ export class Accounts extends KrossClient {
   }
 
   loans = async (params: QueryType) => {
-    const response = await this.client.get('/notes', {
-      params,
-    })
+    let response;
+    this.method = 'get';
+    try {
+    response = await this.client.get(
+      '/loans',
+      {
+        data: {
+          params,
+        }
+      })
+    } catch (e){
+      console.error(e);
+      return e;
+    }
     return response.data
   }
 
   loanConfigs = async (params: QueryType) => {
-    const response = await this.client.get('/loan-configs', {
-      params,
-    })
+    this.method = 'get';
+    const response = await this.client.get(
+      '/loan-configs', 
+      {
+        params,
+      })
     return response.data
   }
 
   loanRepayments = async (params: QueryType) => {
+    this.method = 'get'
     const response = await this.client.get('/loan-repayments', {
       params,
     })
