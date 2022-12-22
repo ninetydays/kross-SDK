@@ -1,20 +1,19 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { KrossClientOptions } from './types'
-import { generateToken } from './encryptor'
+import { getHmacToken } from './encryptor'
 
 export class KrossClient {
   client: AxiosInstance
-  authToken?: string
-  isLogin: boolean
   method?: string
+  refresh?: string
+  authToken?: string
   constructor(options: KrossClientOptions) {
-    this.isLogin = false
     this.client = axios.create(options)
     this.client.interceptors.request.use(
       (config) => {
         console.log('Config header: ', config)
-        const { hmacToken, xDate } = generateToken(this.method  as string)
-        !this.isLogin
+        const { hmacToken, xDate } = getHmacToken(this.method as string)
+        config.url !== '/auth/login'
           ? (config.headers = {
               ...config.headers,
               'client-authorization': hmacToken,
@@ -30,21 +29,43 @@ export class KrossClient {
       },
       (error) => Promise.reject(error)
     )
+
+    this.client.interceptors.response.use(
+      (response) => {
+        return response
+      },
+      async (error) => {
+        const originalConfig = error.config
+
+        if (originalConfig.url !== '/auth/login' && error.response) {
+          // Access Token was expired
+          if (error.response.status === 401 && !originalConfig._retry) {
+            originalConfig._retry = true
+            this.method = 'get'
+            try {
+              const response = await this.client.get(`/auth/refresh`)
+              this.authToken = response.data
+              return this.client(originalConfig)
+            } catch (error) {
+              return Promise.reject(error)
+            }
+          }
+          return Promise.reject(error)
+        }
+      }
+    )
   }
 
   async login(keyid: string, password: string) {
     let response
     this.method = 'post'
     try {
-      response = await this.client.post(
-      '/auth/login', 
-      {
+      response = await this.client.post('/auth/login', {
         keyid,
         password,
       })
       let { tokenAuth } = response.data
       this.authToken = tokenAuth
-      this.isLogin = true
     } catch (error) {
       console.error(error)
       return error
@@ -52,17 +73,16 @@ export class KrossClient {
     return response.data
   }
 
-  async refreshToken() {
+  async getAuthToken() {
     this.method = 'get'
+    let response
     try {
-      const response = await this.client.get(`/auth/refresh`)
-      let { refresh } = response.data
-      this.authToken = refresh
-      return response
+      response = await this.client.get(`/auth/refresh`)
     } catch (error) {
       console.error(error)
       return error
     }
+    return response.data
   }
 
   get(url: string, options?: AxiosRequestConfig) {
