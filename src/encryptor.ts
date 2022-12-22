@@ -7,8 +7,8 @@ export const hmacHashString = (secretKey: string, message: string) => {
 }
 
 export const getHmacToken = (method: string) => {
-  const accessId = 'XLD7UY9GETOK7TPY'
-  const secretKey = 'yLbVRHGgwT5c22ndOVT2'
+  const accessKey = process.env.REACT_APP_OLIVE_ACCESS_KEY;
+  const secretKey = process.env.REACT_APP_OLIVE_SECRET_KEY;
   const date = new Date().toUTCString()
   const hashString = hmacHashString(
     secretKey as string,
@@ -16,7 +16,7 @@ export const getHmacToken = (method: string) => {
   )
 
   return {
-    hmacToken: `KROSS ${accessId}:${hashString}`,
+    hmacToken: `KROSS ${accessKey}:${hashString}`,
     xDate: date,
   }
 }
