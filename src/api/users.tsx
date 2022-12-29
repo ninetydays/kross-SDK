@@ -1,21 +1,8 @@
 import { KrossClient } from '../kross-client'
-import { QueryType } from '../types'
+import { ParamType } from '../types'
 
 export class Users extends KrossClient {
-  users = async (params: QueryType) => {
-    this.method = 'get'
-    let response
-    try {
-      response = await this.client.get('/user', {
-        params,
-      })
-    } catch (error) {
-      console.error(error)
-      return error
-    }
-    return response
-  }
-  cmsTradebook = async (params: QueryType) => {
+  cmsTradebook = async (params: ParamType) => {
     this.method = 'get'
     let response
     try {
@@ -29,15 +16,11 @@ export class Users extends KrossClient {
     return response
   }
 
-  checkVirtualAccount = async (member_no: number) => {
+  checkVirtualAccount = async () => {
     this.method = 'get'
     let response
     try {
-      response = await this.client.get(`/users/virtual-account/${member_no}`, {
-        data: {
-          member_no,
-        },
-      })
+      response = await this.client.get('/users/virtual-account')
     } catch (error) {
       console.error(error)
       return error
@@ -45,13 +28,11 @@ export class Users extends KrossClient {
     return response
   }
 
-  releaseDepositControl = async (member_no: number) => {
+  releaseDepositControl = async () => {
     this.method = 'patch'
     let response
     try {
-      response = await this.client.patch('/users/release-deposit', {
-        member_no,
-      })
+      response = await this.client.patch('/users/release-deposit')
     } catch (error) {
       console.error(error)
       return error
@@ -59,13 +40,11 @@ export class Users extends KrossClient {
     return response
   }
 
-  unRegisterMember = async (member_no: number) => {
+  unRegisterMember = async () => {
     this.method = 'patch'
     let response
     try {
-      response = await this.client.patch('/users/welcome-unregister', {
-        member_no,
-      })
+      response = await this.client.patch('/users/welcome-unregister')
     } catch (error) {
       console.error(error)
       return error
@@ -74,29 +53,11 @@ export class Users extends KrossClient {
     return response
   }
 
-  getVirtualAccCertificate = async (member_no: number) => {
-    this.method = 'patch'
-    let response
-    try {
-      response = await this.client.patch('/users/account-certificate', {
-        member_no,
-      })
-    } catch (error) {
-      console.error(error)
-      return error
-    }
-    return response
-  }
-
-  kftcBalance = async (member_no: number) => {
+  getVirtualAccCertificate = async () => {
     this.method = 'get'
     let response
     try {
-      response = await this.client.get('/users/borrower-amount', {
-        data: {
-          member_no,
-        },
-      })
+      response = await this.client.get('/users/account-certificate')
     } catch (error) {
       console.error(error)
       return error
@@ -104,7 +65,19 @@ export class Users extends KrossClient {
     return response
   }
 
-  userAccountLogs = async (params: QueryType) => {
+  kftcBalance = async () => {
+    this.method = 'get'
+    let response
+    try {
+      response = await this.client.get('/users/borrower-amount')
+    } catch (error) {
+      console.error(error)
+      return error
+    }
+    return response
+  }
+
+  userAccountLogs = async (params: ParamType) => {
     this.method = 'get'
     let response
     try {

@@ -1,16 +1,12 @@
 import { KrossClient } from '../kross-client'
-import { QueryType } from '../types'
+import { ParamType } from '../types'
 
-export class Accounts extends KrossClient {
+export class Loans extends KrossClient {
   paymentSchedule = async (loan_id: number) => {
     this.method = 'get'
     let response
     try {
-      response = await this.client.get(`/loans/${loan_id}/payment-schedule`, {
-        data: {
-          loan_id,
-        },
-      })
+      response = await this.client.get(`/loans/${loan_id}/payment-schedule`)
     } catch (error) {
       console.error(error)
       return error
@@ -18,7 +14,7 @@ export class Accounts extends KrossClient {
     return response
   }
 
-  loans = async (params: QueryType) => {
+  loans = async (params: ParamType) => {
     this.method = 'get'
     let response
     try {
@@ -32,7 +28,7 @@ export class Accounts extends KrossClient {
     return response
   }
 
-  loanConfigs = async (params: QueryType) => {
+  loanConfigs = async (params: ParamType) => {
     this.method = 'get'
     let response
     try {
@@ -46,7 +42,7 @@ export class Accounts extends KrossClient {
     return response
   }
 
-  loanRepayments = async (params: QueryType) => {
+  loanRepayments = async (params: ParamType) => {
     this.method = 'get'
     let response
     try {

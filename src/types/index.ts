@@ -10,30 +10,43 @@ export interface WindowPopUpParams {
   url: string
   windowFeatures: WindowFeatures
 }
-
-export type QueryType = {
-  application_id?: number
-  id?: number
-  user_id?: number
-  name?: string
-  member_id?: number
-  startAt?: Date
-  endAt?: Date
-  state?: string
-  offset?: number
+export type ParamType = {
   fields?: string
-  limit?: any
-  sortBy?: string
-  bankId?: string
-  accountNumber?: number
-  loanId?: number
-  investmentId?: number
-  amount?: number
-  idempotencyKey?: number
-  loan_id?: number
+  offset?: string
+  limit?: string
+  sortby?: string
+  group_by?: string
+  query?: string
+}
+
+export type AccountCheckDto = {
+  bankId: string
+  accountNumber: string
+  name: string
+}
+
+export type InvestmentRegisterDto = {
+  amount: number
+  loan_id: number
+  user_id: number
+}
+
+export type WithdrawRequestDto = {
+  member_no: number
+  amount: number
+}
+
+export type WithdrawVerifyDto = {
+  idempotency_key: string
+  verify_code: number
+}
+
+export type WithdrawCancelDto = {
+  idempotency_key: string
 }
 
 export type KrossClientOptions = AxiosRequestConfig & {
+  baseURL: string
   accessId: string
   secretKey: string
 }

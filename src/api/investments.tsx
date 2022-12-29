@@ -1,8 +1,8 @@
 import { KrossClient } from '../kross-client'
-import { QueryType } from '../types'
+import { ParamType, InvestmentRegisterDto } from '../types'
 
 export class Investments extends KrossClient {
-  notes = async (params: QueryType) => {
+  notes = async (params: ParamType) => {
     this.method = 'get'
     let response
     try {
@@ -16,7 +16,7 @@ export class Investments extends KrossClient {
     return response
   }
 
-  getInvestments = async (params: QueryType) => {
+  getInvestments = async (params: ParamType) => {
     this.method = 'get'
     let response
     try {
@@ -30,7 +30,7 @@ export class Investments extends KrossClient {
     return response
   }
 
-  postInvestments = async (params: QueryType) => {
+  postInvestments = async (params: InvestmentRegisterDto) => {
     this.method = 'post'
     let response
     try {
@@ -47,12 +47,7 @@ export class Investments extends KrossClient {
     this.method = 'patch'
     let response
     try {
-      response = await this.client.patch(
-        `/investments/${investment_id}/cancel`,
-        {
-          investment_id,
-        }
-      )
+      response = await this.client.patch(`/investments/${investment_id}/cancel`)
     } catch (error) {
       console.error(error)
       return error
@@ -60,7 +55,7 @@ export class Investments extends KrossClient {
     return response
   }
 
-  userNoteLogs = async (params: QueryType) => {
+  userNoteLogs = async (params: ParamType) => {
     this.method = 'get'
     let response
     try {
