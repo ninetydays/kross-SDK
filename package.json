@@ -11,7 +11,7 @@
     "test": "jest",
     "build": "rm -rf dist && webpack",
     "lint": "eslint .",
-    "format": "prettier --write src/"
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-umd": "^7.10.1",
@@ -24,14 +24,14 @@
     "@types/jest": "^27.0.3",
     "@types/jest-environment-puppeteer": "^5.0.0",
     "@types/puppeteer": "^5.4.5",
-    "@typescript-eslint/eslint-plugin": "^5.46.1",
-    "@typescript-eslint/parser": "^5.46.1",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
     "babel-loader": "^8.2.4",
     "eslint": "^8.12.0",
     "eslint-config-prettier": "^8.5.0",
     "jest": "^27.4.5",
     "jest-puppeteer": "^6.1.0",
-    "prettier": "^2.8.1",
+    "prettier": "^2.6.2",
     "puppeteer": "^13.5.2",
     "ts-loader": "^9.2.8",
     "ts-node": "^10.4.0",
@@ -60,8 +60,6 @@
   "dependencies": {
     "axios": "^0.27.2",
     "crypto-browserify": "^3.12.0",
-    "jsonwebtoken": "^8.5.1",
-    "stream-browserify": "^3.0.0",
-    "supertest": "^6.3.3"
+    "stream-browserify": "^3.0.0"
   }
 }

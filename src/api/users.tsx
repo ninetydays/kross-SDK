@@ -2,6 +2,20 @@ import { KrossClient } from '../kross-client'
 import { ParamType } from '../types'
 
 export class Users extends KrossClient {
+  users = async (params: ParamType) => {
+    this.method = 'get'
+    let response
+    try {
+      response = await this.client.get('/users', {
+        params,
+      })
+    } catch (error) {
+      console.error(error)
+      return error
+    }
+    return response
+  }
+
   cmsTradebook = async (params: ParamType) => {
     this.method = 'get'
     let response

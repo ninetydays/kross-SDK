@@ -67,8 +67,6 @@ export class KrossClient {
         keyid,
         password,
       })
-      this.authToken = response.data?.token
-      this.refreshToken = response.data?.refresh
     } catch (error) {
       console.error(error)
       return error    

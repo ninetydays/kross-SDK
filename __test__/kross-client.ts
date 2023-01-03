@@ -2,7 +2,8 @@ import { Polly } from '@pollyjs/core'
 import NodeHttpAdapter from '@pollyjs/adapter-node-http'
 import FSPersister from '@pollyjs/persister-fs'
 import { randomBytes } from 'crypto'
-import { KrossClient, hmacHashString } from '../src/kross-client'
+import { KrossClient } from '../src/kross-client'
+import { hmacHashString } from '../src/utils/encryptor'
 // Register the node http adapter so its accessible by all future polly instances
 Polly.register(NodeHttpAdapter)
 Polly.register(FSPersister)
@@ -23,7 +24,7 @@ const { server } = polly
 
 afterAll(() => polly.stop())
 
-describe('KrossClient', () => { 
+describe('KrossClient', () => {
   let client: KrossClient
   const baseURL = 'https://jsonplaceholder.typicode.com'
   const accessId = randomBytes(8).toString('hex')
@@ -50,7 +51,7 @@ describe('KrossClient', () => {
   })
 
   it('has put method', async () => {
-    const res   = await client.patch('/posts/1')
+    const res = await client.patch('/posts/1')
     expect(res.status).toBe(200)
   })
 
