@@ -1,38 +1,31 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { KrossClientOptions } from './types'
 import { getHmacToken } from './utils/encryptor'
 
 export class KrossClient {
   client: AxiosInstance
-  method?: string
   refreshToken?: string
   authToken?: string
+
   constructor(options: KrossClientOptions) {
     this.client = axios.create(options)
-    
-    this.client.interceptors.request.use(
-      (config) => {
-        const { hmacToken, xDate } = getHmacToken(this.method as string)
+
+    this.client.interceptors.request.use((config) => {
+      const { hmacToken, xDate } = getHmacToken(config.method as string)
+      config.headers = {
+        ...config.headers,
+        'client-authorization': hmacToken,
+        'X-Date': xDate,
+      }
+
+      if (this.authToken && config.url != '/auth/refresh') {
         config.headers = {
           ...config.headers,
-          'client-authorization': hmacToken,
-          'X-Date': xDate,
-        };
-        if (config.url === '/auth/refresh'){
-          config.headers = {
-            ...config.headers,
-            authorization: `Bearer ${this.refreshToken}`,
-          }
+          authorization: `Bearer ${this.authToken}`,
         }
-        if (this.authToken) {
-          config.headers = {
-            ...config.headers,
-            authorization: `Bearer ${this.authToken}`,
-          };
-        }
-        return config
-      },
-    )
+      }
+      return config
+    })
 
     this.client.interceptors.response.use(
       (response) => {
@@ -43,16 +36,10 @@ export class KrossClient {
         if (originalConfig.url !== '/auth/login' && error.response) {
           // Access Token was expired
           if (error.response.status === 401) {
-            this.method = 'get'
-            try {
-              const response = await this.getAuthToken()
-              this.authToken = response.data.token
-              return this.client(originalConfig)
-            } catch (error) {
-              return Promise.reject(error)
-            }
+            const response = await this.getAuthToken()
+            this.authToken = response.data.token
+            return this.client(originalConfig)
           }
-          return Promise.reject(error)
         }
         return Promise.reject(error)
       }
@@ -61,7 +48,6 @@ export class KrossClient {
 
   async login(keyid: string, password: string) {
     let response
-    this.method = 'post'
     try {
       response = await this.client.post('/auth/login', {
         keyid,
@@ -69,40 +55,48 @@ export class KrossClient {
       })
     } catch (error) {
       console.error(error)
-      return error    
-    }
-    return response
-  }
-
-  async getAuthToken() {
-    let response
-    this.method = 'get'
-    try {
-      response = await this.client.get(`/auth/refresh`)
-    } catch (error) {
-      console.error(error)
       return error
     }
     return response
   }
 
-  get(url: string, options?: AxiosRequestConfig) {
-    return this.client.get(url, options)
+  async getAuthToken() {
+    return this.client.get<{ token: string }>(`/auth/refresh`, {
+      headers: {
+        authorization: `Bearer ${this.refreshToken}`,
+      },
+    })
   }
 
-  put(url: string, options?: AxiosRequestConfig) {
-    return this.client.put(url, options)
+  get<T = unknown>(
+    url: string,
+    options?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
+    return this.client.get<T>(url, options)
   }
 
-  patch(url: string, options?: AxiosRequestConfig) {
-    return this.client.patch(url, options)
+  put<T = unknown>(
+    url: string,
+    options?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
+    return this.client.put<T>(url, options)
   }
 
-  post(url: string, options?: AxiosRequestConfig) {
-    return this.client.post(url, options)
+  patch<T = unknown>(
+    url: string,
+    options?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
+    return this.client.patch<T>(url, options)
   }
 
-  request(options: AxiosRequestConfig) {
-    return this.client.request(options)
+  post<T = unknown>(
+    url: string,
+    options?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
+    return this.client.post<T>(url, options)
+  }
+
+  request<T = unknown>(options: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return this.client.request<T>(options)
   }
 }
