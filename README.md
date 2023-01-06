@@ -25,7 +25,7 @@ const res = await client.get('/loans'); // this is custom axios instance so you 
 ### frontend SDK
 
 ```js
-import { windowPopUp } from 'kross-sdk'
+import { windowPopUp } from 'kross-sdk';
 const Component = () => {
   const handleEvent = () => {
     /* accepts optional params as {
@@ -38,11 +38,11 @@ const Component = () => {
         }
       }
     */
-    windowPopUp()
-  }
+    windowPopUp();
+  };
 
-  return <button onClick={handleEvent}>Open</button>
-}
+  return <button onClick={handleEvent}>Open</button>;
+};
 ```
 
 ###### React Demo CodesandBox

@@ -1,22 +1,22 @@
-import { WindowPopUpParams } from './types'
-import { WindowDefaultParams } from './constants/index'
-import { prepareWindowFeatureString } from './utils/windowFeatureString'
+import { WindowPopUpParams } from './types';
+import { WindowDefaultParams } from './constants/index';
+import { prepareWindowFeatureString } from './utils/windowFeatureString';
 
-export * from './types'
-export * from './kross-client'
+export * from './types';
+export * from './kross-client';
 
 export function windowPopUp(
   popUpParams: WindowPopUpParams = WindowDefaultParams
 ) {
-  let windowRef: any = null
-  const { url, windowFeatures } = popUpParams
+  let windowRef: any = null;
+  const { url, windowFeatures } = popUpParams;
   if (windowRef === null || windowRef.closed) {
     windowRef = window.open(
       url,
       'Sign SDK',
       prepareWindowFeatureString(windowFeatures)
-    )
+    );
   } else {
-    windowRef.focus()
+    windowRef.focus();
   }
 }

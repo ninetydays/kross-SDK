@@ -1,4 +1,4 @@
-import { KrossClientBase } from './base'
+import { KrossClientBase } from './base';
 import {
   FunctionRegistered,
   KrossClientOptions,
@@ -10,25 +10,25 @@ import {
   AccountWithdrawVerifyResponse,
   AccountWithdrawCancelDto,
   AccountWithdrawCancelResponse,
-} from '../types'
+} from '../types';
 
 export class Account extends KrossClientBase {
-  check: FunctionRegistered<AccountCheckDto, AccountCheckResponse>
+  check: FunctionRegistered<AccountCheckDto, AccountCheckResponse>;
   withdrawInit: FunctionRegistered<
     AccountWithdrawInitDto,
     AccountWithdrawInitResponse
-  >
+  >;
   withdrawVerify: FunctionRegistered<
     AccountWithdrawVerifyDto,
     AccountWithdrawVerifyResponse
-  >
+  >;
   withdrawCancel: FunctionRegistered<
     AccountWithdrawCancelDto,
     AccountWithdrawCancelResponse
-  >
+  >;
 
   constructor(options: KrossClientOptions) {
-    super(options)
+    super(options);
 
     this.check = Account.registerFunction<
       AccountCheckDto,
@@ -36,7 +36,7 @@ export class Account extends KrossClientBase {
     >({
       url: '/accounts/check',
       method: 'post',
-    })
+    });
 
     this.withdrawInit = Account.registerFunction<
       AccountWithdrawInitDto,
@@ -44,16 +44,16 @@ export class Account extends KrossClientBase {
     >({
       url: '/withdraw/init',
       method: 'post',
-    })
+    });
 
     this.withdrawVerify = Account.registerFunction<
       AccountWithdrawVerifyDto,
       AccountWithdrawVerifyResponse
-    >({ url: '/withdraw/verify', method: 'post' })
+    >({ url: '/withdraw/verify', method: 'post' });
 
     this.withdrawCancel = Account.registerFunction<
       AccountWithdrawCancelDto,
       AccountWithdrawCancelResponse
-    >({ url: '/withdraw/verify', method: 'post' })
+    >({ url: '/withdraw/verify', method: 'post' });
   }
 }

@@ -1,5 +1,5 @@
-const path = require('path')
-const package = require('./package.json')
+const path = require('path');
+const package = require('./package.json');
 
 module.exports = {
   module: {
@@ -74,4 +74,4 @@ module.exports = {
     maxAssetSize: 512000,
   },
   devtool: 'source-map',
-}
+};

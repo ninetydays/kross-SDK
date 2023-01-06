@@ -1,12 +1,12 @@
-export * from './kross-client'
+export * from './kross-client';
 
 export interface WindowFeatures {
-  width: number
-  height: number
-  top: number
-  left: number
+  width: number;
+  height: number;
+  top: number;
+  left: number;
 }
 export interface WindowPopUpParams {
-  url: string
-  windowFeatures: WindowFeatures
+  url: string;
+  windowFeatures: WindowFeatures;
 }

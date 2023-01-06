@@ -4,7 +4,9 @@
   "description": "90days SDK for login, sigup and loans",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "jest",
     "build": "rm -rf dist && webpack",
@@ -38,7 +40,13 @@
     "type": "git",
     "url": "git+https://github.com/ninetydays/sign-SDK.git"
   },
-  "keywords": ["90days", "authentication", "sign", "login", "loans"],
+  "keywords": [
+    "90days",
+    "authentication",
+    "sign",
+    "login",
+    "loans"
+  ],
   "prepublish": "npm build",
   "author": "Jscripter-pk",
   "license": "ISC",

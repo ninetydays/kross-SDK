@@ -1,49 +1,49 @@
-import { FunctionResponse } from './index'
+import { FunctionResponse } from './index';
 export type AccountCheckDto = {
-  bankId: string
-  accountNumber: string
-  name: string
-}
+  bankId: string;
+  accountNumber: string;
+  name: string;
+};
 
 export type AccountCheckResponseData = {
-  bankOwnerName: string
-  bankSearch: string
-  realBankOwnerName: string
-  tid: number
-}
+  bankOwnerName: string;
+  bankSearch: string;
+  realBankOwnerName: string;
+  tid: number;
+};
 
-export type AccountCheckResponse = FunctionResponse<AccountCheckResponseData>
+export type AccountCheckResponse = FunctionResponse<AccountCheckResponseData>;
 
 export type AccountWithdrawInitDto = {
-  member_no: number
-  amount: number
-}
+  member_no: number;
+  amount: number;
+};
 
 export type AccountWithdrawInitResponseData = {
-  tid: number
-  verifyWord?: string
-}
+  tid: number;
+  verifyWord?: string;
+};
 
 export type AccountWithdrawInitResponse =
-  FunctionResponse<AccountWithdrawInitResponseData>
+  FunctionResponse<AccountWithdrawInitResponseData>;
 
 export type AccountWithdrawVerifyDto = {
-  idempotency_key: string
-  verify_code: string
-}
+  idempotency_key: string;
+  verify_code: string;
+};
 
 export type AccountWithdrawVerifyResponseData = {
   wc_response: {
-    tid: number
-    verifyWord: string
-  }
-}
+    tid: number;
+    verifyWord: string;
+  };
+};
 
 export type AccountWithdrawVerifyResponse =
-  FunctionResponse<AccountWithdrawVerifyResponseData>
+  FunctionResponse<AccountWithdrawVerifyResponseData>;
 
 export type AccountWithdrawCancelDto = {
-  idempotency_key: string
-}
+  idempotency_key: string;
+};
 
-export type AccountWithdrawCancelResponse = FunctionResponse
+export type AccountWithdrawCancelResponse = FunctionResponse;
