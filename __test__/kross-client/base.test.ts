@@ -5,9 +5,9 @@ jest.mock('axios');
 describe('KrossClientBase', () => {
   describe('Token authorization', () => {
     let client: KrossClient;
-    const baseURL = 'https://api.kross.kr';
-    const accessId = 'XLD7UY9GETOK7TPY';
-    const secretKey = 'yLbVRHGgwT5c22ndOVT2';
+    const baseURL = 'http://localhost';
+    const accessId = 'randomestring';
+    const secretKey = 'randomestring';
     const mockedAxios = axios as jest.Mocked<typeof axios>;
     beforeAll(() => {
       mockedAxios.create.mockReturnThis();
