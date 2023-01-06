@@ -6,17 +6,16 @@ export const hmacHashString = (secretKey: string, message: string) => {
   return hmac.digest('base64')
 }
 
-export const getHmacToken = (method: string) => {
-  const accessKey = 'XLD7UY9GETOK7TPY'
-  const secretKey = 'yLbVRHGgwT5c22ndOVT2'
-  const date = new Date().toUTCString()
-  const hashString = hmacHashString(
-    secretKey as string,
-    [date, method].join(' ')
-  )
+export const hmacTokenFunction =
+  (accessId: string, secretKey: string) => (method: string) => {
+    const date = new Date().toUTCString()
+    const hashString = hmacHashString(
+      secretKey as string,
+      [date, method].join(' ')
+    )
 
-  return {
-    hmacToken: `KROSS ${accessKey}:${hashString}`,
-    xDate: date,
+    return {
+      hmacToken: `KROSS ${accessId}:${hashString}`,
+      xDate: date,
+    }
   }
-}

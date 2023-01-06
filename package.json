@@ -4,9 +4,7 @@
   "description": "90days SDK for login, sigup and loans",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "test": "jest",
     "build": "rm -rf dist && webpack",
@@ -17,9 +15,6 @@
     "@babel/plugin-transform-modules-umd": "^7.10.1",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-typescript": "^7.16.5",
-    "@pollyjs/adapter-node-http": "^6.0.5",
-    "@pollyjs/core": "^6.0.5",
-    "@pollyjs/persister-fs": "^6.0.5",
     "@types/expect-puppeteer": "^4.4.7",
     "@types/jest": "^27.0.3",
     "@types/jest-environment-puppeteer": "^5.0.0",
@@ -43,13 +38,7 @@
     "type": "git",
     "url": "git+https://github.com/ninetydays/sign-SDK.git"
   },
-  "keywords": [
-    "90days",
-    "authentication",
-    "sign",
-    "login",
-    "loans"
-  ],
+  "keywords": ["90days", "authentication", "sign", "login", "loans"],
   "prepublish": "npm build",
   "author": "Jscripter-pk",
   "license": "ISC",
