@@ -1,5 +1,5 @@
-import { WindowFeatures } from './../src/types'
-import { prepareWindowFeatureString } from './../src/utils/windowFeatureString'
+import { WindowFeatures } from './../src/types';
+import { prepareWindowFeatureString } from './../src/utils/windowFeatureString';
 
 describe('first', () => {
   it('prepareWindowFeatureString returns valid string', async () => {
@@ -8,11 +8,11 @@ describe('first', () => {
       height: 100,
       top: 0,
       left: 0,
-    }
+    };
     const preparedWindowFeatureString: string =
-      prepareWindowFeatureString(windowFeatures)
+      prepareWindowFeatureString(windowFeatures);
     expect(preparedWindowFeatureString).toBe(
       'width=100,height=100,top=0,left=0'
-    )
-  })
-})
+    );
+  });
+});

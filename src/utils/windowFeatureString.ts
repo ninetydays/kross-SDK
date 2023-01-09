@@ -1,10 +1,10 @@
-import { WindowFeatures } from '../types'
+import { WindowFeatures } from '../types';
 export const prepareWindowFeatureString = (
   windowFeatures: WindowFeatures
 ): string => {
-  const stringOfFeatures = []
+  const stringOfFeatures = [];
   for (const [key, value] of Object.entries(windowFeatures)) {
-    stringOfFeatures.push(`${key}=${value}`)
+    stringOfFeatures.push(`${key}=${value}`);
   }
-  return stringOfFeatures.join().toString()
-}
+  return stringOfFeatures.join().toString();
+};

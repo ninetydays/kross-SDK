@@ -11,15 +11,12 @@
     "test": "jest",
     "build": "rm -rf dist && webpack",
     "lint": "eslint .",
-    "format:write": "prettier --write ."
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-umd": "^7.10.1",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-typescript": "^7.16.5",
-    "@pollyjs/adapter-node-http": "^6.0.5",
-    "@pollyjs/core": "^6.0.5",
-    "@pollyjs/persister-fs": "^6.0.5",
     "@types/expect-puppeteer": "^4.4.7",
     "@types/jest": "^27.0.3",
     "@types/jest-environment-puppeteer": "^5.0.0",
