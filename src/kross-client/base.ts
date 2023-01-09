@@ -50,8 +50,7 @@ export class KrossClientBase {
           if (error.config.url !== '/auth/login') {
             // Access Token was expired
             if (error.response.status === 401) {
-              const response = await this.getAuthToken();
-              this.authToken = response.data.token;
+              await this.updateAuthToken();
               return this.instance.request(error.config);
             }
           }
@@ -63,17 +62,22 @@ export class KrossClientBase {
     );
   }
 
-  login({ keyid, password }: LoginDto) {
-    return this.instance.post<LoginResponse>('/auth/login', {
+  async login({ keyid, password }: LoginDto) {
+    const res = await this.instance.post<LoginResponse>('/auth/login', {
       keyid,
       password,
     });
+    this.authToken = res.data.token;
+    this.refreshToken = res.data.refresh;
+    return res;
   }
 
-  getAuthToken() {
-    return this.instance.get<GetAuthTokenResponse>(`/auth/refresh`, {
+  async updateAuthToken() {
+    const res = await this.instance.get<GetAuthTokenResponse>(`/auth/refresh`, {
       headers: { authorization: `Bearer ${this.refreshToken}` },
     });
+    this.authToken = res.data.token;
+    return res;
   }
 
   get<T = unknown>(

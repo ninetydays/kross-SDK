@@ -26,6 +26,8 @@ describe('KrossClientBase', () => {
 
       expect(res.data.token).toBeDefined();
       expect(res.data.refresh).toBeDefined();
+      expect(client.authToken).toBe(res.data.token);
+      expect(client.refreshToken).toBe(res.data.refresh);
     });
   });
 });
