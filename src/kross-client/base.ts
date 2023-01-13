@@ -78,28 +78,12 @@ export class KrossClientBase {
     });
   }
 
-  async accountData() {
-    const res = await this.instance.get<any>('/sienna/account');
-    return res;
-  }
-
   async updateAuthToken() {
     const res = await this.instance.get<GetAuthTokenResponse>(`/auth/refresh`, {
       headers: { authorization: `Bearer ${this.refreshToken}` },
     });
     this.authToken = res.data.token;
     return res;
-  }
-
-  useAccountHooks() {
-    return {
-      accountData: () => {
-        return useQuery({
-          queryKey: 'accountData',
-          queryFn: () => this.accountData.bind(this),
-        });
-      },
-    };
   }
 
   useAuthHooks() {

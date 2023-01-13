@@ -48,20 +48,5 @@ describe('KrossClientBase', () => {
 
       expect(result.current.data).toBeDefined();
     }, 30000);
-
-    it.skip('get account data', async () => {
-      const { accountData } = client.useAccountHooks();
-      let queryResponse;
-      await act(async () => {
-        queryResponse = renderHook(() => accountData(), {
-          wrapper,
-        });
-      });
-
-      const { result } = queryResponse;
-      await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-      expect(result.current.data).toBeDefined();
-    }, 30000);
   });
 });
