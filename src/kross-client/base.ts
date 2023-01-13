@@ -1,3 +1,4 @@
+import { useMutation, useQuery } from 'react-query';
 import axios, {
   AxiosError,
   AxiosInstance,
@@ -12,7 +13,6 @@ import {
   GetAuthTokenResponse,
 } from '../types';
 import { hmacTokenFunction } from '../utils/encryptor';
-
 export class KrossClientBase {
   instance: AxiosInstance;
   refreshToken?: string;
@@ -42,6 +42,14 @@ export class KrossClientBase {
 
     this.instance.interceptors.response.use(
       (response) => {
+        if (response.config.url === '/auth/login') {
+          this.authToken = response.data.token;
+          this.refreshToken = response.data.refresh;
+        }
+
+        if (response.status === 404) {
+          console.log('preflight request needs to be handled');
+        }
         console.log('response:', response);
         return response;
       },
@@ -54,6 +62,7 @@ export class KrossClientBase {
               return this.instance.request(error.config);
             }
           }
+
           return Promise.resolve(error.response);
         } else {
           return Promise.reject(error);
@@ -62,14 +71,11 @@ export class KrossClientBase {
     );
   }
 
-  async login({ keyid, password }: LoginDto) {
-    const res = await this.instance.post<LoginResponse>('/auth/login', {
+  login({ keyid, password }: LoginDto) {
+    return this.instance.post<LoginResponse>('/auth/login', {
       keyid,
       password,
     });
-    this.authToken = res.data.token;
-    this.refreshToken = res.data.refresh;
-    return res;
   }
 
   async updateAuthToken() {
@@ -78,6 +84,20 @@ export class KrossClientBase {
     });
     this.authToken = res.data.token;
     return res;
+  }
+
+  useAuthHooks() {
+    return {
+      useLogin: () => {
+        const mutation = useMutation((loginDto: LoginDto) =>
+          this.login.bind(this)(loginDto)
+        );
+        return mutation;
+      },
+      updateAuthToken: () => {
+        return useQuery('updateAuthToken', () => this.updateAuthToken());
+      },
+    };
   }
 
   get<T = unknown>(
