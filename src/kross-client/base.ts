@@ -134,10 +134,10 @@ export class KrossClientBase {
 
   static registerFunction<I = unknown, O = unknown>(
     options: FunctionOptions
-  ): (input?: I) => Promise<AxiosResponse<O>> {
+  ): (input: I) => Promise<AxiosResponse<O>> {
     return function (
       this: KrossClientBase,
-      input?: I
+      input: I
     ): Promise<AxiosResponse<O>> {
       let url = '';
 
@@ -159,10 +159,10 @@ export class KrossClientBase {
           throw new Error(`missing ${options.urlParam}`);
         }
         url = options.url.replace(`:${options.urlParam}`, urlParam);
+
       } else {
         url = options.url;
       }
-
       return this.request({
         url,
         method: options.method,

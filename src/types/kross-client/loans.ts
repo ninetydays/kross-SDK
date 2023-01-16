@@ -48,3 +48,43 @@ export type PaymentScheduleDto = {
 }
 export type PaymentScheduleResponse = FunctionResponse;
 
+export type LoanConfigResponseData = {
+  id:	number;
+  user_id: number;
+  loan_category: 	string;
+  loan_name:	string;
+  period:	number;
+  interest_rate:	number;
+  investor_fee_rate:	number;
+  borrower_fee_rate:	number;
+  repayment_type:	string;
+  repayment_cycle:	string;
+  repayment_count:	number;
+  path:	string;
+  audit_number:	string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type LoanConfigResponse = FunctionResponse<LoanConfigResponseData>
+
+export type LoanRepaymentReponseData = {
+  id:	number;
+  loan_id:	number;
+  seq:	number;
+  state:	string;
+  amount:	number;
+  principal:	number;
+  interest:	number;
+  investor_fee:	number;
+  investor_fee_vat:	number;
+  borrower_fee:	number;
+  borrower_fee_vat:	number;
+  income_tax:	number;
+  local_tax:	number;
+  data: {};
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type LoanRepaymentResponse = FunctionResponse<LoanRepaymentReponseData>

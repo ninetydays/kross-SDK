@@ -1,4 +1,5 @@
 import { KrossClientBase } from './base';
+import { useQuery } from 'react-query'
 import {
   FunctionRegistered,
   KrossClientOptions,
@@ -56,4 +57,22 @@ export class Account extends KrossClientBase {
       AccountWithdrawCancelResponse
     >({ url: '/withdraw/verify', method: 'post' });
   }
+
+  useAccountHooks() {
+    return {
+      check: () => {
+        return useQuery('check', () => this.check)
+      },
+      withdrawInit: () => {
+        return useQuery('withdrawInit', () => this.withdrawInit)
+      },
+      withdrawCancel: () => {
+        return useQuery('withdrawCancel', () => this.withdrawCancel)
+      },
+      withdrawVerify: () => {
+        return useQuery('withdrawVerify', () => this.withdrawVerify)
+      }
+
+    };
+  };
 }

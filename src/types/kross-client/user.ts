@@ -72,3 +72,36 @@ export type UserResponseData = {
 }
 
 export type UserResponse = FunctionResponse<UserResponseData>
+
+export type UserAccountLogsData = {
+  id:	number;
+  user_id:	number;
+  save_date:	string;
+  bank_code:	string;
+  account_no:	string;
+  v_bank_code:	string;
+  v_account_no:	string;
+  amount:	number;
+  pending_withdrawal:	number;
+  pending_investment:	number;
+  pending_etc:	number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type UserAccountLogsResponse = FunctionResponse<UserAccountLogsData>
+
+export type UserNoteLogsData = {
+  id:	number;
+  user_id:	number
+  save_date:	string
+  note_count:	number
+  principal:	number
+  repaid_principal:	number
+  remain_principal:	number
+  data: {};
+  createdAt:	Date;
+  updatedAt:	Date;
+}
+
+export type UserNoteLogsResponse = FunctionResponse<UserNoteLogsData>
