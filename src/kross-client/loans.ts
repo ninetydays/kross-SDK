@@ -37,18 +37,29 @@ export class Loans extends KrossClientBase {
   useLoanHooks() {
     return {
       loanConfigs: () => {
-        return useQuery('loanConfigs', () => this.loanConfigs)
+        return useQuery({
+          queryKey: 'loanConfigs',
+          queryFn: async () => this.loanConfigs.bind(this)
+        })
       },
       loanRepayments: () => {
-        return useQuery('loanRepayments', () => this.loanRepayments)
+        return useQuery({
+          queryKey: 'loanRepayments',
+          queryFn: async () => this.loanRepayments.bind(this)
+        })
       },
       loanPaymentSchedule: () => {
-        return useQuery('loanPaymentSchedule', () => this.loanPaymentSchedule)
+        return useQuery({
+          queryKey: 'loanPaymentSchedule',
+          queryFn: async () => this.loanPaymentSchedule.bind(this)
+        })
       },
       loanData: () => {
-        return useQuery('loansData', () => this.loanData)
+        return useQuery({
+          queryKey: 'loanData',
+          queryFn: async () => this.loanData.bind(this)
+        })
       }
-
     };
   };
 }

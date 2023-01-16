@@ -61,16 +61,28 @@ export class Account extends KrossClientBase {
   useAccountHooks() {
     return {
       check: () => {
-        return useQuery('check', () => this.check)
+        return useQuery({
+          queryKey: 'check',
+          queryFn: async() => this.check.bind(this)
+        });
       },
       withdrawInit: () => {
-        return useQuery('withdrawInit', () => this.withdrawInit)
+        return useQuery({
+          queryKey: 'withdrawInit',
+          queryFn: async() => this.withdrawInit.bind(this)
+        });
       },
       withdrawCancel: () => {
-        return useQuery('withdrawCancel', () => this.withdrawCancel)
+        return useQuery({
+          queryKey: 'withdrawCancel',
+          queryFn: async() => this.withdrawCancel.bind(this)
+        });
       },
       withdrawVerify: () => {
-        return useQuery('withdrawVerify', () => this.withdrawVerify)
+        return useQuery({
+          queryKey: 'withdrawVerify',
+          queryFn: async() => this.withdrawVerify.bind(this)
+        });
       }
 
     };

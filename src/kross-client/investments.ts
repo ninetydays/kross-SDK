@@ -55,13 +55,22 @@ export class Investments extends KrossClientBase {
         return mutation;
       },
       investmentList: () => {
-        return useQuery('investmentList', () => this.investmentList)
+        return useQuery({
+          queryKey: 'investmentList',
+          queryFn: async () => this.investmentList.bind(this)
+        })
       },
       cmsTradebooks: () => {
-        return useQuery('cmsTradebooks', () => this.cmsTradebooks)
+        return useQuery({
+          queryKey: 'cmsTradebooks',
+          queryFn: async () => this.cmsTradebooks.bind(this)
+        })
       },
       notes: () => {
-        return useQuery('notes', () => this.notes)
+        return useQuery({
+          queryKey: 'notes',
+          queryFn: async () => this.notes.bind(this)
+        })
       },
       investmentRegister: () => {
         const mutation = useMutation((investmentRegisterDto: InvestmentRegisterDto) =>

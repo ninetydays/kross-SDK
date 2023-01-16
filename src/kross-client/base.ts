@@ -37,6 +37,12 @@ export class KrossClientBase {
           authorization: `Bearer ${this.authToken}`,
         };
       }
+      if (config.url === '/auth/refresh'){
+        config.headers = {
+          ...config.headers,
+          authorization: `Bearer ${this.refreshToken}`,
+        };
+      }
       return config;
     });
 
@@ -95,7 +101,10 @@ export class KrossClientBase {
         return mutation;
       },
       updateAuthToken: () => {
-        return useQuery('updateAuthToken', () => this.updateAuthToken());
+        return useQuery({
+          queryKey: 'updateAuthToken',
+          queryFn: async() => this.updateAuthToken.bind(this)
+        });
       },
     };
   }
