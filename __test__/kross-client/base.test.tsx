@@ -20,7 +20,7 @@ describe('KrossClientBase', () => {
     const wrapper = ({ children }) => (
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     );
-
+    // mutate
     beforeAll(() => {
       client = new KrossClient({
         baseURL,
@@ -42,6 +42,18 @@ describe('KrossClientBase', () => {
           keyid: 'mad@kross.kr',
           password: 'Kross123!',
         });
+      });
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+      expect(result.current.data).toBeDefined();
+    }, 30000);
+
+    it('updateToken', async () => {
+      const { updateAuthToken } = client.useAuthHooks();
+      const { result } = renderHook(() => updateAuthToken(), {
+        wrapper,
+      });
+      await act(async () => {
+        await result.current.refetch()
       });
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
