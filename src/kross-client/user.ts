@@ -1,5 +1,5 @@
 import { KrossClientBase } from './base';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import { FunctionRegistered, KrossClientOptions } from '../types';
 import { 
   kftcBalanceResponse, 
@@ -47,7 +47,7 @@ export class User extends KrossClientBase {
 
     this.checkVirtualAccount = User.registerFunction<VirtualAccountCheckResponse>({
       url: '/users/virtual-account',
-      method: 'post',
+      method: 'get',
     })
 
     this.unRegisterMemeber = User.registerFunction<WelcomeUnregisterResponse>({
@@ -104,16 +104,16 @@ export class User extends KrossClientBase {
         });
       },
       unRegisterMemeber: () => {
-        return useQuery({
-          queryKey: 'unRegisterMemeber',
-          queryFn: async () => this.unRegisterMemeber.bind(this),
-        });
+        const mutation = useMutation(() =>
+          this.unRegisterMemeber.bind(this)()
+        );
+        return mutation;
       },
       releaseDepositControl: () => {
-        return useQuery({
-          queryKey: 'releaseDepositControl',
-          queryFn: async () => this.releaseDepositControl.bind(this),
-        });
+        const mutation = useMutation(() => 
+          this.releaseDepositControl.bind(this)()
+        );
+        return mutation;
       },
       accountData: () => {
         return useQuery({
@@ -121,10 +121,10 @@ export class User extends KrossClientBase {
           queryFn: async () => this.accountData.bind(this),
         });
       },
-      userData: () => {
+      userData: async () => {
         return useQuery({
           queryKey: 'userData',
-          queryFn: async () => this.userData.bind(this),
+          queryFn: () => this.userData.bind(this),
         });
       },
     };

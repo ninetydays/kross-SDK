@@ -143,10 +143,10 @@ export class KrossClientBase {
 
   static registerFunction<I = unknown, O = unknown>(
     options: FunctionOptions
-  ): (input: I) => Promise<AxiosResponse<O>> {
+  ): (input?: I) => Promise<AxiosResponse<O>> {
     return function (
       this: KrossClientBase,
-      input: I
+      input?: I
     ): Promise<AxiosResponse<O>> {
       let url = '';
 
