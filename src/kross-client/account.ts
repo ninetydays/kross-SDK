@@ -29,7 +29,7 @@ export class Account extends KrossClientBase {
   }
 
   check({ bankId, accountNumber, name }: AccountCheckDto) {
-    return this.instance.post<AccountCheckDto, AccountCheckResponse>(
+    return this.instance.post<AccountCheckResponse>(
       '/accounts/check',
       {
         bankId,
@@ -39,19 +39,13 @@ export class Account extends KrossClientBase {
     );
   }
   withdrawVerify({ idempotency_key, verify_code }: AccountWithdrawVerifyDto) {
-    return this.instance.post<
-      AccountWithdrawVerifyDto,
-      AccountWithdrawVerifyResponse
-    >('/accounts/withdraw/verify', {
+    return this.instance.post<AccountWithdrawVerifyResponse>('/accounts/withdraw/verify', {
       idempotency_key,
       verify_code,
     });
   }
   withdrawInit({ member_no, amount }: AccountWithdrawInitDto) {
-    return this.instance.post<
-      AccountWithdrawInitDto,
-      AccountWithdrawInitResponse
-    >('/accounts/withdraw/init', {
+    return this.instance.post<AccountWithdrawInitResponse>('/accounts/withdraw/init', {
       member_no,
       amount,
     });

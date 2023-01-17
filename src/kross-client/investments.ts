@@ -46,10 +46,7 @@ export class Investments extends KrossClientBase {
   }
 
   investmentRegister({ amount, loan_id, user_id }: InvestmentRegisterDto) {
-    return this.instance.post<
-      InvestmentRegisterDto,
-      InvestmentRegisterResponse
-    >('/investments', {
+    return this.instance.post<InvestmentRegisterResponse>('/investments', {
       amount,
       loan_id,
       user_id,
