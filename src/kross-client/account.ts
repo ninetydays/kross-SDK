@@ -1,5 +1,5 @@
 import { KrossClientBase } from './base';
-import { useQuery } from 'react-query'
+import { useMutation } from 'react-query';
 import {
   FunctionRegistered,
   KrossClientOptions,
@@ -14,15 +14,6 @@ import {
 } from '../types';
 
 export class Account extends KrossClientBase {
-  check: FunctionRegistered<AccountCheckDto, AccountCheckResponse>;
-  withdrawInit: FunctionRegistered<
-    AccountWithdrawInitDto,
-    AccountWithdrawInitResponse
-  >;
-  withdrawVerify: FunctionRegistered<
-    AccountWithdrawVerifyDto,
-    AccountWithdrawVerifyResponse
-  >;
   withdrawCancel: FunctionRegistered<
     AccountWithdrawCancelDto,
     AccountWithdrawCancelResponse
@@ -31,60 +22,67 @@ export class Account extends KrossClientBase {
   constructor(options: KrossClientOptions) {
     super(options);
 
-    this.check = Account.registerFunction<
-      AccountCheckDto,
-      AccountCheckResponse
-    >({
-      url: '/accounts/check',
-      method: 'post',
-    });
-
-    this.withdrawInit = Account.registerFunction<
-      AccountWithdrawInitDto,
-      AccountWithdrawInitResponse
-    >({
-      url: '/withdraw/init',
-      method: 'post',
-    });
-
-    this.withdrawVerify = Account.registerFunction<
-      AccountWithdrawVerifyDto,
-      AccountWithdrawVerifyResponse
-    >({ url: '/withdraw/verify', method: 'post' });
-
     this.withdrawCancel = Account.registerFunction<
       AccountWithdrawCancelDto,
       AccountWithdrawCancelResponse
-    >({ url: '/withdraw/verify', method: 'post' });
+    >({ url: '/accounts/withdraw/verify', urlParam: 'idempotency_key', method: 'post' });
+  }
+
+  check({ bankId, accountNumber, name }: AccountCheckDto) {
+    return this.instance.post<AccountCheckDto, AccountCheckResponse>(
+      '/accounts/check',
+      {
+        bankId,
+        accountNumber,
+        name,
+      }
+    );
+  }
+  withdrawVerify({ idempotency_key, verify_code }: AccountWithdrawVerifyDto) {
+    return this.instance.post<
+      AccountWithdrawVerifyDto,
+      AccountWithdrawVerifyResponse
+    >('/accounts/withdraw/verify', {
+      idempotency_key,
+      verify_code,
+    });
+  }
+  withdrawInit({ member_no, amount }: AccountWithdrawInitDto) {
+    return this.instance.post<
+      AccountWithdrawInitDto,
+      AccountWithdrawInitResponse
+    >('/accounts/withdraw/init', {
+      member_no,
+      amount,
+    });
   }
 
   useAccountHooks() {
     return {
       check: () => {
-        return useQuery({
-          queryKey: 'check',
-          queryFn: async() => this.check.bind(this)
-        });
+        const mutation = useMutation((accountCheckDto: AccountCheckDto) =>
+        this.check.bind(this)(accountCheckDto)
+      );
+      return mutation;
       },
       withdrawInit: () => {
-        return useQuery({
-          queryKey: 'withdrawInit',
-          queryFn: async() => this.withdrawInit.bind(this)
-        });
+        const mutation = useMutation((accountWithdrawInitDto: AccountWithdrawInitDto) =>
+        this.withdrawInit.bind(this)(accountWithdrawInitDto)
+      );
+      return mutation;
       },
       withdrawCancel: () => {
-        return useQuery({
-          queryKey: 'withdrawCancel',
-          queryFn: async() => this.withdrawCancel.bind(this)
-        });
+        const mutation = useMutation((accountWithdrawCancelDto: AccountWithdrawCancelDto) =>
+        this.withdrawCancel.bind(this)(accountWithdrawCancelDto)
+      );
+      return mutation;
       },
       withdrawVerify: () => {
-        return useQuery({
-          queryKey: 'withdrawVerify',
-          queryFn: async() => this.withdrawVerify.bind(this)
-        });
-      }
-
+        const mutation = useMutation((accountWithdrawVerifyDto: AccountWithdrawVerifyDto) =>
+        this.withdrawVerify.bind(this)(accountWithdrawVerifyDto)
+      );
+      return mutation;
+      },
     };
-  };
+  }
 }

@@ -9,7 +9,7 @@ export class KrossClient extends KrossClientBase {
   account: Account;
   user: User;
   investments: Investments;
-  loans:  Loans;
+  loans: Loans;
   constructor(options: KrossClientOptions) {
     super(options);
     this.account = new Account(options);

@@ -30,16 +30,16 @@ describe('KrossClientBase', () => {
       });
     });
 
-    it.skip('investmenetCancel', async () => {
-      const { investmentCancel } = client.investments.useInvestmentHooks();
-
-      const { result } = renderHook(() => investmentCancel(), {
+    it.skip('check', async () => {
+      const { check } = client.account.useAccountHooks();
+      const { result } = renderHook(() => check(), {
         wrapper,
       });
-
       await act(async () => {
         await result.current.mutateAsync({
-          investment_id: 12323,
+          bankId: "",
+          accountNumber: "",
+          name: "",
         });
       });
 
@@ -48,18 +48,16 @@ describe('KrossClientBase', () => {
       expect(result.current.data).toBeDefined();
     }, 10000);
 
-    it.skip('investmentRegister', async () => {
-      const { investmentRegister } = client.investments.useInvestmentHooks();
-
-      const { result } = renderHook(() => investmentRegister(), {
+    it.skip('withdrawInit', async () => {
+      const { withdrawInit } = client.account.useAccountHooks();
+      const { result } = renderHook(() => withdrawInit(), {
         wrapper,
       });
 
       await act(async () => {
         await result.current.mutateAsync({
+          member_no: 0,
           amount: 0,
-          loan_id: 0,
-          user_id: 0,
         });
       });
       await waitFor(() => expect(result.current?.isSuccess).toBe(true));
@@ -67,46 +65,31 @@ describe('KrossClientBase', () => {
       expect(result.current.data).toBeDefined();
     }, 10000);
 
-    it('investmentList', async () => {
-      const { investmentList } = client.investments.useInvestmentHooks();
-      let queryResponse;
+    it.skip('withdrawCancel', async () => {
+      const { withdrawCancel } = client.account.useAccountHooks()
+      const { result } = renderHook(() => withdrawCancel(), {
+        wrapper,
+      })
       await act(async () => {
-        queryResponse = renderHook(() => investmentList(), {
-          wrapper,
-        });
+        await result.current.mutateAsync({
+          idempotency_key: "",
+        })
       });
-
-      const { result } = await queryResponse;
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
 
-    it('cmsTradebook', async () => {
-      const { cmsTradebooks } = client.investments.useInvestmentHooks();
-
-      let queryResponse;
+    it.skip('withdrawVerify', async () => {
+      const { withdrawVerify } = client.account.useAccountHooks();
+      const { result } = renderHook(() => withdrawVerify(), {
+        wrapper,
+      })
       await act(async () => {
-        queryResponse = renderHook(() => cmsTradebooks(), {
-          wrapper,
-        });
-      });
-
-      const { result } = await queryResponse;
-      await waitFor(() => expect(result.current.isSuccess).toBe(true));
-      expect(result.current.data).toBeDefined();
-    }, 30000);
-
-    it('notes', async () => {
-      const { notes } = client.investments.useInvestmentHooks();
-
-      let queryResponse;
-      await act(async () => {
-        queryResponse = renderHook(() => notes(), {
-          wrapper,
-        });
-      });
-
-      const { result } = await queryResponse;
+        await result.current.mutateAsync({
+          idempotency_key: '',
+          verify_code: '',
+        })
+      })
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);

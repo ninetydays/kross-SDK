@@ -4,7 +4,7 @@ import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 
 describe('KrossClientBase', () => {
-  describe('Token authorization', () => {
+  describe('Token authorization/Login', () => {
     let client: KrossClient;
     const baseURL = 'https://olive-dev.kross.kr';
     const accessId = 'XLD7UY9GETOK7TPY';
@@ -39,13 +39,11 @@ describe('KrossClientBase', () => {
 
       await act(async () => {
         await result.current.mutateAsync({
-          keyid: 'abc124@kross.kr',
-          password: '12345',
+          keyid: 'mad@kross.kr',
+          password: 'Kross123!',
         });
       });
-
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
       expect(result.current.data).toBeDefined();
     }, 30000);
   });

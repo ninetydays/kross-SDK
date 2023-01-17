@@ -37,7 +37,7 @@ export class KrossClientBase {
           authorization: `Bearer ${this.authToken}`,
         };
       }
-      if (config.url === '/auth/refresh'){
+      if (config.url === '/auth/refresh') {
         config.headers = {
           ...config.headers,
           authorization: `Bearer ${this.refreshToken}`,
@@ -56,7 +56,6 @@ export class KrossClientBase {
         if (response.status === 404) {
           console.log('preflight request needs to be handled');
         }
-        console.log('response:', response);
         return response;
       },
       async (error: AxiosError) => {
@@ -68,7 +67,6 @@ export class KrossClientBase {
               return this.instance.request(error.config);
             }
           }
-
           return Promise.resolve(error.response);
         } else {
           return Promise.reject(error);
@@ -103,7 +101,7 @@ export class KrossClientBase {
       updateAuthToken: () => {
         return useQuery({
           queryKey: 'updateAuthToken',
-          queryFn: async() => this.updateAuthToken.bind(this)
+          queryFn: async () => this.updateAuthToken.bind(this),
         });
       },
     };
@@ -168,7 +166,6 @@ export class KrossClientBase {
           throw new Error(`missing ${options.urlParam}`);
         }
         url = options.url.replace(`:${options.urlParam}`, urlParam);
-
       } else {
         url = options.url;
       }

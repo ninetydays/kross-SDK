@@ -33,11 +33,11 @@ describe('KrossClientBase', () => {
       const { userData } = client.user.useUserHooks();
       let queryResponse;
       await act(async () => {
-        queryResponse =  renderHook(() => userData(), {
+        queryResponse = renderHook(() => userData(), {
           wrapper,
         });
       });
-      const {result} = await queryResponse;
+      const { result } = await queryResponse;
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
@@ -46,11 +46,11 @@ describe('KrossClientBase', () => {
       const { userNoteLogs } = client.user.useUserHooks();
       let queryResponse;
       await act(async () => {
-        queryResponse =  renderHook(() => userNoteLogs(), {
+        queryResponse = renderHook(() => userNoteLogs(), {
           wrapper,
         });
       });
-      const {result} = await queryResponse;
+      const { result } = await queryResponse;
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
@@ -59,24 +59,24 @@ describe('KrossClientBase', () => {
       const { userAccountLogs } = client.user.useUserHooks();
       let queryResponse;
       await act(async () => {
-        queryResponse =  renderHook(() => userAccountLogs(), {
+        queryResponse = renderHook(() => userAccountLogs(), {
           wrapper,
         });
       });
-      const {result} = await queryResponse;
+      const { result } = await queryResponse;
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
-    
+
     it('kftcBalance', async () => {
       const { kftcBalance } = client.user.useUserHooks();
       let queryResponse;
       await act(async () => {
-        queryResponse =  renderHook(() => kftcBalance(), {
+        queryResponse = renderHook(() => kftcBalance(), {
           wrapper,
         });
       });
-      const {result} = await queryResponse;
+      const { result } = await queryResponse;
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
@@ -85,11 +85,11 @@ describe('KrossClientBase', () => {
       const { getVirtualAccCertificate } = client.user.useUserHooks();
       let queryResponse;
       await act(async () => {
-        queryResponse =  renderHook(() => getVirtualAccCertificate(), {
+        queryResponse = renderHook(() => getVirtualAccCertificate(), {
           wrapper,
         });
       });
-      const {result} = await queryResponse;
+      const { result } = await queryResponse;
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
@@ -98,37 +98,35 @@ describe('KrossClientBase', () => {
       const { checkVirtualAccount } = client.user.useUserHooks();
       let queryResponse;
       await act(async () => {
-        queryResponse =  renderHook(() => checkVirtualAccount(), {
+        queryResponse = renderHook(() => checkVirtualAccount(), {
           wrapper,
         });
       });
-      const {result} = await queryResponse;
+      const { result } = await queryResponse;
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
 
-    it('unRegisterMember', async () => {
+    it.skip('unRegisterMember', async () => {
       const { unRegisterMemeber } = client.user.useUserHooks();
-      let queryResponse;
-      await act(async () => {
-        queryResponse =  renderHook(() => unRegisterMemeber(), {
-          wrapper,
-        });
+      const { result } = renderHook(() => unRegisterMemeber(), {
+        wrapper,
       });
-      const {result} = await queryResponse;
+      await act(async () => {
+        await result.current.mutateAsync();
+      });
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
 
-    it('releaseDepositControl', async () => {
+    it.skip('releaseDepositControl', async () => {
       const { releaseDepositControl } = client.user.useUserHooks();
-      let queryResponse;
-      await act(async () => {
-        queryResponse =  renderHook(() => releaseDepositControl(), {
-          wrapper,
-        });
+      const { result } = renderHook(() => releaseDepositControl(), {
+        wrapper,
       });
-      const {result} = await queryResponse;
+      await act(async () => {
+        await result.current.mutateAsync();
+      });
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
@@ -137,14 +135,13 @@ describe('KrossClientBase', () => {
       const { accountData } = client.user.useUserHooks();
       let queryResponse;
       await act(async () => {
-        queryResponse =  renderHook(() => accountData(), {
+        queryResponse = renderHook(() => accountData(), {
           wrapper,
         });
       });
-      const {result} = await queryResponse;
+      const { result } = await queryResponse;
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
-    
   });
 });

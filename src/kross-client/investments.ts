@@ -8,38 +8,48 @@ import {
   InvestmentRegisterDto,
   NotesResponse,
   CmsTradebookResponse,
- } from '../types/kross-client/investments';
+  InvestmentRegisterResponse,
+} from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
-  investmentCancel: FunctionRegistered<InvestmentCancelDto, InvestmentCancelResponse>
-  investmentList: FunctionRegistered<InvestmentListResponse>
-  notes: FunctionRegistered<NotesResponse>
-  cmsTradebooks: FunctionRegistered<CmsTradebookResponse>
+  investmentCancel: FunctionRegistered<
+    InvestmentCancelDto,
+    InvestmentCancelResponse
+  >;
+  investmentList: FunctionRegistered<InvestmentListResponse>;
+  notes: FunctionRegistered<NotesResponse>;
+  cmsTradebooks: FunctionRegistered<CmsTradebookResponse>;
 
   constructor(options: KrossClientOptions) {
     super(options);
     this.cmsTradebooks = Investments.registerFunction<CmsTradebookResponse>({
       url: 'cms-tradebooks',
       method: 'get',
-    })
+    });
 
     this.notes = Investments.registerFunction<NotesResponse>({
       url: '/notes',
       method: 'get',
-    })
+    });
 
-    this.investmentCancel = Investments.registerFunction<InvestmentCancelDto, InvestmentCancelResponse>({
+    this.investmentCancel = Investments.registerFunction<
+      InvestmentCancelDto,
+      InvestmentCancelResponse
+    >({
       url: `/investments/:investment_id/cancel`,
       urlParam: 'investment_id',
       method: 'patch',
-    })
+    });
     this.investmentList = Investments.registerFunction<InvestmentListResponse>({
       url: '/investments',
-      method: 'get'
-    })
+      method: 'get',
+    });
   }
 
   investmentRegister({ amount, loan_id, user_id }: InvestmentRegisterDto) {
-    return this.instance.post<InvestmentRegisterDto>('/investments', {
+    return this.instance.post<
+      InvestmentRegisterDto,
+      InvestmentRegisterResponse
+    >('/investments', {
       amount,
       loan_id,
       user_id,
@@ -49,35 +59,37 @@ export class Investments extends KrossClientBase {
   useInvestmentHooks() {
     return {
       investmentCancel: () => {
-        const mutation = useMutation((investmentCancelDto: InvestmentCancelDto) =>
-          this.investmentCancel.bind(this)(investmentCancelDto)
+        const mutation = useMutation(
+          (investmentCancelDto: InvestmentCancelDto) =>
+            this.investmentCancel.bind(this)(investmentCancelDto)
         );
         return mutation;
       },
       investmentList: () => {
         return useQuery({
           queryKey: 'investmentList',
-          queryFn: async () => this.investmentList.bind(this)
-        })
+          queryFn: async () => this.investmentList.bind(this),
+        });
       },
       cmsTradebooks: () => {
         return useQuery({
           queryKey: 'cmsTradebooks',
-          queryFn: async () => this.cmsTradebooks.bind(this)
-        })
+          queryFn: async () => this.cmsTradebooks.bind(this),
+        });
       },
       notes: () => {
         return useQuery({
           queryKey: 'notes',
-          queryFn: async () => this.notes.bind(this)
-        })
+          queryFn: async () => this.notes.bind(this),
+        });
       },
       investmentRegister: () => {
-        const mutation = useMutation((investmentRegisterDto: InvestmentRegisterDto) =>
-          this.investmentRegister.bind(this)(investmentRegisterDto)
+        const mutation = useMutation(
+          (investmentRegisterDto: InvestmentRegisterDto) =>
+            this.investmentRegister.bind(this)(investmentRegisterDto)
         );
         return mutation;
       },
     };
-  };
+  }
 }
