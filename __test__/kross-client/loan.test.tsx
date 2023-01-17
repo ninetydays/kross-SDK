@@ -1,10 +1,10 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
-import {Investments} from '../../src/kross-client/investments'
+import { Loans } from '../../src/kross-client/loans'
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
-describe('Investment', () => {
-  describe('Investment related functions', () => {
-    let client: Investments;
+describe('Loans', () => {
+  describe('Loans related unit tests', () => {
+    let client: Loans;
     const baseURL = 'https://olive-dev.kross.kr';
     const accessId = 'XLD7UY9GETOK7TPY';
     const secretKey = 'yLbVRHGgwT5c22ndOVT2';
@@ -21,16 +21,16 @@ describe('Investment', () => {
     );
 
     beforeAll(() => {
-      client = new Investments({
+      client = new Loans({
         baseURL,
         accessId,
         secretKey,
         adapter: require('axios/lib/adapters/http'),
       });
     });
-    it('investmentList', async () => {
-      const { investmentList } = client.useInvestmentHooks();
-      const { result } = renderHook(() => investmentList(), {
+    it('loanConfigs', async () => {
+      const { loanConfigs } = client.useLoanHooks();
+      const { result } = renderHook(() => loanConfigs(), {
         wrapper,
       })
       await act(async () => {
@@ -41,39 +41,33 @@ describe('Investment', () => {
     }, 30000);
 
 
-    it.skip('investmenetCancel', async () => {
-      const { investmentCancel } = client.useInvestmentHooks();
-      const { result } = renderHook(() => investmentCancel(), {
+    it('loanRepayments', async () => {
+      const { loanRepayments } = client.useLoanHooks();
+      const { result } = renderHook(() => loanRepayments(), {
         wrapper,
       });
       await act(async () => {
-        await result.current.mutateAsync({
-          investment_id: 0,
-        });
+        await result.current.refetch()
       });
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 10000);
 
-    it('investmentRegister', async () => {
-      const { investmentRegister } = client.useInvestmentHooks();
-      const { result } = renderHook(() => investmentRegister(), {
+    it.skip('loanPaymentSchedule', async () => {
+      const { loanPaymentSchedule } = client.useLoanHooks();
+      const { result } = renderHook(() => loanPaymentSchedule(), {
         wrapper,
       });
       await act(async () => {
-        await result.current.mutateAsync({
-          amount: 0,
-          loan_id: 0,
-          user_id: 0,
-        });
+        await result.current.refetch()
       });
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 10000);
 
-    it('cmsTradebook', async () => {
-      const { cmsTradebooks } = client.useInvestmentHooks();
-      const { result } = renderHook(()=> cmsTradebooks(), {
+    it('loanData', async () => {
+      const { loanData } = client.useLoanHooks();
+      const { result } = renderHook(()=> loanData(), {
         wrapper,
       })
       await act(async () => {
@@ -82,18 +76,5 @@ describe('Investment', () => {
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
-
-    it('notes', async () => {
-      const { notes } = client.useInvestmentHooks();
-      const { result } = renderHook(() => notes(), {
-        wrapper,
-      })
-      await act(async () => {
-        await result.current.refetch()
-      });
-      await waitFor(() => expect(result.current.isSuccess).toBe(true));
-      expect(result.current.data).toBeDefined();
-    }, 30000);
-
   });
 });

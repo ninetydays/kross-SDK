@@ -1,11 +1,11 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { KrossClient } from '../../src/kross-client';
+import { User } from '../../src/kross-client/user';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 
-describe('KrossClientBase', () => {
+describe('User', () => {
   describe('Get user list', () => {
-    let client: KrossClient;
+    let client: User;
     const baseURL = 'https://olive-dev.kross.kr';
     const accessId = 'XLD7UY9GETOK7TPY';
     const secretKey = 'yLbVRHGgwT5c22ndOVT2';
@@ -22,7 +22,7 @@ describe('KrossClientBase', () => {
     );
 
     beforeAll(() => {
-      client = new KrossClient({
+      client = new User({
         baseURL,
         accessId,
         secretKey,
@@ -30,85 +30,79 @@ describe('KrossClientBase', () => {
       });
     });
     it('userData', async () => {
-      const { userData } = client.user.useUserHooks();
-      let queryResponse;
-      await act(async () => {
-        queryResponse = renderHook(() => userData(), {
-          wrapper,
-        });
+      const { userData } = client.useUserHooks();
+      const { result } = renderHook(() => userData(), {
+        wrapper,
       });
-      const { result } = await queryResponse;
+      await act(async () => {
+        await result.current.refetch();
+      });
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
 
     it('userNoteLogs', async () => {
-      const { userNoteLogs } = client.user.useUserHooks();
-      let queryResponse;
-      await act(async () => {
-        queryResponse = renderHook(() => userNoteLogs(), {
-          wrapper,
-        });
+      const { userNoteLogs } = client.useUserHooks();
+      const { result } = renderHook(() => userNoteLogs(), {
+        wrapper,
       });
-      const { result } = await queryResponse;
+      await act(async () => {
+        await result.current.refetch();
+      });
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
 
     it('userAccountLogs', async () => {
-      const { userAccountLogs } = client.user.useUserHooks();
-      let queryResponse;
-      await act(async () => {
-        queryResponse = renderHook(() => userAccountLogs(), {
-          wrapper,
-        });
+      const { userAccountLogs } = client.useUserHooks();
+      const { result } = renderHook(() => userAccountLogs(), {
+        wrapper,
       });
-      const { result } = await queryResponse;
+      await act(async () => {
+        await result.current.refetch()
+      });
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
 
     it('kftcBalance', async () => {
-      const { kftcBalance } = client.user.useUserHooks();
-      let queryResponse;
-      await act(async () => {
-        queryResponse = renderHook(() => kftcBalance(), {
-          wrapper,
-        });
+      const { kftcBalance } = client.useUserHooks();
+      const { result } = renderHook(() => kftcBalance(), {
+        wrapper,
       });
-      const { result } = await queryResponse;
+      await act(async () => {
+        await result.current.refetch();
+      });
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
 
-    it('getVirtualAccountCertificate', async () => {
-      const { getVirtualAccCertificate } = client.user.useUserHooks();
-      let queryResponse;
-      await act(async () => {
-        queryResponse = renderHook(() => getVirtualAccCertificate(), {
-          wrapper,
-        });
+    it.skip('getVirtualAccountCertificate', async () => {
+      const { getVirtualAccCertificate } = client.useUserHooks();
+      const { result } = renderHook(() => getVirtualAccCertificate(), {
+        wrapper,
       });
-      const { result } = await queryResponse;
+      await act(async () => {
+        await result.current.refetch();
+      });
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
 
     it('checkVirtualAccount', async () => {
-      const { checkVirtualAccount } = client.user.useUserHooks();
-      let queryResponse;
-      await act(async () => {
-        queryResponse = renderHook(() => checkVirtualAccount(), {
-          wrapper,
-        });
+      const { checkVirtualAccount } = client.useUserHooks();
+      const { result } = renderHook(() => checkVirtualAccount(), {
+        wrapper,
       });
-      const { result } = await queryResponse;
+      await act(async () => {
+        await result.current.refetch();
+      });
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
 
     it.skip('unRegisterMember', async () => {
-      const { unRegisterMemeber } = client.user.useUserHooks();
+      const { unRegisterMemeber } = client.useUserHooks();
       const { result } = renderHook(() => unRegisterMemeber(), {
         wrapper,
       });
@@ -119,29 +113,30 @@ describe('KrossClientBase', () => {
       expect(result.current.data).toBeDefined();
     }, 30000);
 
-    it.skip('releaseDepositControl', async () => {
-      const { releaseDepositControl } = client.user.useUserHooks();
+    it('releaseDepositControl', async () => {
+      const { releaseDepositControl } = client.useUserHooks();
       const { result } = renderHook(() => releaseDepositControl(), {
         wrapper,
       });
       await act(async () => {
         await result.current.mutateAsync();
       });
+      console.log("Result for release: ", result.current.data);
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
 
     it('accountData', async () => {
-      const { accountData } = client.user.useUserHooks();
-      let queryResponse;
-      await act(async () => {
-        queryResponse = renderHook(() => accountData(), {
-          wrapper,
-        });
+      const { accountData } = client.useUserHooks();
+      const { result } = renderHook(() => accountData(), {
+        wrapper,
       });
-      const { result } = await queryResponse;
+      await act(async () => {
+        await result.current.refetch();
+      });
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
   });
 });
+

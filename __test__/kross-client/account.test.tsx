@@ -1,11 +1,11 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { KrossClient } from '../../src/kross-client';
+import { Account } from '../../src/kross-client/account';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 
-describe('KrossClientBase', () => {
-  describe('Token authorization', () => {
-    let client: KrossClient;
+describe('Account', () => {
+  describe('Account', () => {
+    let client: Account;
     const baseURL = 'https://olive-dev.kross.kr';
     const accessId = 'XLD7UY9GETOK7TPY';
     const secretKey = 'yLbVRHGgwT5c22ndOVT2';
@@ -22,7 +22,7 @@ describe('KrossClientBase', () => {
     );
 
     beforeAll(() => {
-      client = new KrossClient({
+      client = new Account({
         baseURL,
         accessId,
         secretKey,
@@ -30,8 +30,8 @@ describe('KrossClientBase', () => {
       });
     });
 
-    it.skip('check', async () => {
-      const { check } = client.account.useAccountHooks();
+    it('check', async () => {
+      const { check } = client.useAccountHooks();
       const { result } = renderHook(() => check(), {
         wrapper,
       });
@@ -48,8 +48,8 @@ describe('KrossClientBase', () => {
       expect(result.current.data).toBeDefined();
     }, 10000);
 
-    it.skip('withdrawInit', async () => {
-      const { withdrawInit } = client.account.useAccountHooks();
+    it('withdrawInit', async () => {
+      const { withdrawInit } = client.useAccountHooks();
       const { result } = renderHook(() => withdrawInit(), {
         wrapper,
       });
@@ -65,29 +65,29 @@ describe('KrossClientBase', () => {
       expect(result.current.data).toBeDefined();
     }, 10000);
 
-    it.skip('withdrawCancel', async () => {
-      const { withdrawCancel } = client.account.useAccountHooks()
+    it('withdrawCancel', async () => {
+      const { withdrawCancel } = client.useAccountHooks()
       const { result } = renderHook(() => withdrawCancel(), {
         wrapper,
       })
       await act(async () => {
         await result.current.mutateAsync({
-          idempotency_key: "",
+          idempotency_key: '0',
         })
       });
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toBeDefined();
     }, 30000);
 
-    it.skip('withdrawVerify', async () => {
-      const { withdrawVerify } = client.account.useAccountHooks();
+    it('withdrawVerify', async () => {
+      const { withdrawVerify } = client.useAccountHooks();
       const { result } = renderHook(() => withdrawVerify(), {
         wrapper,
       })
       await act(async () => {
         await result.current.mutateAsync({
-          idempotency_key: '',
-          verify_code: '',
+          idempotency_key: '0',
+          verify_code: '0',
         })
       })
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
