@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, QueryClient } from 'react-query';
 import axios, {
   AxiosError,
   AxiosInstance,
@@ -13,20 +13,25 @@ import {
   GetAuthTokenResponse,
 } from '../types';
 import { hmacTokenFunction } from '../utils/encryptor';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+    },
+  },
+});
 export class KrossClientBase {
   instance: AxiosInstance;
   refreshToken?: string;
   authToken?: string;
+  tempToken?: string;
   getHmacToken: (method: string) => { hmacToken: string; xDate: string };
-
   constructor(options: KrossClientOptions) {
     this.getHmacToken = hmacTokenFunction(options.accessId, options.secretKey);
-
     this.instance = axios.create(options);
+    this.authToken = queryClient.getQueryData("authToken");
     this.instance.interceptors.request.use((config) => {
-      if (config.url === '/investments'){
-        console.log("Config method: ", config.method)
-      }
       const { hmacToken, xDate } = this.getHmacToken(config.method as string);
       config.headers = {
         ...config.headers,
@@ -48,14 +53,16 @@ export class KrossClientBase {
         if (response.config.url === '/auth/login') {
           this.authToken = response.data.token;
           this.refreshToken = response.data.refresh;
+          queryClient.setQueryData("authToken", this.authToken)
+          queryClient.setQueryData("refreshToken", this.refreshToken)
         }
-
         if (response.status === 404) {
           console.log('preflight request needs to be handled');
         }
         return response;
       },
       async (error: AxiosError) => {
+        console.log(error.config);
         if (error.response) {
           if (error.config.url !== '/auth/login') {
             // Access Token was expired
@@ -71,7 +78,6 @@ export class KrossClientBase {
       }
     );
   }
-
   login({ keyid, password }: LoginDto) {
     return this.instance.post<LoginResponse>('/auth/login', {
       keyid,
@@ -80,10 +86,12 @@ export class KrossClientBase {
   }
 
   async updateAuthToken() {
+    this.refreshToken = queryClient.getQueryData("refreshToken");
     const res = await this.instance.get<GetAuthTokenResponse>(`/auth/refresh`, {
       headers: { authorization: `Bearer ${this.refreshToken}` },
     });
     this.authToken = res.data.token;
+    queryClient.setQueryData("authToken", this.authToken)
     return res;
   }
 
