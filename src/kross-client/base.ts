@@ -37,12 +37,6 @@ export class KrossClientBase {
           authorization: `Bearer ${this.authToken}`,
         };
       }
-      if (config.url === '/auth/refresh') {
-        config.headers = {
-          ...config.headers,
-          authorization: `Bearer ${this.refreshToken}`,
-        };
-      }
       return config;
     });
 
