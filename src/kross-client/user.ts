@@ -78,53 +78,54 @@ export class User extends KrossClientBase {
       userNoteLogs: () => {
         return useQuery({
           queryKey: 'userNoteLogs',
-          queryFn: async () => this.userNoteLogs.bind(this),
+          queryFn: async () => await this.userNoteLogs(),
         });
       },
       userAccountLogs: () => {
         return useQuery({
           queryKey: 'userAccountLogs',
-          queryFn: async () => this.userAccountLogs.bind(this),
+          queryFn: async () => await this.userAccountLogs(),
         });
       },
       kftcBalance: () => {
         return useQuery({
           queryKey: 'kftcBalance',
-          queryFn: async () => this.kftcBalance.bind(this),
+          queryFn: async () => await this.kftcBalance(),
         });
       },
       getVirtualAccCertificate: () => {
         return useQuery({
           queryKey: 'getVirtualAccCertificate',
-          queryFn: async () => this.getVirtualAccCertificate.bind(this),
+          queryFn: async () => await this.getVirtualAccCertificate(),
         });
       },
       checkVirtualAccount: () => {
         return useQuery({
           queryKey: 'checkVirtualAccount',
-          queryFn: async () => this.checkVirtualAccount.bind(this),
+          queryFn: async () => await this.checkVirtualAccount(),
         });
       },
       unRegisterMemeber: () => {
-        const mutation = useMutation(() => this.unRegisterMemeber.bind(this)());
+        const mutation = useMutation(() =>  this.unRegisterMemeber()
+        );
         return mutation;
       },
       releaseDepositControl: () => {
         const mutation = useMutation(() =>
-          this.releaseDepositControl.bind(this)()
+          this.releaseDepositControl()
         );
         return mutation;
       },
       accountData: () => {
         return useQuery({
           queryKey: 'accountData',
-          queryFn: async () => this.accountData.bind(this),
+          queryFn: async () => await this.accountData(),
         });
       },
       userData: () => {
         return useQuery({
           queryKey: 'userData',
-          queryFn: async () => this.userData.bind(this),
+          queryFn: async () => await this.userData(),
         });
       },
     };

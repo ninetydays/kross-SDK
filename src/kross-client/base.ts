@@ -24,6 +24,9 @@ export class KrossClientBase {
 
     this.instance = axios.create(options);
     this.instance.interceptors.request.use((config) => {
+      if (config.url === '/investments'){
+        console.log("Config method: ", config.method)
+      }
       const { hmacToken, xDate } = this.getHmacToken(config.method as string);
       config.headers = {
         ...config.headers,
@@ -88,14 +91,14 @@ export class KrossClientBase {
     return {
       useLogin: () => {
         const mutation = useMutation((loginDto: LoginDto) =>
-          this.login.bind(this)(loginDto)
+          this.login(loginDto)
         );
         return mutation;
       },
       updateAuthToken: () => {
         return useQuery({
           queryKey: 'updateAuthToken',
-          queryFn: async () => this.updateAuthToken.bind(this),
+          queryFn: async () => await this.updateAuthToken(),
         });
       },
     };

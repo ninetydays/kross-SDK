@@ -22,7 +22,7 @@ export class Investments extends KrossClientBase {
   constructor(options: KrossClientOptions) {
     super(options);
     this.cmsTradebooks = Investments.registerFunction<CmsTradebookResponse>({
-      url: 'cms-tradebooks',
+      url: '/cms-tradebooks',
       method: 'get',
     });
 
@@ -58,32 +58,32 @@ export class Investments extends KrossClientBase {
       investmentCancel: () => {
         const mutation = useMutation(
           (investmentCancelDto: InvestmentCancelDto) =>
-            this.investmentCancel.bind(this)(investmentCancelDto)
+            this.investmentCancel(investmentCancelDto)
         );
         return mutation;
       },
       investmentList: () => {
         return useQuery({
           queryKey: 'investmentList',
-          queryFn: async () => this.investmentList.bind(this),
+          queryFn: async() => await this.investmentList(),
         });
       },
       cmsTradebooks: () => {
         return useQuery({
           queryKey: 'cmsTradebooks',
-          queryFn: async () => this.cmsTradebooks.bind(this),
+          queryFn: async () => await this.cmsTradebooks(),
         });
       },
       notes: () => {
         return useQuery({
           queryKey: 'notes',
-          queryFn: async () => this.notes.bind(this),
+          queryFn: async () => await this.notes(),
         });
       },
       investmentRegister: () => {
         const mutation = useMutation(
           (investmentRegisterDto: InvestmentRegisterDto) =>
-            this.investmentRegister.bind(this)(investmentRegisterDto)
+            this.investmentRegister(investmentRegisterDto)
         );
         return mutation;
       },
