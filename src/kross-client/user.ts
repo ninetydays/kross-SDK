@@ -11,6 +11,7 @@ import {
   UserResponse,
   UserAccountLogsResponse,
   UserNoteLogsResponse,
+  UserQueryDto,
 } from '../types/kross-client/user';
 export class User extends KrossClientBase {
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
@@ -18,19 +19,31 @@ export class User extends KrossClientBase {
   checkVirtualAccount: FunctionRegistered<VirtualAccountCheckResponse>;
   unRegisterMemeber: FunctionRegistered<WelcomeUnregisterResponse>;
   releaseDepositControl: FunctionRegistered<ReleaseDepositResponse>;
-  accountData: FunctionRegistered<AccountResponse>;
-  userData: FunctionRegistered<UserResponse>;
-  userAccountLogs: FunctionRegistered<UserAccountLogsResponse>;
-  userNoteLogs: FunctionRegistered<UserNoteLogsResponse>;
+  accountData: FunctionRegistered<
+    UserQueryDto,
+    AccountResponse
+  >;
+  userData: FunctionRegistered<
+    UserQueryDto,
+    UserResponse
+  >;
+  userAccountLogs: FunctionRegistered<
+    UserQueryDto,
+    UserAccountLogsResponse
+  >;
+  userNoteLogs: FunctionRegistered<
+    UserQueryDto,
+    UserNoteLogsResponse
+  >;
 
   constructor(options: KrossClientOptions) {
     super(options);
-    this.userNoteLogs = User.registerFunction<UserNoteLogsResponse>({
+    this.userNoteLogs = User.registerFunction<UserQueryDto ,UserNoteLogsResponse>({
       url: '/user-note-logs',
       method: 'get',
     });
 
-    this.userAccountLogs = User.registerFunction<UserAccountLogsResponse>({
+    this.userAccountLogs = User.registerFunction<UserQueryDto ,UserAccountLogsResponse>({
       url: '/user-account-logs',
       method: 'get',
     });
@@ -62,12 +75,12 @@ export class User extends KrossClientBase {
       method: 'patch',
     });
 
-    this.accountData = User.registerFunction<AccountResponse>({
+    this.accountData = User.registerFunction<UserQueryDto, AccountResponse>({
       url: '/users/account',
       method: 'get',
     });
 
-    this.userData = User.registerFunction<UserResponse>({
+    this.userData = User.registerFunction<UserQueryDto, UserResponse>({
       url: '/users',
       method: 'get',
     });
@@ -75,16 +88,16 @@ export class User extends KrossClientBase {
 
   useUserHooks() {
     return {
-      userNoteLogs: () => {
+      userNoteLogs: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'userNoteLogs',
-          queryFn: async () => await this.userNoteLogs(),
+          queryFn: async () => await this.userNoteLogs(userQueryDto),
         });
       },
-      userAccountLogs: () => {
+      userAccountLogs: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'userAccountLogs',
-          queryFn: async () => await this.userAccountLogs(),
+          queryFn: async () => await this.userAccountLogs(userQueryDto),
         });
       },
       kftcBalance: () => {
@@ -113,16 +126,16 @@ export class User extends KrossClientBase {
         const mutation = useMutation(() => this.releaseDepositControl());
         return mutation;
       },
-      accountData: () => {
+      accountData: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'accountData',
-          queryFn: async () => await this.accountData(),
+          queryFn: async () => await this.accountData(userQueryDto),
         });
       },
-      userData: () => {
+      userData: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'userData',
-          queryFn: async () => await this.userData(),
+          queryFn: async () => await this.userData(userQueryDto),
         });
       },
     };

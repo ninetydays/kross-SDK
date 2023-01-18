@@ -9,25 +9,35 @@ import {
   NotesResponse,
   CmsTradebookResponse,
   InvestmentRegisterResponse,
+  InvestmentQueryDto
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
-  investmentList: FunctionRegistered<InvestmentListResponse>;
-  notes: FunctionRegistered<NotesResponse>;
-  cmsTradebooks: FunctionRegistered<CmsTradebookResponse>;
+  investmentList: FunctionRegistered<
+    InvestmentQueryDto,
+    InvestmentListResponse
+  >;
+  notes: FunctionRegistered<
+    InvestmentQueryDto,  
+    NotesResponse
+  >;
+  cmsTradebooks: FunctionRegistered<
+    InvestmentQueryDto,
+    CmsTradebookResponse
+  >;
 
   constructor(options: KrossClientOptions) {
     super(options);
-    this.cmsTradebooks = Investments.registerFunction<CmsTradebookResponse>({
+    this.cmsTradebooks = Investments.registerFunction<InvestmentQueryDto ,CmsTradebookResponse>({
       url: '/cms-tradebooks',
       method: 'get',
     });
 
-    this.notes = Investments.registerFunction<NotesResponse>({
+    this.notes = Investments.registerFunction<InvestmentQueryDto ,NotesResponse>({
       url: '/notes',
       method: 'get',
     });
 
-    this.investmentList = Investments.registerFunction<InvestmentListResponse>({
+    this.investmentList = Investments.registerFunction<InvestmentQueryDto ,InvestmentListResponse>({
       url: '/investments',
       method: 'get',
     });
@@ -56,22 +66,22 @@ export class Investments extends KrossClientBase {
         );
         return mutation;
       },
-      investmentList: () => {
+      investmentList: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'investmentList',
-          queryFn: async () => await this.investmentList(),
+          queryFn: async () => await this.investmentList(investmentQueryDto),
         });
       },
-      cmsTradebooks: () => {
+      cmsTradebooks: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'cmsTradebooks',
-          queryFn: async () => await this.cmsTradebooks(),
+          queryFn: async () => await this.cmsTradebooks(investmentQueryDto),
         });
       },
-      notes: () => {
+      notes: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'notes',
-          queryFn: async () => await this.notes(),
+          queryFn: async () => await this.notes(investmentQueryDto),
         });
       },
       investmentRegister: () => {

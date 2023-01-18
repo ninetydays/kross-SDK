@@ -47,7 +47,7 @@ describe('Loan', () => {
 
   it('gets loanConfigs list', async () => {
     const { loanConfigs } = client.useLoanHooks();
-    const { result } = renderHook(() => loanConfigs(), {
+    const { result } = renderHook(() => loanConfigs({}), {
       wrapper,
     });
     await act(async () => {
@@ -59,9 +59,16 @@ describe('Loan', () => {
 
   it('get loan repayments list when borrowers pay back', async () => {
     const { loanRepayments } = client.useLoanHooks();
-    const { result } = renderHook(() => loanRepayments(), {
-      wrapper,
-    });
+    const { result } = renderHook(() => loanRepayments(
+      {
+        fields: 'id, loan_id',
+        offset: 4,
+        limit: 5,
+        sort_by: 'id.asc',
+      }),
+      {
+        wrapper,
+      });
     await act(async () => {
       await result.current.refetch();
     });
@@ -85,7 +92,7 @@ describe('Loan', () => {
 
   it('gets list of the loans available', async () => {
     const { loanData } = client.useLoanHooks();
-    const { result } = renderHook(() => loanData(), {
+    const { result } = renderHook(() => loanData({}), {
       wrapper,
     });
     await act(async () => {

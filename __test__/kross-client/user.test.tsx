@@ -48,7 +48,7 @@ describe('User', () => {
 
   it('gets current user data details', async () => {
     const { userData } = client.useUserHooks();
-    const { result } = renderHook(() => userData(), {
+    const { result } = renderHook(() => userData({}), {
       wrapper,
     });
     await act(async () => {
@@ -60,7 +60,7 @@ describe('User', () => {
 
   it('gets current user-note list', async () => {
     const { userNoteLogs } = client.useUserHooks();
-    const { result } = renderHook(() => userNoteLogs(), {
+    const { result } = renderHook(() => userNoteLogs({}), {
       wrapper,
     });
     await act(async () => {
@@ -72,7 +72,7 @@ describe('User', () => {
 
   it('gets current user account-log list', async () => {
     const { userAccountLogs } = client.useUserHooks();
-    const { result } = renderHook(() => userAccountLogs(), {
+    const { result } = renderHook(() => userAccountLogs({}), {
       wrapper,
     });
     await act(async () => {
@@ -144,7 +144,7 @@ describe('User', () => {
 
   it('gets virtual account details', async () => {
     const { accountData } = client.useUserHooks();
-    const { result } = renderHook(() => accountData(), {
+    const { result } = renderHook(() => accountData({}), {
       wrapper,
     });
     await act(async () => {
