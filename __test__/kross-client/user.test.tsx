@@ -94,7 +94,7 @@ describe('User', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it.skip('getVirtualAccountCertificate', async () => {
+  it('getVirtualAccountCertificate', async () => {
     const { getVirtualAccCertificate } = client.useUserHooks();
     const { result } = renderHook(() => getVirtualAccCertificate(), {
       wrapper,

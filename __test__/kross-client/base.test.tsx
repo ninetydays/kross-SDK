@@ -2,7 +2,6 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { KrossClient } from '../../src/kross-client';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import AsyncStorage from '@react-native-community/async-storage';
 
 describe('KrossClientBase', () => {
   let client: KrossClient;

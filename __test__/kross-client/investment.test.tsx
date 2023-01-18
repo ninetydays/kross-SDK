@@ -57,7 +57,7 @@ describe('Investment', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it.skip('investmenetCancel', async () => {
+  it('investmenetCancel', async () => {
     const { investmentCancel } = client.useInvestmentHooks();
     const { result } = renderHook(() => investmentCancel(), {
       wrapper,

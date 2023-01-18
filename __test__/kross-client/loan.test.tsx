@@ -69,9 +69,11 @@ describe('Loans', () => {
     expect(result.current.data).toBeDefined();
   }, 10000);
 
-  it.skip('loanPaymentSchedule', async () => {
+  it('loanPaymentSchedule', async () => {
     const { loanPaymentSchedule } = client.useLoanHooks();
-    const { result } = renderHook(() => loanPaymentSchedule(), {
+    const { result } = renderHook(() => loanPaymentSchedule({
+      loan_id: 0,
+    }), {
       wrapper,
     });
     await act(async () => {

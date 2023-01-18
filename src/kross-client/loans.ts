@@ -10,10 +10,6 @@ import {
 } from '../types/kross-client/loans';
 export class Loans extends KrossClientBase {
   loanData: FunctionRegistered<LoansResponse>;
-  loanPaymentSchedule: FunctionRegistered<
-    PaymentScheduleDto,
-    PaymentScheduleResponse
-  >;
   loanRepayments: FunctionRegistered<LoanRepaymentResponse>;
   loanConfigs: FunctionRegistered<LoanConfigResponse>;
   constructor(options: KrossClientOptions) {
@@ -31,14 +27,11 @@ export class Loans extends KrossClientBase {
       url: '/loans',
       method: 'get',
     });
+  }
 
-    this.loanPaymentSchedule = Loans.registerFunction<
-      PaymentScheduleDto,
-      PaymentScheduleResponse
-    >({
-      url: `/loans/:loan_id/payment-schedule`,
-      urlParam: 'loan_id',
-      method: 'get',
+  loanPaymentSchedule({ loan_id }: PaymentScheduleDto) {
+    return this.instance.patch<PaymentScheduleResponse>(`/loans/${loan_id}/payment-schedule`, {
+      loan_id,
     });
   }
   useLoanHooks() {
@@ -55,10 +48,10 @@ export class Loans extends KrossClientBase {
           queryFn: async () => await this.loanRepayments(),
         });
       },
-      loanPaymentSchedule: () => {
+      loanPaymentSchedule: (loan_id: PaymentScheduleDto) => {
         return useQuery({
           queryKey: 'loanPaymentSchedule',
-          queryFn: async () => await this.loanPaymentSchedule(),
+          queryFn: async () => await this.loanPaymentSchedule(loan_id),
         });
       },
       loanData: () => {

@@ -11,10 +11,6 @@ import {
   InvestmentRegisterResponse,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
-  investmentCancel: FunctionRegistered<
-    InvestmentCancelDto,
-    InvestmentCancelResponse
-  >;
   investmentList: FunctionRegistered<InvestmentListResponse>;
   notes: FunctionRegistered<NotesResponse>;
   cmsTradebooks: FunctionRegistered<CmsTradebookResponse>;
@@ -31,14 +27,6 @@ export class Investments extends KrossClientBase {
       method: 'get',
     });
 
-    this.investmentCancel = Investments.registerFunction<
-      InvestmentCancelDto,
-      InvestmentCancelResponse
-    >({
-      url: `/investments/:investment_id/cancel`,
-      urlParam: 'investment_id',
-      method: 'patch',
-    });
     this.investmentList = Investments.registerFunction<InvestmentListResponse>({
       url: '/investments',
       method: 'get',
@@ -50,6 +38,12 @@ export class Investments extends KrossClientBase {
       amount,
       loan_id,
       user_id,
+    });
+  }
+
+  investmentCancel({ investment_id }: InvestmentCancelDto) {
+    return this.instance.patch<InvestmentCancelResponse>(`/investments/${investment_id}/cancel`, {
+      investment_id,
     });
   }
 
