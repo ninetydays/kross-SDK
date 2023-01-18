@@ -3,7 +3,7 @@ import { KrossClient } from '../../src/kross-client';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 
-describe('KrossClientBase', () => {
+describe('authentication', () => {
   let client: KrossClient;
   const baseURL = 'https://olive-dev.kross.kr';
   const accessId = 'XLD7UY9GETOK7TPY';
@@ -28,13 +28,11 @@ describe('KrossClientBase', () => {
     });
   });
 
-  it('login', async () => {
+  it('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
-
     const { result } = renderHook(() => useLogin(), {
       wrapper,
     });
-
     await act(async () => {
       await result.current.mutateAsync({
         keyid: 'mad@kross.kr',
@@ -45,7 +43,7 @@ describe('KrossClientBase', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('updateToken', async () => {
+  it('updates authToken with refreshToken', async () => {
     const { updateAuthToken } = client.useAuthHooks();
     const { result } = renderHook(() => updateAuthToken(), {
       wrapper,

@@ -29,7 +29,7 @@ describe('User', () => {
     });
   });
 
-  it('login', async () => {
+  it('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
 
     const { result } = renderHook(() => useLogin(), {
@@ -46,7 +46,7 @@ describe('User', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('userData', async () => {
+  it('gets current user data details', async () => {
     const { userData } = client.useUserHooks();
     const { result } = renderHook(() => userData(), {
       wrapper,
@@ -58,7 +58,7 @@ describe('User', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('userNoteLogs', async () => {
+  it('gets current user-note list', async () => {
     const { userNoteLogs } = client.useUserHooks();
     const { result } = renderHook(() => userNoteLogs(), {
       wrapper,
@@ -70,7 +70,7 @@ describe('User', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('userAccountLogs', async () => {
+  it('gets current user account-log list', async () => {
     const { userAccountLogs } = client.useUserHooks();
     const { result } = renderHook(() => userAccountLogs(), {
       wrapper,
@@ -82,7 +82,7 @@ describe('User', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('kftcBalance', async () => {
+  it('gets kftc balance; how much investor can invest', async () => {
     const { kftcBalance } = client.useUserHooks();
     const { result } = renderHook(() => kftcBalance(), {
       wrapper,
@@ -94,7 +94,7 @@ describe('User', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('getVirtualAccountCertificate', async () => {
+  it('gets link for account certificate issuance', async () => {
     const { getVirtualAccCertificate } = client.useUserHooks();
     const { result } = renderHook(() => getVirtualAccCertificate(), {
       wrapper,
@@ -106,7 +106,7 @@ describe('User', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('checkVirtualAccount', async () => {
+  it('gets virtual account status', async () => {
     const { checkVirtualAccount } = client.useUserHooks();
     const { result } = renderHook(() => checkVirtualAccount(), {
       wrapper,
@@ -118,7 +118,7 @@ describe('User', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it.skip('unRegisterMember', async () => {
+  it.skip('unregisters member from welcome', async () => {
     const { unRegisterMemeber } = client.useUserHooks();
     const { result } = renderHook(() => unRegisterMemeber(), {
       wrapper,
@@ -130,7 +130,7 @@ describe('User', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('releaseDepositControl', async () => {
+  it('unlock deposit control to allow user deposit to any bank account', async () => {
     const { releaseDepositControl } = client.useUserHooks();
     const { result } = renderHook(() => releaseDepositControl(), {
       wrapper,
@@ -138,12 +138,11 @@ describe('User', () => {
     await act(async () => {
       await result.current.mutateAsync();
     });
-    console.log('Result for release: ', result.current.data);
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('accountData', async () => {
+  it('gets virtual account details', async () => {
     const { accountData } = client.useUserHooks();
     const { result } = renderHook(() => accountData(), {
       wrapper,

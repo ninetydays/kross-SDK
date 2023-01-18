@@ -29,7 +29,7 @@ describe('Account', () => {
     });
   });
 
-  it('login', async () => {
+  it('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
 
     const { result } = renderHook(() => useLogin(), {
@@ -46,7 +46,7 @@ describe('Account', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('check', async () => {
+  it('checks bank account owner request', async () => {
     const { check } = client.useAccountHooks();
     const { result } = renderHook(() => check(), {
       wrapper,
@@ -58,13 +58,12 @@ describe('Account', () => {
         name: '',
       });
     });
-
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.data).toBeDefined();
   }, 10000);
 
-  it('withdrawInit', async () => {
+  it('checks request to withdraw amount via withdrawInit', async () => {
     const { withdrawInit } = client.useAccountHooks();
     const { result } = renderHook(() => withdrawInit(), {
       wrapper,
@@ -81,7 +80,7 @@ describe('Account', () => {
     expect(result.current.data).toBeDefined();
   }, 10000);
 
-  it('withdrawCancel', async () => {
+  it('checks request to cancel withdraw amount via withdrawCancel', async () => {
     const { withdrawCancel } = client.useAccountHooks();
     const { result } = renderHook(() => withdrawCancel(), {
       wrapper,
@@ -95,7 +94,7 @@ describe('Account', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('withdrawVerify', async () => {
+  it('registers withdraw account via withdrawVerify', async () => {
     const { withdrawVerify } = client.useAccountHooks();
     const { result } = renderHook(() => withdrawVerify(), {
       wrapper,

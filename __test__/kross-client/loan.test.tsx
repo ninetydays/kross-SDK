@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Loans } from '../../src/kross-client/loans';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
-describe('Loans', () => {
+describe('Loan', () => {
   let client: Loans;
   const baseURL = 'https://olive-dev.kross.kr';
   const accessId = 'XLD7UY9GETOK7TPY';
@@ -28,7 +28,7 @@ describe('Loans', () => {
     });
   });
 
-  it('login', async () => {
+  it('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
 
     const { result } = renderHook(() => useLogin(), {
@@ -45,7 +45,7 @@ describe('Loans', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('loanConfigs', async () => {
+  it('gets loanConfigs list', async () => {
     const { loanConfigs } = client.useLoanHooks();
     const { result } = renderHook(() => loanConfigs(), {
       wrapper,
@@ -57,7 +57,7 @@ describe('Loans', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('loanRepayments', async () => {
+  it('get loan repayments list when borrowers pay back', async () => {
     const { loanRepayments } = client.useLoanHooks();
     const { result } = renderHook(() => loanRepayments(), {
       wrapper,
@@ -69,7 +69,7 @@ describe('Loans', () => {
     expect(result.current.data).toBeDefined();
   }, 10000);
 
-  it('loanPaymentSchedule', async () => {
+  it('gets loan payment schedule when investors pays for borrowers', async () => {
     const { loanPaymentSchedule } = client.useLoanHooks();
     const { result } = renderHook(() => loanPaymentSchedule({
       loan_id: 0,
@@ -83,7 +83,7 @@ describe('Loans', () => {
     expect(result.current.data).toBeDefined();
   }, 10000);
 
-  it('loanData', async () => {
+  it('gets list of the loans available', async () => {
     const { loanData } = client.useLoanHooks();
     const { result } = renderHook(() => loanData(), {
       wrapper,

@@ -28,7 +28,7 @@ describe('Investment', () => {
     });
   });
 
-  it('login', async () => {
+  it('gets user tokens via login', async () => {
     const { useLogin } = client.useAuthHooks();
 
     const { result } = renderHook(() => useLogin(), {
@@ -45,7 +45,7 @@ describe('Investment', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('investmentList', async () => {
+  it('gets authToken and refreshToken', async () => {
     const { investmentList } = client.useInvestmentHooks();
     const { result } = renderHook(() => investmentList(), {
       wrapper,
@@ -57,7 +57,7 @@ describe('Investment', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('investmenetCancel', async () => {
+  it('cancels the pending investment with investment_id', async () => {
     const { investmentCancel } = client.useInvestmentHooks();
     const { result } = renderHook(() => investmentCancel(), {
       wrapper,
@@ -71,7 +71,7 @@ describe('Investment', () => {
     expect(result.current.data).toBeDefined();
   }, 10000);
 
-  it('investmentRegister', async () => {
+  it('registers investment when investor applies to certain loan', async () => {
     const { investmentRegister } = client.useInvestmentHooks();
     const { result } = renderHook(() => investmentRegister(), {
       wrapper,
@@ -87,7 +87,7 @@ describe('Investment', () => {
     expect(result.current.data).toBeDefined();
   }, 10000);
 
-  it('cmsTradebook', async () => {
+  it('gets cmsTradebooks list', async () => {
     const { cmsTradebooks } = client.useInvestmentHooks();
     const { result } = renderHook(() => cmsTradebooks(), {
       wrapper,
@@ -99,7 +99,7 @@ describe('Investment', () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('notes', async () => {
+  it('gets notes list', async () => {
     const { notes } = client.useInvestmentHooks();
     const { result } = renderHook(() => notes(), {
       wrapper,
