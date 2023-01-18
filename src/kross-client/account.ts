@@ -25,57 +25,67 @@ export class Account extends KrossClientBase {
     this.withdrawCancel = Account.registerFunction<
       AccountWithdrawCancelDto,
       AccountWithdrawCancelResponse
-    >({ url: '/accounts/withdraw/verify', urlParam: 'idempotency_key', method: 'post' });
+    >({
+      url: '/accounts/withdraw/verify',
+      urlParam: 'idempotency_key',
+      method: 'post',
+    });
   }
 
   check({ bankId, accountNumber, name }: AccountCheckDto) {
-    return this.instance.post<AccountCheckResponse>(
-      '/accounts/check',
+    return this.instance.post<AccountCheckResponse>('/accounts/check', {
+      bankId,
+      accountNumber,
+      name,
+    });
+  }
+  withdrawVerify({ idempotency_key, verify_code }: AccountWithdrawVerifyDto) {
+    return this.instance.post<AccountWithdrawVerifyResponse>(
+      '/accounts/withdraw/verify',
       {
-        bankId,
-        accountNumber,
-        name,
+        idempotency_key,
+        verify_code,
       }
     );
   }
-  withdrawVerify({ idempotency_key, verify_code }: AccountWithdrawVerifyDto) {
-    return this.instance.post<AccountWithdrawVerifyResponse>('/accounts/withdraw/verify', {
-      idempotency_key,
-      verify_code,
-    });
-  }
   withdrawInit({ member_no, amount }: AccountWithdrawInitDto) {
-    return this.instance.post<AccountWithdrawInitResponse>('/accounts/withdraw/init', {
-      member_no,
-      amount,
-    });
+    return this.instance.post<AccountWithdrawInitResponse>(
+      '/accounts/withdraw/init',
+      {
+        member_no,
+        amount,
+      }
+    );
   }
 
   useAccountHooks() {
     return {
       check: () => {
         const mutation = useMutation((accountCheckDto: AccountCheckDto) =>
-        this.check(accountCheckDto)
-      );
-      return mutation;
+          this.check(accountCheckDto)
+        );
+        return mutation;
       },
       withdrawInit: () => {
-        const mutation = useMutation((accountWithdrawInitDto: AccountWithdrawInitDto) =>
-        this.withdrawInit(accountWithdrawInitDto)
-      );
-      return mutation;
+        const mutation = useMutation(
+          (accountWithdrawInitDto: AccountWithdrawInitDto) =>
+            this.withdrawInit(accountWithdrawInitDto)
+        );
+        return mutation;
       },
       withdrawCancel: () => {
-        const mutation = useMutation((accountWithdrawCancelDto: AccountWithdrawCancelDto) =>
-        this.withdrawCancel(accountWithdrawCancelDto)
-      );
-      return mutation;
+        const mutation = useMutation(
+          (accountWithdrawCancelDto: AccountWithdrawCancelDto) =>
+            this.withdrawCancel(accountWithdrawCancelDto)
+        );
+        return mutation;
       },
       withdrawVerify: () => {
-        const mutation = useMutation((accountWithdrawVerifyDto: AccountWithdrawVerifyDto) =>
-        this.withdrawVerify(accountWithdrawVerifyDto)
-      );
-      return mutation;
+        const mutation = useMutation(
+          (accountWithdrawVerifyDto: AccountWithdrawVerifyDto) =>
+            this.withdrawVerify(accountWithdrawVerifyDto)
+        );
+        return mutation;
       },
     };
   }

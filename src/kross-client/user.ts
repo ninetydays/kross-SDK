@@ -106,14 +106,11 @@ export class User extends KrossClientBase {
         });
       },
       unRegisterMemeber: () => {
-        const mutation = useMutation(() =>  this.unRegisterMemeber()
-        );
+        const mutation = useMutation(() => this.unRegisterMemeber());
         return mutation;
       },
       releaseDepositControl: () => {
-        const mutation = useMutation(() =>
-          this.releaseDepositControl()
-        );
+        const mutation = useMutation(() => this.releaseDepositControl());
         return mutation;
       },
       accountData: () => {

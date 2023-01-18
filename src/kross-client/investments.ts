@@ -65,7 +65,7 @@ export class Investments extends KrossClientBase {
       investmentList: () => {
         return useQuery({
           queryKey: 'investmentList',
-          queryFn: async() => await this.investmentList(),
+          queryFn: async () => await this.investmentList(),
         });
       },
       cmsTradebooks: () => {

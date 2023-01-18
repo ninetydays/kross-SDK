@@ -68,25 +68,27 @@ export class KrossClientBase {
     );
   }
   login({ keyid, password }: LoginDto) {
-    return this.instance.post<LoginResponse>('/auth/login', {
-      keyid,
-      password,
-    }).then((response) => {
-      if (response.data?.token && response.data?.refresh){
-        AsyncStorage.setItem('authToken', response.data.token);
-        AsyncStorage.setItem('refreshToken', response.data.refresh);
-      }
-      return response;
-    });
+    return this.instance
+      .post<LoginResponse>('/auth/login', {
+        keyid,
+        password,
+      })
+      .then((response) => {
+        if (response.data?.token && response.data?.refresh) {
+          AsyncStorage.setItem('authToken', response.data.token);
+          AsyncStorage.setItem('refreshToken', response.data.refresh);
+        }
+        return response;
+      });
   }
 
-
   async updateAuthToken() {
-    this.refreshToken = await AsyncStorage.getItem('refreshToken') || undefined;
+    this.refreshToken =
+      (await AsyncStorage.getItem('refreshToken')) || undefined;
     const res = await this.instance.get<GetAuthTokenResponse>(`/auth/refresh`, {
       headers: { authorization: `Bearer ${this.refreshToken}` },
     });
-    if (res.data?.token){
+    if (res.data?.token) {
       AsyncStorage.setItem('authToken', res.data.token);
     }
     return res;
