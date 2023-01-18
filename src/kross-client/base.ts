@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from 'react-query';
+import AsyncStorage from '@react-native-community/async-storage';
 import axios, {
   AxiosError,
   AxiosInstance,
@@ -13,24 +14,26 @@ import {
   GetAuthTokenResponse,
 } from '../types';
 import { hmacTokenFunction } from '../utils/encryptor';
+
 export class KrossClientBase {
   instance: AxiosInstance;
   refreshToken?: string;
   authToken?: string;
+  tempToken?: string;
   getHmacToken: (method: string) => { hmacToken: string; xDate: string };
-
   constructor(options: KrossClientOptions) {
     this.getHmacToken = hmacTokenFunction(options.accessId, options.secretKey);
-
     this.instance = axios.create(options);
     this.instance.interceptors.request.use((config) => {
+      AsyncStorage.getItem('authToken').then((value) => {
+        this.authToken = value as string;
+      });
       const { hmacToken, xDate } = this.getHmacToken(config.method as string);
       config.headers = {
         ...config.headers,
         'client-authorization': hmacToken,
         'X-Date': xDate,
       };
-
       if (this.authToken && config.url != '/auth/refresh') {
         config.headers = {
           ...config.headers,
@@ -42,18 +45,13 @@ export class KrossClientBase {
 
     this.instance.interceptors.response.use(
       (response) => {
-        if (response.config.url === '/auth/login') {
-          this.authToken = response.data.token;
-          this.refreshToken = response.data.refresh;
-        }
-
         if (response.status === 404) {
           console.log('preflight request needs to be handled');
         }
-        console.log('response:', response);
         return response;
       },
       async (error: AxiosError) => {
+        console.log(error.config);
         if (error.response) {
           if (error.config.url !== '/auth/login') {
             // Access Token was expired
@@ -62,7 +60,6 @@ export class KrossClientBase {
               return this.instance.request(error.config);
             }
           }
-
           return Promise.resolve(error.response);
         } else {
           return Promise.reject(error);
@@ -70,19 +67,30 @@ export class KrossClientBase {
       }
     );
   }
-
   login({ keyid, password }: LoginDto) {
-    return this.instance.post<LoginResponse>('/auth/login', {
-      keyid,
-      password,
-    });
+    return this.instance
+      .post<LoginResponse>('/auth/login', {
+        keyid,
+        password,
+      })
+      .then((response) => {
+        if (response.data?.token && response.data?.refresh) {
+          AsyncStorage.setItem('authToken', response.data.token);
+          AsyncStorage.setItem('refreshToken', response.data.refresh);
+        }
+        return response;
+      });
   }
 
   async updateAuthToken() {
+    this.refreshToken =
+      (await AsyncStorage.getItem('refreshToken')) || undefined;
     const res = await this.instance.get<GetAuthTokenResponse>(`/auth/refresh`, {
       headers: { authorization: `Bearer ${this.refreshToken}` },
     });
-    this.authToken = res.data.token;
+    if (res.data?.token) {
+      AsyncStorage.setItem('authToken', res.data.token);
+    }
     return res;
   }
 
@@ -90,12 +98,15 @@ export class KrossClientBase {
     return {
       useLogin: () => {
         const mutation = useMutation((loginDto: LoginDto) =>
-          this.login.bind(this)(loginDto)
+          this.login(loginDto)
         );
         return mutation;
       },
       updateAuthToken: () => {
-        return useQuery('updateAuthToken', () => this.updateAuthToken());
+        return useQuery({
+          queryKey: 'updateAuthToken',
+          queryFn: async () => await this.updateAuthToken(),
+        });
       },
     };
   }
@@ -134,10 +145,10 @@ export class KrossClientBase {
 
   static registerFunction<I = unknown, O = unknown>(
     options: FunctionOptions
-  ): (input: I) => Promise<AxiosResponse<O>> {
+  ): (input?: I) => Promise<AxiosResponse<O>> {
     return function (
       this: KrossClientBase,
-      input: I
+      input?: I
     ): Promise<AxiosResponse<O>> {
       let url = '';
 
@@ -162,7 +173,6 @@ export class KrossClientBase {
       } else {
         url = options.url;
       }
-
       return this.request({
         url,
         method: options.method,

@@ -20,7 +20,7 @@ export type FunctionResponse<T = unknown> = {
 };
 
 export type FunctionRegistered<I = unknown, O = unknown> = (
-  input: I
+  input?: I
 ) => Promise<AxiosResponse<O>>;
 
 export type LoginDto = {

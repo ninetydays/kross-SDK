@@ -1,4 +1,5 @@
 import { KrossClientBase } from './base';
+import { useMutation } from 'react-query';
 import {
   FunctionRegistered,
   KrossClientOptions,
@@ -13,15 +14,6 @@ import {
 } from '../types';
 
 export class Account extends KrossClientBase {
-  check: FunctionRegistered<AccountCheckDto, AccountCheckResponse>;
-  withdrawInit: FunctionRegistered<
-    AccountWithdrawInitDto,
-    AccountWithdrawInitResponse
-  >;
-  withdrawVerify: FunctionRegistered<
-    AccountWithdrawVerifyDto,
-    AccountWithdrawVerifyResponse
-  >;
   withdrawCancel: FunctionRegistered<
     AccountWithdrawCancelDto,
     AccountWithdrawCancelResponse
@@ -30,30 +22,71 @@ export class Account extends KrossClientBase {
   constructor(options: KrossClientOptions) {
     super(options);
 
-    this.check = Account.registerFunction<
-      AccountCheckDto,
-      AccountCheckResponse
-    >({
-      url: '/accounts/check',
-      method: 'post',
-    });
-
-    this.withdrawInit = Account.registerFunction<
-      AccountWithdrawInitDto,
-      AccountWithdrawInitResponse
-    >({
-      url: '/withdraw/init',
-      method: 'post',
-    });
-
-    this.withdrawVerify = Account.registerFunction<
-      AccountWithdrawVerifyDto,
-      AccountWithdrawVerifyResponse
-    >({ url: '/withdraw/verify', method: 'post' });
-
     this.withdrawCancel = Account.registerFunction<
       AccountWithdrawCancelDto,
       AccountWithdrawCancelResponse
-    >({ url: '/withdraw/verify', method: 'post' });
+    >({
+      url: '/accounts/withdraw/verify',
+      urlParam: 'idempotency_key',
+      method: 'post',
+    });
+  }
+
+  check({ bankId, accountNumber, name }: AccountCheckDto) {
+    return this.instance.post<AccountCheckResponse>('/accounts/check', {
+      bankId,
+      accountNumber,
+      name,
+    });
+  }
+  withdrawVerify({ idempotency_key, verify_code }: AccountWithdrawVerifyDto) {
+    return this.instance.post<AccountWithdrawVerifyResponse>(
+      '/accounts/withdraw/verify',
+      {
+        idempotency_key,
+        verify_code,
+      }
+    );
+  }
+  withdrawInit({ member_no, amount }: AccountWithdrawInitDto) {
+    return this.instance.post<AccountWithdrawInitResponse>(
+      '/accounts/withdraw/init',
+      {
+        member_no,
+        amount,
+      }
+    );
+  }
+
+  useAccountHooks() {
+    return {
+      check: () => {
+        const mutation = useMutation((accountCheckDto: AccountCheckDto) =>
+          this.check(accountCheckDto)
+        );
+        return mutation;
+      },
+      withdrawInit: () => {
+        const mutation = useMutation(
+          (accountWithdrawInitDto: AccountWithdrawInitDto) =>
+            this.withdrawInit(accountWithdrawInitDto)
+        );
+        return mutation;
+      },
+      withdrawCancel: () => {
+        const mutation = useMutation(
+          (accountWithdrawCancelDto: AccountWithdrawCancelDto) =>
+            this.withdrawCancel(accountWithdrawCancelDto)
+        );
+        return mutation;
+      },
+      withdrawVerify: () => {
+        const mutation = useMutation(
+          (accountWithdrawVerifyDto: AccountWithdrawVerifyDto) =>
+            this.withdrawVerify(accountWithdrawVerifyDto)
+        );
+        return mutation;
+      },
+    };
   }
 }
