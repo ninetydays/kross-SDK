@@ -1,4 +1,5 @@
-import { useMutation, useQuery, QueryClient } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
+import AsyncStorage from '@react-native-community/async-storage';
 import axios, {
   AxiosError,
   AxiosInstance,
@@ -14,13 +15,6 @@ import {
 } from '../types';
 import { hmacTokenFunction } from '../utils/encryptor';
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: Infinity,
-    },
-  },
-});
 export class KrossClientBase {
   instance: AxiosInstance;
   refreshToken?: string;
@@ -30,15 +24,16 @@ export class KrossClientBase {
   constructor(options: KrossClientOptions) {
     this.getHmacToken = hmacTokenFunction(options.accessId, options.secretKey);
     this.instance = axios.create(options);
-    this.authToken = queryClient.getQueryData("authToken");
     this.instance.interceptors.request.use((config) => {
+      AsyncStorage.getItem('authToken').then((value) => {
+        this.authToken = value as string;
+      });
       const { hmacToken, xDate } = this.getHmacToken(config.method as string);
       config.headers = {
         ...config.headers,
         'client-authorization': hmacToken,
         'X-Date': xDate,
       };
-
       if (this.authToken && config.url != '/auth/refresh') {
         config.headers = {
           ...config.headers,
@@ -50,12 +45,6 @@ export class KrossClientBase {
 
     this.instance.interceptors.response.use(
       (response) => {
-        if (response.config.url === '/auth/login') {
-          this.authToken = response.data.token;
-          this.refreshToken = response.data.refresh;
-          queryClient.setQueryData("authToken", this.authToken)
-          queryClient.setQueryData("refreshToken", this.refreshToken)
-        }
         if (response.status === 404) {
           console.log('preflight request needs to be handled');
         }
@@ -82,16 +71,24 @@ export class KrossClientBase {
     return this.instance.post<LoginResponse>('/auth/login', {
       keyid,
       password,
+    }).then((response) => {
+      if (response.data?.token && response.data?.refresh){
+        AsyncStorage.setItem('authToken', response.data.token);
+        AsyncStorage.setItem('refreshToken', response.data.refresh);
+      }
+      return response;
     });
   }
 
+
   async updateAuthToken() {
-    this.refreshToken = queryClient.getQueryData("refreshToken");
+    this.refreshToken = await AsyncStorage.getItem('refreshToken') || undefined;
     const res = await this.instance.get<GetAuthTokenResponse>(`/auth/refresh`, {
       headers: { authorization: `Bearer ${this.refreshToken}` },
     });
-    this.authToken = res.data.token;
-    queryClient.setQueryData("authToken", this.authToken)
+    if (res.data?.token){
+      AsyncStorage.setItem('authToken', res.data.token);
+    }
     return res;
   }
 
