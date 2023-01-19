@@ -176,6 +176,7 @@ export class KrossClientBase {
       return this.request({
         url,
         method: options.method,
+        params: input,
         data: input,
       });
     };

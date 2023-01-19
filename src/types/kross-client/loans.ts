@@ -1,5 +1,14 @@
 import { FunctionResponse } from './index';
 
+export type LoansQueryDto = {
+  fields?: string;
+  offset?: string;
+  limit?: string;
+  sort_by?: string;
+  group_by?: string;
+  query?: string;
+};
+
 export type LoanResponseData = {
   id: number;
   no: number;

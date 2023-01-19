@@ -47,7 +47,7 @@ describe('Investment', () => {
 
   it('gets authToken and refreshToken', async () => {
     const { investmentList } = client.useInvestmentHooks();
-    const { result } = renderHook(() => investmentList(), {
+    const { result } = renderHook(() => investmentList({}), {
       wrapper,
     });
     await act(async () => {
@@ -89,7 +89,7 @@ describe('Investment', () => {
 
   it('gets cmsTradebooks list', async () => {
     const { cmsTradebooks } = client.useInvestmentHooks();
-    const { result } = renderHook(() => cmsTradebooks(), {
+    const { result } = renderHook(() => cmsTradebooks({}), {
       wrapper,
     });
     await act(async () => {
@@ -101,9 +101,17 @@ describe('Investment', () => {
 
   it('gets notes list', async () => {
     const { notes } = client.useInvestmentHooks();
-    const { result } = renderHook(() => notes(), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () =>
+        notes({
+          fields: 'id',
+          limit: '5',
+          sort_by: 'id.asc',
+        }),
+      {
+        wrapper,
+      }
+    );
     await act(async () => {
       await result.current.refetch();
     });

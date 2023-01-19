@@ -1,5 +1,13 @@
 import { FunctionResponse } from '.';
 
+export type UserQueryDto = {
+  fields?: string;
+  offset?: string;
+  limit?: string;
+  sort_by?: string;
+  group_by?: string;
+  query?: string;
+};
 export type kftcBalanceResponseData = {
   rsp_code: string;
   rsp_message: string;
