@@ -7,42 +7,42 @@ import {
   PaymentScheduleResponse,
   LoanConfigResponse,
   LoanRepaymentResponse,
-  LoansQueryDto
+  LoansQueryDto,
 } from '../types/kross-client/loans';
 export class Loans extends KrossClientBase {
-  loanData: FunctionRegistered<
-    LoansQueryDto,  
-    LoansResponse
-  >;
-  loanRepayments: FunctionRegistered<
-    LoansQueryDto,
-    LoanRepaymentResponse
-  >;
-  loanConfigs: FunctionRegistered<
-    LoansQueryDto,
-    LoanConfigResponse
-  >;
+  loanData: FunctionRegistered<LoansQueryDto, LoansResponse>;
+  loanRepayments: FunctionRegistered<LoansQueryDto, LoanRepaymentResponse>;
+  loanConfigs: FunctionRegistered<LoansQueryDto, LoanConfigResponse>;
   constructor(options: KrossClientOptions) {
     super(options);
-    this.loanConfigs = Loans.registerFunction<LoansQueryDto ,LoanConfigResponse>({
+    this.loanConfigs = Loans.registerFunction<
+      LoansQueryDto,
+      LoanConfigResponse
+    >({
       url: '/loan-configs',
       method: 'get',
     });
 
-    this.loanRepayments = Loans.registerFunction<LoansQueryDto, LoanRepaymentResponse>({
+    this.loanRepayments = Loans.registerFunction<
+      LoansQueryDto,
+      LoanRepaymentResponse
+    >({
       url: '/loan-repayments',
       method: 'get',
     });
-    this.loanData = Loans.registerFunction<LoansQueryDto ,LoansResponse>({
+    this.loanData = Loans.registerFunction<LoansQueryDto, LoansResponse>({
       url: '/loans',
       method: 'get',
     });
   }
 
   loanPaymentSchedule({ loan_id }: PaymentScheduleDto) {
-    return this.instance.patch<PaymentScheduleResponse>(`/loans/${loan_id}/payment-schedule`, {
-      loan_id,
-    });
+    return this.instance.patch<PaymentScheduleResponse>(
+      `/loans/${loan_id}/payment-schedule`,
+      {
+        loan_id,
+      }
+    );
   }
   useLoanHooks() {
     return {

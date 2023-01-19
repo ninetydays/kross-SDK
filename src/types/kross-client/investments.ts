@@ -7,7 +7,7 @@ export type InvestmentQueryDto = {
   sort_by?: string;
   group_by?: string;
   query?: string;
-}
+};
 
 export type InvestmentListResponseData = {
   id: number;

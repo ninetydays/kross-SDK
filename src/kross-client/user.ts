@@ -19,31 +19,25 @@ export class User extends KrossClientBase {
   checkVirtualAccount: FunctionRegistered<VirtualAccountCheckResponse>;
   unRegisterMemeber: FunctionRegistered<WelcomeUnregisterResponse>;
   releaseDepositControl: FunctionRegistered<ReleaseDepositResponse>;
-  accountData: FunctionRegistered<
-    UserQueryDto,
-    AccountResponse
-  >;
-  userData: FunctionRegistered<
-    UserQueryDto,
-    UserResponse
-  >;
-  userAccountLogs: FunctionRegistered<
-    UserQueryDto,
-    UserAccountLogsResponse
-  >;
-  userNoteLogs: FunctionRegistered<
-    UserQueryDto,
-    UserNoteLogsResponse
-  >;
+  accountData: FunctionRegistered<UserQueryDto, AccountResponse>;
+  userData: FunctionRegistered<UserQueryDto, UserResponse>;
+  userAccountLogs: FunctionRegistered<UserQueryDto, UserAccountLogsResponse>;
+  userNoteLogs: FunctionRegistered<UserQueryDto, UserNoteLogsResponse>;
 
   constructor(options: KrossClientOptions) {
     super(options);
-    this.userNoteLogs = User.registerFunction<UserQueryDto ,UserNoteLogsResponse>({
+    this.userNoteLogs = User.registerFunction<
+      UserQueryDto,
+      UserNoteLogsResponse
+    >({
       url: '/user-note-logs',
       method: 'get',
     });
 
-    this.userAccountLogs = User.registerFunction<UserQueryDto ,UserAccountLogsResponse>({
+    this.userAccountLogs = User.registerFunction<
+      UserQueryDto,
+      UserAccountLogsResponse
+    >({
       url: '/user-account-logs',
       method: 'get',
     });

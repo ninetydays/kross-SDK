@@ -9,35 +9,38 @@ import {
   NotesResponse,
   CmsTradebookResponse,
   InvestmentRegisterResponse,
-  InvestmentQueryDto
+  InvestmentQueryDto,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
     InvestmentQueryDto,
     InvestmentListResponse
   >;
-  notes: FunctionRegistered<
-    InvestmentQueryDto,  
-    NotesResponse
-  >;
-  cmsTradebooks: FunctionRegistered<
-    InvestmentQueryDto,
-    CmsTradebookResponse
-  >;
+  notes: FunctionRegistered<InvestmentQueryDto, NotesResponse>;
+  cmsTradebooks: FunctionRegistered<InvestmentQueryDto, CmsTradebookResponse>;
 
   constructor(options: KrossClientOptions) {
     super(options);
-    this.cmsTradebooks = Investments.registerFunction<InvestmentQueryDto ,CmsTradebookResponse>({
+    this.cmsTradebooks = Investments.registerFunction<
+      InvestmentQueryDto,
+      CmsTradebookResponse
+    >({
       url: '/cms-tradebooks',
       method: 'get',
     });
 
-    this.notes = Investments.registerFunction<InvestmentQueryDto ,NotesResponse>({
+    this.notes = Investments.registerFunction<
+      InvestmentQueryDto,
+      NotesResponse
+    >({
       url: '/notes',
       method: 'get',
     });
 
-    this.investmentList = Investments.registerFunction<InvestmentQueryDto ,InvestmentListResponse>({
+    this.investmentList = Investments.registerFunction<
+      InvestmentQueryDto,
+      InvestmentListResponse
+    >({
       url: '/investments',
       method: 'get',
     });
@@ -52,9 +55,12 @@ export class Investments extends KrossClientBase {
   }
 
   investmentCancel({ investment_id }: InvestmentCancelDto) {
-    return this.instance.patch<InvestmentCancelResponse>(`/investments/${investment_id}/cancel`, {
-      investment_id,
-    });
+    return this.instance.patch<InvestmentCancelResponse>(
+      `/investments/${investment_id}/cancel`,
+      {
+        investment_id,
+      }
+    );
   }
 
   useInvestmentHooks() {

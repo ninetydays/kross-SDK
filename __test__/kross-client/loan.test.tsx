@@ -59,16 +59,17 @@ describe('Loan', () => {
 
   it('get loan repayments list when borrowers pay back', async () => {
     const { loanRepayments } = client.useLoanHooks();
-    const { result } = renderHook(() => loanRepayments(
-      {
-        fields: 'id, loan_id',
-        offset: 4,
-        limit: 5,
-        sort_by: 'id.asc',
-      }),
+    const { result } = renderHook(
+      () =>
+        loanRepayments({
+          fields: 'id,loan_id,principal',
+          limit: '5',
+          sort_by: 'id.asc',
+        }),
       {
         wrapper,
-      });
+      }
+    );
     await act(async () => {
       await result.current.refetch();
     });
@@ -78,11 +79,15 @@ describe('Loan', () => {
 
   it('gets loan payment schedule when investors pays for borrowers', async () => {
     const { loanPaymentSchedule } = client.useLoanHooks();
-    const { result } = renderHook(() => loanPaymentSchedule({
-      loan_id: 0,
-    }), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () =>
+        loanPaymentSchedule({
+          loan_id: 0,
+        }),
+      {
+        wrapper,
+      }
+    );
     await act(async () => {
       await result.current.refetch();
     });

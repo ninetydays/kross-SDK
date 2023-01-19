@@ -101,9 +101,17 @@ describe('Investment', () => {
 
   it('gets notes list', async () => {
     const { notes } = client.useInvestmentHooks();
-    const { result } = renderHook(() => notes({}), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () =>
+        notes({
+          fields: 'id',
+          limit: '5',
+          sort_by: 'id.asc',
+        }),
+      {
+        wrapper,
+      }
+    );
     await act(async () => {
       await result.current.refetch();
     });

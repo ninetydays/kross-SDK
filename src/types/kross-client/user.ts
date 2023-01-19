@@ -7,7 +7,7 @@ export type UserQueryDto = {
   sort_by?: string;
   group_by?: string;
   query?: string;
-}
+};
 export type kftcBalanceResponseData = {
   rsp_code: string;
   rsp_message: string;
