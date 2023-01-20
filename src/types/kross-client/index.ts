@@ -1,6 +1,8 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 export * from './account';
-
+export * from './investments';
+export * from './loans';
+export * from './user';
 export type KrossClientOptions = AxiosRequestConfig & {
   baseURL: string;
   accessId: string;

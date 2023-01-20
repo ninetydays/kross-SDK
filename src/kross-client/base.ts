@@ -88,7 +88,7 @@ export class KrossClientBase {
     const res = await this.instance.get<GetAuthTokenResponse>(`/auth/refresh`, {
       headers: { authorization: `Bearer ${this.refreshToken}` },
     });
-    if (res.data?.token) {
+    if (res.data?.token && !this.refreshToken) {
       AsyncStorage.setItem('authToken', res.data.token);
     }
     return res;
