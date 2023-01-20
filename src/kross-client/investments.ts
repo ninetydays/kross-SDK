@@ -10,18 +10,23 @@ import {
   CmsTradebookResponse,
   InvestmentRegisterResponse,
   InvestmentQueryDto,
+  TransactionHistoryDto,
 } from '../types/kross-client/investments';
+import AsyncStorage from '@react-native-community/async-storage';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
     InvestmentQueryDto,
     InvestmentListResponse
   >;
   notes: FunctionRegistered<InvestmentQueryDto, NotesResponse>;
-  cmsTradebooks: FunctionRegistered<InvestmentQueryDto, CmsTradebookResponse>;
+  cmsTradebook: FunctionRegistered<InvestmentQueryDto, CmsTradebookResponse>;
 
   constructor(options: KrossClientOptions) {
     super(options);
-    this.cmsTradebooks = Investments.registerFunction<
+    AsyncStorage.getItem('authToken').then((value) => {
+      this.authToken = value as string;
+    });
+    this.cmsTradebook = Investments.registerFunction<
       InvestmentQueryDto,
       CmsTradebookResponse
     >({
@@ -63,6 +68,30 @@ export class Investments extends KrossClientBase {
     );
   }
 
+  async transactionHistory({fromDate, toDate }: TransactionHistoryDto) {
+    const resp = await this.cmsTradebook({
+      query: {
+        // member_no, we do not need member_no since it prints user related data
+        category: {
+          in: [
+            'deposit',
+            'withdraw',
+            'invest',
+            'distribute',
+            'merchant_withdraw',
+            'merchant_deposit',
+          ],
+        },
+        created_at: {
+          gte: fromDate,
+          lte: toDate,
+        },
+      },
+      sort_by: 'created_at.desc',
+    });
+    return resp;
+  }
+
   useInvestmentHooks() {
     return {
       investmentCancel: () => {
@@ -78,16 +107,22 @@ export class Investments extends KrossClientBase {
           queryFn: async () => await this.investmentList(investmentQueryDto),
         });
       },
-      cmsTradebooks: (investmentQueryDto: InvestmentQueryDto) => {
+      cmsTradebook: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'cmsTradebooks',
-          queryFn: async () => await this.cmsTradebooks(investmentQueryDto),
+          queryFn: async () => await this.cmsTradebook(investmentQueryDto),
         });
       },
       notes: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'notes',
           queryFn: async () => await this.notes(investmentQueryDto),
+        });
+      },
+      transactionHistory: (transactionHistoryDto: TransactionHistoryDto) => {
+        return useQuery({
+          queryKey: 'transactionHistory',
+          queryFn: async () => await this.transactionHistory(transactionHistoryDto)
         });
       },
       investmentRegister: () => {

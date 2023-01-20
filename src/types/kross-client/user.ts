@@ -1,4 +1,4 @@
-import { FunctionResponse } from '.';
+import { FunctionResponse } from './index';
 
 export type UserQueryDto = {
   fields?: string;
@@ -6,7 +6,8 @@ export type UserQueryDto = {
   limit?: string;
   sort_by?: string;
   group_by?: string;
-  query?: string;
+  query?: {};
+  include?: {};
 };
 export type kftcBalanceResponseData = {
   rsp_code: string;

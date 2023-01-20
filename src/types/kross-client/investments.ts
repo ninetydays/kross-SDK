@@ -6,7 +6,8 @@ export type InvestmentQueryDto = {
   limit?: string;
   sort_by?: string;
   group_by?: string;
-  query?: string;
+  query?: {};
+  include?: {};
 };
 
 export type InvestmentListResponseData = {
@@ -22,6 +23,11 @@ export type InvestmentListResponseData = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type TransactionHistoryDto = { 
+  fromDate?: Date;
+  toDate?: Date;
+}
 
 export type InvestmentListResponse =
   FunctionResponse<InvestmentListResponseData>;

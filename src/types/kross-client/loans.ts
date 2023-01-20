@@ -6,8 +6,13 @@ export type LoansQueryDto = {
   limit?: string;
   sort_by?: string;
   group_by?: string;
-  query?: string;
+  query?: {};
+  include?: {};
 };
+
+export type ProductListNewDto = {
+  user_id: number;
+}
 
 export type LoanResponseData = {
   id: number;
