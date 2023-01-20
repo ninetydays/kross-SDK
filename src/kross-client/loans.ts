@@ -47,7 +47,8 @@ export class Loans extends KrossClientBase {
 
   async recentFundingItem() {
     const recentProduct = await this.loanData({
-      fields: 'id,name,fund_amount,payment_date,due_date,category,interest_rate,investor_fee_rate,state',
+      fields:
+        'id,name,fund_amount,payment_date,due_date,category,interest_rate,investor_fee_rate,state',
       sort_by: 'id.desc',
       query: {
         state: 'funding',
@@ -81,13 +82,14 @@ export class Loans extends KrossClientBase {
         return useQuery({
           queryKey: 'loanData',
           queryFn: async () => await this.loanData(loansQueryDto),
+          keepPreviousData: true,
         });
       },
       recentFundingItem: () => {
         return useQuery({
           queryKey: 'recentFundingItem',
-          queryFn: async () => await this.recentFundingItem()
-        })
+          queryFn: async () => await this.recentFundingItem(),
+        });
       },
     };
   }
