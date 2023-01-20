@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 export * from './account';
 export * from './investments';
@@ -7,6 +8,7 @@ export type KrossClientOptions = AxiosRequestConfig & {
   baseURL: string;
   accessId: string;
   secretKey: string;
+  storage?: typeof AsyncStorage;
 };
 
 export type FunctionOptions = {
