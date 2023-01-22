@@ -12,7 +12,6 @@ import {
   InvestmentQueryDto,
   TransactionHistoryDto,
 } from '../types/kross-client/investments';
-
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
     InvestmentQueryDto,
@@ -23,9 +22,6 @@ export class Investments extends KrossClientBase {
 
   constructor(options: KrossClientOptions) {
     super(options);
-    this.storage.getItem('authToken').then((value: string | null) => {
-      this.authToken = value as string;
-    });
     this.cmsTradebook = Investments.registerFunction<
       InvestmentQueryDto,
       CmsTradebookResponse
@@ -68,7 +64,7 @@ export class Investments extends KrossClientBase {
     );
   }
 
-  async transactionHistory({ fromDate, toDate }: TransactionHistoryDto) {
+  async transactionHistory({fromDate, toDate }: TransactionHistoryDto) {
     const resp = await this.cmsTradebook({
       query: {
         // member_no, we do not need member_no since it prints user related data
@@ -122,8 +118,7 @@ export class Investments extends KrossClientBase {
       transactionHistory: (transactionHistoryDto: TransactionHistoryDto) => {
         return useQuery({
           queryKey: 'transactionHistory',
-          queryFn: async () =>
-            await this.transactionHistory(transactionHistoryDto),
+          queryFn: async () => await this.transactionHistory(transactionHistoryDto)
         });
       },
       investmentRegister: () => {
