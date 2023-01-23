@@ -21,13 +21,11 @@ export class KrossClientBase {
   authToken?: string;
   tempToken?: string;
   getHmacToken: (method: string) => { hmacToken: string; xDate: string };
-  storage: typeof AsyncStorage;
   constructor(options: KrossClientOptions) {
-    this.storage = options.storage || AsyncStorage;
     this.getHmacToken = hmacTokenFunction(options.accessId, options.secretKey);
     this.instance = axios.create(options);
     this.instance.interceptors.request.use((config) => {
-      this.storage.getItem('authToken').then((value: string | null) => {
+      AsyncStorage.getItem('authToken').then((value: string | null) => {
         this.authToken = value as string;
       });
       const { hmacToken, xDate } = this.getHmacToken(config.method as string);
@@ -77,8 +75,8 @@ export class KrossClientBase {
       })
       .then((response) => {
         if (response.data?.token && response.data?.refresh) {
-          this.storage.setItem('authToken', response.data.token as string);
-          this.storage.setItem('refreshToken', response.data.refresh as string);
+          AsyncStorage.setItem('authToken', response.data.token as string);
+          AsyncStorage.setItem('refreshToken', response.data.refresh as string);
         }
         return response;
       });
@@ -86,12 +84,12 @@ export class KrossClientBase {
 
   async updateAuthToken() {
     this.refreshToken =
-      (await this.storage.getItem('refreshToken')) || undefined;
+      (await AsyncStorage.getItem('refreshToken')) || undefined;
     const res = await this.instance.get<GetAuthTokenResponse>(`/auth/refresh`, {
       headers: { authorization: `Bearer ${this.refreshToken}` },
     });
     if (res.data?.token && !this.refreshToken) {
-      this.storage.setItem('authToken', res.data.token as string);
+      AsyncStorage.setItem('authToken', res.data.token as string);
     }
     return res;
   }
