@@ -43,9 +43,15 @@ module.exports = {
   output: {
     filename: `index.js`,
     path: path.resolve(__dirname, 'dist'),
-    libraryTarget: 'umd',
-    umdNamedDefine: true,
+    libraryTarget: 'commonjs2',
     globalObject: 'this',
+  },
+
+  externals: {
+    react: 'React',
+    'react-dom': 'ReactDOM',
+    'react-native': 'react-native',
+    'react-query': 'react-query',
   },
 
   mode: 'production',
