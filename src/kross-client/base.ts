@@ -48,6 +48,8 @@ export class KrossClientBase {
         if (response.status === 404) {
           console.log('preflight request needs to be handled');
         }
+        console.log('header: ', response.config);
+        console.log('data:  ', response.data);
         return response;
       },
       async (error: AxiosError) => {
@@ -98,14 +100,16 @@ export class KrossClientBase {
     return {
       useLogin: () => {
         const mutation = useMutation((loginDto: LoginDto) =>
-          this.login(loginDto)
+          this.login(loginDto).then((resp) => resp.data)
         );
         return mutation;
       },
       updateAuthToken: () => {
         return useQuery({
           queryKey: 'updateAuthToken',
-          queryFn: async () => await this.updateAuthToken(),
+          queryFn: async () =>
+            await this.updateAuthToken().then((resp) => resp.data),
+          keepPreviousData: true,
         });
       },
     };

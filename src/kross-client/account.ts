@@ -62,28 +62,32 @@ export class Account extends KrossClientBase {
     return {
       check: () => {
         const mutation = useMutation((accountCheckDto: AccountCheckDto) =>
-          this.check(accountCheckDto)
+          this.check(accountCheckDto).then((resp) => resp.data)
         );
         return mutation;
       },
       withdrawInit: () => {
         const mutation = useMutation(
           (accountWithdrawInitDto: AccountWithdrawInitDto) =>
-            this.withdrawInit(accountWithdrawInitDto)
+            this.withdrawInit(accountWithdrawInitDto).then((resp) => resp.data)
         );
         return mutation;
       },
       withdrawCancel: () => {
         const mutation = useMutation(
           (accountWithdrawCancelDto: AccountWithdrawCancelDto) =>
-            this.withdrawCancel(accountWithdrawCancelDto)
+            this.withdrawCancel(accountWithdrawCancelDto).then(
+              (resp) => resp.data
+            )
         );
         return mutation;
       },
       withdrawVerify: () => {
         const mutation = useMutation(
           (accountWithdrawVerifyDto: AccountWithdrawVerifyDto) =>
-            this.withdrawVerify(accountWithdrawVerifyDto)
+            this.withdrawVerify(accountWithdrawVerifyDto).then(
+              (resp) => resp.data
+            )
         );
         return mutation;
       },

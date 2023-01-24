@@ -63,32 +63,41 @@ export class Loans extends KrossClientBase {
       loanConfigs: (loansQueryDto: LoansQueryDto) => {
         return useQuery({
           queryKey: 'loanConfigs',
-          queryFn: async () => await this.loanConfigs(loansQueryDto),
+          queryFn: async () =>
+            await this.loanConfigs(loansQueryDto).then((resp) => resp.data),
+          keepPreviousData: true,
         });
       },
       loanRepayments: (loansQueryDto: LoansQueryDto) => {
         return useQuery({
           queryKey: 'loanRepayments',
-          queryFn: async () => await this.loanRepayments(loansQueryDto),
+          queryFn: async () =>
+            await this.loanRepayments(loansQueryDto).then((resp) => resp.data),
+          keepPreviousData: true,
         });
       },
       loanPaymentSchedule: (loan_id: PaymentScheduleDto) => {
         return useQuery({
           queryKey: 'loanPaymentSchedule',
-          queryFn: async () => await this.loanPaymentSchedule(loan_id),
+          queryFn: async () =>
+            await this.loanPaymentSchedule(loan_id).then((resp) => resp.data),
+          keepPreviousData: true,
         });
       },
       loanData: (loansQueryDto: LoansQueryDto) => {
         return useQuery({
           queryKey: 'loanData',
-          queryFn: async () => await this.loanData(loansQueryDto),
+          queryFn: async () =>
+            await this.loanData(loansQueryDto).then((resp) => resp.data),
           keepPreviousData: true,
         });
       },
       recentFundingItem: () => {
         return useQuery({
           queryKey: 'recentFundingItem',
-          queryFn: async () => await this.recentFundingItem(),
+          queryFn: async () =>
+            await this.recentFundingItem().then((resp) => resp.data),
+          keepPreviousData: true,
         });
       },
     };

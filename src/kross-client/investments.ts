@@ -12,6 +12,7 @@ import {
   InvestmentQueryDto,
   TransactionHistoryDto,
 } from '../types/kross-client/investments';
+
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
     InvestmentQueryDto,
@@ -64,7 +65,7 @@ export class Investments extends KrossClientBase {
     );
   }
 
-  async transactionHistory({fromDate, toDate }: TransactionHistoryDto) {
+  async transactionHistory({ fromDate, toDate }: TransactionHistoryDto) {
     const resp = await this.cmsTradebook({
       query: {
         // member_no, we do not need member_no since it prints user related data
@@ -93,38 +94,54 @@ export class Investments extends KrossClientBase {
       investmentCancel: () => {
         const mutation = useMutation(
           (investmentCancelDto: InvestmentCancelDto) =>
-            this.investmentCancel(investmentCancelDto)
+            this.investmentCancel(investmentCancelDto).then((resp) => resp.data)
         );
         return mutation;
       },
       investmentList: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'investmentList',
-          queryFn: async () => await this.investmentList(investmentQueryDto),
+          queryFn: async () =>
+            await this.investmentList(investmentQueryDto).then(
+              (resp) => resp.data
+            ),
+          keepPreviousData: true,
         });
       },
       cmsTradebook: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'cmsTradebooks',
-          queryFn: async () => await this.cmsTradebook(investmentQueryDto),
+          queryFn: async () =>
+            await this.cmsTradebook(investmentQueryDto).then(
+              (resp) => resp.data
+            ),
+          keepPreviousData: true,
         });
       },
       notes: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'notes',
-          queryFn: async () => await this.notes(investmentQueryDto),
+          queryFn: async () =>
+            await this.notes(investmentQueryDto).then((resp) => resp.data),
+          keepPreviousData: true,
         });
       },
       transactionHistory: (transactionHistoryDto: TransactionHistoryDto) => {
         return useQuery({
           queryKey: 'transactionHistory',
-          queryFn: async () => await this.transactionHistory(transactionHistoryDto)
+          queryFn: async () =>
+            await this.transactionHistory(transactionHistoryDto).then(
+              (resp) => resp.data
+            ),
+          keepPreviousData: true,
         });
       },
       investmentRegister: () => {
         const mutation = useMutation(
           (investmentRegisterDto: InvestmentRegisterDto) =>
-            this.investmentRegister(investmentRegisterDto)
+            this.investmentRegister(investmentRegisterDto).then(
+              (resp) => resp.data
+            )
         );
         return mutation;
       },

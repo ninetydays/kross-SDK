@@ -85,51 +85,69 @@ export class User extends KrossClientBase {
       userNoteLogs: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'userNoteLogs',
-          queryFn: async () => await this.userNoteLogs(userQueryDto),
+          queryFn: async () =>
+            await this.userNoteLogs(userQueryDto).then((resp) => resp.data),
+          keepPreviousData: true,
         });
       },
       userAccountLogs: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'userAccountLogs',
-          queryFn: async () => await this.userAccountLogs(userQueryDto),
+          queryFn: async () =>
+            await this.userAccountLogs(userQueryDto).then((resp) => resp.data),
+          keepPreviousData: true,
         });
       },
       kftcBalance: () => {
         return useQuery({
           queryKey: 'kftcBalance',
-          queryFn: async () => await this.kftcBalance(),
+          queryFn: async () =>
+            await this.kftcBalance().then((resp) => resp.data),
+          keepPreviousData: true,
         });
       },
       getVirtualAccCertificate: () => {
         return useQuery({
           queryKey: 'getVirtualAccCertificate',
-          queryFn: async () => await this.getVirtualAccCertificate(),
+          queryFn: async () =>
+            await this.getVirtualAccCertificate().then((resp) => resp.data),
+          keepPreviousData: true,
         });
       },
       checkVirtualAccount: () => {
         return useQuery({
           queryKey: 'checkVirtualAccount',
-          queryFn: async () => await this.checkVirtualAccount(),
+          queryFn: async () =>
+            await this.checkVirtualAccount().then((resp) => resp.data),
+          keepPreviousData: true,
         });
       },
       unRegisterMemeber: () => {
-        const mutation = useMutation(() => this.unRegisterMemeber());
+        const mutation = useMutation(() =>
+          this.unRegisterMemeber().then((resp) => resp.data)
+        );
         return mutation;
       },
       releaseDepositControl: () => {
-        const mutation = useMutation(() => this.releaseDepositControl());
+        const mutation = useMutation(() =>
+          this.releaseDepositControl().then((resp) => resp.data)
+        );
         return mutation;
       },
       accountData: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'accountData',
-          queryFn: async () => await this.accountData(userQueryDto),
+          queryFn: async () =>
+            await this.accountData(userQueryDto).then((resp) => resp.data),
+          keepPreviousData: true,
         });
       },
       userData: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'userData',
-          queryFn: async () => await this.userData(userQueryDto),
+          queryFn: async () =>
+            await this.userData(userQueryDto).then((resp) => resp.data),
+          keepPreviousData: true,
         });
       },
     };
