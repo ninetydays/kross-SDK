@@ -33,10 +33,9 @@ export const user = () => {
     const { result } = renderHook(() => userData({}), {
       wrapper,
     });
-    await act(async () => {
-      await result.current.refetch();
+    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
+      timeout: 30000,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 30000);
 
@@ -45,10 +44,9 @@ export const user = () => {
     const { result } = renderHook(() => userNoteLogs({}), {
       wrapper,
     });
-    await act(async () => {
-      await result.current.refetch();
+    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
+      timeout: 30000,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 30000);
 
@@ -57,10 +55,9 @@ export const user = () => {
     const { result } = renderHook(() => userAccountLogs({}), {
       wrapper,
     });
-    await act(async () => {
-      await result.current.refetch();
+    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
+      timeout: 30000,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 30000);
 
@@ -69,10 +66,9 @@ export const user = () => {
     const { result } = renderHook(() => kftcBalance(), {
       wrapper,
     });
-    await act(async () => {
-      await result.current.refetch();
+    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
+      timeout: 30000,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 30000);
 
@@ -81,10 +77,9 @@ export const user = () => {
     const { result } = renderHook(() => getVirtualAccCertificate(), {
       wrapper,
     });
-    await act(async () => {
-      await result.current.refetch();
+    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
+      timeout: 30000,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 30000);
 
@@ -93,10 +88,9 @@ export const user = () => {
     const { result } = renderHook(() => checkVirtualAccount(), {
       wrapper,
     });
-    await act(async () => {
-      await result.current.refetch();
+    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
+      timeout: 30000,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 30000);
 
@@ -129,10 +123,9 @@ export const user = () => {
     const { result } = renderHook(() => accountData({}), {
       wrapper,
     });
-    await act(async () => {
-      await result.current.refetch();
+    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
+      timeout: 30000,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 30000);
 };

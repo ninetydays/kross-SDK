@@ -37,11 +37,8 @@ export class Loans extends KrossClientBase {
   }
 
   loanPaymentSchedule({ loan_id }: PaymentScheduleDto) {
-    return this.instance.patch<PaymentScheduleResponse>(
-      `/loans/${loan_id}/payment-schedule`,
-      {
-        loan_id,
-      }
+    return this.instance.get<PaymentScheduleResponse>(
+      `/loans/${loan_id}/payment-schedule`
     );
   }
 

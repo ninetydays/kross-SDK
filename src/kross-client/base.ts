@@ -24,16 +24,24 @@ export class KrossClientBase {
   constructor(options: KrossClientOptions) {
     this.getHmacToken = hmacTokenFunction(options.accessId, options.secretKey);
     this.instance = axios.create(options);
-    this.instance.interceptors.request.use((config) => {
-      AsyncStorage.getItem('authToken').then((value: string | null) => {
-        this.authToken = value as string;
-      });
-      const { hmacToken, xDate } = this.getHmacToken(config.method as string);
+    this.instance.interceptors.request.use(async (config) => {
+      const { hmacToken, xDate } = await this.getHmacToken(
+        config.method as string
+      );
       config.headers = {
         ...config.headers,
         'client-authorization': hmacToken,
         'X-Date': xDate,
       };
+
+      if (config.url == '/loans') {
+        return config;
+      }
+
+      AsyncStorage.getItem('authToken').then((value: string | null) => {
+        this.authToken = value as string;
+      });
+
       if (this.authToken && config.url != '/auth/refresh') {
         config.headers = {
           ...config.headers,
@@ -51,18 +59,13 @@ export class KrossClientBase {
         return response;
       },
       async (error: AxiosError) => {
-        console.log(error.config);
-        if (error.response) {
-          if (error.config.url !== '/auth/login') {
-            // Access Token was expired
-            if (error.response.status === 401) {
-              await this.updateAuthToken();
-              return this.instance.request(error.config);
-            }
-          }
-          return Promise.resolve(error.response);
+        // Access Token was expired
+        if (error?.response?.status === 401) {
+          await this.updateAuthToken();
+          return this.instance.request(error.config);
         } else {
-          return Promise.reject(error);
+          console.log('Error in axios response interceptor', { ...error });
+          return Promise.resolve(error.response);
         }
       }
     );
