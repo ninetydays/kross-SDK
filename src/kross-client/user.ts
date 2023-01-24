@@ -86,7 +86,7 @@ export class User extends KrossClientBase {
         return useQuery({
           queryKey: 'userNoteLogs',
           queryFn: async () =>
-            await this.userNoteLogs(userQueryDto).then((resp) => resp.data),
+            this.userNoteLogs(userQueryDto).then((resp) => resp.data),
           keepPreviousData: true,
         });
       },
@@ -94,7 +94,7 @@ export class User extends KrossClientBase {
         return useQuery({
           queryKey: 'userAccountLogs',
           queryFn: async () =>
-            await this.userAccountLogs(userQueryDto).then((resp) => resp.data),
+            this.userAccountLogs(userQueryDto).then((resp) => resp.data),
           keepPreviousData: true,
         });
       },
@@ -102,7 +102,7 @@ export class User extends KrossClientBase {
         return useQuery({
           queryKey: 'kftcBalance',
           queryFn: async () =>
-            await this.kftcBalance().then((resp) => resp.data),
+            this.kftcBalance().then((resp) => resp.data),
           keepPreviousData: true,
         });
       },
@@ -110,7 +110,7 @@ export class User extends KrossClientBase {
         return useQuery({
           queryKey: 'getVirtualAccCertificate',
           queryFn: async () =>
-            await this.getVirtualAccCertificate().then((resp) => resp.data),
+            this.getVirtualAccCertificate().then((resp) => resp.data),
           keepPreviousData: true,
         });
       },
@@ -118,7 +118,7 @@ export class User extends KrossClientBase {
         return useQuery({
           queryKey: 'checkVirtualAccount',
           queryFn: async () =>
-            await this.checkVirtualAccount().then((resp) => resp.data),
+            this.checkVirtualAccount().then((resp) => resp.data),
           keepPreviousData: true,
         });
       },
@@ -138,7 +138,7 @@ export class User extends KrossClientBase {
         return useQuery({
           queryKey: 'accountData',
           queryFn: async () =>
-            await this.accountData(userQueryDto).then((resp) => resp.data),
+            this.accountData(userQueryDto).then((resp) => resp.data),
           keepPreviousData: true,
         });
       },
@@ -146,7 +146,7 @@ export class User extends KrossClientBase {
         return useQuery({
           queryKey: 'userData',
           queryFn: async () =>
-            await this.userData(userQueryDto).then((resp) => resp.data),
+            this.userData(userQueryDto).then((resp) => resp.data),
           keepPreviousData: true,
         });
       },

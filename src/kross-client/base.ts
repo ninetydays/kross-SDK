@@ -48,8 +48,8 @@ export class KrossClientBase {
         if (response.status === 404) {
           console.log('preflight request needs to be handled');
         }
-        console.log('header: ', response.config);
-        console.log('data:  ', response.data);
+        // console.log('header: ', response.config);
+        // console.log('data:  ', response.data);
         return response;
       },
       async (error: AxiosError) => {
@@ -108,7 +108,7 @@ export class KrossClientBase {
         return useQuery({
           queryKey: 'updateAuthToken',
           queryFn: async () =>
-            await this.updateAuthToken().then((resp) => resp.data),
+            this.updateAuthToken().then((resp) => resp.data),
           keepPreviousData: true,
         });
       },

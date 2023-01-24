@@ -103,9 +103,10 @@ export const loan = () => {
     const { result } = renderHook(() => recentFundingItem(), {
       wrapper,
     });
-    await act(async () => {
-      await result.current.refetch();
-    });
+    // await act(async () => {
+    //   await result.current.refetch();
+    // });
+    console.log("RESULT: ", result.current.data)
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 30000);

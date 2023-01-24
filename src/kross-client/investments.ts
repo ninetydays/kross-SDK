@@ -102,7 +102,7 @@ export class Investments extends KrossClientBase {
         return useQuery({
           queryKey: 'investmentList',
           queryFn: async () =>
-            await this.investmentList(investmentQueryDto).then(
+            this.investmentList(investmentQueryDto).then(
               (resp) => resp.data
             ),
           keepPreviousData: true,
@@ -112,7 +112,7 @@ export class Investments extends KrossClientBase {
         return useQuery({
           queryKey: 'cmsTradebooks',
           queryFn: async () =>
-            await this.cmsTradebook(investmentQueryDto).then(
+            this.cmsTradebook(investmentQueryDto).then(
               (resp) => resp.data
             ),
           keepPreviousData: true,
@@ -122,7 +122,7 @@ export class Investments extends KrossClientBase {
         return useQuery({
           queryKey: 'notes',
           queryFn: async () =>
-            await this.notes(investmentQueryDto).then((resp) => resp.data),
+            this.notes(investmentQueryDto).then((resp) => resp.data),
           keepPreviousData: true,
         });
       },
@@ -130,7 +130,7 @@ export class Investments extends KrossClientBase {
         return useQuery({
           queryKey: 'transactionHistory',
           queryFn: async () =>
-            await this.transactionHistory(transactionHistoryDto).then(
+            this.transactionHistory(transactionHistoryDto).then(
               (resp) => resp.data
             ),
           keepPreviousData: true,

@@ -64,7 +64,7 @@ export class Loans extends KrossClientBase {
         return useQuery({
           queryKey: 'loanConfigs',
           queryFn: async () =>
-            await this.loanConfigs(loansQueryDto).then((resp) => resp.data),
+            this.loanConfigs(loansQueryDto).then((resp) => resp.data),
           keepPreviousData: true,
         });
       },
@@ -72,7 +72,7 @@ export class Loans extends KrossClientBase {
         return useQuery({
           queryKey: 'loanRepayments',
           queryFn: async () =>
-            await this.loanRepayments(loansQueryDto).then((resp) => resp.data),
+            this.loanRepayments(loansQueryDto).then((resp) => resp.data),
           keepPreviousData: true,
         });
       },
@@ -80,7 +80,7 @@ export class Loans extends KrossClientBase {
         return useQuery({
           queryKey: 'loanPaymentSchedule',
           queryFn: async () =>
-            await this.loanPaymentSchedule(loan_id).then((resp) => resp.data),
+            this.loanPaymentSchedule(loan_id).then((resp) => resp.data),
           keepPreviousData: true,
         });
       },
@@ -88,7 +88,7 @@ export class Loans extends KrossClientBase {
         return useQuery({
           queryKey: 'loanData',
           queryFn: async () =>
-            await this.loanData(loansQueryDto).then((resp) => resp.data),
+            this.loanData(loansQueryDto).then((resp) => resp.data),
           keepPreviousData: true,
         });
       },
@@ -96,7 +96,7 @@ export class Loans extends KrossClientBase {
         return useQuery({
           queryKey: 'recentFundingItem',
           queryFn: async () =>
-            await this.recentFundingItem().then((resp) => resp.data),
+            this.recentFundingItem().then((resp) => resp.data),
           keepPreviousData: true,
         });
       },
