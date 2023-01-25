@@ -1,6 +1,6 @@
 import { KrossClientBase } from './base';
 import { FunctionRegistered, KrossClientOptions } from '../types';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import {
   LoansResponse,
   PaymentScheduleDto,
@@ -79,11 +79,22 @@ export class Loans extends KrossClientBase {
         });
       },
       loanData: (loansQueryDto: LoansQueryDto) => {
-        return useQuery('loanData', async () => {
-          return this.loanData(loansQueryDto).then((res) => {
-            return res.data;
-          });
-        });
+        return useInfiniteQuery(
+          'loanData',
+          async ({ pageParam = 0 }) => {
+            return this.loanData({
+              ...loansQueryDto,
+              offset: pageParam,
+            }).then((res) => {
+              return res.data?.data;
+            });
+          },
+          {
+            getNextPageParam: (lastPage, pages) => {
+              return pages?.length > 1 ? pages.length + 1 : null;
+            },
+          }
+        );
       },
       recentFundingItem: () => {
         return useQuery('recentFundingItem', async () => {
