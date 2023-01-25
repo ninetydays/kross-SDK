@@ -58,35 +58,39 @@ export class Loans extends KrossClientBase {
   useLoanHooks() {
     return {
       loanConfigs: (loansQueryDto: LoansQueryDto) => {
-        return useQuery({
-          queryKey: 'loanConfigs',
-          queryFn: async () => this.loanConfigs(loansQueryDto).then((res) => res.data),
-        }).refetch();
+        return useQuery('loanConfigs', async () => {
+          return this.loanConfigs(loansQueryDto).then((res) => {
+            return res.data;
+          });
+        });
       },
       loanRepayments: (loansQueryDto: LoansQueryDto) => {
-        return useQuery({
-          queryKey: 'loanRepayments',
-          queryFn: async () => this.loanRepayments(loansQueryDto).then((res) => res.data),
-        }).refetch();
+        return useQuery('loanRepayments', async () => {
+          return this.loanRepayments(loansQueryDto).then((res) => {
+            return res.data;
+          });
+        });
       },
       loanPaymentSchedule: (loan_id: PaymentScheduleDto) => {
-        return useQuery({
-          queryKey: 'loanPaymentSchedule',
-          queryFn: async () => this.loanPaymentSchedule(loan_id).then((res) => res.data),
-        }).refetch();
+        return useQuery('loanPaymentSchedule', async () => {
+          return this.loanPaymentSchedule(loan_id).then((res) => {
+            return res.data;
+          });
+        });
       },
       loanData: (loansQueryDto: LoansQueryDto) => {
-        return useQuery({
-          queryKey: 'loanData',
-          queryFn: async () => this.loanData(loansQueryDto).then((res) => res.data),
-          keepPreviousData: true,
-        }).refetch();
+        return useQuery('loanData', async () => {
+          return this.loanData(loansQueryDto).then((res) => {
+            return res.data;
+          });
+        });
       },
       recentFundingItem: () => {
-        return useQuery({
-          queryKey: 'recentFundingItem',
-          queryFn: async () => this.recentFundingItem().then((res) => res.data),
-        }).refetch();
+        return useQuery('recentFundingItem', async () => {
+          return this.recentFundingItem().then((res) => {
+            return res.data;
+          });
+        });
       },
     };
   }

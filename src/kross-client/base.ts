@@ -24,23 +24,17 @@ export class KrossClientBase {
   constructor(options: KrossClientOptions) {
     this.getHmacToken = hmacTokenFunction(options.accessId, options.secretKey);
     this.instance = axios.create(options);
-    this.instance.interceptors.request.use(async (config) => {
-      const { hmacToken, xDate } = await this.getHmacToken(
-        config.method as string
-      );
+
+    this.instance.interceptors.request.use((config) => {
+      AsyncStorage.getItem('authToken').then((value: string | null) => {
+        this.authToken = value as string;
+      });
+      const { hmacToken, xDate } = this.getHmacToken(config.method as string);
       config.headers = {
         ...config.headers,
         'client-authorization': hmacToken,
         'X-Date': xDate,
       };
-
-      if (config.url == '/loans') {
-        return config;
-      }
-
-      AsyncStorage.getItem('authToken').then((value: string | null) => {
-        this.authToken = value as string;
-      });
 
       if (this.authToken && config.url != '/auth/refresh') {
         config.headers = {
@@ -108,8 +102,12 @@ export class KrossClientBase {
       updateAuthToken: () => {
         return useQuery({
           queryKey: 'updateAuthToken',
-          queryFn: async () => this.updateAuthToken().then((res) => res.data),
-        }).refetch();
+          queryFn: async () => {
+            return this.updateAuthToken().then((res) => {
+              return res.data;
+            });
+          },
+        });
       },
     };
   }

@@ -39,6 +39,7 @@ export const base = () => {
         password: 'Kross123!',
       });
     });
+
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 30000);
@@ -48,9 +49,7 @@ export const base = () => {
     const { result } = renderHook(() => updateAuthToken(), {
       wrapper,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
-    });
-    expect(result.current.data).toBeDefined();
+    const { data } = await result.current;
+    expect(data).toBeDefined();
   }, 30000);
 };

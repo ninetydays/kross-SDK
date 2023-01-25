@@ -29,15 +29,15 @@ export const investment = () => {
     });
   });
 
-  it('gets authToken and refreshToken', async () => {
+  it('get Investment List', async () => {
     const { investmentList } = client.useInvestmentHooks();
     const { result } = renderHook(() => investmentList({}), {
       wrapper,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 
   it('cancels the pending investment with investment_id', async () => {
@@ -75,10 +75,10 @@ export const investment = () => {
     const { result } = renderHook(() => cmsTradebook({}), {
       wrapper,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 
   it('gets notes list', async () => {
@@ -94,10 +94,10 @@ export const investment = () => {
         wrapper,
       }
     );
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 
   it('transactionHistory', async () => {
@@ -105,9 +105,9 @@ export const investment = () => {
     const { result } = renderHook(() => transactionHistory({}), {
       wrapper,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+    await waitFor(async () => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 };

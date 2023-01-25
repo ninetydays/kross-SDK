@@ -33,10 +33,10 @@ export const user = () => {
     const { result } = renderHook(() => userData({}), {
       wrapper,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 
   it('gets current user-note list', async () => {
@@ -44,8 +44,9 @@ export const user = () => {
     const { result } = renderHook(() => userNoteLogs({}), {
       wrapper,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(result.current.isSuccess).toBe(true);
     });
     expect(result.current.data).toBeDefined();
   }, 30000);
@@ -55,10 +56,10 @@ export const user = () => {
     const { result } = renderHook(() => userAccountLogs({}), {
       wrapper,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 
   it('gets kftc balance; how much investor can invest', async () => {
@@ -66,10 +67,10 @@ export const user = () => {
     const { result } = renderHook(() => kftcBalance(), {
       wrapper,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 
   it('gets link for account certificate issuance', async () => {
@@ -77,10 +78,10 @@ export const user = () => {
     const { result } = renderHook(() => getVirtualAccCertificate(), {
       wrapper,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 
   it('gets virtual account status', async () => {
@@ -88,10 +89,10 @@ export const user = () => {
     const { result } = renderHook(() => checkVirtualAccount(), {
       wrapper,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 
   it.skip('unregisters member from welcome', async () => {
@@ -123,9 +124,9 @@ export const user = () => {
     const { result } = renderHook(() => accountData({}), {
       wrapper,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 };

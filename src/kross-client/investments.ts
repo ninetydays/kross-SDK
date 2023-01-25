@@ -64,7 +64,7 @@ export class Investments extends KrossClientBase {
     );
   }
 
-  async transactionHistory({fromDate, toDate }: TransactionHistoryDto) {
+  async transactionHistory({ fromDate, toDate }: TransactionHistoryDto) {
     const resp = await this.cmsTradebook({
       query: {
         // member_no, we do not need member_no since it prints user related data
@@ -100,26 +100,44 @@ export class Investments extends KrossClientBase {
       investmentList: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'investmentList',
-          queryFn: async () => this.investmentList(investmentQueryDto).then((res) => res.data),
-        }).refetch();
+          queryFn: async () => {
+            return this.investmentList(investmentQueryDto).then((res) => {
+              return res.data;
+            });
+          },
+        });
       },
       cmsTradebook: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'cmsTradebooks',
-          queryFn: async () => this.cmsTradebook(investmentQueryDto).then((res) => res.data),
-        }).refetch();
+          queryFn: async () => {
+            return this.cmsTradebook(investmentQueryDto).then((res) => {
+              return res.data;
+            });
+          },
+        });
       },
       notes: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'notes',
-          queryFn: async () => this.notes(investmentQueryDto).then((res) => res.data),
-        }).refetch();
+          queryFn: async () => {
+            return this.notes(investmentQueryDto).then((res) => {
+              return res.data;
+            });
+          },
+        });
       },
       transactionHistory: (transactionHistoryDto: TransactionHistoryDto) => {
         return useQuery({
           queryKey: 'transactionHistory',
-          queryFn: async () =>  this.transactionHistory(transactionHistoryDto).then((res) => res.data)
-        }).refetch();
+          queryFn: async () => {
+            return this.transactionHistory(transactionHistoryDto).then(
+              (res) => {
+                return res.data;
+              }
+            );
+          },
+        });
       },
       investmentRegister: () => {
         const mutation = useMutation(

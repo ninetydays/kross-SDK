@@ -85,32 +85,52 @@ export class User extends KrossClientBase {
       userNoteLogs: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'userNoteLogs',
-          queryFn: async () => this.userNoteLogs(userQueryDto).then((res) => res.data),
-        }).refetch();
+          queryFn: async () => {
+            return this.userNoteLogs(userQueryDto).then((res) => {
+              return res.data;
+            });
+          },
+        });
       },
       userAccountLogs: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'userAccountLogs',
-          queryFn: async () => this.userAccountLogs(userQueryDto).then((res) => res.data),
-        }).refetch();
+          queryFn: async () => {
+            return this.userAccountLogs(userQueryDto).then((res) => {
+              return res.data;
+            });
+          },
+        });
       },
       kftcBalance: () => {
         return useQuery({
           queryKey: 'kftcBalance',
-          queryFn: async () => this.kftcBalance().then((res) => res.data),
-        }).refetch();
+          queryFn: async () => {
+            return this.kftcBalance().then((res) => {
+              return res.data;
+            });
+          },
+        });
       },
       getVirtualAccCertificate: () => {
         return useQuery({
           queryKey: 'getVirtualAccCertificate',
-          queryFn: async () => this.getVirtualAccCertificate().then((res) => res.data),
-        }).refetch();
+          queryFn: async () => {
+            return this.getVirtualAccCertificate().then((res) => {
+              return res.data;
+            });
+          },
+        });
       },
       checkVirtualAccount: () => {
         return useQuery({
           queryKey: 'checkVirtualAccount',
-          queryFn: async () => this.checkVirtualAccount().then((res) => res.data),
-        }).refetch();
+          queryFn: async () => {
+            return this.checkVirtualAccount().then((res) => {
+              return res.data;
+            });
+          },
+        });
       },
       unRegisterMemeber: () => {
         const mutation = useMutation(() => this.unRegisterMemeber());
@@ -123,14 +143,22 @@ export class User extends KrossClientBase {
       accountData: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'accountData',
-          queryFn: async () => this.accountData(userQueryDto).then((res) => res.data),
-        }).refetch();
+          queryFn: async () => {
+            return this.accountData(userQueryDto).then((res) => {
+              return res.data;
+            });
+          },
+        });
       },
       userData: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'userData',
-          queryFn: async () => this.userData(userQueryDto).then((res) => res.data),
-        }).refetch();
+          queryFn: async () => {
+            return this.userData(userQueryDto).then((res) => {
+              return res.data;
+            });
+          },
+        });
       },
     };
   }
