@@ -108,8 +108,8 @@ export class KrossClientBase {
       updateAuthToken: () => {
         return useQuery({
           queryKey: 'updateAuthToken',
-          queryFn: async () => await this.updateAuthToken(),
-        });
+          queryFn: async () => this.updateAuthToken().then((res) => res.data),
+        }).refetch();
       },
     };
   }

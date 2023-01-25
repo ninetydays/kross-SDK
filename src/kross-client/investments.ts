@@ -100,26 +100,26 @@ export class Investments extends KrossClientBase {
       investmentList: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'investmentList',
-          queryFn: async () => await this.investmentList(investmentQueryDto),
-        });
+          queryFn: async () => this.investmentList(investmentQueryDto).then((res) => res.data),
+        }).refetch();
       },
       cmsTradebook: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'cmsTradebooks',
-          queryFn: async () => await this.cmsTradebook(investmentQueryDto),
-        });
+          queryFn: async () => this.cmsTradebook(investmentQueryDto).then((res) => res.data),
+        }).refetch();
       },
       notes: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'notes',
-          queryFn: async () => await this.notes(investmentQueryDto),
-        });
+          queryFn: async () => this.notes(investmentQueryDto).then((res) => res.data),
+        }).refetch();
       },
       transactionHistory: (transactionHistoryDto: TransactionHistoryDto) => {
         return useQuery({
           queryKey: 'transactionHistory',
-          queryFn: async () => await this.transactionHistory(transactionHistoryDto)
-        });
+          queryFn: async () =>  this.transactionHistory(transactionHistoryDto).then((res) => res.data)
+        }).refetch();
       },
       investmentRegister: () => {
         const mutation = useMutation(

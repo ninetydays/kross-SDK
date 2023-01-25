@@ -85,32 +85,32 @@ export class User extends KrossClientBase {
       userNoteLogs: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'userNoteLogs',
-          queryFn: async () => await this.userNoteLogs(userQueryDto),
-        });
+          queryFn: async () => this.userNoteLogs(userQueryDto).then((res) => res.data),
+        }).refetch();
       },
       userAccountLogs: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'userAccountLogs',
-          queryFn: async () => await this.userAccountLogs(userQueryDto),
-        });
+          queryFn: async () => this.userAccountLogs(userQueryDto).then((res) => res.data),
+        }).refetch();
       },
       kftcBalance: () => {
         return useQuery({
           queryKey: 'kftcBalance',
-          queryFn: async () => await this.kftcBalance(),
-        });
+          queryFn: async () => this.kftcBalance().then((res) => res.data),
+        }).refetch();
       },
       getVirtualAccCertificate: () => {
         return useQuery({
           queryKey: 'getVirtualAccCertificate',
-          queryFn: async () => await this.getVirtualAccCertificate(),
-        });
+          queryFn: async () => this.getVirtualAccCertificate().then((res) => res.data),
+        }).refetch();
       },
       checkVirtualAccount: () => {
         return useQuery({
           queryKey: 'checkVirtualAccount',
-          queryFn: async () => await this.checkVirtualAccount(),
-        });
+          queryFn: async () => this.checkVirtualAccount().then((res) => res.data),
+        }).refetch();
       },
       unRegisterMemeber: () => {
         const mutation = useMutation(() => this.unRegisterMemeber());
@@ -123,14 +123,14 @@ export class User extends KrossClientBase {
       accountData: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'accountData',
-          queryFn: async () => await this.accountData(userQueryDto),
-        });
+          queryFn: async () => this.accountData(userQueryDto).then((res) => res.data),
+        }).refetch();
       },
       userData: (userQueryDto: UserQueryDto) => {
         return useQuery({
           queryKey: 'userData',
-          queryFn: async () => await this.userData(userQueryDto),
-        });
+          queryFn: async () => this.userData(userQueryDto).then((res) => res.data),
+        }).refetch();
       },
     };
   }
