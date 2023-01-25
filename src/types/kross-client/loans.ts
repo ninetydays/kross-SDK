@@ -12,7 +12,7 @@ export type LoansQueryDto = {
 
 export type ProductListNewDto = {
   user_id: number;
-}
+};
 
 export type LoanResponseData = {
   id: number;

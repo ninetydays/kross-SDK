@@ -41,10 +41,10 @@ export const loan = () => {
         wrapper,
       }
     );
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 
   it('get loan repayments list when borrowers pay back', async () => {
@@ -60,10 +60,11 @@ export const loan = () => {
         wrapper,
       }
     );
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 
   it('gets loan payment schedule when investors pays for borrowers', async () => {
@@ -77,10 +78,11 @@ export const loan = () => {
         wrapper,
       }
     );
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 
   it('gets list of the loans available', async () => {
@@ -95,12 +97,10 @@ export const loan = () => {
         wrapper,
       }
     );
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-
-    expect(result.current.data).toBeDefined();
   }, 30000);
 
   it('get list of recently items: state == funding', async () => {
@@ -108,9 +108,9 @@ export const loan = () => {
     const { result } = renderHook(() => recentFundingItem(), {
       wrapper,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true), {
-      timeout: 30000,
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 };
