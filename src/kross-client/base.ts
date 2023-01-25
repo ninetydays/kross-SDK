@@ -174,11 +174,12 @@ export class KrossClientBase {
       } else {
         url = options.url;
       }
+      const paramsAndDataObject =
+        options.method === 'get' ? { params: input } : { data: input };
       return this.request({
         url,
         method: options.method,
-        params: input,
-        data: input,
+        ...paramsAndDataObject,
       });
     };
   }
