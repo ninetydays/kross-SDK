@@ -3,6 +3,9 @@ export * from './account';
 export * from './investments';
 export * from './loans';
 export * from './user';
+export * from './investments';
+export * from './account';
+
 export type KrossClientOptions = AxiosRequestConfig & {
   baseURL: string;
   accessId: string;
