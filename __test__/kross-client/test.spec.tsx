@@ -3,6 +3,8 @@ import { account } from './account';
 import { investment } from './investment';
 import { loan } from './loan';
 import { user } from './user';
+require('dotenv').config();
+
 
 describe('Base test for login and updateToken', base);
 describe('Account', account);

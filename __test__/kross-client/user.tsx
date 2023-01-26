@@ -4,9 +4,9 @@ import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 export const user = () => {
   let client: User;
-  const baseURL = 'https://olive-dev.kross.kr';
-  const accessId = 'XLD7UY9GETOK7TPY';
-  const secretKey = 'yLbVRHGgwT5c22ndOVT2';
+  const baseURL = process.env.baseURL as string;
+  const accessId = process.env.accessId as string;
+  const secretKey = process.env.secretKey as string;
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
