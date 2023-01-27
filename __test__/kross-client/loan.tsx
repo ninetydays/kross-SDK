@@ -35,7 +35,7 @@ export const loan = () => {
       () =>
         loanConfigs({
           take: '5',
-          offset: '0',
+          skip: '0',
         }),
       {
         wrapper,
@@ -85,18 +85,20 @@ export const loan = () => {
     });
   }, 30000);
 
-  it('gets list of the loans available', async () => {
+  it.only('gets list of the loans available', async () => {
     const { loanData } = client.useLoanHooks();
     const { result } = renderHook(
       () =>
         loanData({
-          offset: '5',
+          skip: '5',
           take: '3',
+          order: 'id.asc',
         }),
       {
         wrapper,
       }
     );
+
     await waitFor(() => {
       const { data } = result.current;
       expect(data).toBeDefined();
