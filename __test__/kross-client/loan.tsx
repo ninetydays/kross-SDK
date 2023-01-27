@@ -52,9 +52,8 @@ export const loan = () => {
     const { result } = renderHook(
       () =>
         loanRepayments({
-          select: 'id,loan_id,principal',
           take: '5',
-          offset: '0',
+          skip: '0',
           order: 'id.asc',
         }),
       {

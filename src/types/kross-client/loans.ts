@@ -2,7 +2,7 @@ import { FunctionResponse } from './index';
 
 export type LoansQueryDto = {
   select?: string;
-  offset?: string;
+  skip?: string;
   take?: string;
   order?: string;
   filter?: string;

@@ -82,7 +82,7 @@ export class Loans extends KrossClientBase {
           async ({ pageParam = 0 }) => {
             return this.loanData({
               ...loansQueryDto,
-              offset: pageParam,
+              skip: pageParam.toString(),
             }).then((res) => {
               return res.data?.data;
             });
