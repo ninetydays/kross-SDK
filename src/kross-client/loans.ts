@@ -84,7 +84,7 @@ export class Loans extends KrossClientBase {
               ...loansQueryDto,
               skip: pageParam.toString(),
             }).then((res) => {
-              return res.data?.data;
+              return res.data;
             });
           },
           {
