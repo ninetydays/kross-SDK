@@ -34,7 +34,7 @@ export const loan = () => {
     const { result } = renderHook(
       () =>
         loanConfigs({
-          limit: '5',
+          take: '5',
           offset: '0',
         }),
       {
@@ -52,9 +52,10 @@ export const loan = () => {
     const { result } = renderHook(
       () =>
         loanRepayments({
-          fields: 'id,loan_id,principal',
-          limit: '5',
-          sort_by: 'id.asc',
+          select: 'id,loan_id,principal',
+          take: '5',
+          offset: '0',
+          order: 'id.asc',
         }),
       {
         wrapper,
@@ -91,7 +92,7 @@ export const loan = () => {
       () =>
         loanData({
           offset: '5',
-          limit: '3',
+          take: '3',
         }),
       {
         wrapper,

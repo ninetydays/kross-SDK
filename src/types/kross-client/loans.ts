@@ -1,13 +1,12 @@
 import { FunctionResponse } from './index';
 
 export type LoansQueryDto = {
-  fields?: string;
+  select?: string;
   offset?: string;
-  limit?: string;
-  sort_by?: string;
-  group_by?: string;
-  query?: {};
-  include?: {};
+  take?: string;
+  order?: string;
+  filter?: string;
+  join?: string;
 };
 
 export type ProductListNewDto = {
