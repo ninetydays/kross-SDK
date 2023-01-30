@@ -9,6 +9,8 @@ import {
   LoanRepaymentResponse,
   LoansQueryDto,
 } from '../types/kross-client/loans';
+import {parseJwt} from '../utils/encryptor'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export class Loans extends KrossClientBase {
   loanData: FunctionRegistered<LoansQueryDto, LoansResponse>;
   loanRepayments: FunctionRegistered<LoansQueryDto, LoanRepaymentResponse>;
@@ -43,15 +45,16 @@ export class Loans extends KrossClientBase {
   }
 
   async loans(loansQueryDto: LoansQueryDto) {
-    const { user_id, ...loansParam } = loansQueryDto;
+    const token  =  await AsyncStorage.getItem('authToken');
+    const data = parseJwt(token as string);
     const loan = await this.loanData({
+      ...loansQueryDto,
       join: 'investments',
-      ...loansParam,
     });
     const loanArr = Object.values(loan?.data);
     const zip = loanArr.map((item: any): LoansResponse => {
-      if (user_id) {
-        const inv = item.investments.find((invItem: any) => invItem?.userId == user_id);
+      if (data?.user_id) {
+        const inv = item.investments.find((invItem: any) => invItem?.userId == data.user_id);
         return {
           ...item,
           is_user_invest: inv ? true : false,

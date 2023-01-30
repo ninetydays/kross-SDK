@@ -108,7 +108,6 @@ export const loan = () => {
     const { loans } = client.useLoanHooks();
     const { result } = renderHook(() => loans(
       {
-        user_id: 14218,
         filter: 'state||$eq||funding||pending'
       }), {
       wrapper,
