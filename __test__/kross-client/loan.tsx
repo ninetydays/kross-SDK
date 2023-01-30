@@ -105,9 +105,9 @@ export const loan = () => {
     });
   }, 30000);
 
-  it('get list of recently items: state == funding', async () => {
-    const { recentFundingItem } = client.useLoanHooks();
-    const { result } = renderHook(() => recentFundingItem(), {
+  it('new Product List available', async () => {
+    const { loans } = client.useLoanHooks();
+    const { result } = renderHook(() => loans({user_id: 14218}), {
       wrapper,
     });
     await waitFor(() => {
@@ -115,4 +115,5 @@ export const loan = () => {
       expect(data).toBeDefined();
     });
   }, 30000);
+
 };

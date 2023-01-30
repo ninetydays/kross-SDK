@@ -8,6 +8,7 @@ import {
   LoanConfigResponse,
   LoanRepaymentResponse,
   LoansQueryDto,
+  LoanDto
 } from '../types/kross-client/loans';
 export class Loans extends KrossClientBase {
   loanData: FunctionRegistered<LoansQueryDto, LoansResponse>;
@@ -42,19 +43,48 @@ export class Loans extends KrossClientBase {
     );
   }
 
-  async recentFundingItem() {
-    const recentProduct = await this.loanData({
-      select:
-        'id,name,fund_amount,payment_date,due_date,category,interest_rate,investor_fee_rate,state',
+  async loans(data: LoanDto) {
+    const { user_id } = data;
+    console.log("user: ", user_id);
+    const loan = await this.loanData({
       order: 'id.desc',
-      filter: 'id||$eq||funding',
-      take: '3',
+      filter: 'state||$eq||funding||pending',
+      join: 'investments',
     });
-
-    return recentProduct;
-  }
+    const loanArr = Object.values(loan?.data);
+    const zip = loanArr.map((item: any): LoansResponse => {
+      if (user_id) {
+        const inv = item.investments.find((invItem: any) => invItem?.userId == user_id);
+        return {
+          ...item,
+          is_user_invest: inv ? true : false,
+          investment_id: inv ? inv.id : null,
+          user_inv_amount: inv ? inv.amount : 0,
+        };
+      }
+      return {
+        ...item,
+        is_user_invest: false,
+        user_inv_amount: 0,
+        investment_id: null,
+      };
+    });
+    return {
+      data: zip || [],
+    };
+}
   useLoanHooks() {
     return {
+      loans: (data: LoanDto) => {
+        return useInfiniteQuery(
+          'loans',
+          async () => {
+            return this.loans(data).then((res) => {
+              return res.data;
+            });
+          },
+        );
+      },
       loanConfigs: (loansQueryDto: LoansQueryDto) => {
         return useQuery('loanConfigs', async () => {
           return this.loanConfigs(loansQueryDto).then((res) => {
@@ -93,13 +123,6 @@ export class Loans extends KrossClientBase {
             },
           }
         );
-      },
-      recentFundingItem: () => {
-        return useQuery('recentFundingItem', async () => {
-          return this.recentFundingItem().then((res) => {
-            return res.data;
-          });
-        });
       },
     };
   }

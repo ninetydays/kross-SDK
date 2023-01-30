@@ -9,7 +9,7 @@ export type LoansQueryDto = {
   join?: string;
 };
 
-export type ProductListNewDto = {
+export type LoanDto = {
   user_id: number;
 };
 
