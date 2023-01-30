@@ -1,6 +1,6 @@
 import { KrossClientBase } from './base';
 import { FunctionRegistered, KrossClientOptions } from '../types';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useInfiniteQuery } from 'react-query';
 import {
   InvestmentCancelDto,
   InvestmentCancelResponse,
@@ -118,14 +118,22 @@ export class Investments extends KrossClientBase {
         });
       },
       notes: (investmentQueryDto: InvestmentQueryDto) => {
-        return useQuery({
-          queryKey: 'notes',
-          queryFn: async () => {
-            return this.notes(investmentQueryDto).then((res) => {
+        return useInfiniteQuery(
+          'notes',
+          async ({ pageParam = 0 }) => {
+            return this.notes({
+              ...investmentQueryDto,
+              offset: pageParam.toString(),
+            }).then((res) => {
               return res.data;
             });
           },
-        });
+          {
+            getNextPageParam: (lastPage, pages) => {
+              return pages?.length > 1 ? pages.length + 1 : null;
+            },
+          }
+        );
       },
       transactionHistory: (transactionHistoryDto: TransactionHistoryDto) => {
         return useQuery({
