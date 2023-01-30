@@ -54,12 +54,15 @@ export class KrossClientBase {
       },
       async (error: AxiosError) => {
         // Access Token was expired
-        if (error?.response?.status === 401) {
+        if (
+          error?.response?.status === 401 &&
+          error?.config?.url !== '/auth/login'
+        ) {
           await this.updateAuthToken();
           return this.instance.request(error.config);
         } else {
           console.log('Error in axios response interceptor', { ...error });
-          return Promise.resolve(error.response);
+          return Promise.reject(error.response);
         }
       }
     );
