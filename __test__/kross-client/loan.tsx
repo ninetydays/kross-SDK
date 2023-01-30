@@ -104,7 +104,7 @@ export const loan = () => {
     });
   }, 30000);
 
-  it.only('new Product List available', async () => {
+  it('new Product List available', async () => {
     const { loans } = client.useLoanHooks();
     const { result } = renderHook(() => loans(
       {
@@ -115,7 +115,6 @@ export const loan = () => {
     });
     await waitFor(() => {
       const { data } = result.current;
-      console.log("recent funded items: ", data?.pages);
       expect(data).toBeDefined();
     });
   }, 30000);
