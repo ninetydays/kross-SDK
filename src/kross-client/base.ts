@@ -17,7 +17,6 @@ import { hmacTokenFunction } from '../utils/encryptor';
 
 export class KrossClientBase {
   instance: AxiosInstance;
-  refreshToken?: string;
   authToken?: string;
   tempToken?: string;
   getHmacToken: (method: string) => { hmacToken: string; xDate: string };
@@ -83,12 +82,11 @@ export class KrossClientBase {
   }
 
   async updateAuthToken() {
-    this.refreshToken =
-      (await AsyncStorage.getItem('refreshToken')) || undefined;
+    const refreshToken = await AsyncStorage.getItem('refreshToken');
     const res = await this.instance.get<GetAuthTokenResponse>(`/auth/refresh`, {
-      headers: { authorization: `Bearer ${this.refreshToken}` },
+      headers: { authorization: `Bearer ${refreshToken}` },
     });
-    if (res.data?.token && !this.refreshToken) {
+    if (res.data?.token && !refreshToken) {
       AsyncStorage.setItem('authToken', res.data.token as string);
     }
     return res;
