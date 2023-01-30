@@ -45,16 +45,16 @@ export class Loans extends KrossClientBase {
   }
 
   async loans(loansQueryDto: LoansQueryDto) {
-    const token  =  await AsyncStorage.getItem('authToken');
-    const data = parseJwt(token as string);
+    const authToken  =  await AsyncStorage.getItem('authToken');
+    const userData = parseJwt(authToken as string);
     const loan = await this.loanData({
       ...loansQueryDto,
       join: 'investments',
     });
-    const loanArr = Object.values(loan?.data);
-    const zip = loanArr.map((item: any): LoansResponse => {
-      if (data?.user_id) {
-        const inv = item.investments.find((invItem: any) => invItem?.userId == data.user_id);
+    const loansArray = Object.values(loan?.data);
+    const loansResponseArray = loansArray.map((item: any): LoansResponse => {
+      if (userData?.user_id) {
+        const inv = item.investments.find((invItem: any) => invItem?.userId == userData.user_id);
         return {
           ...item,
           is_user_invest: inv ? true : false,
@@ -70,7 +70,7 @@ export class Loans extends KrossClientBase {
       };
     });
     return {
-      data: zip || [],
+      data: loansResponseArray || [],
     };
 }
   useLoanHooks() {
