@@ -90,7 +90,6 @@ export const loan = () => {
     const { result } = renderHook(
       () =>
         loanData({
-          skip: '5',
           take: '3',
           order: 'id.asc',
         }),
@@ -105,13 +104,18 @@ export const loan = () => {
     });
   }, 30000);
 
-  it('new Product List available', async () => {
+  it.only('new Product List available', async () => {
     const { loans } = client.useLoanHooks();
-    const { result } = renderHook(() => loans({user_id: 14218}), {
+    const { result } = renderHook(() => loans(
+      {
+        user_id: 14218,
+        filter: 'state||$eq||funding||pending'
+      }), {
       wrapper,
     });
     await waitFor(() => {
       const { data } = result.current;
+      console.log("recent funded items: ", data?.pages);
       expect(data).toBeDefined();
     });
   }, 30000);

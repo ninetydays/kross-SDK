@@ -7,12 +7,8 @@ export type LoansQueryDto = {
   order?: string;
   filter?: string;
   join?: string;
+  user_id?: number;
 };
-
-export type LoanDto = {
-  user_id: number;
-};
-
 export type LoanResponseData = {
   id: number;
   no: number;

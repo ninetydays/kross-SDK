@@ -8,7 +8,6 @@ import {
   LoanConfigResponse,
   LoanRepaymentResponse,
   LoansQueryDto,
-  LoanDto
 } from '../types/kross-client/loans';
 export class Loans extends KrossClientBase {
   loanData: FunctionRegistered<LoansQueryDto, LoansResponse>;
@@ -43,13 +42,11 @@ export class Loans extends KrossClientBase {
     );
   }
 
-  async loans(data: LoanDto) {
-    const { user_id } = data;
-    console.log("user: ", user_id);
+  async loans(loansQueryDto: LoansQueryDto) {
+    const { user_id, ...loansParam } = loansQueryDto;
     const loan = await this.loanData({
-      order: 'id.desc',
-      filter: 'state||$eq||funding||pending',
       join: 'investments',
+      ...loansParam,
     });
     const loanArr = Object.values(loan?.data);
     const zip = loanArr.map((item: any): LoansResponse => {
@@ -75,11 +72,11 @@ export class Loans extends KrossClientBase {
 }
   useLoanHooks() {
     return {
-      loans: (data: LoanDto) => {
+      loans: (loansQueryDto: LoansQueryDto) => {
         return useInfiniteQuery(
           'loans',
           async () => {
-            return this.loans(data).then((res) => {
+            return this.loans(loansQueryDto).then((res) => {
               return res.data;
             });
           },
