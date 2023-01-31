@@ -1,6 +1,6 @@
 import { KrossClientBase } from './base';
 import { FunctionRegistered, KrossClientOptions } from '../types';
-import { useQuery, useMutation, useInfiniteQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import {
   InvestmentCancelDto,
   InvestmentCancelResponse,
@@ -121,9 +121,7 @@ export class Investments extends KrossClientBase {
         return useQuery({
           queryKey: 'notes',
           queryFn: async () => {
-            return this.notes({
-              ...investmentQueryDto,
-            }).then((res) => {
+            return this.notes(investmentQueryDto).then((res) => {
               return res.data;
             });
           },
