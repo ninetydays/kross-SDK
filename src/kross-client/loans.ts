@@ -81,21 +81,21 @@ export class Loans extends KrossClientBase {
             const loansResponseArray = loansArray.map(
               (item: any): LoansResponse => {
                 if (userData?.user_id) {
-                  const inv = item.investments.find(
+                  const investment = item.investments.find(
                     (invItem: any) => invItem?.userId == userData.user_id
                   );
                   return {
                     ...item,
-                    is_user_invest: inv ? true : false,
-                    investment_id: inv ? inv.id : null,
-                    user_inv_amount: inv ? inv.amount : 0,
+                    isUserInvested: investment ? true : false,
+                    investmentId: investment ? investment.id : null,
+                    userInvestedAmount: investment ? investment.amount : 0,
                   };
                 }
                 return {
                   ...item,
-                  is_user_invest: false,
-                  user_inv_amount: 0,
-                  investment_id: null,
+                  isUserInvested: false,
+                  userInvestedAmount: 0,
+                  investmentId: null,
                 };
               }
             );
