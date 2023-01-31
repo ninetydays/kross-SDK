@@ -49,17 +49,9 @@ export const loan = () => {
 
   it('get loan repayments list when borrowers pay back', async () => {
     const { loanRepayments } = client.useLoanHooks();
-    const { result } = renderHook(
-      () =>
-        loanRepayments({
-          take: '5',
-          skip: '0',
-          order: 'id.asc',
-        }),
-      {
-        wrapper,
-      }
-    );
+    const { result } = renderHook(() => loanRepayments({}), {
+      wrapper,
+    });
 
     await waitFor(() => {
       const { data } = result.current;
@@ -90,26 +82,12 @@ export const loan = () => {
     const { result } = renderHook(
       () =>
         loanData({
-          skip: '5',
-          take: '3',
-          order: 'id.asc',
+          filter: 'state||$eq||funding||pending',
         }),
       {
         wrapper,
       }
     );
-
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
-
-  it('get list of recently items: state == funding', async () => {
-    const { recentFundingItem } = client.useLoanHooks();
-    const { result } = renderHook(() => recentFundingItem(), {
-      wrapper,
-    });
     await waitFor(() => {
       const { data } = result.current;
       expect(data).toBeDefined();

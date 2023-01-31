@@ -9,6 +9,8 @@ import {
   LoanRepaymentResponse,
   LoansQueryDto,
 } from '../types/kross-client/loans';
+import { parseJwt } from '../utils/encryptor';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export class Loans extends KrossClientBase {
   loanData: FunctionRegistered<LoansQueryDto, LoansResponse>;
   loanRepayments: FunctionRegistered<LoansQueryDto, LoanRepaymentResponse>;
@@ -41,18 +43,6 @@ export class Loans extends KrossClientBase {
       `/loans/${loan_id}/payment-schedule`
     );
   }
-
-  async recentFundingItem() {
-    const recentProduct = await this.loanData({
-      select:
-        'id,name,fund_amount,payment_date,due_date,category,interest_rate,investor_fee_rate,state',
-      order: 'id.desc',
-      filter: 'id||$eq||funding',
-      take: '3',
-    });
-
-    return recentProduct;
-  }
   useLoanHooks() {
     return {
       loanConfigs: (loansQueryDto: LoansQueryDto) => {
@@ -80,12 +70,36 @@ export class Loans extends KrossClientBase {
         return useInfiniteQuery(
           'loanData',
           async ({ pageParam = 0 }) => {
-            return this.loanData({
+            const authToken = await AsyncStorage.getItem('authToken');
+            const userData = await parseJwt(authToken as string);
+            const loan = await this.loanData({
               ...loansQueryDto,
+              join: 'investments',
               skip: pageParam.toString(),
-            }).then((res) => {
-              return res.data;
             });
+            const loansArray = Object.values(loan?.data);
+            const loansResponseArray = loansArray.map(
+              (item: any): LoansResponse => {
+                if (userData?.user_id) {
+                  const investment = item.investments.find(
+                    (invItem: any) => invItem?.userId == userData.user_id
+                  );
+                  return {
+                    ...item,
+                    isUserInvested: investment ? true : false,
+                    investmentId: investment ? investment.id : null,
+                    userInvestedAmount: investment ? investment.amount : 0,
+                  };
+                }
+                return {
+                  ...item,
+                  isUserInvested: false,
+                  userInvestedAmount: 0,
+                  investmentId: null,
+                };
+              }
+            );
+            return loansResponseArray || [];
           },
           {
             getNextPageParam: (lastPage, pages) => {
@@ -93,13 +107,6 @@ export class Loans extends KrossClientBase {
             },
           }
         );
-      },
-      recentFundingItem: () => {
-        return useQuery('recentFundingItem', async () => {
-          return this.recentFundingItem().then((res) => {
-            return res.data;
-          });
-        });
       },
     };
   }

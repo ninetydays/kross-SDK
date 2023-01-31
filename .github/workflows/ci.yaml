@@ -22,7 +22,8 @@ jobs:
       - name: Install dependecncies
         run: yarn install
       - name: Run lint
-        run: yarn lint .
+        run:
+          yarn lint .
           #  test:
           #    name: Test
           #    runs-on: ubuntu-latest

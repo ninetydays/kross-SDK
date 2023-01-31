@@ -26,35 +26,27 @@ export class Account extends KrossClientBase {
       AccountWithdrawCancelDto,
       AccountWithdrawCancelResponse
     >({
-      url: '/accounts/withdraw/verify',
+      url: '/accounts/withdraw/cancel',
       urlParam: 'idempotency_key',
       method: 'post',
     });
   }
 
-  check({ bankId, accountNumber, name }: AccountCheckDto) {
+  check(accountCheckDto: AccountCheckDto) {
     return this.instance.post<AccountCheckResponse>('/accounts/check', {
-      bankId,
-      accountNumber,
-      name,
+      accountCheckDto,
     });
   }
-  withdrawVerify({ idempotency_key, verify_code }: AccountWithdrawVerifyDto) {
+  withdrawVerify(accountWithdrawVerifyDto: AccountWithdrawVerifyDto) {
     return this.instance.post<AccountWithdrawVerifyResponse>(
       '/accounts/withdraw/verify',
-      {
-        idempotency_key,
-        verify_code,
-      }
+      accountWithdrawVerifyDto
     );
   }
-  withdrawInit({ member_no, amount }: AccountWithdrawInitDto) {
+  withdrawInit(accountWithdrawInitDto: AccountWithdrawInitDto) {
     return this.instance.post<AccountWithdrawInitResponse>(
       '/accounts/withdraw/init',
-      {
-        member_no,
-        amount,
-      }
+      accountWithdrawInitDto
     );
   }
 

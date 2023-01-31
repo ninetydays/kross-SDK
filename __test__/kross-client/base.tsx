@@ -49,7 +49,9 @@ export const base = () => {
     const { result } = renderHook(() => updateAuthToken(), {
       wrapper,
     });
-    const { data } = await result.current;
-    expect(data).toBeDefined();
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
+    });
   }, 30000);
 };

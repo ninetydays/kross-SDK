@@ -78,7 +78,8 @@ export class KrossClientBase {
           AsyncStorage.setItem('refreshToken', response.data.refresh as string);
         }
         return response;
-      });
+      })
+      .catch((e) => console.error(e));
   }
 
   async updateAuthToken() {
