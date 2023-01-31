@@ -47,6 +47,9 @@ export type LoanResponseData = {
   data: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
+  userInvestedAmount?: number;
+  isUserInvested?: boolean;
+  investmentId?: number | null;
 };
 
 export type LoansResponse = FunctionResponse<LoanResponseData>;
