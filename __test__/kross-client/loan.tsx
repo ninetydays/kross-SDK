@@ -85,7 +85,7 @@ export const loan = () => {
     });
   }, 30000);
 
-  it.only('gets list of the loans available', async () => {
+  it('gets list of the loans available', async () => {
     const { loanData } = client.useLoanHooks();
     const { result } = renderHook(
       () =>

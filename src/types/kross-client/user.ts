@@ -6,15 +6,15 @@ export type UserQueryDto = {
   limit?: string;
   sort_by?: string;
   group_by?: string;
-  query?: {};
-  include?: {};
+  query?: Record<string, unknown>;
+  include?: Record<string, unknown>;
 };
 export type kftcBalanceResponseData = {
   rsp_code: string;
   rsp_message: string;
-  borrower_info: {};
-  in_progress_result_info: {};
-  complete_result_info: {};
+  borrower_info: Record<string, unknown>;
+  in_progress_result_info: Record<string, unknown>;
+  complete_result_info: Record<string, unknown>;
 };
 
 export type kftcBalanceResponse = FunctionResponse<kftcBalanceResponseData>;
@@ -78,7 +78,7 @@ export type UserResponseData = {
   id_card_verified: boolean;
   bank_account_verified: boolean;
   financial_provider: boolean;
-  data: {};
+  data: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -111,7 +111,7 @@ export type UserNoteLogsData = {
   principal: number;
   repaid_principal: number;
   remain_principal: number;
-  data: {};
+  data: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 };

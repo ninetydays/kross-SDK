@@ -45,7 +45,6 @@ export const user = () => {
       wrapper,
     });
     await waitFor(() => {
-      const { data } = result.current;
       expect(result.current.isSuccess).toBe(true);
     });
     expect(result.current.data).toBeDefined();

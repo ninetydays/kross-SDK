@@ -49,7 +49,7 @@ export type LoanResponseData = {
   kftc_loan_contract_id: string;
   kftc_goods_id: string;
   memo: string;
-  data: {};
+  data: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -95,7 +95,7 @@ export type LoanRepaymentReponseData = {
   borrower_fee_vat: number;
   income_tax: number;
   local_tax: number;
-  data: {};
+  data: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 };
