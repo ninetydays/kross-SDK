@@ -6,8 +6,8 @@ export type InvestmentQueryDto = {
   limit?: string;
   sort_by?: string;
   group_by?: string;
-  query?: {};
-  include?: {};
+  query?: Record<string, unknown>;
+  include?: Record<string, unknown>;
 };
 
 export type InvestmentListResponseData = {
@@ -19,7 +19,7 @@ export type InvestmentListResponseData = {
   amount: number;
   state: string;
   wc_tid: string;
-  data: {};
+  data: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -79,7 +79,7 @@ export type NotesResponseData = {
   interest: number;
   origin_principal: number;
   state: string;
-  data: {};
+  data: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -94,7 +94,7 @@ export type CmsTradebookResponseData = {
   exposure: boolean;
   status: string;
   member_no: string;
-  data: {};
+  data: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 };
