@@ -46,7 +46,7 @@ export class Loans extends KrossClientBase {
 
   async loans(loansQueryDto: LoansQueryDto) {
     const authToken  =  await AsyncStorage.getItem('authToken');
-    const userData = parseJwt(authToken as string);
+    const userData = await parseJwt(authToken as string);
     const loan = await this.loanData({
       ...loansQueryDto,
       join: 'investments',

@@ -20,9 +20,15 @@ export const hmacTokenFunction =
     };
   };
 
-  export const parseJwt  = (token: string) => {
-    if (!token){
+  export const parseJwt  = (authToken: string) => {
+    if (!authToken){
       return;
     }
-    return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+    const date = new Date(0);
+    const decoded = JSON.parse(Buffer.from(authToken.split('.')[1], 'base64').toString());
+    date.setUTCSeconds(decoded.exp);
+    if (new Date().valueOf() > date.valueOf()){
+      return;
+    }
+    return decoded;
 }
