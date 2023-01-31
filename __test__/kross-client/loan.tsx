@@ -90,7 +90,6 @@ export const loan = () => {
     );
     await waitFor(() => {
       const { data } = result.current;
-      console.log('page params', data?.pages);
       expect(data).toBeDefined();
     });
   }, 30000);
