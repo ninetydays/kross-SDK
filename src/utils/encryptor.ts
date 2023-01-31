@@ -20,15 +20,17 @@ export const hmacTokenFunction =
     };
   };
 
-  export const parseJwt  = (authToken: string) => {
-    if (!authToken){
-      return;
-    }
-    const date = new Date(0);
-    const decoded = JSON.parse(Buffer.from(authToken.split('.')[1], 'base64').toString());
-    date.setUTCSeconds(decoded.exp);
-    if (new Date().valueOf() > date.valueOf()){
-      return;
-    }
-    return decoded;
-}
+export const parseJwt = (authToken: string) => {
+  if (!authToken) {
+    return;
+  }
+  const date = new Date(0);
+  const decoded = JSON.parse(
+    Buffer.from(authToken.split('.')[1], 'base64').toString()
+  );
+  date.setUTCSeconds(decoded.exp);
+  if (new Date().valueOf() > date.valueOf()) {
+    return;
+  }
+  return decoded;
+};

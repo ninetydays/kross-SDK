@@ -44,7 +44,7 @@ export const user = () => {
       wrapper,
     });
     await waitFor(() => {
-      const { data } = result.current
+      const { data } = result.current;
       expect(data).toBeDefined();
     });
   }, 30000);

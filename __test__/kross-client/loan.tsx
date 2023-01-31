@@ -49,13 +49,9 @@ export const loan = () => {
 
   it('get loan repayments list when borrowers pay back', async () => {
     const { loanRepayments } = client.useLoanHooks();
-    const { result } = renderHook(
-      () =>
-        loanRepayments({}),
-      {
-        wrapper,
-      }
-    );
+    const { result } = renderHook(() => loanRepayments({}), {
+      wrapper,
+    });
 
     await waitFor(() => {
       const { data } = result.current;
@@ -86,32 +82,16 @@ export const loan = () => {
     const { result } = renderHook(
       () =>
         loanData({
-          take: '3',
-          order: 'id.asc',
+          filter: 'state||$eq||funding||pending',
         }),
       {
         wrapper,
       }
     );
-
     await waitFor(() => {
       const { data } = result.current;
+      console.log('page params', data?.pages);
       expect(data).toBeDefined();
     });
   }, 30000);
-
-  it('new Product List available', async () => {
-    const { loans } = client.useLoanHooks();
-    const { result } = renderHook(() => loans(
-      {
-        filter: 'state||$eq||funding||pending'
-      }), {
-      wrapper,
-    });
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
-
 };

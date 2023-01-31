@@ -40,13 +40,13 @@ export class Account extends KrossClientBase {
   withdrawVerify(accountWithdrawVerifyDto: AccountWithdrawVerifyDto) {
     return this.instance.post<AccountWithdrawVerifyResponse>(
       '/accounts/withdraw/verify',
-      accountWithdrawVerifyDto,
+      accountWithdrawVerifyDto
     );
   }
   withdrawInit(accountWithdrawInitDto: AccountWithdrawInitDto) {
     return this.instance.post<AccountWithdrawInitResponse>(
       '/accounts/withdraw/init',
-      accountWithdrawInitDto,
+      accountWithdrawInitDto
     );
   }
 

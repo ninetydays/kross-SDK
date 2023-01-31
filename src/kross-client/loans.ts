@@ -9,7 +9,7 @@ import {
   LoanRepaymentResponse,
   LoansQueryDto,
 } from '../types/kross-client/loans';
-import {parseJwt} from '../utils/encryptor'
+import { parseJwt } from '../utils/encryptor';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export class Loans extends KrossClientBase {
   loanData: FunctionRegistered<LoansQueryDto, LoansResponse>;
@@ -43,48 +43,8 @@ export class Loans extends KrossClientBase {
       `/loans/${loan_id}/payment-schedule`
     );
   }
-
-  async loans(loansQueryDto: LoansQueryDto) {
-    const authToken  =  await AsyncStorage.getItem('authToken');
-    const userData = await parseJwt(authToken as string);
-    const loan = await this.loanData({
-      ...loansQueryDto,
-      join: 'investments',
-    });
-    const loansArray = Object.values(loan?.data);
-    const loansResponseArray = loansArray.map((item: any): LoansResponse => {
-      if (userData?.user_id) {
-        const inv = item.investments.find((invItem: any) => invItem?.userId == userData.user_id);
-        return {
-          ...item,
-          is_user_invest: inv ? true : false,
-          investment_id: inv ? inv.id : null,
-          user_inv_amount: inv ? inv.amount : 0,
-        };
-      }
-      return {
-        ...item,
-        is_user_invest: false,
-        user_inv_amount: 0,
-        investment_id: null,
-      };
-    });
-    return {
-      data: loansResponseArray || [],
-    };
-}
   useLoanHooks() {
     return {
-      loans: (loansQueryDto: LoansQueryDto) => {
-        return useInfiniteQuery(
-          'loans',
-          async () => {
-            return this.loans(loansQueryDto).then((res) => {
-              return res.data;
-            });
-          },
-        );
-      },
       loanConfigs: (loansQueryDto: LoansQueryDto) => {
         return useQuery('loanConfigs', async () => {
           return this.loanConfigs(loansQueryDto).then((res) => {
@@ -110,12 +70,35 @@ export class Loans extends KrossClientBase {
         return useInfiniteQuery(
           'loanData',
           async ({ pageParam = 0 }) => {
-            return this.loanData({
+            const authToken = await AsyncStorage.getItem('authToken');
+            const userData = await parseJwt(authToken as string);
+            const loan = await this.loanData({
               ...loansQueryDto,
-              skip: pageParam.toString(),
-            }).then((res) => {
-              return res.data;
+              join: 'investments',
             });
+            const loansArray = Object.values(loan?.data);
+            const loansResponseArray = loansArray.map(
+              (item: any): LoansResponse => {
+                if (userData?.user_id) {
+                  const inv = item.investments.find(
+                    (invItem: any) => invItem?.userId == userData.user_id
+                  );
+                  return {
+                    ...item,
+                    is_user_invest: inv ? true : false,
+                    investment_id: inv ? inv.id : null,
+                    user_inv_amount: inv ? inv.amount : 0,
+                  };
+                }
+                return {
+                  ...item,
+                  is_user_invest: false,
+                  user_inv_amount: 0,
+                  investment_id: null,
+                };
+              }
+            );
+            return loansResponseArray || [];
           },
           {
             getNextPageParam: (lastPage, pages) => {
