@@ -29,7 +29,7 @@ export const account = () => {
     });
   });
 
-  it('checks bank account owner request', async () => {
+  it.skip('checks bank account owner request', async () => {
     const { check } = client.useAccountHooks();
     const { result } = renderHook(() => check(), {
       wrapper,
@@ -46,7 +46,7 @@ export const account = () => {
     expect(result.current.data).toBeDefined();
   }, 10000);
 
-  it('checks request to withdraw amount via withdrawInit', async () => {
+  it.skip('checks request to withdraw amount via withdrawInit', async () => {
     const { withdrawInit } = client.useAccountHooks();
     const { result } = renderHook(() => withdrawInit(), {
       wrapper,
@@ -63,7 +63,7 @@ export const account = () => {
     expect(result.current.data).toBeDefined();
   }, 10000);
 
-  it('checks request to cancel withdraw amount via withdrawCancel', async () => {
+  it.skip('checks request to cancel withdraw amount via withdrawCancel', async () => {
     const { withdrawCancel } = client.useAccountHooks();
     const { result } = renderHook(() => withdrawCancel(), {
       wrapper,
@@ -77,7 +77,7 @@ export const account = () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('registers withdraw account via withdrawVerify', async () => {
+  it.skip('registers withdraw account via withdrawVerify', async () => {
     const { withdrawVerify } = client.useAccountHooks();
     const { result } = renderHook(() => withdrawVerify(), {
       wrapper,

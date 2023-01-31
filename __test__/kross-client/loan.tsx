@@ -51,8 +51,7 @@ export const loan = () => {
     const { loanRepayments } = client.useLoanHooks();
     const { result } = renderHook(
       () =>
-        loanRepayments({
-        }),
+        loanRepayments({}),
       {
         wrapper,
       }

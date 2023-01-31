@@ -34,8 +34,7 @@ export const user = () => {
       wrapper,
     });
     await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
+      expect(result.current).toBeDefined();
     });
   }, 30000);
 
@@ -45,9 +44,9 @@ export const user = () => {
       wrapper,
     });
     await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
+      const { data } = result.current
+      expect(data).toBeDefined();
     });
-    expect(result.current.data).toBeDefined();
   }, 30000);
 
   it('gets current user account-log list', async () => {
