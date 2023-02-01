@@ -72,11 +72,13 @@ export class Loans extends KrossClientBase {
           async ({ pageParam = 0 }) => {
             const authToken = await AsyncStorage.getItem('authToken');
             const userData = await parseJwt(authToken as string);
-
+            const skip = (
+              pageParam * parseInt(loansQueryDto?.take as string, 10)
+            ).toString();
             const loan = await this.loanData({
               ...loansQueryDto,
               join: 'investments',
-              skip: pageParam,
+              skip,
             });
             const loansArray = Object.values(loan?.data);
             const loansResponseArray = await loansArray.map(
@@ -105,7 +107,7 @@ export class Loans extends KrossClientBase {
           },
           {
             getNextPageParam: (lastPage, pages) => {
-              return pages?.length > 1 ? pages.length + 1 : null;
+              return pages?.length >= 1 ? pages.length : null;
             },
           }
         );
