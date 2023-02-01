@@ -1,6 +1,6 @@
 import { KrossClientBase } from './base';
 import { FunctionRegistered, KrossClientOptions } from '../types';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useInfiniteQuery } from 'react-query';
 import {
   InvestmentCancelDto,
   InvestmentCancelResponse,
@@ -10,7 +10,6 @@ import {
   CmsTradebookResponse,
   InvestmentRegisterResponse,
   InvestmentQueryDto,
-  TransactionHistoryDto,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
@@ -64,10 +63,9 @@ export class Investments extends KrossClientBase {
     );
   }
 
-  async transactionHistory({ fromDate, toDate }: TransactionHistoryDto) {
+  async transactionHistory(pageParam: string) {
     const resp = await this.cmsTradebook({
       query: {
-        // member_no, we do not need member_no since it prints user related data
         category: {
           in: [
             'deposit',
@@ -78,12 +76,10 @@ export class Investments extends KrossClientBase {
             'merchant_deposit',
           ],
         },
-        created_at: {
-          gte: fromDate,
-          lte: toDate,
-        },
       },
       sort_by: 'created_at.desc',
+      offset: pageParam.toString(),
+      limit: '6',
     });
     return resp;
   }
@@ -127,17 +123,20 @@ export class Investments extends KrossClientBase {
           },
         });
       },
-      transactionHistory: (transactionHistoryDto: TransactionHistoryDto) => {
-        return useQuery({
-          queryKey: 'transactionHistory',
-          queryFn: async () => {
-            return this.transactionHistory(transactionHistoryDto).then(
-              (res) => {
-                return res.data;
-              }
-            );
+      transactionHistory: () => {
+        return useInfiniteQuery(
+          'transactionHistory',
+          async ({ pageParam = 0 }) => {
+            return this.transactionHistory(pageParam).then((res) => {
+              return res.data;
+            });
           },
-        });
+          {
+            getNextPageParam: (lastPage, pages) => {
+              return pages?.length >= 1 ? pages.length : null;
+            },
+          }
+        );
       },
       investmentRegister: () => {
         const mutation = useMutation(

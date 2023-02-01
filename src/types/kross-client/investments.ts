@@ -24,11 +24,6 @@ export type InvestmentListResponseData = {
   updatedAt: Date;
 };
 
-export type TransactionHistoryDto = {
-  fromDate?: Date;
-  toDate?: Date;
-};
-
 export type InvestmentListResponse =
   FunctionResponse<InvestmentListResponseData>;
 
