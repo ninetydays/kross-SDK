@@ -172,7 +172,6 @@ export class User extends KrossClientBase {
               '/investments',
               {
                 params: {
-                  order: 'id.asc',
                   select: 'id,amount',
                   filter: 'state||$in||funding,funded,pending',
                 },
@@ -233,26 +232,27 @@ export class User extends KrossClientBase {
 
             const totalAssetAmount =
               amountInAccount +
-              (investingNotesSumary?.origin_principal ||
+              (investingNotesSumary?.originPrincipal ||
                 0 - investingNotesSumary?.principal ||
                 0) +
-              (delayNotesSummary?.origin_principal ||
+              (delayNotesSummary?.originPrincipal ||
                 0 - delayNotesSummary?.principal ||
                 0);
             const cummulativeReturnOnInvestment =
               (doneNotesSummary.interest || 0) -
-              (doneNotesSummary.tax_amount || 0) -
-              (doneNotesSummary.fee_amount || 0);
+              (doneNotesSummary.taxAmount || 0) -
+              (doneNotesSummary.feeAmount || 0);
 
             // Investment Applied To content
             const investmentAppliedCount =
-              investmentsAppliedToData?.data?.length || 0;
-            const investmentAppliedToAmount = investmentsAppliedToData?.data
-              ? investmentsAppliedToData?.data?.reduce(
-                  (acc: number, cur: { amount: number }) => acc + cur.amount,
-                  0
-                )
-              : 0;
+              investmentsAppliedToData?.length || 0;
+            const investmentAppliedToAmount =
+              investmentsAppliedToData?.length !== 0
+                ? investmentsAppliedToData?.reduce(
+                    (acc: number, cur: { amount: number }) => acc + cur.amount,
+                    0
+                  )
+                : 0;
 
             // Repayment Scheduled content
             const repaymentScheduledCount =
