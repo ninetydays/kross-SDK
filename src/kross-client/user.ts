@@ -13,6 +13,8 @@ import {
   UserNoteLogsResponse,
   UserQueryDto,
 } from '../types/kross-client/user';
+import { subMonths, isBefore, isAfter, parse } from 'date-fns';
+
 export class User extends KrossClientBase {
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
   getVirtualAccCertificate: FunctionRegistered<AccountCertificateResponse>;
@@ -157,6 +159,181 @@ export class User extends KrossClientBase {
             return this.userData(userQueryDto).then((res) => {
               return res.data;
             });
+          },
+        });
+      },
+
+      myPageData: () => {
+        return useQuery({
+          queryKey: 'myPageData',
+          queryFn: async () => {
+            const { data: accountData = [] }: any = await this.accountData({});
+            const { data: investmentsAppliedToData = [] }: any = await this.get(
+              '/investments',
+              {
+                params: {
+                  order: 'id.asc',
+                  select: 'id,amount',
+                  filter: 'state||$in||funding,funded,pending',
+                },
+              }
+            );
+
+            const { data: notesSummaryData = [] }: any = await this.get(
+              '/notes/summary'
+            );
+
+            const { data: repaymentsScheduledData = [] }: any = await this.get(
+              '/notes',
+              {
+                params: {
+                  where: {
+                    state: 'investing',
+                  },
+                },
+              }
+            );
+
+            const { data: repaymentsDoneData = [] }: any = await this.get(
+              '/notes',
+              {
+                params: {
+                  where: {
+                    state: 'done',
+                  },
+                  include: {
+                    model: 'loans',
+                    attributes: ['id'],
+                  },
+                },
+              }
+            );
+
+            const amountInAccount = accountData?.data?.amount || 0;
+
+            // Assets and cummulative return content
+
+            const delayNotesSummary = notesSummaryData?.find(
+              (notesObject: any) => {
+                return notesObject.state === 'delay';
+              }
+            );
+
+            const investingNotesSumary = notesSummaryData?.find(
+              (notesObject: any) => {
+                return notesObject.state === 'investing';
+              }
+            );
+
+            const doneNotesSummary = notesSummaryData?.find(
+              (notesObject: any) => {
+                return notesObject.state === 'done';
+              }
+            );
+
+            const totalAssetAmount =
+              amountInAccount +
+              (investingNotesSumary?.origin_principal ||
+                0 - investingNotesSumary?.principal ||
+                0) +
+              (delayNotesSummary?.origin_principal ||
+                0 - delayNotesSummary?.principal ||
+                0);
+            const cummulativeReturnOnInvestment =
+              (doneNotesSummary.interest || 0) -
+              (doneNotesSummary.tax_amount || 0) -
+              (doneNotesSummary.fee_amount || 0);
+
+            // Investment Applied To content
+            const investmentAppliedCount =
+              investmentsAppliedToData?.data?.length || 0;
+            const investmentAppliedToAmount = investmentsAppliedToData?.data
+              ? investmentsAppliedToData?.data?.reduce(
+                  (acc: number, cur: { amount: number }) => acc + cur.amount,
+                  0
+                )
+              : 0;
+
+            // Repayment Scheduled content
+            const repaymentScheduledCount =
+              repaymentsScheduledData?.data?.length || 0;
+            const repaymentScheduledRate = repaymentsScheduledData?.data
+              ? (
+                  repaymentsScheduledData?.data?.reduce(
+                    (acc: number, cur: { rate: number }) =>
+                      acc + cur.rate * 100,
+                    0
+                  ) / repaymentScheduledCount
+                ).toFixed(2)
+              : 0;
+
+            // Repayment Done content
+            const repaymentDoneCount = repaymentsDoneData?.data?.length || 0;
+            const repaymentDoneAmount = repaymentsDoneData?.data
+              ? repaymentsDoneData?.data?.reduce(
+                  (acc: number, cur: { returned_amount: number }) =>
+                    acc + cur.returned_amount,
+                  0
+                )
+              : 0;
+
+            // Repayment Done LastMonth content
+            const currentDate = new Date();
+            const lastMonth = subMonths(currentDate, 1);
+            const repaymentDoneLastMonthData = repaymentsDoneData?.data
+              ? repaymentsDoneData?.data?.filter(
+                  (note: { doneAt: any }) =>
+                    !isBefore(
+                      parse(
+                        note.doneAt,
+                        "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
+                        new Date()
+                      ),
+                      lastMonth
+                    ) &&
+                    !isAfter(
+                      parse(
+                        note.doneAt,
+                        "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
+                        new Date()
+                      ),
+                      currentDate
+                    )
+                )
+              : [];
+
+            const repaymentDoneLastMonthAmount =
+              repaymentDoneLastMonthData.length !== 0
+                ? repaymentDoneLastMonthData.reduce(
+                    (acc: number, cur: { interest: number }) =>
+                      acc + cur.interest,
+                    0
+                  )
+                : 0;
+            const repaymentDoneLastMonthRate =
+              repaymentDoneLastMonthData.length !== 0
+                ? (
+                    repaymentDoneLastMonthData.reduce(
+                      (acc: number, cur: { rate: number }) =>
+                        acc + cur.rate * 100,
+                      0
+                    ) / repaymentDoneLastMonthData.length
+                  ).toFixed(2)
+                : 0;
+
+            return {
+              amountInAccount,
+              investmentAppliedCount,
+              investmentAppliedToAmount,
+              repaymentScheduledCount,
+              repaymentScheduledRate,
+              repaymentDoneCount,
+              repaymentDoneAmount,
+              totalAssetAmount,
+              cummulativeReturnOnInvestment,
+              repaymentDoneLastMonthAmount,
+              repaymentDoneLastMonthRate,
+            };
           },
         });
       },
