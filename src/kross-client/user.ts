@@ -344,36 +344,30 @@ export class User extends KrossClientBase {
           },
         });
       },
-      totalAssets: (date: Date) => {
-        return useInfiniteQuery(
+      totalAssets: () => {
+        return useQuery(
           'totalAssets',
           async () => {
             const accountLogs = await this.userAccountLogs({});
             const noteLogs = await this.userNoteLogs({});
             const accountLogsArray = Object.values(accountLogs?.data?.data);
             const noteLogsArray = Object.values(noteLogs?.data?.data)
-            const newObject = {};
+            const totalAssets = {};
             for (const accountLog of accountLogsArray) {
+              totalAssets[accountLog.save_date] = {
+                totalAsset: accountLog.amount
+              }
               for (const noteLog of noteLogsArray) {
-                if (accountLog.save_date === noteLog.save_date) {
-                  if (!newObject[accountLog.save_date]) {
-                    let totalAmount = accountLog.amount + noteLog.principal;
-                    console.log(totalAmount);
-                    newObject[accountLog.save_date] = {
-                      totalAssets: totalAmount
+                if (accountLog?.save_date === noteLog?.save_date) {
+                    let totalAmount = accountLog.amount + noteLog.remain_principal;
+                    totalAssets[accountLog.save_date] = {
+                      totalAsset: totalAmount
                     };
-                  } else {
-                    newObject[accountLog.save_date].totalAssets = accountLog.amount + noteLog.principal;
-                  }
-                }else{
-                  newObject[accountLog.save_date] = {
-                    totalAssets: accountLog.amount
-                  }
+                    break;
                 }
               }
             }
-      
-            return newObject;
+            return totalAssets;
           }
           
         );
