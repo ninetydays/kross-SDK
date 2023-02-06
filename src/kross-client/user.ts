@@ -378,7 +378,7 @@ export class User extends KrossClientBase {
           // order is not guaranteed so sort it before
           const currentTotalAssets = recentTotalAssets[Object.keys(recentTotalAssets).sort()[Object.keys(recentTotalAssets).length -1]];
           const xMonthsAgoTotalAssets = recentTotalAssets[Object.keys(recentTotalAssets).sort()[0]];
-          let growthRate = ((currentTotalAssets.totalAssets - xMonthsAgoTotalAssets.totalAssets) / xMonthsAgoTotalAssets.totalAssets) * 100;
+          const growthRate = ((currentTotalAssets.totalAssets - xMonthsAgoTotalAssets.totalAssets) / xMonthsAgoTotalAssets.totalAssets) * 100;
           return {
             data: recentTotalAssets,
             growthRatePercentage: growthRate,
