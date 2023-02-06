@@ -344,8 +344,7 @@ export class User extends KrossClientBase {
           },
         });
       },
-      // insert number, 1 month then totalAssets(1)
-      totalAssets: (number: number) => {
+      totalAssets: (startDate: Date, endDate: Date) => {
         return useQuery('totalAssets', async () => {
           const accountLogs = await this.userAccountLogs({});
           const noteLogs = await this.userNoteLogs({});
@@ -362,20 +361,13 @@ export class User extends KrossClientBase {
               totalAssets[noteLog.save_date].totalAssets += noteLog.remain_principal;
             }
           }
-          const daysInMonth = 30 * number;
-          const recentMonths = Object.keys(totalAssets)
-            .sort()
-            .slice(-daysInMonth);
-          let recentTotalAssets = {};
-          // if there is no enough data for period then return existing one
-          if (daysInMonth > accountLogsArray.length){
-            recentTotalAssets = totalAssets;
-          }else{
-            for (const date of recentMonths) {
+          const recentTotalAssets = {};
+          for (const date in totalAssets){
+            const currentDate = new Date(Date.parse(`${date.substring(0, 4)}-${date.substring(4, 6)}-${date.substring(6, 8)}`));
+            if (currentDate >= startDate && currentDate <= endDate){
               recentTotalAssets[date] = totalAssets[date];
             }
           }
-          // order is not guaranteed so sort it before
           const currentTotalAssets = recentTotalAssets[Object.keys(recentTotalAssets).sort()[Object.keys(recentTotalAssets).length -1]];
           const xMonthsAgoTotalAssets = recentTotalAssets[Object.keys(recentTotalAssets).sort()[0]];
           const growthRate = ((currentTotalAssets.totalAssets - xMonthsAgoTotalAssets.totalAssets) / xMonthsAgoTotalAssets.totalAssets) * 100;
