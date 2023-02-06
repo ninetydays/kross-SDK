@@ -1,5 +1,5 @@
 import { createHmac } from 'crypto';
-var base64 = require('base-64');
+import base64 from 'base-64';
 export const hmacHashString = (secretKey: string, message: string) => {
   const hmac = createHmac('sha256', secretKey);
   hmac.update(message);
