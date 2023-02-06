@@ -67,7 +67,8 @@
     "base-64": "^1.0.0",
     "crypto-browserify": "^3.12.0",
     "date-fns": "^2.29.3",
-    "react-query": "^3.39.2"
+    "react-query": "^3.39.2",
+    "stream-browserify": "^3.0.0"
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",

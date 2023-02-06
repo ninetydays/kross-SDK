@@ -344,24 +344,45 @@ export class User extends KrossClientBase {
           },
         });
       },
-      totalAssets: () => {
+      // insert number, 1 month then totalAssets(1)
+      totalAssets: (number: number) => {
         return useQuery('totalAssets', async () => {
           const accountLogs = await this.userAccountLogs({});
           const noteLogs = await this.userNoteLogs({});
           const accountLogsArray = Object.values(accountLogs?.data?.data);
           const noteLogsArray = Object.values(noteLogs?.data?.data);
           const totalAssets = {};
-          for (const accountLog of accountLogsArray){
+          for (const accountLog of accountLogsArray) {
             totalAssets[accountLog.save_date] = {
               totalAssets: accountLog.amount,
-            }
+            };
           }
           for (const noteLog of noteLogsArray) {
             if (totalAssets[noteLog.save_date]) {
               totalAssets[noteLog.save_date].totalAssets += noteLog.remain_principal;
             }
           }
-          return totalAssets;
+          const daysInMonth = 30 * number;
+          const recentMonths = Object.keys(totalAssets)
+            .sort()
+            .slice(-daysInMonth);
+          let recentTotalAssets = {};
+          // if there is no enough data for period then return existing one
+          if (daysInMonth > accountLogsArray.length){
+            recentTotalAssets = totalAssets;
+          }else{
+            for (const date of recentMonths) {
+              recentTotalAssets[date] = totalAssets[date];
+            }
+          }
+          // order is not guaranteed so sort it before
+          const currentTotalAssets = recentTotalAssets[Object.keys(recentTotalAssets).sort()[Object.keys(recentTotalAssets).length -1]];
+          const xMonthsAgoTotalAssets = recentTotalAssets[Object.keys(recentTotalAssets).sort()[0]];
+          let growthRate = ((currentTotalAssets.totalAssets - xMonthsAgoTotalAssets.totalAssets) / xMonthsAgoTotalAssets.totalAssets) * 100;
+          return {
+            data: recentTotalAssets,
+            growthRatePercentage: growthRate,
+          };
         });
       },
 

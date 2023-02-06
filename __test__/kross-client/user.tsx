@@ -141,7 +141,7 @@ export const user = () => {
 
   it('gets total assets for each day', async () => {
     const { totalAssets } = client.useUserHooks();
-    const { result } = renderHook(() => totalAssets(), {
+    const { result } = renderHook(() => totalAssets(1), {
       wrapper,
     });
     await waitFor(() => {
