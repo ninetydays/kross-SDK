@@ -351,18 +351,14 @@ export class User extends KrossClientBase {
           const accountLogsArray = Object.values(accountLogs?.data?.data);
           const noteLogsArray = Object.values(noteLogs?.data?.data);
           const totalAssets = {};
-          for (const accountLog of accountLogsArray) {
+          for (const accountLog of accountLogsArray){
             totalAssets[accountLog.save_date] = {
-              totalAsset: accountLog.amount,
-            };
-            for (const noteLog of noteLogsArray) {
-              if (accountLog?.save_date === noteLog?.save_date) {
-                const totalAmount = accountLog.amount + noteLog.remain_principal;
-                totalAssets[accountLog.save_date] = {
-                  totalAsset: totalAmount,
-                };
-                break;
-              }
+              totalAssets: accountLog.amount,
+            }
+          }
+          for (const noteLog of noteLogsArray) {
+            if (totalAssets[noteLog.save_date]) {
+              totalAssets[noteLog.save_date].totalAssets += noteLog.remain_principal;
             }
           }
           return totalAssets;
