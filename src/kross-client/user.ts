@@ -1,3 +1,4 @@
+import { sumByKey } from './../utils/sumByKey';
 import { KrossClientBase } from './base';
 import { useQuery, useMutation } from 'react-query';
 import { FunctionRegistered, KrossClientOptions } from '../types';
@@ -333,6 +334,58 @@ export class User extends KrossClientBase {
               cummulativeReturnOnInvestment,
               repaymentDoneLastMonthAmount,
               repaymentDoneLastMonthRate,
+            };
+          },
+        });
+      },
+
+      returnOnInvestmentData: (startDate: unknown, endDate: unknown) => {
+        return useQuery({
+          queryKey: 'returnOnInvestment',
+          queryFn: async () => {
+            const { data: notesData = [] }: any = await this.get('/notes', {
+              params: {
+                query: {
+                  state: ['investing', 'done'],
+                  returnAt: {
+                    lte: endDate,
+                    gte: startDate,
+                  },
+                },
+                include: {
+                  model: 'loans',
+                  attributes: ['id', 'investor_fee_rate', 'name'],
+                },
+              },
+            });
+
+            const originPrincipal = sumByKey(
+              notesData?.data,
+              'origin_principal'
+            );
+            const principal = sumByKey(notesData?.data, 'principal');
+            const interest = sumByKey(notesData?.data, 'interest');
+            const taxAmount = sumByKey(notesData?.data, 'tax_amount');
+            const feeAmount = sumByKey(notesData?.data, 'fee_amount');
+            const cumulativeReturnAfterTax = interest - taxAmount - feeAmount;
+            const cumulativeInterestRatio = (
+              (interest / originPrincipal) *
+              100
+            ).toFixed(2);
+            const cumulativeInterestRatioAfterTax = (
+              (cumulativeReturnAfterTax / originPrincipal) *
+              100
+            ).toFixed(2);
+
+            return {
+              cumulativeReturnAfterTax,
+              cumulativeReturn: interest,
+              cumulativeInterestRatio,
+              cumulativeInterestRatioAfterTax,
+              taxAmount,
+              feeAmount,
+              investmentsPricipal: principal,
+              notesData: notesData?.data || [],
             };
           },
         });
