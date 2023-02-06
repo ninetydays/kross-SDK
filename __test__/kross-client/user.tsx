@@ -127,4 +127,15 @@ export const user = () => {
       expect(data).toBeDefined();
     });
   }, 30000);
+
+  it('gets myPage data', async () => {
+    const { myPageData } = client.useUserHooks();
+    const { result } = renderHook(() => myPageData(), {
+      wrapper,
+    });
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
+    });
+  }, 30000);
 };
