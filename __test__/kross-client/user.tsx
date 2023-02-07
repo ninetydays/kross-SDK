@@ -147,7 +147,7 @@ export const user = () => {
       startDate: startDate,
       endDate: endDate,
     }
-    const { result } = renderHook(() => totalAssets(date), {
+    const { result } = renderHook(() => totalAssets({startDate, endDate}), {
       wrapper,
     });
     await waitFor(() => {
