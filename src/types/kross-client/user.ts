@@ -117,3 +117,14 @@ export type UserNoteLogsData = {
 };
 
 export type UserNoteLogsResponse = FunctionResponse<UserNoteLogsData>;
+
+export type TotalAssetsType = {
+  [key: string]: {
+    totalAssets: number;
+  };
+}
+
+export type TotalAssetsDto = {
+  startDate: Date,
+  endDate: Date,
+}

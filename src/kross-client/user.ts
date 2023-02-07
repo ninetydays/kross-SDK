@@ -13,6 +13,10 @@ import {
   UserAccountLogsResponse,
   UserNoteLogsResponse,
   UserQueryDto,
+  TotalAssetsDto,
+  TotalAssetsType,
+  UserAccountLogsData,
+  UserNoteLogsData
 } from '../types/kross-client/user';
 import {
   subMonths,
@@ -344,13 +348,14 @@ export class User extends KrossClientBase {
           },
         });
       },
-      totalAssets: (startDate: Date, endDate: Date) => {
+      totalAssets: (dates: TotalAssetsDto) => {
         return useQuery('totalAssets', async () => {
+          const {startDate, endDate} = dates;
           const accountLogs = await this.userAccountLogs({});
           const noteLogs = await this.userNoteLogs({});
-          const accountLogsArray = Object.values(accountLogs?.data?.data);
-          const noteLogsArray = Object.values(noteLogs?.data?.data);
-          const totalAssets = {};
+          const accountLogsArray: UserAccountLogsData[] = (accountLogs?.data?.data || []) as UserAccountLogsData[];
+          const noteLogsArray: UserNoteLogsData[] = (noteLogs?.data?.data || []) as UserNoteLogsData[];
+          const totalAssets: TotalAssetsType = {};
           for (const accountLog of accountLogsArray) {
             totalAssets[accountLog.save_date] = {
               totalAssets: accountLog.amount,
@@ -361,7 +366,7 @@ export class User extends KrossClientBase {
               totalAssets[noteLog.save_date].totalAssets += noteLog.remain_principal;
             }
           }
-          const recentTotalAssets = {};
+          const recentTotalAssets: TotalAssetsType = {};
           for (const date in totalAssets){
             const currentDate = new Date(Date.parse(`${date.substring(0, 4)}-${date.substring(4, 6)}-${date.substring(6, 8)}`));
             if (currentDate >= startDate && currentDate <= endDate){

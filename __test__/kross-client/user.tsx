@@ -143,7 +143,11 @@ export const user = () => {
     const { totalAssets } = client.useUserHooks();
     const startDate = new Date(2022,11,12);
     const endDate = new Date(2023,1,6)
-    const { result } = renderHook(() => totalAssets(startDate, endDate), {
+    const date = {
+      startDate: startDate,
+      endDate: endDate,
+    }
+    const { result } = renderHook(() => totalAssets(date), {
       wrapper,
     });
     await waitFor(() => {
