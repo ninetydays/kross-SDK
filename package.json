@@ -4,14 +4,13 @@
   "description": "90days SDK for login, sigup and loans",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "test": "jest",
     "build": "rm -rf dist && webpack",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "postinstall": "yarn build"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-umd": "^7.10.1",
@@ -47,13 +46,7 @@
     "type": "git",
     "url": "git+https://github.com/ninetydays/sign-SDK.git"
   },
-  "keywords": [
-    "90days",
-    "authentication",
-    "sign",
-    "login",
-    "loans"
-  ],
+  "keywords": ["90days", "authentication", "sign", "login", "loans"],
   "prepublish": "npm build",
   "author": "Jscripter-pk",
   "license": "ISC",
