@@ -372,7 +372,9 @@ export class User extends KrossClientBase {
             const taxAmount = sumByKey(notesData?.data, 'tax_amount');
             const feeAmount = sumByKey(notesData?.data, 'fee_amount');
             const cumulativeReturnAfterTax = interest - taxAmount - feeAmount;
-            const cumulativeInterestRatio = ((rate - feeRate) * 100).toFixed(2);
+            const cumulativeInterestRatio = (
+              ((rate - feeRate) / notesData?.data?.length || 1) * 100
+            ).toFixed(2);
 
             function getRealPeriod(item: any): number {
               const period = differenceInCalendarDays(
