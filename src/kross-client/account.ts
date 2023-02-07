@@ -12,7 +12,6 @@ import {
   AccountWithdrawCancelDto,
   AccountWithdrawCancelResponse,
 } from '../types';
-import { parseJwt } from '../utils/encryptor';
 
 export class Account extends KrossClientBase {
   withdrawCancel: FunctionRegistered<
@@ -44,20 +43,10 @@ export class Account extends KrossClientBase {
       accountWithdrawVerifyDto
     );
   }
-  async withdrawInit(amount: number, member_no?: number) {
-    let userData: any;
-    if (this.storage) {
-      const authToken = await this.storage.getItem('authToken');
-      userData = await parseJwt(authToken as string);
-    }
-
-    const accountWithdrawInitDto = {
-      amount,
-      member_no: this.storage ? userData.member_no : member_no,
-    };
+  async withdrawInit(accountWithdrawInitDto: AccountWithdrawInitDto) {
     return this.instance.post<AccountWithdrawInitResponse>(
       '/accounts/withdraw/init',
-      accountWithdrawInitDto as AccountWithdrawInitDto
+      accountWithdrawInitDto
     );
   }
 
@@ -70,8 +59,9 @@ export class Account extends KrossClientBase {
         return mutation;
       },
       withdrawInit: () => {
-        const mutation = useMutation((amount: number) =>
-          this.withdrawInit(amount)
+        const mutation = useMutation(
+          (accountWithdrawInitDto: AccountWithdrawInitDto) =>
+            this.withdrawInit(accountWithdrawInitDto)
         );
         return mutation;
       },

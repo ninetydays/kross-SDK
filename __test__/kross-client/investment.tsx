@@ -2,12 +2,11 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Investments } from '../../src/kross-client/investments';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
+import axios from 'axios';
 
 export const investment = () => {
   let client: Investments;
   const baseURL = 'https://olive-dev.kross.kr';
-  const accessId = 'XLD7UY9GETOK7TPY';
-  const secretKey = 'yLbVRHGgwT5c22ndOVT2';
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -21,10 +20,12 @@ export const investment = () => {
   );
 
   beforeAll(() => {
+    const axiosClient = axios.create({
+      baseURL,
+    });
     client = new Investments({
       baseURL,
-      accessId,
-      secretKey,
+      instance: axiosClient,
       adapter: require('axios/lib/adapters/http'),
     });
   });
@@ -102,7 +103,7 @@ export const investment = () => {
 
   it('transactionHistory', async () => {
     const { transactionHistory } = client.useInvestmentHooks();
-    const { result } = renderHook(() => transactionHistory({}), {
+    const { result } = renderHook(() => transactionHistory(), {
       wrapper,
     });
     await waitFor(async () => {
