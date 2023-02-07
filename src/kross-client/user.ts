@@ -364,14 +364,13 @@ export class User extends KrossClientBase {
               'origin_principal'
             );
             const principal = sumByKey(notesData?.data, 'principal');
+            const rate = sumByKey(notesData?.data, 'rate');
+            const feeRate = sumByKey(notesData?.data, 'fee_rate');
             const interest = sumByKey(notesData?.data, 'interest');
             const taxAmount = sumByKey(notesData?.data, 'tax_amount');
             const feeAmount = sumByKey(notesData?.data, 'fee_amount');
             const cumulativeReturnAfterTax = interest - taxAmount - feeAmount;
-            const cumulativeInterestRatio = (
-              (interest / originPrincipal) *
-              100
-            ).toFixed(2);
+            const cumulativeInterestRatio = ((rate - feeRate) * 100).toFixed(2);
             const cumulativeInterestRatioAfterTax = (
               (cumulativeReturnAfterTax / originPrincipal) *
               100
