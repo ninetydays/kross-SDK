@@ -123,8 +123,3 @@ export type TotalAssetsType = {
     totalAssets: number;
   };
 }
-
-export type TotalAssetsDto = {
-  startDate: Date,
-  endDate: Date,
-}
