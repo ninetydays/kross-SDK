@@ -1,6 +1,6 @@
 {
   "name": "kross-sdk",
-  "version": "1.0.8-beta.283",
+  "version": "1.0.8-beta.284",
   "description": "90days SDK for login, sigup and loans",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
