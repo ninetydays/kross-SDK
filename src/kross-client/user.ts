@@ -14,7 +14,13 @@ import {
   UserNoteLogsResponse,
   UserQueryDto,
 } from '../types/kross-client/user';
-import { subMonths, isBefore, isAfter, parse } from 'date-fns';
+import {
+  subMonths,
+  isBefore,
+  isAfter,
+  parse,
+  differenceInCalendarDays,
+} from 'date-fns';
 
 export class User extends KrossClientBase {
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
@@ -346,7 +352,7 @@ export class User extends KrossClientBase {
             const { data: notesData = [] }: any = await this.get('/notes', {
               params: {
                 query: {
-                  state: ['investing', 'done'],
+                  state: ['done'],
                   returnAt: {
                     lte: endDate,
                     gte: startDate,
@@ -359,10 +365,6 @@ export class User extends KrossClientBase {
               },
             });
 
-            const originPrincipal = sumByKey(
-              notesData?.data,
-              'origin_principal'
-            );
             const principal = sumByKey(notesData?.data, 'principal');
             const rate = sumByKey(notesData?.data, 'rate');
             const feeRate = sumByKey(notesData?.data, 'fee_rate');
@@ -371,16 +373,39 @@ export class User extends KrossClientBase {
             const feeAmount = sumByKey(notesData?.data, 'fee_amount');
             const cumulativeReturnAfterTax = interest - taxAmount - feeAmount;
             const cumulativeInterestRatio = ((rate - feeRate) * 100).toFixed(2);
-            const cumulativeInterestRatioAfterTax = (
-              (cumulativeReturnAfterTax / originPrincipal) *
-              100
-            ).toFixed(2);
+
+            function getRealPeriod(item: any): number {
+              const period = differenceInCalendarDays(
+                new Date(item.doneAt || item.issueAt),
+                new Date(item.startAt)
+              );
+              return period;
+            }
+            const notesReturnRatesAfterTax = notesData?.data?.map(
+              (note: any) => {
+                const returnRateAfterTax =
+                  ((((note.interest -
+                    (note.fee_amount || 0) -
+                    note.tax_amount) /
+                    getRealPeriod(note)) *
+                    365) /
+                    note.origin_principal) *
+                  100;
+                return returnRateAfterTax;
+              }
+            );
+            const cumulativeInterestRatioAfterTax =
+              notesReturnRatesAfterTax.reduce(
+                (acc: number, cur: number) => acc + cur,
+                0
+              );
 
             return {
               cumulativeReturnAfterTax,
               cumulativeReturn: interest,
               cumulativeInterestRatio,
-              cumulativeInterestRatioAfterTax,
+              cumulativeInterestRatioAfterTax:
+                cumulativeInterestRatioAfterTax.toFixed(2),
               taxAmount,
               feeAmount,
               investmentsPricipal: principal,
