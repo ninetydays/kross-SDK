@@ -1,5 +1,4 @@
 import { createHmac } from 'crypto';
-import base64 from 'base-64';
 export const hmacHashString = (secretKey: string, message: string) => {
   const hmac = createHmac('sha256', secretKey);
   hmac.update(message);
@@ -19,14 +18,3 @@ export const hmacTokenFunction =
       xDate: date,
     };
   };
-
-export const parseJwt = async (authToken: string) => {
-  if (!authToken) {
-    return;
-  }
-
-  const [, payload] = authToken.split('.');
-
-  const payloadDecoded = JSON.parse(base64.decode(payload));
-  return payloadDecoded;
-};
