@@ -12,7 +12,6 @@ import {
   AccountWithdrawCancelDto,
   AccountWithdrawCancelResponse,
 } from '../types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { parseJwt } from '../utils/encryptor';
 
 export class Account extends KrossClientBase {
@@ -45,12 +44,16 @@ export class Account extends KrossClientBase {
       accountWithdrawVerifyDto
     );
   }
-  async withdrawInit(amount: number) {
-    const authToken = await AsyncStorage.getItem('authToken');
-    const userData = await parseJwt(authToken as string);
+  async withdrawInit(amount: number, member_no?: number) {
+    let userData: any;
+    if (this.storage) {
+      const authToken = await this.storage.getItem('authToken');
+      userData = await parseJwt(authToken as string);
+    }
+
     const accountWithdrawInitDto = {
       amount,
-      member_no: userData.member_no,
+      member_no: this.storage ? userData.member_no : member_no,
     };
     return this.instance.post<AccountWithdrawInitResponse>(
       '/accounts/withdraw/init',

@@ -10,6 +10,7 @@ export type KrossClientOptions = AxiosRequestConfig & {
   baseURL: string;
   accessId: string;
   secretKey: string;
+  storage?: any;
 };
 
 export type FunctionOptions = {
