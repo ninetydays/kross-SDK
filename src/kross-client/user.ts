@@ -386,13 +386,15 @@ export class User extends KrossClientBase {
             const notesReturnRatesAfterTax = notesData?.data?.map(
               (note: any) => {
                 const returnRateAfterTax =
-                  ((((note.interest -
-                    (note.fee_amount || 0) -
-                    note.tax_amount) /
-                    getRealPeriod(note)) *
-                    365) /
-                    note.origin_principal) *
-                  100;
+                  note?.doneAt && getRealPeriod(note) > 0
+                    ? ((((note.interest -
+                        (note.fee_amount || 0) -
+                        note.tax_amount) /
+                        getRealPeriod(note)) *
+                        365) /
+                        note.origin_principal) *
+                      100
+                    : 0;
                 return returnRateAfterTax;
               }
             );
