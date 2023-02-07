@@ -66,7 +66,7 @@ export const loan = () => {
 
   it('get loan repayments list when borrowers pay back', async () => {
     const { loanRepayments } = client.useLoanHooks();
-    const { result } = renderHook(() => loanRepayments({}), {
+    const { result } = renderHook(() => loanRepayments({ take: '5' }), {
       wrapper,
     });
 
