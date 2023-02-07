@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from 'react-query';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, {
   AxiosError,
   AxiosInstance,
@@ -25,9 +24,7 @@ export class KrossClientBase {
     this.instance = axios.create(options);
 
     this.instance.interceptors.request.use((config) => {
-      AsyncStorage.getItem('authToken').then((value: string | null) => {
-        this.authToken = value as string;
-      });
+      this.authToken = '';
       const { hmacToken, xDate } = this.getHmacToken(config.method as string);
       config.headers = {
         ...config.headers,
@@ -72,24 +69,13 @@ export class KrossClientBase {
         keyid,
         password,
       })
-      .then((response) => {
-        if (response.data?.token && response.data?.refresh) {
-          AsyncStorage.setItem('authToken', response.data.token as string);
-          AsyncStorage.setItem('refreshToken', response.data.refresh as string);
-        }
-        return response;
-      })
       .catch((e) => console.error(e));
   }
 
   async updateAuthToken() {
-    const refreshToken = await AsyncStorage.getItem('refreshToken');
     const res = await this.instance.get<GetAuthTokenResponse>(`/auth/refresh`, {
-      headers: { authorization: `Bearer ${refreshToken}` },
+      headers: { authorization: `Bearer ` },
     });
-    if (res.data?.token && !refreshToken) {
-      AsyncStorage.setItem('authToken', res.data.token as string);
-    }
     return res;
   }
 
