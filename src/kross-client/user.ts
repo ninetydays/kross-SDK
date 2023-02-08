@@ -1,6 +1,6 @@
 import { sumByKey } from './../utils/sumByKey';
 import { KrossClientBase } from './base';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useInfiniteQuery } from 'react-query';
 import { FunctionRegistered, KrossClientOptions } from '../types';
 import {
   kftcBalanceResponse,
@@ -13,6 +13,9 @@ import {
   UserAccountLogsResponse,
   UserNoteLogsResponse,
   UserQueryDto,
+  TotalAssetsType,
+  UserAccountLogsData,
+  UserNoteLogsData
 } from '../types/kross-client/user';
 import {
   subMonths,
@@ -342,6 +345,32 @@ export class User extends KrossClientBase {
               repaymentDoneLastMonthRate,
             };
           },
+        });
+      },
+      totalAssets: () => {
+        return useQuery('totalAssets', async () => {
+          const accountLogs = await this.userAccountLogs({});
+          const noteLogs = await this.userNoteLogs({});
+          const accountLogsArray: UserAccountLogsData[] = (accountLogs?.data?.data || []) as UserAccountLogsData[];
+          const noteLogsArray: UserNoteLogsData[] = (noteLogs?.data?.data || []) as UserNoteLogsData[];
+          const totalAssets: TotalAssetsType = {};
+          for (const accountLog of accountLogsArray) {
+            totalAssets[accountLog.save_date] = {
+              totalAssets: accountLog.amount,
+            };
+          }
+          for (const noteLog of noteLogsArray) {
+            if (totalAssets[noteLog.save_date]) {
+              totalAssets[noteLog.save_date].totalAssets += noteLog.remain_principal;
+            }
+          }
+          const currentTotalAssets = totalAssets[Object.keys(totalAssets).sort()[Object.keys(totalAssets).length -1]];
+          const xMonthsAgoTotalAssets = totalAssets[Object.keys(totalAssets).sort()[0]];
+          const growthRate = ((currentTotalAssets.totalAssets - xMonthsAgoTotalAssets.totalAssets) / xMonthsAgoTotalAssets.totalAssets) * 100;
+          return {
+            data: totalAssets,
+            growthRatePercentage: growthRate,
+          };
         });
       },
 
