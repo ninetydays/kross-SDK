@@ -2,11 +2,12 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { KrossClient } from '../../src/kross-client';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import axios from 'axios';
 
 export const base = () => {
   let client: KrossClient;
   const baseURL = 'https://olive-dev.kross.kr';
+  const accessId = 'XLD7UY9GETOK7TPY';
+  const secretKey = 'yLbVRHGgwT5c22ndOVT2';
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -19,12 +20,10 @@ export const base = () => {
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
   beforeAll(() => {
-    const axiosClient = axios.create({
-      baseURL,
-    });
     client = new KrossClient({
       baseURL,
-      instance: axiosClient,
+      accessId,
+      secretKey,
       adapter: require('axios/lib/adapters/http'),
     });
   });

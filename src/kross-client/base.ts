@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from 'react-query';
-import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import {
   KrossClientOptions,
   FunctionOptions,
@@ -7,12 +7,36 @@ import {
   LoginResponse,
   GetAuthTokenResponse,
 } from '../types';
+import { hmacTokenFunction } from '../utils/encryptor';
 
 export class KrossClientBase {
   instance: AxiosInstance;
 
   constructor(options: KrossClientOptions) {
-    this.instance = options.instance;
+    this.instance = axios.create(options);
+
+    this.instance.interceptors.request.use(
+      async (config: AxiosRequestConfig) => {
+        const getHmacToken = await hmacTokenFunction(
+          options.accessId as string,
+          options.secretKey as string
+        );
+
+        const hmacToken = await getHmacToken(config.method as string);
+
+        config.headers = {
+          ...config.headers,
+          'client-authorization': hmacToken.hmacToken,
+          'X-Date': hmacToken.xDate,
+        };
+
+        if (options?.refreshTokenCallback) {
+          config = await options.refreshTokenCallback(config, hmacToken);
+        }
+
+        return config;
+      }
+    );
   }
   login({ keyid, password }: LoginDto) {
     return this.instance

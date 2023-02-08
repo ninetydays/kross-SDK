@@ -2,11 +2,12 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Loans } from '../../src/kross-client/loans';
 import React from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
-import axios from 'axios';
 
 export const loan = () => {
   let client: Loans;
   const baseURL = 'https://olive-dev.kross.kr';
+  const accessId = 'XLD7UY9GETOK7TPY';
+  const secretKey = 'yLbVRHGgwT5c22ndOVT2';
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -21,12 +22,10 @@ export const loan = () => {
   );
 
   beforeAll(() => {
-    const axiosClient = axios.create({
-      baseURL,
-    });
     client = new Loans({
       baseURL,
-      instance: axiosClient,
+      accessId,
+      secretKey,
       adapter: require('axios/lib/adapters/http'),
     });
   });

@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
 export * from './account';
 export * from './investments';
 export * from './loans';
@@ -6,9 +6,19 @@ export * from './user';
 export * from './investments';
 export * from './account';
 
+type RefreshTokenCallback = (
+  config: AxiosRequestConfig,
+  hmacToken: {
+    hmacToken: string;
+    xDate: string;
+  }
+) => Promise<AxiosRequestConfig>;
+
 export type KrossClientOptions = AxiosRequestConfig & {
   baseURL: string;
-  instance: AxiosInstance;
+  accessId: string;
+  secretKey: string;
+  refreshTokenCallback?: RefreshTokenCallback;
 };
 
 export type FunctionOptions = {
