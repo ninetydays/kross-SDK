@@ -1,6 +1,6 @@
 {
   "name": "kross-sdk",
-  "version": "1.0.8-beta.277",
+  "version": "1.0.8-beta.284",
   "description": "90days SDK for login, sigup and loans",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -63,6 +63,7 @@
   },
   "homepage": "https://github.com/ninetydays/sign-SDK#readme",
   "dependencies": {
+    "@types/base-64": "^1.0.0",
     "axios": "^0.27.2",
     "base-64": "^1.0.0",
     "crypto-browserify": "^3.12.0",

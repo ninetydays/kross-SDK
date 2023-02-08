@@ -1,5 +1,6 @@
+import { sumByKey } from './../utils/sumByKey';
 import { KrossClientBase } from './base';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useInfiniteQuery } from 'react-query';
 import { FunctionRegistered, KrossClientOptions } from '../types';
 import {
   kftcBalanceResponse,
@@ -12,8 +13,17 @@ import {
   UserAccountLogsResponse,
   UserNoteLogsResponse,
   UserQueryDto,
+  TotalAssetsType,
+  UserAccountLogsData,
+  UserNoteLogsData
 } from '../types/kross-client/user';
-import { subMonths, isBefore, isAfter, parse } from 'date-fns';
+import {
+  subMonths,
+  isBefore,
+  isAfter,
+  parse,
+  differenceInCalendarDays,
+} from 'date-fns';
 
 export class User extends KrossClientBase {
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
@@ -333,6 +343,106 @@ export class User extends KrossClientBase {
               cummulativeReturnOnInvestment,
               repaymentDoneLastMonthAmount,
               repaymentDoneLastMonthRate,
+            };
+          },
+        });
+      },
+      totalAssets: () => {
+        return useQuery('totalAssets', async () => {
+          const accountLogs = await this.userAccountLogs({});
+          const noteLogs = await this.userNoteLogs({});
+          const accountLogsArray: UserAccountLogsData[] = (accountLogs?.data?.data || []) as UserAccountLogsData[];
+          const noteLogsArray: UserNoteLogsData[] = (noteLogs?.data?.data || []) as UserNoteLogsData[];
+          const totalAssets: TotalAssetsType = {};
+          for (const accountLog of accountLogsArray) {
+            totalAssets[accountLog.save_date] = {
+              totalAssets: accountLog.amount,
+            };
+          }
+          for (const noteLog of noteLogsArray) {
+            if (totalAssets[noteLog.save_date]) {
+              totalAssets[noteLog.save_date].totalAssets += noteLog.remain_principal;
+            }
+          }
+          const currentTotalAssets = totalAssets[Object.keys(totalAssets).sort()[Object.keys(totalAssets).length -1]];
+          const xMonthsAgoTotalAssets = totalAssets[Object.keys(totalAssets).sort()[0]];
+          const growthRate = ((currentTotalAssets.totalAssets - xMonthsAgoTotalAssets.totalAssets) / xMonthsAgoTotalAssets.totalAssets) * 100;
+          return {
+            data: totalAssets,
+            growthRatePercentage: growthRate,
+          };
+        });
+      },
+
+      returnOnInvestmentData: (startDate: unknown, endDate: unknown) => {
+        return useQuery({
+          queryKey: 'returnOnInvestment',
+          queryFn: async () => {
+            const { data: notesData = [] }: any = await this.get('/notes', {
+              params: {
+                query: {
+                  state: ['done'],
+                  returnAt: {
+                    lte: endDate,
+                    gte: startDate,
+                  },
+                },
+                include: {
+                  model: 'loans',
+                  attributes: ['id', 'investor_fee_rate', 'name'],
+                },
+              },
+            });
+
+            const principal = sumByKey(notesData?.data, 'principal');
+            const rate = sumByKey(notesData?.data, 'rate');
+            const feeRate = sumByKey(notesData?.data, 'fee_rate');
+            const interest = sumByKey(notesData?.data, 'interest');
+            const taxAmount = sumByKey(notesData?.data, 'tax_amount');
+            const feeAmount = sumByKey(notesData?.data, 'fee_amount');
+            const cumulativeReturnAfterTax = interest - taxAmount - feeAmount;
+            const cumulativeInterestRatio = (
+              ((rate - feeRate) / notesData?.data?.length || 1) * 100
+            ).toFixed(2);
+
+            function getRealPeriod(item: any): number {
+              const period = differenceInCalendarDays(
+                new Date(item.doneAt || item.issueAt),
+                new Date(item.startAt)
+              );
+              return period;
+            }
+            const notesReturnRatesAfterTax = notesData?.data?.map(
+              (note: any) => {
+                const returnRateAfterTax =
+                  note?.doneAt && getRealPeriod(note) > 0
+                    ? ((((note.interest -
+                        (note.fee_amount || 0) -
+                        note.tax_amount) /
+                        getRealPeriod(note)) *
+                        365) /
+                        note.origin_principal) *
+                      100
+                    : 0;
+                return returnRateAfterTax;
+              }
+            );
+            const cumulativeInterestRatioAfterTax =
+              notesReturnRatesAfterTax.reduce(
+                (acc: number, cur: number) => acc + cur,
+                0
+              );
+
+            return {
+              cumulativeReturnAfterTax,
+              cumulativeReturn: interest,
+              cumulativeInterestRatio,
+              cumulativeInterestRatioAfterTax:
+                cumulativeInterestRatioAfterTax.toFixed(2),
+              taxAmount,
+              feeAmount,
+              investmentsPricipal: principal,
+              notesData: notesData?.data || [],
             };
           },
         });

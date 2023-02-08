@@ -148,4 +148,15 @@ export const user = () => {
       expect(data).toBeDefined();
     });
   }, 30000);
+
+  it('gets total assets for each day', async () => {
+    const { totalAssets } = client.useUserHooks();
+    const { result } = renderHook(() => totalAssets(), {
+      wrapper,
+    });
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
+    });
+  }, 30000);
 };
