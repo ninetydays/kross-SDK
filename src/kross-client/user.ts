@@ -170,6 +170,8 @@ export class User extends KrossClientBase {
               return res.data;
             });
           },
+
+          enabled: userQueryDto?.enabled || true,
         });
       },
 
