@@ -43,8 +43,8 @@ export class KrossClientBase {
           'X-Date': hmacToken.xDate,
         };
 
-        if (this.authToken) {
-          const user: any = await jwt_decode(this.authToken as string);
+        if (this.authToken && this.refreshToken) {
+          const user: any = await jwt_decode(this.refreshToken as string);
           const isExpired = isBefore(new Date(user.exp * 1000), new Date());
 
           if (!isExpired) {
@@ -67,12 +67,10 @@ export class KrossClientBase {
           );
 
           if (refreshTokenResponse.status === 200) {
-            if (
-              this.refreshTokenCallback &&
-              typeof this.refreshTokenCallback === 'function'
-            ) {
-              this.refreshTokenCallback(refreshTokenResponse.data.token);
+            if (this?.refreshTokenCallback) {
+              await this.refreshTokenCallback(refreshTokenResponse.data.token);
             }
+            this.authToken = refreshTokenResponse.data.token;
             config.headers = {
               ...config.headers,
               Authorization: `Bearer ${refreshTokenResponse.data.token}`,
