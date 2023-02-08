@@ -20,13 +20,23 @@ export const investment = () => {
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 
-  beforeAll(() => {
+  beforeAll(async () => {
     client = new Investments({
       baseURL,
       accessId,
       secretKey,
       adapter: require('axios/lib/adapters/http'),
     });
+
+    const resp = await client.login({
+      keyid: 'mad@kross.kr',
+      password: 'Kross123!',
+    });
+
+    const { token, refresh } = resp.data;
+
+    client.authToken = token;
+    client.refreshToken = refresh;
   });
 
   it('get Investment List', async () => {
@@ -102,7 +112,7 @@ export const investment = () => {
 
   it('transactionHistory', async () => {
     const { transactionHistory } = client.useInvestmentHooks();
-    const { result } = renderHook(() => transactionHistory({}), {
+    const { result } = renderHook(() => transactionHistory(), {
       wrapper,
     });
     await waitFor(async () => {

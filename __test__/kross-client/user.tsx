@@ -19,13 +19,23 @@ export const user = () => {
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 
-  beforeAll(() => {
+  beforeAll(async () => {
     client = new User({
       baseURL,
       accessId,
       secretKey,
       adapter: require('axios/lib/adapters/http'),
     });
+
+    const resp = await client.login({
+      keyid: 'mad@kross.kr',
+      password: 'Kross123!',
+    });
+
+    const { token, refresh } = resp.data;
+
+    client.authToken = token;
+    client.refreshToken = refresh;
   });
 
   it('gets current user data details', async () => {

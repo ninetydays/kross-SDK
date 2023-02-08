@@ -78,7 +78,7 @@ export class Investments extends KrossClientBase {
         },
       },
       sort_by: 'created_at.desc',
-      offset: pageParam.toString(),
+      offset: pageParam.toString() || '0',
       limit: '6',
     });
     return resp;

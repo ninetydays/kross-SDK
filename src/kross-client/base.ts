@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from 'react-query';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, {
   AxiosError,
   AxiosInstance,
@@ -18,16 +17,14 @@ import { hmacTokenFunction } from '../utils/encryptor';
 export class KrossClientBase {
   instance: AxiosInstance;
   authToken?: string;
-  tempToken?: string;
+  refreshToken: string;
   getHmacToken: (method: string) => { hmacToken: string; xDate: string };
   constructor(options: KrossClientOptions) {
     this.getHmacToken = hmacTokenFunction(options.accessId, options.secretKey);
     this.instance = axios.create(options);
-
+    this.authToken = options.authToken || '';
+    this.refreshToken = options.refreshToken || '';
     this.instance.interceptors.request.use((config) => {
-      AsyncStorage.getItem('authToken').then((value: string | null) => {
-        this.authToken = value as string;
-      });
       const { hmacToken, xDate } = this.getHmacToken(config.method as string);
       config.headers = {
         ...config.headers,
@@ -35,7 +32,7 @@ export class KrossClientBase {
         'X-Date': xDate,
       };
 
-      if (this.authToken && config.url != '/auth/refresh') {
+      if (this.authToken && config.url !== '/auth/refresh') {
         config.headers = {
           ...config.headers,
           authorization: `Bearer ${this.authToken}`,
@@ -53,16 +50,8 @@ export class KrossClientBase {
       },
       async (error: AxiosError) => {
         // Access Token was expired
-        if (
-          error?.response?.status === 401 &&
-          error?.config?.url !== '/auth/login'
-        ) {
-          await this.updateAuthToken();
-          return this.instance.request(error.config);
-        } else {
-          console.log('Error in axios response interceptor', { ...error });
-          return Promise.reject(error.response);
-        }
+        console.log('Error in axios response interceptor', { ...error });
+        return Promise.reject(error.response);
       }
     );
   }
@@ -73,23 +62,19 @@ export class KrossClientBase {
         password,
       })
       .then((response) => {
-        if (response.data?.token && response.data?.refresh) {
-          AsyncStorage.setItem('authToken', response.data.token as string);
-          AsyncStorage.setItem('refreshToken', response.data.refresh as string);
-        }
         return response;
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        console.error(e);
+        throw e;
+      });
   }
 
   async updateAuthToken() {
-    const refreshToken = await AsyncStorage.getItem('refreshToken');
+    const refreshToken = this.refreshToken;
     const res = await this.instance.get<GetAuthTokenResponse>(`/auth/refresh`, {
       headers: { authorization: `Bearer ${refreshToken}` },
     });
-    if (res.data?.token && !refreshToken) {
-      AsyncStorage.setItem('authToken', res.data.token as string);
-    }
     return res;
   }
 

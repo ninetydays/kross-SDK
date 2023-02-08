@@ -10,7 +10,6 @@ import {
   LoansQueryDto,
 } from '../types/kross-client/loans';
 import { parseJwt } from '../utils/encryptor';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 export class Loans extends KrossClientBase {
   loanData: FunctionRegistered<LoansQueryDto, LoansResponse>;
   loanRepayments: FunctionRegistered<LoansQueryDto, LoanRepaymentResponse>;
@@ -70,7 +69,7 @@ export class Loans extends KrossClientBase {
         return useInfiniteQuery(
           'loanData',
           async ({ pageParam = 0 }) => {
-            const authToken = await AsyncStorage.getItem('authToken');
+            const authToken = this.authToken || '';
             const userData = await parseJwt(authToken as string);
             const skip = (
               pageParam * parseInt(loansQueryDto?.take as string, 10) || 0

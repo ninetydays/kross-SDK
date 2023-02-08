@@ -20,13 +20,23 @@ export const loan = () => {
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 
-  beforeAll(() => {
+  beforeAll(async () => {
     client = new Loans({
       baseURL,
       accessId,
       secretKey,
       adapter: require('axios/lib/adapters/http'),
     });
+
+    const resp = await client.login({
+      keyid: 'mad@kross.kr',
+      password: 'Kross123!',
+    });
+
+    const { token, refresh } = resp.data;
+
+    client.authToken = token;
+    client.refreshToken = refresh;
   });
 
   it('gets loanConfigs list', async () => {
