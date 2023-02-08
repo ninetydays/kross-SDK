@@ -6,15 +6,14 @@ export * from './user';
 export * from './investments';
 export * from './account';
 
-type RefreshTokenCallback = (
-  config: AxiosRequestConfig,
-  hmacToken: { hmacToken: string; xDate: string }
-) => Promise<AxiosRequestConfig | undefined>;
+type RefreshTokenCallback = (token: string) => void;
 
 export type KrossClientOptions = AxiosRequestConfig & {
   baseURL: string;
   accessId: string;
   secretKey: string;
+  authToken?: string;
+  refreshToken?: string;
   refreshTokenCallback?: RefreshTokenCallback;
 };
 
