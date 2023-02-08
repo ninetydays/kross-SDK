@@ -31,7 +31,7 @@ export class KrossClientBase {
         };
 
         if (options?.refreshTokenCallback) {
-          config = await options.refreshTokenCallback(config, hmacToken);
+          await options.refreshTokenCallback(config, hmacToken);
         }
 
         return config;

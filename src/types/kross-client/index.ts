@@ -8,11 +8,8 @@ export * from './account';
 
 type RefreshTokenCallback = (
   config: AxiosRequestConfig,
-  hmacToken: {
-    hmacToken: string;
-    xDate: string;
-  }
-) => Promise<AxiosRequestConfig>;
+  hmacToken: { hmacToken: string; xDate: string }
+) => Promise<AxiosRequestConfig | undefined>;
 
 export type KrossClientOptions = AxiosRequestConfig & {
   baseURL: string;
