@@ -36,6 +36,7 @@ export type FunctionRegistered<I = unknown, O = unknown> = (
 export type LoginDto = {
   keyid: string;
   password: string;
+  expiresIn?: number;
 };
 
 export type LoginResponse = {
