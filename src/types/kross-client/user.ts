@@ -8,6 +8,7 @@ export type UserQueryDto = {
   group_by?: string;
   query?: Record<string, unknown>;
   include?: Record<string, unknown>;
+  enabled?: boolean;
 };
 export type kftcBalanceResponseData = {
   rsp_code: string;

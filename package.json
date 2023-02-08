@@ -62,8 +62,6 @@
   },
   "homepage": "https://github.com/ninetydays/sign-SDK#readme",
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.17.11",
-    "@types/base-64": "^1.0.0",
     "axios": "^0.27.2",
     "base-64": "^1.0.0",
     "crypto-browserify": "^3.12.0",
@@ -72,7 +70,6 @@
     "stream-browserify": "^3.0.0"
   },
   "peerDependencies": {
-    "@react-native-async-storage/async-storage": "^1.17.11",
     "react": "^18.1.0",
     "react-native": "*",
     "react-query": "*"

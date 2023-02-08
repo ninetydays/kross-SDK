@@ -2,7 +2,6 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Account } from '../../src/kross-client/account';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
-
 export const account = () => {
   let client: Account;
   const baseURL = 'https://olive-dev.kross.kr';

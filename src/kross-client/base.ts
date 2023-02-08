@@ -1,11 +1,5 @@
 import { useMutation, useQuery } from 'react-query';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios, {
-  AxiosError,
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-} from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import {
   KrossClientOptions,
   FunctionOptions,
@@ -17,52 +11,30 @@ import { hmacTokenFunction } from '../utils/encryptor';
 
 export class KrossClientBase {
   instance: AxiosInstance;
-  authToken?: string;
-  tempToken?: string;
-  getHmacToken: (method: string) => { hmacToken: string; xDate: string };
+
   constructor(options: KrossClientOptions) {
-    this.getHmacToken = hmacTokenFunction(options.accessId, options.secretKey);
     this.instance = axios.create(options);
 
-    this.instance.interceptors.request.use((config) => {
-      AsyncStorage.getItem('authToken').then((value: string | null) => {
-        this.authToken = value as string;
-      });
-      const { hmacToken, xDate } = this.getHmacToken(config.method as string);
-      config.headers = {
-        ...config.headers,
-        'client-authorization': hmacToken,
-        'X-Date': xDate,
-      };
+    this.instance.interceptors.request.use(
+      async (config: AxiosRequestConfig) => {
+        const getHmacToken = await hmacTokenFunction(
+          options.accessId as string,
+          options.secretKey as string
+        );
 
-      if (this.authToken && config.url != '/auth/refresh') {
+        const hmacToken = await getHmacToken(config.method as string);
+
         config.headers = {
           ...config.headers,
-          authorization: `Bearer ${this.authToken}`,
+          'client-authorization': hmacToken.hmacToken,
+          'X-Date': hmacToken.xDate,
         };
-      }
-      return config;
-    });
 
-    this.instance.interceptors.response.use(
-      (response) => {
-        if (response.status === 404) {
-          console.log('preflight request needs to be handled');
+        if (options?.refreshTokenCallback) {
+          await options.refreshTokenCallback(config, hmacToken);
         }
-        return response;
-      },
-      async (error: AxiosError) => {
-        // Access Token was expired
-        if (
-          error?.response?.status === 401 &&
-          error?.config?.url !== '/auth/login'
-        ) {
-          await this.updateAuthToken();
-          return this.instance.request(error.config);
-        } else {
-          console.log('Error in axios response interceptor', { ...error });
-          return Promise.reject(error.response);
-        }
+
+        return config;
       }
     );
   }
@@ -73,23 +45,17 @@ export class KrossClientBase {
         password,
       })
       .then((response) => {
-        if (response.data?.token && response.data?.refresh) {
-          AsyncStorage.setItem('authToken', response.data.token as string);
-          AsyncStorage.setItem('refreshToken', response.data.refresh as string);
-        }
         return response;
       })
       .catch((e) => console.error(e));
   }
 
-  async updateAuthToken() {
-    const refreshToken = await AsyncStorage.getItem('refreshToken');
+  async updateAuthToken(refreshToken?: string) {
     const res = await this.instance.get<GetAuthTokenResponse>(`/auth/refresh`, {
-      headers: { authorization: `Bearer ${refreshToken}` },
+      headers: {
+        authorization: `Bearer ${refreshToken}`,
+      },
     });
-    if (res.data?.token && !refreshToken) {
-      AsyncStorage.setItem('authToken', res.data.token as string);
-    }
     return res;
   }
 
