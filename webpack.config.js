@@ -15,7 +15,7 @@ module.exports = {
                 '@babel/preset-env',
                 {
                   targets: {
-                    browsers: '> 1%, IE 11, not dead',
+                    browsers: '> 1%, IE 11, not dead, node 10',
                   },
                   modules: false, // Needed for tree shaking to work.
                 },
