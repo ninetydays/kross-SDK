@@ -90,6 +90,8 @@ export class KrossClientBase {
         expiresIn,
       })
       .then((response) => {
+        this.authToken = response.data.token;
+        this.refreshToken = response?.data?.refresh;
         return response;
       })
       .catch((e) => console.error(e));
