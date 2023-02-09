@@ -152,10 +152,19 @@ export class User extends KrossClientBase {
       idCardVerificationDto,
     );
   }
-  idOcrVerification(idOcrVerificationDto: IdOcrVerificationsDto) {
+  idOcrVerification({isForeigner, imageForm}: IdOcrVerificationsDto) {
+    const headers = {
+      'Content-Type': 'multipart/form-data',
+    };
     return this.instance.post<IdOcrVerificationsResponse>(
       '/verifications/idcard/ocr',
-      idOcrVerificationDto,
+      {
+        isForeigner,
+        imageForm,
+      },
+      {
+        headers,
+      },
     );
   }
   useBToken(useBTokenDto: UseBTokenDto) {

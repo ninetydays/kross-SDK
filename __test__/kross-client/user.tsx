@@ -200,20 +200,14 @@ export const user = () => {
       wrapper,
     });
     await act(async () => {
-      const form = new FormData();
-      fs.readFile('/Users/azimuth/kross-SDK/__test__/kross-client/id.jpg', (error, data) => {
-        console.log("data: ", data);
-        if (error) {
-          console.error(error);
-          return;
-        }
-        const file = new Blob([data], { type: 'image/jpeg' });
-        form.append('mask_mode', 'true');
-        form.append("image", file, "id.jpg");
-      });
-      await result.current.mutateAsync({
+      const file = Buffer.from(fs.readFileSync('/Users/azimuth/kross-SDK/__test__/kross-client/id.jpg'));
+      const formData = new FormData();
+      const blob = new Blob([file], { type: 'image/jpeg' });
+      formData.append("image", blob, "id.jpg");
+      formData.append('mask_mode', 'true');
+        await result.current.mutateAsync({
           isForeigner: true,
-          imageForm: form,
+          imageForm: formData,
       });
   })
     await waitFor(() => {
@@ -221,7 +215,7 @@ export const user = () => {
       expect(data).toBeDefined();
     });
   }, 30000);
-
+  
   it('register a user', async () => {
     const { userRegister } = client.useUserHooks();
     const { result } = renderHook(() => userRegister(), {
