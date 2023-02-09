@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { User } from '../../src/kross-client/user';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
+import fs from 'fs'
 
 export const user = () => {
   let client: User;
@@ -150,6 +151,76 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
+
+  it('verified id card', async () => {
+    const { idCardVerification } = client.useUserHooks();
+    const { result } = renderHook(() => idCardVerification(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        idType: '2',
+        driverNo: '123456789',
+        juminNo1: '12345',
+        juminNo2: '12345',
+        userName: 'dummy',
+        issueNo1: '12390123',
+        issueNo2: '12390123',
+        issueDate: '20221201'
+      });
+    });
+    await waitFor(() => {
+      const { data } = result.current;
+      console.log("data: ", data?.data);
+      expect(data?.data).toBeDefined();
+    });
+  }, 30000);
+
+  it('UseBToken', async () => {
+    const { useBToken } = client.useUserHooks();
+    const { result } = renderHook(() => useBToken(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        email: 'mad@kross.kr',
+        password: 'Kross123!'
+    });
+    });
+    await waitFor(() => {
+      const { data } = result.current;
+      console.log("data: ", data?.data);
+      expect(data).toBeDefined();
+    });
+  }, 30000);
+
+  it('OCR verification', async () => {
+    const { idOcrVerification } = client.useUserHooks();
+    const { result } = renderHook(() => idOcrVerification(), {
+      wrapper,
+    });
+    await act(async () => {
+      const form = new FormData();
+      fs.readFile('/Users/azimuth/kross-SDK/__test__/kross-client/id.jpg', (error, data) => {
+        console.log("data: ", data);
+        if (error) {
+          console.error(error);
+          return;
+        }
+        const file = new Blob([data], { type: 'image/jpeg' });
+        form.append('mask_mode', 'true');
+        form.append("image", file, "id.jpg");
+      });
+      await result.current.mutateAsync({
+          isForeigner: true,
+          imageForm: form,
+      });
+  })
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
+    });
+  }, 30000);
 
   it('register a user', async () => {
     const { userRegister } = client.useUserHooks();
