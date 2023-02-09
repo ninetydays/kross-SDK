@@ -47,3 +47,14 @@ export type LoginResponse = {
 export type GetAuthTokenResponse = {
   token: string;
 };
+
+export type UserRegisterDto = {
+  keyid: string;
+  password: string;
+  password2: string;
+  isBusiness: boolean;
+  isBorrower: boolean;
+  email?: string;
+  corpRegNo?: string;
+  name?: string;
+};

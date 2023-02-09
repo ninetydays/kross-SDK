@@ -1,7 +1,12 @@
 import { sumByKey } from './../utils/sumByKey';
 import { KrossClientBase } from './base';
-import { useQuery, useMutation, useInfiniteQuery } from 'react-query';
-import { FunctionRegistered, KrossClientOptions } from '../types';
+import { useQuery, useMutation } from 'react-query';
+import {
+  FunctionRegistered,
+  GetAuthTokenResponse,
+  KrossClientOptions,
+  UserRegisterDto,
+} from '../types';
 import {
   kftcBalanceResponse,
   AccountCertificateResponse,
@@ -29,6 +34,7 @@ export class User extends KrossClientBase {
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
   getVirtualAccCertificate: FunctionRegistered<AccountCertificateResponse>;
   checkVirtualAccount: FunctionRegistered<VirtualAccountCheckResponse>;
+  registerMember: FunctionRegistered<UserRegisterDto, GetAuthTokenResponse>;
   unRegisterMemeber: FunctionRegistered<WelcomeUnregisterResponse>;
   releaseDepositControl: FunctionRegistered<ReleaseDepositResponse>;
   accountData: FunctionRegistered<UserQueryDto, AccountResponse>;
@@ -70,6 +76,14 @@ export class User extends KrossClientBase {
         url: '/users/virtual-account',
         method: 'get',
       });
+
+    this.registerMember = User.registerFunction<
+      UserRegisterDto,
+      GetAuthTokenResponse
+    >({
+      url: '/users',
+      method: 'post',
+    });
 
     this.unRegisterMemeber = User.registerFunction<WelcomeUnregisterResponse>({
       url: '/users/welcome-unregister',
@@ -461,6 +475,21 @@ export class User extends KrossClientBase {
             };
           },
         });
+      },
+
+      userRegister: () => {
+        const mutation = useMutation(
+          (userRegisterDto: UserRegisterDto) =>
+            this.registerMember(userRegisterDto),
+          {
+            onSuccess: (response) => {
+              if (response?.data?.token) {
+                this.authToken = response?.data?.token;
+              }
+            },
+          }
+        );
+        return mutation;
       },
     };
   }
