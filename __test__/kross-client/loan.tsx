@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Loans } from '../../src/kross-client/loans';
 import React from 'react';
-import { renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 
 export const loan = () => {
   let client: Loans;
@@ -29,6 +29,22 @@ export const loan = () => {
       adapter: require('axios/lib/adapters/http'),
     });
   });
+
+  it('gets authToken and refreshToken', async () => {
+    const { useLogin } = client.useAuthHooks();
+    const { result } = renderHook(() => useLogin(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        keyid: 'mad@kross.kr',
+        password: 'Kross123!',
+      });
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  }, 30000);
 
   it('gets loanConfigs list', async () => {
     const { loanConfigs } = client.useLoanHooks();
@@ -84,6 +100,7 @@ export const loan = () => {
       () =>
         loanData({
           filter: 'state||$eq||funding||pending',
+          take: '1',
         }),
       {
         wrapper,

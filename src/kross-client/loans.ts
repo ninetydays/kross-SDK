@@ -69,7 +69,10 @@ export class Loans extends KrossClientBase {
           'loanData',
           async ({ pageParam = 0 }) => {
             const skip = (
-              pageParam * parseInt(loansQueryDto?.take as string, 10)
+              pageParam *
+              (isNaN(parseInt(loansQueryDto?.take as string, 10))
+                ? 0
+                : parseInt(loansQueryDto?.take as string, 10))
             ).toString();
             const loan = await this.loanData({
               ...loansQueryDto,
