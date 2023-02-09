@@ -22,6 +22,12 @@ import {
   UserWengeQueryDto,
   UserUpdateDto,
   UserUpdateResponse,
+  IdOcrVerificationsDto,
+  IdOcrVerificationsResponse,
+  IdCardVerificationsDto,
+  IdCardVerificationsResponse,
+  UseBTokenDto,
+  UseBTokenResponse
 } from '../types/kross-client/user';
 import {
   subMonths,
@@ -121,8 +127,64 @@ export class User extends KrossClientBase {
     });
   }
 
+  idCardVerification(idCardVerificationDto: IdCardVerificationsDto) {
+    return this.instance.post<IdCardVerificationsResponse>(
+      '/verifications/idcard',
+      idCardVerificationDto,
+    );
+  }
+  idOcrVerification(idOcrVerificationDto: IdOcrVerificationsDto) {
+    return this.instance.post<IdOcrVerificationsResponse>(
+      '/verifications/idcard/ocr',
+      idOcrVerificationDto,
+    );
+  }
+  useBToken(useBTokenDto: UseBTokenDto) {
+    return this.instance.post<UseBTokenResponse>(
+      '/verifications/useb/token',
+      useBTokenDto,
+    );
+  }
+
+  idCardVerification(idCardVerificationDto: IdCardVerificationsDto) {
+    return this.instance.post<IdCardVerificationsResponse>(
+      '/verifications/idcard',
+      idCardVerificationDto,
+    );
+  }
+  idOcrVerification(idOcrVerificationDto: IdOcrVerificationsDto) {
+    return this.instance.post<IdOcrVerificationsResponse>(
+      '/verifications/idcard/ocr',
+      idOcrVerificationDto,
+    );
+  }
+  useBToken(useBTokenDto: UseBTokenDto) {
+    return this.instance.post<UseBTokenResponse>(
+      '/verifications/useb/token',
+      useBTokenDto,
+    );
+  }
+
   useUserHooks() {
     return {
+      idCardVerification: () => {
+        const mutation = useMutation(
+          (idCardVerificationDto: IdCardVerificationsDto) =>
+          this.idCardVerification(idCardVerificationDto));
+        return mutation;
+      },
+      idOcrVerification: () => {
+        const mutation = useMutation(
+          (idOcrVerificationDto: IdOcrVerificationsDto) =>
+          this.idOcrVerification(idOcrVerificationDto));
+        return mutation;
+      },
+      useBToken: () => {
+        const mutation = useMutation(
+          (useBTokenDto: UseBTokenDto) =>
+          this.useBToken(useBTokenDto));
+        return mutation;
+      },
       userNoteLogs: (userWengeQueryDto: UserWengeQueryDto) => {
         return useQuery({
           queryKey: 'userNoteLogs',

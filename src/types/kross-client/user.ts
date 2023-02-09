@@ -207,4 +207,55 @@ export type TotalAssetsType = {
   [key: string]: {
     totalAssets: number;
   };
-};
+}
+
+export type IdCardVerificationsDto = {
+  idType?: string;
+  driverNo?: string;
+  issueDate?: string;
+  juminNo1?: string;
+  juminNo2?: string;
+  userName: string;
+  issueNo1: string;
+  issueNo2: string;
+}
+
+export type IdCardVerificationsResponseData = {
+  success: boolean;
+  message: string;
+  error_code: string;
+  transaction_id: string;
+  _v: number;
+}
+
+export type IdCardVerificationsResponse = FunctionResponse<IdCardVerificationsResponseData>;
+
+export type IdOcrVerificationsDto = {
+  imageBinary: string;
+  isForeigner: boolean;
+}
+export type IdOcrVerificationsResponseData = {
+  data: Record<string, unknown>;
+  success: boolean;
+  message: string;
+  error_code: string;
+  transaction_id: string;
+  _v: number;
+}
+
+export type IdOcrVerificationsResponse = FunctionResponse<IdOcrVerificationsResponseData>;
+
+export type UseBTokenDto = {
+  email: string;
+  password: string;
+}
+
+export type UseBTokenResponseData = {
+  success: boolean;
+  message: string;
+  jwt: string;
+  expires_in: Date;
+  transaction_id: string;
+}
+
+export type UseBTokenResponse = FunctionResponse<UseBTokenResponseData>;
