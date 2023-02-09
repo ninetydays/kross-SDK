@@ -39,6 +39,22 @@ export const investment = () => {
     client.refreshToken = refresh;
   });
 
+  it('gets authToken and refreshToken', async () => {
+    const { useLogin } = client.useAuthHooks();
+    const { result } = renderHook(() => useLogin(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        keyid: 'mad@kross.kr',
+        password: 'Kross123!',
+      });
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  }, 30000);
+
   it('get Investment List', async () => {
     const { investmentList } = client.useInvestmentHooks();
     const { result } = renderHook(() => investmentList({}), {

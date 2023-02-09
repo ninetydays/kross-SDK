@@ -9,7 +9,6 @@ import {
   LoanRepaymentResponse,
   LoansQueryDto,
 } from '../types/kross-client/loans';
-import { parseJwt } from '../utils/encryptor';
 export class Loans extends KrossClientBase {
   loanData: FunctionRegistered<LoansQueryDto, LoansResponse>;
   loanRepayments: FunctionRegistered<LoansQueryDto, LoanRepaymentResponse>;
@@ -65,14 +64,15 @@ export class Loans extends KrossClientBase {
           });
         });
       },
-      loanData: (loansQueryDto: LoansQueryDto) => {
+      loanData: (loansQueryDto: LoansQueryDto, userId?: string) => {
         return useInfiniteQuery(
           'loanData',
           async ({ pageParam = 0 }) => {
-            const authToken = this.authToken || '';
-            const userData = await parseJwt(authToken as string);
             const skip = (
-              pageParam * parseInt(loansQueryDto?.take as string, 10) || 0
+              pageParam *
+              (isNaN(parseInt(loansQueryDto?.take as string, 10))
+                ? 0
+                : parseInt(loansQueryDto?.take as string, 10))
             ).toString();
             const loan = await this.loanData({
               ...loansQueryDto,
@@ -82,9 +82,9 @@ export class Loans extends KrossClientBase {
             const loansArray = Object.values(loan?.data);
             const loansResponseArray = await loansArray.map(
               (item: any): LoansResponse => {
-                if (userData?.user_id) {
+                if (userId) {
                   const investment = item.investments.find(
-                    (invItem: any) => invItem?.userId == userData.user_id
+                    (invItem: any) => invItem?.userId == userId
                   );
                   return {
                     ...item,

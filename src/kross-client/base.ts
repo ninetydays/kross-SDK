@@ -1,10 +1,5 @@
 import { useMutation, useQuery } from 'react-query';
-import axios, {
-  AxiosError,
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-} from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import {
   KrossClientOptions,
   FunctionOptions,
@@ -13,55 +8,90 @@ import {
   GetAuthTokenResponse,
 } from '../types';
 import { hmacTokenFunction } from '../utils/encryptor';
+import { isBefore } from 'date-fns';
+import jwt_decode from 'jwt-decode';
 
 export class KrossClientBase {
   instance: AxiosInstance;
-  authToken?: string;
-  refreshToken: string;
-  getHmacToken: (method: string) => { hmacToken: string; xDate: string };
-  constructor(options: KrossClientOptions) {
-    this.getHmacToken = hmacTokenFunction(options.accessId, options.secretKey);
-    this.instance = axios.create(options);
-    this.authToken = options.authToken || '';
-    this.refreshToken = options.refreshToken || '';
-    this.instance.interceptors.request.use((config) => {
-      const { hmacToken, xDate } = this.getHmacToken(config.method as string);
-      config.headers = {
-        ...config.headers,
-        'client-authorization': hmacToken,
-        'X-Date': xDate,
-      };
+  authToken?: string | null | undefined;
+  refreshToken?: string | null | undefined;
+  refreshTokenCallback?: ((token: string) => void) | null | undefined;
 
-      if (this.authToken && config.url !== '/auth/refresh') {
+  accessId: string;
+  secretKey: string;
+
+  constructor(options: KrossClientOptions) {
+    this.instance = axios.create(options);
+    this.authToken = options?.authToken || null;
+    this.refreshToken = options?.refreshToken || null;
+    this.refreshTokenCallback = options?.refreshTokenCallback || null;
+    this.accessId = options.accessId;
+    this.secretKey = options.secretKey;
+
+    this.instance.interceptors.request.use(
+      async (config: AxiosRequestConfig) => {
+        const getHmacToken = await hmacTokenFunction(
+          this.accessId as string,
+          this.secretKey as string
+        );
+
+        const hmacToken = await getHmacToken(config.method as string);
+
         config.headers = {
           ...config.headers,
-          authorization: `Bearer ${this.authToken}`,
+          'client-authorization': hmacToken.hmacToken,
+          'X-Date': hmacToken.xDate,
         };
-      }
-      return config;
-    });
 
-    this.instance.interceptors.response.use(
-      (response) => {
-        if (response.status === 404) {
-          console.log('preflight request needs to be handled');
+        if (this.authToken) {
+          const user: any = await jwt_decode(this.authToken as string);
+          const isExpired = isBefore(new Date(user.exp * 1000), new Date());
+
+          if (!isExpired) {
+            config.headers = {
+              ...config.headers,
+              Authorization: `Bearer ${this.authToken}`,
+            };
+            return config;
+          }
+
+          const refreshTokenResponse = await axios.get(
+            `${options.baseURL}/auth/refresh`,
+            {
+              headers: {
+                'X-Date': hmacToken.xDate,
+                'client-authorization': hmacToken.hmacToken,
+                Authorization: `Bearer ${this.refreshToken}`,
+              },
+            }
+          );
+
+          if (refreshTokenResponse.status === 200) {
+            if (this?.refreshTokenCallback) {
+              await this.refreshTokenCallback(refreshTokenResponse.data.token);
+            }
+            this.authToken = refreshTokenResponse.data.token;
+            config.headers = {
+              ...config.headers,
+              Authorization: `Bearer ${refreshTokenResponse.data.token}`,
+            };
+          }
         }
-        return response;
-      },
-      async (error: AxiosError) => {
-        // Access Token was expired
-        console.log('Error in axios response interceptor', { ...error });
-        return Promise.reject(error.response);
+
+        return config;
       }
     );
   }
-  login({ keyid, password }: LoginDto) {
+  login({ keyid, password, expiresIn = 15 }: LoginDto) {
     return this.instance
       .post<LoginResponse>('/auth/login', {
         keyid,
         password,
+        expiresIn,
       })
       .then((response) => {
+        this.authToken = response.data.token;
+        this.refreshToken = response?.data?.refresh;
         return response;
       })
       .catch((e) => {
@@ -70,10 +100,11 @@ export class KrossClientBase {
       });
   }
 
-  async updateAuthToken() {
-    const refreshToken = this.refreshToken;
+  async updateAuthToken(refreshToken?: string) {
     const res = await this.instance.get<GetAuthTokenResponse>(`/auth/refresh`, {
-      headers: { authorization: `Bearer ${refreshToken}` },
+      headers: {
+        authorization: `Bearer ${refreshToken}`,
+      },
     });
     return res;
   }

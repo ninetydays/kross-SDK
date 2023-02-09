@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { User } from '../../src/kross-client/user';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
+
 export const user = () => {
   let client: User;
   const baseURL = 'https://olive-dev.kross.kr';
@@ -37,7 +38,22 @@ export const user = () => {
     client.authToken = token;
     client.refreshToken = refresh;
   });
+  
+  it('gets authToken and refreshToken', async () => {
+    const { useLogin } = client.useAuthHooks();
+    const { result } = renderHook(() => useLogin(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        keyid: 'mad@kross.kr',
+        password: 'Kross123!',
+      });
+    });
 
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  }, 30000);
   it('gets current user data details', async () => {
     const { userData } = client.useUserHooks();
     const { result } = renderHook(() => userData({}), {

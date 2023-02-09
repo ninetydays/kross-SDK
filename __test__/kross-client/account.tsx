@@ -2,7 +2,6 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Account } from '../../src/kross-client/account';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
-
 export const account = () => {
   let client: Account;
   const baseURL = 'https://olive-dev.kross.kr';
@@ -28,6 +27,22 @@ export const account = () => {
       adapter: require('axios/lib/adapters/http'),
     });
   });
+  
+  it('gets authToken and refreshToken', async () => {
+    const { useLogin } = client.useAuthHooks();
+    const { result } = renderHook(() => useLogin(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        keyid: 'mad@kross.kr',
+        password: 'Kross123!',
+      });
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  }, 30000);
 
   it.skip('checks bank account owner request', async () => {
     const { check } = client.useAccountHooks();

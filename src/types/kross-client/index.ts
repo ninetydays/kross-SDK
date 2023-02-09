@@ -6,12 +6,15 @@ export * from './user';
 export * from './investments';
 export * from './account';
 
+type RefreshTokenCallback = (token: string) => void;
+
 export type KrossClientOptions = AxiosRequestConfig & {
   baseURL: string;
   accessId: string;
   secretKey: string;
   authToken?: string;
   refreshToken?: string;
+  refreshTokenCallback?: RefreshTokenCallback;
 };
 
 export type FunctionOptions = {
@@ -33,6 +36,7 @@ export type FunctionRegistered<I = unknown, O = unknown> = (
 export type LoginDto = {
   keyid: string;
   password: string;
+  expiresIn?: number;
 };
 
 export type LoginResponse = {

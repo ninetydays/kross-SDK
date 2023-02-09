@@ -52,8 +52,6 @@ module.exports = {
     'react-dom': 'ReactDOM',
     'react-native': 'react-native',
     'react-query': 'react-query',
-    '@react-native-async-storage/async-storage':
-      '@react-native-async-storage/async-storage',
     'date-fns': 'date-fns',
   },
 
