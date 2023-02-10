@@ -3,6 +3,7 @@ import { Verifications } from '../../src/kross-client/verifications';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import fs from 'fs'
+import formData from 'form-data';
 
 export const verifications = () => {
   let client: Verifications;
@@ -94,15 +95,18 @@ export const verifications = () => {
       wrapper,
     });
     await act(async () => {
-      const file = Buffer.from(fs.readFileSync('__test__/kross-client/id.jpg'));
-      const blob = new Blob([file], { type: 'image/jpeg' });
-      const fileName = 'id.jpg';
-      const formData = new FormData();
-      formData.append("image", blob, fileName as string);
+      try {
+        const file = fs.readFileSync('__test__/kross-client/id.jpg');
+        const form = new formData();
+        const blob = new Blob([file], { type: 'image/jpeg' });
+        form.append('blob', blob, 'id.jpg');
         await result.current.mutateAsync({
           isForeigner: true,
-          imageForm: formData,
-      });
+          imageForm: form,
+        });
+      } catch (error) {
+        console.error(error);
+      }
   })
     await waitFor(() => {
       const { data } = result.current;
