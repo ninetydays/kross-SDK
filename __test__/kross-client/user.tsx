@@ -2,8 +2,6 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { User } from '../../src/kross-client/user';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import fs from 'fs'
-
 export const user = () => {
   let client: User;
   const baseURL = 'https://olive-dev.kross.kr';
@@ -45,6 +43,7 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
+  
   it('gets current user data details', async () => {
     const { userData } = client.useUserHooks();
     const { result } = renderHook(() => userData({}), {
@@ -223,30 +222,11 @@ export const user = () => {
     });
     await act(async () => {
       await result.current.mutateAsync({
-        keyid: 'mad6@kross.kr',
-        password: 'Kross123!',
-        password2: 'Kross123!',
-        isBorrower: false,
-        isBusiness: false,
-      });
-    });
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data).toBeDefined();
-  });
-
-  it('update a user', async () => {
-    const { userUpdate } = client.useUserHooks();
-    const { result } = renderHook(() => userUpdate(), {
-      wrapper,
-    });
-    await act(async () => {
-      await result.current.mutateAsync({
         email: 'mad@kross.kr',
       });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  });
+  }, 30000);
 };

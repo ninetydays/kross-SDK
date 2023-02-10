@@ -4,8 +4,10 @@ import { Account } from './account';
 import { User } from './user';
 import { Loans } from './loans';
 import { Investments } from './investments';
+import { Verifications } from './verifications';
 import { Inquiry } from './inquiry';
 export class KrossClient extends KrossClientBase {
+  verifications: Verifications;
   account: Account;
   user: User;
   investments: Investments;
@@ -18,5 +20,6 @@ export class KrossClient extends KrossClientBase {
     this.investments = new Investments(options);
     this.loans = new Loans(options);
     this.inquiries = new Inquiry(options);
+    this.verifications = new Verifications(options);
   }
 }
