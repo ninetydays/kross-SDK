@@ -38,7 +38,7 @@ export const user = () => {
     client.authToken = token;
     client.refreshToken = refresh;
   });
-  
+
   it('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
@@ -174,5 +174,24 @@ export const user = () => {
       const { data } = result.current;
       expect(data).toBeDefined();
     });
+  }, 30000);
+
+  it('register a user', async () => {
+    const { userRegister } = client.useUserHooks();
+    const { result } = renderHook(() => userRegister(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        keyid: 'mad6@kross.kr',
+        password: 'Kross123!',
+        password2: 'Kross123!',
+        isBorrower: false,
+        isBusiness: false,
+      });
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
   }, 30000);
 };
