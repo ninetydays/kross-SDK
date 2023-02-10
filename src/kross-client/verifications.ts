@@ -49,7 +49,7 @@ export class Verifications extends KrossClientBase {
     );
   }
 
-  useUserHooks() {
+  useVerificationHook() {
     return {
       idCardVerification: () => {
         const mutation = useMutation(

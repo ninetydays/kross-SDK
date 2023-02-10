@@ -47,7 +47,7 @@ export const verifications = () => {
   }, 30000);
 
   it('verified id card', async () => {
-    const { idCardVerification } = client.useUserHooks();
+    const { idCardVerification } = client.useVerificationHook();
     const { result } = renderHook(() => idCardVerification(), {
       wrapper,
     });
@@ -71,7 +71,7 @@ export const verifications = () => {
   }, 30000);
 
   it('UseBToken', async () => {
-    const { useBToken } = client.useUserHooks();
+    const { useBToken } = client.useVerificationHook();
     const { result } = renderHook(() => useBToken(), {
       wrapper,
     });
@@ -89,17 +89,16 @@ export const verifications = () => {
   }, 30000);
 
   it('OCR verification', async () => {
-    const { idOcrVerification } = client.useUserHooks();
+    const { idOcrVerification } = client.useVerificationHook();
     const { result } = renderHook(() => idOcrVerification(), {
       wrapper,
     });
     await act(async () => {
-      const file = Buffer.from(fs.readFileSync('/Users/azimuth/kross-SDK/__test__/kross-client/id.jpg'));
-      console.log("This file: ", file)
-      const formData = new FormData();
+      const file = Buffer.from(fs.readFileSync('__test__/kross-client/id.jpg'));
       const blob = new Blob([file], { type: 'image/jpeg' });
-      formData.append("image", blob, "id.jpg");
-      formData.append('mask_mode', 'true');
+      const fileName = 'id.jpg';
+      const formData = new FormData();
+      formData.append("image", blob, fileName as string);
         await result.current.mutateAsync({
           isForeigner: true,
           imageForm: formData,
@@ -112,7 +111,7 @@ export const verifications = () => {
   }, 30000);
 
   it('Verifies phone', async () => {
-    const { phoneVerification } = client.useUserHooks();
+    const { phoneVerification } = client.useVerificationHook();
     const { result } = renderHook(() => phoneVerification(), {
       wrapper,
     });
