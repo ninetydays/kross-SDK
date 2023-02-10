@@ -2,45 +2,59 @@ import {
   InquiriesDto,
   InquiryDto,
   InquiryResponse,
+  UpdateInquiryDto,
 } from './../types/kross-client/inquiry';
 import { KrossClientBase } from './base';
 import { useMutation, useQuery } from 'react-query';
 import { FunctionRegistered, KrossClientOptions } from '../types';
 
 export class Inquiry extends KrossClientBase {
-  postInuiry: FunctionRegistered<InquiryDto, InquiryResponse>;
-  getInquiries: FunctionRegistered<InquiriesDto>;
+  createInquiry: FunctionRegistered<InquiryDto, InquiryResponse>;
+  fetchInquiries: FunctionRegistered<InquiriesDto>;
 
   constructor(options: KrossClientOptions) {
     super(options);
 
-    this.postInuiry = Inquiry.registerFunction<InquiryDto, InquiryResponse>({
+    this.createInquiry = Inquiry.registerFunction<InquiryDto, InquiryResponse>({
       url: '/inquiries',
       method: 'post',
     });
-    this.getInquiries = Inquiry.registerFunction<InquiriesDto>({
+    this.fetchInquiries = Inquiry.registerFunction<InquiriesDto>({
       url: '/inquiries',
       method: 'get',
     });
   }
 
+  respondToInquiry(inquiryUpdate: UpdateInquiryDto) {
+    return this.instance.put<InquiryResponse>(
+      `/inquiries/${inquiryUpdate.inquiryId}`,
+      inquiryUpdate
+    );
+  }
+
   useInquiriesHooks() {
     return {
-      postInuiry: () => {
+      createInquiry: () => {
         const mutation = useMutation((inquiryDto: InquiryDto) =>
-          this.postInuiry(inquiryDto)
+          this.createInquiry(inquiryDto)
         );
         return mutation;
       },
-      getInquiries: (inquiriesDto: InquiriesDto) => {
+      fetchInquiries: (inquiriesDto: InquiriesDto) => {
         return useQuery({
           queryKey: 'inquiries',
           queryFn: async () => {
-            return this.getInquiries(inquiriesDto).then((res) => {
+            return this.fetchInquiries(inquiriesDto).then((res) => {
               return res.data;
             });
           },
         });
+      },
+      respondToInquiry: () => {
+        const mutation = useMutation((inqueryUpdate: UpdateInquiryDto) =>
+          this.respondToInquiry(inqueryUpdate)
+        );
+        return mutation;
       },
     };
   }

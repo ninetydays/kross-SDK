@@ -23,4 +23,9 @@ export type InquiriesDto = {
   filter?: string;
 };
 
+export type UpdateInquiryDto = {
+  inquiryId: string;
+  response: string;
+};
+
 export type InquiryResponse = FunctionResponse<InquiryResponseDto>;

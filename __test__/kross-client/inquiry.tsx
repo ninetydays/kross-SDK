@@ -46,9 +46,9 @@ export const InquiryTest = () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  it('inquire about loans', async () => {
-    const { postInuiry } = client.useInquiriesHooks();
-    const { result } = renderHook(() => postInuiry(), {
+  it('inquire about bank account verification', async () => {
+    const { createInquiry } = client.useInquiriesHooks();
+    const { result } = renderHook(() => createInquiry(), {
       wrapper,
     });
     await act(async () => {
@@ -59,18 +59,32 @@ export const InquiryTest = () => {
       });
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    console.log('result.current.data', result.current.data);
     expect(result.current.data).toBeDefined();
   }, 10000);
 
   it('gets inquiries list for logged in user', async () => {
-    const { getInquiries } = client.useInquiriesHooks();
-    const { result } = renderHook(() => getInquiries({}), {
+    const { fetchInquiries } = client.useInquiriesHooks();
+    const { result } = renderHook(() => fetchInquiries({}), {
       wrapper,
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    console.log('result.current.data', result.current.data);
     expect(result.current.data).toBeDefined();
   }, 30000);
+
+  it('respond to  inquiry', async () => {
+    const { respondToInquiry } = client.useInquiriesHooks();
+    const { result } = renderHook(() => respondToInquiry(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        response:
+          'You can get your account verified by sending us a picture of your ID card',
+        inquiryId: '2',
+      });
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  }, 10000);
 };
