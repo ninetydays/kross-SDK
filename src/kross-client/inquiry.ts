@@ -5,7 +5,7 @@ import {
   UpdateInquiryDto,
 } from './../types/kross-client/inquiry';
 import { KrossClientBase } from './base';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useInfiniteQuery } from 'react-query';
 import { FunctionRegistered, KrossClientOptions } from '../types';
 
 export class Inquiry extends KrossClientBase {
@@ -41,14 +41,28 @@ export class Inquiry extends KrossClientBase {
         return mutation;
       },
       fetchInquiries: (inquiriesDto: InquiriesDto) => {
-        return useQuery({
-          queryKey: 'inquiries',
-          queryFn: async () => {
-            return this.fetchInquiries(inquiriesDto).then((res) => {
+        return useInfiniteQuery(
+          'inquiries',
+          async ({ pageParam = 0 }) => {
+            const skip = (
+              pageParam *
+              (isNaN(parseInt(inquiriesDto?.take as string, 10))
+                ? 0
+                : parseInt(inquiriesDto?.take as string, 10))
+            ).toString();
+            return this.fetchInquiries({
+              ...inquiriesDto,
+              skip,
+            }).then((res) => {
               return res.data;
             });
           },
-        });
+          {
+            getNextPageParam: (lastPage, pages) => {
+              return pages?.length >= 1 ? pages.length : null;
+            },
+          }
+        );
       },
       respondToInquiry: () => {
         const mutation = useMutation((inqueryUpdate: UpdateInquiryDto) =>

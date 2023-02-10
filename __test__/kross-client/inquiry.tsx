@@ -64,9 +64,16 @@ export const InquiryTest = () => {
 
   it('gets inquiries list for logged in user', async () => {
     const { fetchInquiries } = client.useInquiriesHooks();
-    const { result } = renderHook(() => fetchInquiries({}), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () =>
+        fetchInquiries({
+          take: '1',
+          skip: '0',
+        }),
+      {
+        wrapper,
+      }
+    );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
