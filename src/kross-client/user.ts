@@ -1,6 +1,6 @@
 import { sumByKey } from './../utils/sumByKey';
 import { KrossClientBase } from './base';
-import { useQuery, useMutation, useInfiniteQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import { FunctionRegistered, KrossClientOptions } from '../types';
 import {
   kftcBalanceResponse,
