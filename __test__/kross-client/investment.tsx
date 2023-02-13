@@ -43,18 +43,16 @@ export const investment = () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 30000);
+  });
 
   it('get Investment List', async () => {
     const { investmentList } = client.useInvestmentHooks();
     const { result } = renderHook(() => investmentList({}), {
       wrapper,
     });
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 
   it('cancels the pending investment with investment_id', async () => {
     const { investmentCancel } = client.useInvestmentHooks();
@@ -68,7 +66,7 @@ export const investment = () => {
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 10000);
+  });
 
   it('registers investment when investor applies to certain loan', async () => {
     const { investmentRegister } = client.useInvestmentHooks();
@@ -84,18 +82,16 @@ export const investment = () => {
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 10000);
+  });
 
   it('gets cmsTradebooks list', async () => {
     const { cmsTradebook } = client.useInvestmentHooks();
     const { result } = renderHook(() => cmsTradebook({}), {
       wrapper,
     });
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 
   it('gets notes list', async () => {
     const { notes } = client.useInvestmentHooks();
@@ -110,11 +106,9 @@ export const investment = () => {
         wrapper,
       }
     );
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 
   it('transactionHistory', async () => {
     const { transactionHistory } = client.useInvestmentHooks();
@@ -125,5 +119,5 @@ export const investment = () => {
       const { data } = result.current;
       expect(data).toBeDefined();
     });
-  }, 30000);
+  });
 };

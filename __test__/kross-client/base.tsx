@@ -42,16 +42,14 @@ export const base = () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 30000);
+  });
 
   it.skip('updates authToken with refreshToken', async () => {
     const { updateAuthToken } = client.useAuthHooks();
     const { result } = renderHook(() => updateAuthToken(), {
       wrapper,
     });
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 };
