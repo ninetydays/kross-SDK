@@ -80,12 +80,12 @@ export class Loans extends KrossClientBase {
               skip,
             });
             const loansArray = Object.values(loan?.data);
-            const loansResponseArray = await loansArray.map(
+            const loansResponseArray = loansArray.map(
               (item: any): LoansResponse => {
-                if (userId) {
-                  const investment = item.investments.find(
-                    (invItem: any) => invItem?.userId == userId
-                  );
+                const investment = item.investments.find(
+                  (invItem: any) => invItem?.userId == userId
+                );
+                if (userId  && investment?.state != 'cancelled') {
                   return {
                     ...item,
                     isUserInvested: investment ? true : false,

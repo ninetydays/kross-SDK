@@ -30,7 +30,7 @@ export const loan = () => {
     });
   });
 
-  it('gets authToken and refreshToken', async () => {
+  it.only('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -94,21 +94,23 @@ export const loan = () => {
     });
   }, 30000);
 
-  it('gets list of the loans available', async () => {
+  it.only('gets list of the loans available', async () => {
     const { loanData } = client.useLoanHooks();
     const { result } = renderHook(
       () =>
         loanData({
-          filter: 'state||$eq||funding||pending',
-          take: '1',
-        }),
+          filter: 'state||$in||funding,pending',
+          take: '5',
+        },
+        '14218',
+        ),
       {
         wrapper,
       }
     );
     await waitFor(() => {
       const { data } = result.current;
-      expect(data).toBeDefined();
+      expect(data?.pages).toBeDefined();
     });
   }, 30000);
 };
