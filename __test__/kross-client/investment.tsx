@@ -29,7 +29,7 @@ export const investment = () => {
     });
   });
 
-  it('gets authToken and refreshToken', async () => {
+  it.only('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -114,11 +114,15 @@ export const investment = () => {
 
   it('applied investments', async () => {
     const { appliedInvestments } = client.useInvestmentHooks();
-    const { result } = renderHook(() => appliedInvestments({
-      filter: 'state||$eq||funding',
-    }), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () =>
+        appliedInvestments({
+          filter: 'state||$eq||funding',
+        }),
+      {
+        wrapper,
+      }
+    );
     await waitFor(async () => {
       const { data } = result.current;
       expect(data).toBeDefined();

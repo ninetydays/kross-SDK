@@ -11,10 +11,17 @@ import {
   InvestmentRegisterResponse,
   InvestmentQueryDto,
   InvestmentsWengeQueryDto,
+  InvestmentData,
 } from '../types/kross-client/investments';
+import jwtDecode from 'jwt-decode';
+import {
+  calculateAvailableInvAmount,
+  getAmountSumByLoanId,
+} from '../utils/getSumAmountByLoanId';
+import { distributedLoanInvestments } from '../utils/distributedLoanInvestments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
-  InvestmentsWengeQueryDto,
+    InvestmentsWengeQueryDto,
     InvestmentListResponse
   >;
   notes: FunctionRegistered<InvestmentsWengeQueryDto, NotesResponse>;
@@ -39,7 +46,7 @@ export class Investments extends KrossClientBase {
     });
 
     this.investmentList = Investments.registerFunction<
-    InvestmentsWengeQueryDto,
+      InvestmentsWengeQueryDto,
       InvestmentListResponse
     >({
       url: '/investments',
@@ -140,14 +147,17 @@ export class Investments extends KrossClientBase {
         );
         return mutation;
       },
-      appliedInvestments: (investmentsWengeQueryDto: InvestmentsWengeQueryDto) =>{
+      appliedInvestments: (
+        investmentsWengeQueryDto: InvestmentsWengeQueryDto
+      ) => {
         return useInfiniteQuery(
           'appliedInvestments',
           async ({ pageParam = 0 }) => {
-            const skip = 
-              (isNaN(parseInt(investmentsWengeQueryDto?.take as string, 10)))
-                ? '0'
-                : investmentsWengeQueryDto?.take as string;
+            const skip = isNaN(
+              parseInt(investmentsWengeQueryDto?.take as string, 10)
+            )
+              ? '0'
+              : (investmentsWengeQueryDto?.take as string);
             const take = (pageParam * parseInt(skip, 10)).toString();
             const appliedInvestmentData = await this.investmentList({
               ...investmentsWengeQueryDto,
@@ -155,14 +165,19 @@ export class Investments extends KrossClientBase {
               skip,
               take,
             });
-            const appliedInvestmentArray = Object.values(appliedInvestmentData?.data || []);
+            const appliedInvestmentArray = Object.values(
+              appliedInvestmentData?.data || []
+            );
             const appliedInvestmentResponse = appliedInvestmentArray.filter(
-              (investment: any) => { 
-                if (investment && investment?.state === investment?.loan?.state){
+              (investment: any) => {
+                if (
+                  investment &&
+                  investment?.state === investment?.loan?.state
+                ) {
                   return investment;
                 }
-              },
-            )
+              }
+            );
             return appliedInvestmentResponse || [];
           },
           {
@@ -173,8 +188,8 @@ export class Investments extends KrossClientBase {
               return pages?.length;
             },
           }
-        )
-      }
+        );
+      },
     };
   }
 }

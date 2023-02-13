@@ -104,3 +104,20 @@ export type CmsTradebookResponseData = {
 };
 
 export type CmsTradebookResponse = FunctionResponse<CmsTradebookResponseData>;
+
+export interface InvestmentData {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  productId: string;
+  memberId: string;
+  amount: number;
+  state: string;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  data: {};
+  applicantId: string;
+  wcTid: null | string;
+  userId: string;
+  kftcInvestmentRegisterId: string;
+  kftcContractId: null | string;
+}
