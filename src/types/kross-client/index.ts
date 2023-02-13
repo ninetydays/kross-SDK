@@ -5,6 +5,7 @@ export * from './loans';
 export * from './user';
 export * from './investments';
 export * from './account';
+export * from './inquiry';
 
 type RefreshTokenCallback = (token: string) => void;
 

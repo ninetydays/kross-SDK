@@ -109,16 +109,18 @@ export const loan = () => {
     const { result } = renderHook(
       () =>
         loanData({
-          filter: 'state||$eq||funding||pending',
-          take: '1',
-        }),
+          filter: 'state||$in||funding,pending',
+          take: '5',
+        },
+        '14218',
+        ),
       {
         wrapper,
       }
     );
     await waitFor(() => {
       const { data } = result.current;
-      expect(data).toBeDefined();
+      expect(data?.pages).toBeDefined();
     });
   }, 30000);
 };
