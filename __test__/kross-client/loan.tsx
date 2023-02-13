@@ -44,7 +44,7 @@ export const loan = () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 30000);
+  });
 
   it('gets loanConfigs list', async () => {
     const { loanConfigs } = client.useLoanHooks();
@@ -58,11 +58,9 @@ export const loan = () => {
         wrapper,
       }
     );
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 
   it('get loan repayments list when borrowers pay back', async () => {
     const { loanRepayments } = client.useLoanHooks();
@@ -70,11 +68,9 @@ export const loan = () => {
       wrapper,
     });
 
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 
   it('gets loan payment schedule when investors pays for borrowers', async () => {
     const { loanPaymentSchedule } = client.useLoanHooks();
@@ -88,21 +84,20 @@ export const loan = () => {
       }
     );
 
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 
   it('gets list of the loans available', async () => {
     const { loanData } = client.useLoanHooks();
     const { result } = renderHook(
       () =>
-        loanData({
-          filter: 'state||$in||funding,pending',
-          take: '5',
-        },
-        '14218',
+        loanData(
+          {
+            filter: 'state||$in||funding,pending',
+            take: '5',
+          },
+          '14218'
         ),
       {
         wrapper,
@@ -112,5 +107,5 @@ export const loan = () => {
       const { data } = result.current;
       expect(data?.pages).toBeDefined();
     });
-  }, 30000);
+  });
 };
