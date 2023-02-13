@@ -27,7 +27,7 @@ module.exports = {
       { test: /\.tsx?$/, loader: 'ts-loader' },
     ],
   },
-  target: 'web', // or web
+  target: 'node', // or web
   entry: {
     'kross-SDK': path.resolve(__dirname, 'src/index.ts'),
   },
