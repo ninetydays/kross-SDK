@@ -199,7 +199,7 @@ export class User extends KrossClientBase {
               {
                 params: {
                   select: 'id,amount',
-                  filter: 'state||$in||funding,funded,pending',
+                  filter: 'state||$eq||funding',
                 },
               }
             );
