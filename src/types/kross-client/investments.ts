@@ -121,3 +121,17 @@ export interface InvestmentData {
   kftcInvestmentRegisterId: string;
   kftcContractId: null | string;
 }
+
+export interface UserFromToken {
+  memberNo: string;
+  name: string;
+  isCorp: boolean;
+  keyid: string;
+  corpNumber: string;
+  memberType: string;
+  userId: string;
+  email: string;
+  state: string;
+  financialProvider: boolean;
+  iat: number;
+}

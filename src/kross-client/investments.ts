@@ -12,6 +12,7 @@ import {
   InvestmentQueryDto,
   InvestmentsWengeQueryDto,
   InvestmentData,
+  UserFromToken,
 } from '../types/kross-client/investments';
 import jwtDecode from 'jwt-decode';
 import {
