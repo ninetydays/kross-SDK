@@ -3,6 +3,7 @@
   "version": "1.0.8-beta.327",
   "description": "90days SDK for login, sigup and loans",
   "main": "dist/index.js",
+  "browser": "dist/index.web.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"

@@ -47,7 +47,7 @@ const returnConfigBaseOnEnv = (env) => {
     },
 
     output: {
-      filename: env === 'web' ? `index.js` : `index.node.js`,
+      filename: env === 'web' ? `index.web.js` : `index.js`,
       path: path.resolve(__dirname, 'dist'),
       libraryTarget: 'commonjs2',
       globalObject: 'this',
