@@ -43,9 +43,6 @@ export class KrossClientBase {
           'X-Date': hmacToken.xDate,
         };
 
-        console.log('config.url:', config.url);
-        console.log('config.headers:', config.headers);
-
         if (this.authToken) {
           const user: any = await jwt_decode(this.authToken as string);
           const isExpired = isBefore(new Date(user.exp * 1000), new Date());
@@ -93,7 +90,6 @@ export class KrossClientBase {
         expiresIn,
       })
       .then((response) => {
-        console.log('start');
         this.authToken = response.data.token;
         this.refreshToken = response?.data?.refresh;
         return response;
