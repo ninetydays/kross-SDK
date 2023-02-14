@@ -52,7 +52,7 @@ export type LoanResponseData = {
   investmentId?: number | null;
 };
 
-export type LoansResponse = FunctionResponse<LoanResponseData>;
+export type LoansResponse = Array<LoanResponseData>;
 
 export type PaymentScheduleDto = {
   loan_id: number;
