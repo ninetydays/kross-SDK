@@ -211,9 +211,7 @@ export class User extends KrossClientBase {
               '/notes',
               {
                 params: {
-                  where: {
-                    state: 'investing',
-                  },
+                  state: 'investing',
                 },
               }
             );
@@ -222,9 +220,7 @@ export class User extends KrossClientBase {
               '/notes',
               {
                 params: {
-                  where: {
-                    state: 'done',
-                  },
+                  state: 'done',
                   include: {
                     model: 'loans',
                     attributes: ['id'],
@@ -288,8 +284,15 @@ export class User extends KrossClientBase {
                     (acc: number, cur: { rate: number }) =>
                       acc + cur.rate * 100,
                     0
-                  ) / repaymentScheduledCount
+                  ) / (repaymentScheduledCount || 1)
                 ).toFixed(2)
+              : 0;
+            const repaymentScheduledAmount = repaymentsScheduledData?.data
+              ? repaymentsScheduledData?.data?.reduce(
+                  (acc: number, cur: { returned_amount: number }) =>
+                    acc + cur.returned_amount,
+                  0
+                )
               : 0;
 
             // Repayment Done content
@@ -354,6 +357,7 @@ export class User extends KrossClientBase {
               repaymentScheduledRate,
               repaymentDoneCount,
               repaymentDoneAmount,
+              repaymentScheduledAmount,
               totalAssetAmount,
               cummulativeReturnOnInvestment,
               repaymentDoneLastMonthAmount,
