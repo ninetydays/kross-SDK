@@ -83,12 +83,17 @@ export class KrossClientBase {
     );
   }
   login({ keyid, password, refreshExpiresIn}: LoginDto) {
+    const loginDto = refreshExpiresIn ? {
+      keyid,
+      password,
+      refreshExpiresIn,
+    } : {
+      keyid,
+      password,
+    }
     return this.instance
-      .post<LoginResponse>('/auth/login', {
-        keyid,
-        password,
-        refreshExpiresIn
-      })
+      .post<LoginResponse>('/auth/login', 
+      loginDto)
       .then((response) => {
         this.authToken = response.data.token;
         this.refreshToken = response?.data?.refresh;
