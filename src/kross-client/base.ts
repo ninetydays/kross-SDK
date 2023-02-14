@@ -82,12 +82,12 @@ export class KrossClientBase {
       }
     );
   }
-  login({ keyid, password, expiresIn = 15 }: LoginDto) {
+  login({ keyid, password, refreshExpiresIn}: LoginDto) {
     return this.instance
       .post<LoginResponse>('/auth/login', {
         keyid,
         password,
-        expiresIn,
+        refreshExpiresIn
       })
       .then((response) => {
         this.authToken = response.data.token;

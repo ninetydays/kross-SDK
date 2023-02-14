@@ -39,9 +39,10 @@ export const loan = () => {
       await result.current.mutateAsync({
         keyid: 'mad@kross.kr',
         password: 'Kross123!',
+        refreshExpiresIn: 40,
       });
     });
-
+    console.log("login: ", result.current.data)
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
@@ -105,6 +106,7 @@ export const loan = () => {
     );
     await waitFor(() => {
       const { data } = result.current;
+      console.log("data: ", data?.pages);
       expect(data?.pages).toBeDefined();
     });
   });
