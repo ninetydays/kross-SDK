@@ -39,9 +39,9 @@ export const loan = () => {
       await result.current.mutateAsync({
         keyid: 'mad@kross.kr',
         password: 'Kross123!',
+        refreshExpiresIn: 40,
       });
     });
-
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
