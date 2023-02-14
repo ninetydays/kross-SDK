@@ -18,7 +18,10 @@ import {
   calculateAvailableInvAmount,
   getAmountSumByLoanId,
 } from '../utils/getSumAmountByLoanId';
-import { distributedLoanInvestments } from '../utils/distributedLoanInvestments';
+import {
+  distributedLoanInvestments,
+  distributedLoanInvestmentsEvenly,
+} from '../utils/distributedLoanInvestments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
     InvestmentsWengeQueryDto,

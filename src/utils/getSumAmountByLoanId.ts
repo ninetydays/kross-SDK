@@ -17,25 +17,29 @@ export const getAmountSumByLoanId = (
 export const calculateAvailableInvAmount = ({
   loanItem,
   availableAmount,
-  invLimit,
+  investorCode = '',
   investedAmountToBorrower,
 }: {
   loanItem: any;
   availableAmount: number;
-  invLimit: any;
+  investorCode: string;
   investedAmountToBorrower: number;
 }) => {
   const { fundAmount, investedAmount } = loanItem;
 
   const limitPerBorrowerAmount = limitPerBorrower(
     fundAmount,
-    invLimit.investor_code,
+    investorCode,
     investedAmountToBorrower
   );
   const loanRemainingAmount = fundAmount - investedAmount;
 
-  const availableInvAmount = invLimit?.investor_code
-    ? Math.min(availableAmount, limitPerBorrowerAmount, loanRemainingAmount)
+  const availableInvAmount = investorCode
+    ? Math.min(
+        availableAmount,
+        limitPerBorrowerAmount > 0 ? limitPerBorrowerAmount : 0,
+        loanRemainingAmount
+      )
     : Math.min(availableAmount, loanRemainingAmount);
   return availableInvAmount;
 };
