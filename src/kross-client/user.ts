@@ -176,7 +176,7 @@ export class User extends KrossClientBase {
           },
         });
       },
-      userData: (userQueryDto: UserQueryDto) => {
+      userData: (userQueryDto: UserQueryDto, enabled?: boolean) => {
         return useQuery({
           queryKey: 'userData',
           queryFn: async () => {
@@ -184,8 +184,7 @@ export class User extends KrossClientBase {
               return res.data;
             });
           },
-          enabled:
-            userQueryDto?.enabled === undefined ? true : userQueryDto?.enabled,
+          enabled: enabled === undefined ? true : enabled,
         });
       },
 
