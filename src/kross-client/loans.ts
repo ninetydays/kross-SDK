@@ -110,7 +110,7 @@ export class Loans extends KrossClientBase {
               if (lastPage.length === 0){
                 return null;
               }
-              return pages.length;
+              return pages?.length;
             },
           }
         );
