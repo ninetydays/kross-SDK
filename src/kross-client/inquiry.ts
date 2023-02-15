@@ -50,16 +50,19 @@ export class Inquiry extends KrossClientBase {
                 ? 0
                 : parseInt(inquiriesDto?.take as string, 10))
             ).toString();
-            return this.fetchInquiries({
+            const inquiriesData =  await this.fetchInquiries({
               ...inquiriesDto,
               skip,
-            }).then((res) => {
-              return res.data;
             });
+            const inquiriesDataArray = Object.values(inquiriesData?.data);
+            return inquiriesDataArray || [];
           },
           {
             getNextPageParam: (lastPage, pages) => {
-              return pages?.length >= 1 ? pages.length : null;
+              if (lastPage.length === 0){
+                return null;
+              }
+              return pages?.length;
             },
           }
         );

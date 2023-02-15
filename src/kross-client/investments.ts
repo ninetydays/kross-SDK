@@ -127,13 +127,16 @@ export class Investments extends KrossClientBase {
         return useInfiniteQuery(
           'transactionHistory',
           async ({ pageParam = 0 }) => {
-            return this.transactionHistory(pageParam).then((res) => {
-              return res.data;
-            });
+            const transactionData = await this.transactionHistory(pageParam);
+            const transactionDataArray = Object.values(transactionData?.data);
+            return transactionDataArray || [];
           },
           {
             getNextPageParam: (lastPage, pages) => {
-              return pages?.length >= 1 ? pages.length : null;
+              if(lastPage.length === 0){
+                return null;
+              }
+              return pages?.length;
             },
           }
         );
