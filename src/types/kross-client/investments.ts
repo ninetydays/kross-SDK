@@ -8,6 +8,7 @@ export type InvestmentQueryDto = {
   group_by?: string;
   query?: Record<string, unknown>;
   include?: Record<string, unknown>;
+  filter?: string;
 };
 
 export type InvestmentListResponseData = {
