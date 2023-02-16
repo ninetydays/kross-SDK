@@ -25,8 +25,7 @@ export type InvestmentListResponseData = {
   updatedAt: Date;
 };
 
-export type InvestmentListResponse =
-  FunctionResponse<InvestmentListResponseData>;
+export type InvestmentListResponse = Array<InvestmentListResponseData>;
 
 export type InvestmentRegisterDto = {
   amount: number;
