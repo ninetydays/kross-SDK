@@ -54,8 +54,8 @@ export class Inquiry extends KrossClientBase {
               ...inquiriesDto,
               skip,
             });
-            const inquiriesDataArray = Object.values(inquiriesData?.data);
-            return inquiriesDataArray || [];
+            const inquiriesDataArray = inquiriesData?.data ? Object.values(inquiriesData?.data): [];
+            return inquiriesDataArray;
           },
           {
             getNextPageParam: (lastPage, pages) => {
