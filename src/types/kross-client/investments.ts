@@ -30,7 +30,6 @@ export type InvestmentListResponse = Array<InvestmentListResponseData>;
 export type InvestmentRegisterDto = {
   amount: number;
   loan_id: number;
-  user_id: number;
 };
 
 export type InvestmentRegisterResponse = FunctionResponse;
