@@ -10,13 +10,14 @@ import {
   CmsTradebookResponse,
   InvestmentRegisterResponse,
   InvestmentQueryDto,
+  InvestmentsWengeQueryDto,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
     InvestmentQueryDto,
     InvestmentListResponse
   >;
-  notes: FunctionRegistered<InvestmentQueryDto, NotesResponse>;
+  notes: FunctionRegistered<InvestmentsWengeQueryDto, NotesResponse>;
   cmsTradebook: FunctionRegistered<InvestmentQueryDto, CmsTradebookResponse>;
 
   constructor(options: KrossClientOptions) {
@@ -30,7 +31,7 @@ export class Investments extends KrossClientBase {
     });
 
     this.notes = Investments.registerFunction<
-      InvestmentQueryDto,
+    InvestmentsWengeQueryDto,
       NotesResponse
     >({
       url: '/notes',
@@ -113,11 +114,11 @@ export class Investments extends KrossClientBase {
           },
         });
       },
-      notes: (investmentQueryDto: InvestmentQueryDto) => {
+      notes: (investmentsWengeQueryDto: InvestmentsWengeQueryDto) => {
         return useQuery({
           queryKey: 'notes',
           queryFn: async () => {
-            return this.notes(investmentQueryDto).then((res) => {
+            return this.notes(investmentsWengeQueryDto).then((res) => {
               return res.data;
             });
           },

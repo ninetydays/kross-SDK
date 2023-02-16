@@ -1,4 +1,12 @@
 import { FunctionResponse } from './index';
+export type UserWengeQueryDto = {
+  select?: string;
+  skip?: string;
+  take?: string;
+  order?: string;
+  filter?: string;
+  join?: string;
+};
 
 export type UserQueryDto = {
   fields?: string;

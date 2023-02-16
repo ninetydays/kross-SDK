@@ -21,6 +21,7 @@ import {
   TotalAssetsType,
   UserAccountLogsData,
   UserNoteLogsData,
+  UserWengeQueryDto,
 } from '../types/kross-client/user';
 import {
   subMonths,
@@ -39,13 +40,13 @@ export class User extends KrossClientBase {
   releaseDepositControl: FunctionRegistered<ReleaseDepositResponse>;
   accountData: FunctionRegistered<UserQueryDto, AccountResponse>;
   userData: FunctionRegistered<UserQueryDto, UserResponse>;
-  userAccountLogs: FunctionRegistered<UserQueryDto, UserAccountLogsResponse>;
-  userNoteLogs: FunctionRegistered<UserQueryDto, UserNoteLogsResponse>;
+  userAccountLogs: FunctionRegistered<UserWengeQueryDto, UserAccountLogsResponse>;
+  userNoteLogs: FunctionRegistered<UserWengeQueryDto, UserNoteLogsResponse>;
 
   constructor(options: KrossClientOptions) {
     super(options);
     this.userNoteLogs = User.registerFunction<
-      UserQueryDto,
+    UserWengeQueryDto,
       UserNoteLogsResponse
     >({
       url: '/user-note-logs',
@@ -53,7 +54,7 @@ export class User extends KrossClientBase {
     });
 
     this.userAccountLogs = User.registerFunction<
-      UserQueryDto,
+      UserWengeQueryDto,
       UserAccountLogsResponse
     >({
       url: '/user-account-logs',
@@ -108,21 +109,21 @@ export class User extends KrossClientBase {
 
   useUserHooks() {
     return {
-      userNoteLogs: (userQueryDto: UserQueryDto) => {
+      userNoteLogs: (userWengeQueryDto: UserWengeQueryDto) => {
         return useQuery({
           queryKey: 'userNoteLogs',
           queryFn: async () => {
-            return this.userNoteLogs(userQueryDto).then((res) => {
+            return this.userNoteLogs(userWengeQueryDto).then((res) => {
               return res.data;
             });
           },
         });
       },
-      userAccountLogs: (userQueryDto: UserQueryDto) => {
+      userAccountLogs: (userWengeQueryDto: UserWengeQueryDto) => {
         return useQuery({
           queryKey: 'userAccountLogs',
           queryFn: async () => {
-            return this.userAccountLogs(userQueryDto).then((res) => {
+            return this.userAccountLogs(userWengeQueryDto).then((res) => {
               return res.data;
             });
           },

@@ -29,7 +29,7 @@ export const user = () => {
     });
   });
 
-  it('gets authToken and refreshToken', async () => {
+  it.only('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -138,15 +138,17 @@ export const user = () => {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    console.log("My page data: ", result.current.data);
     expect(result.current.data).toBeDefined();
   });
 
-  it('gets total assets for each day', async () => {
+  it.only('gets total assets for each day', async () => {
     const { totalAssets } = client.useUserHooks();
     const { result } = renderHook(() => totalAssets(), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    console.log("total assets: ", result.current?.data)
     expect(result.current.data).toBeDefined();
   });
 

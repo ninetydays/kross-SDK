@@ -10,6 +10,15 @@ export type InvestmentQueryDto = {
   include?: Record<string, unknown>;
 };
 
+export type InvestmentsWengeQueryDto = {
+  select?: string;
+  skip?: string;
+  take?: string;
+  order?: string;
+  filter?: string;
+  join?: string;
+};
+
 export type InvestmentListResponseData = {
   id: number;
   product_id: number;
