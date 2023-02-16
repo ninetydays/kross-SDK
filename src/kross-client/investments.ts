@@ -128,13 +128,14 @@ export class Investments extends KrossClientBase {
           'transactionHistory',
           async ({ pageParam = 0 }) => {
             const transactionData = await this.transactionHistory(pageParam);
-            const transactionDataArray = transactionData?.data?.data 
-              ? Object.values(transactionData.data.data) : [];
+            const transactionDataArray = transactionData?.data?.data
+              ? Object.values(transactionData.data.data)
+              : [];
             return transactionDataArray;
           },
           {
             getNextPageParam: (lastPage, pages) => {
-              if(lastPage.length === 0){
+              if (lastPage.length === 0) {
                 return null;
               }
               return pages?.length;
