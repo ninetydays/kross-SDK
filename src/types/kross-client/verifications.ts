@@ -1,6 +1,4 @@
 import { FunctionResponse } from ".";
-import formData from 'form-data';
-
 export type IdCardVerificationsDto = {
   idType?: string;
   driverNo?: string;
@@ -23,7 +21,7 @@ export type IdCardVerificationsResponseData = {
 export type IdCardVerificationsResponse = FunctionResponse<IdCardVerificationsResponseData>;
 
 export type IdOcrVerificationsDto = {
-  imageForm: formData;
+  imageForm: FormData;
   isForeigner: boolean;
 }
 export type IdOcrVerificationsResponseData = {

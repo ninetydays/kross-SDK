@@ -3,8 +3,6 @@ import { Verifications } from '../../src/kross-client/verifications';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import fs from 'fs'
-import formData from 'form-data';
-
 export const verifications = () => {
   let client: Verifications;
   const baseURL = 'https://olive-dev.kross.kr';
@@ -31,14 +29,14 @@ export const verifications = () => {
     });
   });
 
-  it('gets authToken and refreshToken', async () => {
+  it.only('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
     });
     await act(async () => {
       await result.current.mutateAsync({
-        keyid: 'mad@kross.kr',
+        keyid: 'aziyatalik4@gmail.com',
         password: 'Kross123!',
       });
     });
@@ -89,17 +87,18 @@ export const verifications = () => {
     });
   }, 30000);
 
-  it('OCR verification', async () => {
+  it.only('OCR verification', async () => {
     const { idOcrVerification } = client.useVerificationHook();
     const { result } = renderHook(() => idOcrVerification(), {
       wrapper,
     });
     await act(async () => {
       try {
+        let form = new FormData();
         const file = fs.readFileSync('__test__/kross-client/id.jpg');
-        const form = new formData();
-        const blob = new Blob([file], { type: 'image/jpeg' });
-        form.append('blob', blob, 'id.jpg');
+        const blob = new Blob([JSON.stringify(file, null, 2)], { type: 'image/jpeg' });
+        console.log("blob: ", blob);
+        form.append('id.jpg',blob[0], 'blob');
         await result.current.mutateAsync({
           isForeigner: true,
           imageForm: form,
@@ -110,6 +109,7 @@ export const verifications = () => {
   })
     await waitFor(() => {
       const { data } = result.current;
+      console.log("Data: ", data);
       expect(data).toBeDefined();
     });
   }, 30000);

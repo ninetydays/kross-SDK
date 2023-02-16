@@ -36,7 +36,6 @@ export class KrossClientBase {
         );
 
         const hmacToken = await getHmacToken(config.method as string);
-
         config.headers = {
           ...config.headers,
           'client-authorization': hmacToken.hmacToken,
@@ -61,9 +60,16 @@ export class KrossClientBase {
               ...config.headers,
               Authorization: `Bearer ${this.authToken}`,
             };
+            if (config.url === '/verifications/idcard/ocr'){
+              config.headers = {
+                ...config.headers,
+                'Content-Type': 'multipart/form-data',
+              }
+          }
+          console.log("Config: ", config);
+
             return config;
           }
-
           const refreshTokenResponse = await axios.get(
             `${options.baseURL}/auth/refresh`,
             {

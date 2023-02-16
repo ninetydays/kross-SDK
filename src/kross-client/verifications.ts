@@ -1,6 +1,6 @@
 import { KrossClientBase } from './base';
 import { useMutation } from 'react-query';
-
+import axios from 'axios';
 import {
   IdOcrVerificationsDto,
   IdOcrVerificationsResponse,
@@ -20,19 +20,15 @@ export class Verifications extends KrossClientBase {
       idCardVerificationDto,
     );
   }
-  idOcrVerification({isForeigner, imageForm}: IdOcrVerificationsDto) {
-    const headers = {
-      'Content-Type': 'multipart/form-data',
+  idOcrVerification({imageForm, isForeigner}: IdOcrVerificationsDto) {
+    const imageBuffer = imageForm.get('data');
+    const data = {
+      imageForm: imageBuffer,
+      isForeigner,
     };
     return this.instance.post<IdOcrVerificationsResponse>(
       '/verifications/idcard/ocr',
-      {
-        isForeigner,
-        imageForm,
-      },
-      {
-        headers,
-      },
+      data,
     );
   }
   useBToken(useBTokenDto: UseBTokenDto) {
