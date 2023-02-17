@@ -30,7 +30,7 @@ export const InquiryTest = () => {
     });
   });
 
-  it('gets authToken and refreshToken', async () => {
+  it.only('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -62,7 +62,7 @@ export const InquiryTest = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it('gets inquiries list for logged in user', async () => {
+  it.only('gets inquiries list for logged in user', async () => {
     const { fetchInquiries } = client.useInquiriesHooks();
     const { result } = renderHook(
       () =>
@@ -76,6 +76,7 @@ export const InquiryTest = () => {
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    console.log("data: ", result.current.data?.pages);
     expect(result.current.data).toBeDefined();
   });
 
