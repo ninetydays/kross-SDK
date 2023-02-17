@@ -205,7 +205,6 @@ export class User extends KrossClientBase {
             const { data: notesSummaryData = [] }: any = await this.get(
               '/notes/summary'
             );
-
             const { data: repaymentsScheduledData = [] }: any = await this.get(
               '/notes',
               {
@@ -245,7 +244,6 @@ export class User extends KrossClientBase {
                 return notesObject.state === 'done';
               }
             );
-
             const totalAssetAmount =
               amountInAccount +
               (investingNotesSumary?.originPrincipal ||
@@ -382,7 +380,7 @@ export class User extends KrossClientBase {
           
           const growthRate = growthCalculator(totalAssetsArray);
           return {
-            data: totalAssetsArray,
+            data: totalAssets,
             growthRatePercentage: growthRate,
           };
         });

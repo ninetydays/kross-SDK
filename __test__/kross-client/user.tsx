@@ -132,7 +132,7 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it.only('gets myPage data', async () => {
+  it('gets myPage data', async () => {
     const { myPageData } = client.useUserHooks();
     const { result } = renderHook(() => myPageData(), {
       wrapper,
