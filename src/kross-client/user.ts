@@ -19,8 +19,6 @@ import {
   UserNoteLogsResponse,
   UserQueryDto,
   TotalAssetsType,
-  UserAccountLogsData,
-  UserNoteLogsData,
   UserWengeQueryDto,
 } from '../types/kross-client/user';
 import {
@@ -370,32 +368,17 @@ export class User extends KrossClientBase {
           const totalAssets: TotalAssetsType = {};
           for (const accountLog of accountLogsArray) {
             totalAssets[accountLog.saveDate] = {
-              totalAssets: accountLog.amount,
+              totalAssets: parseInt(accountLog.amount, 10),
             };
           }
           for (const noteLog of noteLogsArray) {
             if (totalAssets[noteLog.saveDate]) {
               totalAssets[noteLog.saveDate].totalAssets +=
-                noteLog.remainPrincipal;
+                parseInt(noteLog.remainPrincipal, 10);
             }
           }
-          const currentTotalAssets =
-            totalAssets[
-              Object.keys(totalAssets).sort()[
-                Object.keys(totalAssets).length - 1
-              ]
-            ];
-          const xMonthsAgoTotalAssets =
-            totalAssets[Object.keys(totalAssets).sort()[0]];
-          const growthRate =
-            ((currentTotalAssets.totalAssets -
-              xMonthsAgoTotalAssets.totalAssets) /
-              xMonthsAgoTotalAssets.totalAssets) *
-            100;
-          return {
-            data: totalAssets,
-            growthRatePercentage: growthRate,
-          };
+          const totalAssetsArray = Object.entries(totalAssets).sort();
+          return totalAssetsArray;
         });
       },
 
