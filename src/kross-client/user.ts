@@ -198,12 +198,11 @@ export class User extends KrossClientBase {
               '/investments',
               {
                 params: {
-                  select: 'id,amount',
-                  state: 'funding',
+                  select: 'id,amount,state',
+                  filter: 'state||$eq||funding'
                 },
               }
             );
-
             const { data: notesSummaryData = [] }: any = await this.get(
               '/notes/summary'
             );
@@ -212,7 +211,7 @@ export class User extends KrossClientBase {
               '/notes',
               {
                 params: {
-                  state: 'investing',
+                  filter: 'state||$eq||investing',
                 },
               }
             );
@@ -221,15 +220,11 @@ export class User extends KrossClientBase {
               '/notes',
               {
                 params: {
-                  state: 'done',
-                  include: {
-                    model: 'loans',
-                    attributes: ['id'],
-                  },
+                  filter: 'state||$eq||done',
+                  join: 'loan'
                 },
               }
             );
-
             const amountInAccount = accountData?.data?.amount || 0;
 
             // Assets and cummulative return content
@@ -261,9 +256,9 @@ export class User extends KrossClientBase {
                 0 - delayNotesSummary?.principal ||
                 0);
             const cummulativeReturnOnInvestment =
-              (doneNotesSummary.interest || 0) -
-              (doneNotesSummary.taxAmount || 0) -
-              (doneNotesSummary.feeAmount || 0);
+              (doneNotesSummary?.interest || 0) -
+              (doneNotesSummary?.taxAmount || 0) -
+              (doneNotesSummary?.feeAmount || 0);
 
             // Investment Applied To content
             const investmentAppliedCount =
@@ -278,30 +273,29 @@ export class User extends KrossClientBase {
 
             // Repayment Scheduled content
             const repaymentScheduledCount =
-              repaymentsScheduledData?.data?.length || 0;
-            const repaymentScheduledRate = repaymentsScheduledData?.data
+              repaymentsScheduledData?.length || 0;
+            const repaymentScheduledRate = repaymentsScheduledData
               ? (
-                  repaymentsScheduledData?.data?.reduce(
+                  repaymentsScheduledData?.reduce(
                     (acc: number, cur: { rate: number }) =>
                       acc + cur.rate * 100,
                     0
                   ) / (repaymentScheduledCount || 1)
                 ).toFixed(2)
               : 0;
-            const repaymentScheduledAmount = repaymentsScheduledData?.data
-              ? repaymentsScheduledData?.data?.reduce(
+            const repaymentScheduledAmount = repaymentsScheduledData
+              ? repaymentsScheduledData?.reduce(
                   (acc: number, cur: { returned_amount: number }) =>
                     acc + cur.returned_amount,
                   0
                 )
               : 0;
-
             // Repayment Done content
-            const repaymentDoneCount = repaymentsDoneData?.data?.length || 0;
-            const repaymentDoneAmount = repaymentsDoneData?.data
-              ? repaymentsDoneData?.data?.reduce(
-                  (acc: number, cur: { returned_amount: number }) =>
-                    acc + cur.returned_amount,
+            const repaymentDoneCount = repaymentsDoneData?.length || 0;
+            const repaymentDoneAmount = repaymentsDoneData
+              ? repaymentsDoneData?.reduce(
+                  (acc: number, cur: { returnedAmount: number }) =>
+                    acc + cur.returnedAmount,
                   0
                 )
               : 0;
@@ -309,8 +303,8 @@ export class User extends KrossClientBase {
             // Repayment Done LastMonth content
             const currentDate = new Date();
             const lastMonth = subMonths(currentDate, 1);
-            const repaymentDoneLastMonthData = repaymentsDoneData?.data
-              ? repaymentsDoneData?.data?.filter(
+            const repaymentDoneLastMonthData = repaymentsDoneData
+              ? repaymentsDoneData?.filter(
                   (note: { doneAt: any }) =>
                     !isBefore(
                       parse(
@@ -373,8 +367,6 @@ export class User extends KrossClientBase {
           const noteLogs = await this.userNoteLogs({});
           const accountLogsArray = Array.isArray(accountLogs?.data) ? accountLogs.data : [];
           const noteLogsArray = Array.isArray(noteLogs?.data) ? noteLogs.data : [];
-          console.log("notelogarray: ", noteLogsArray);
-
           const totalAssets: TotalAssetsType = {};
           for (const accountLog of accountLogsArray) {
             totalAssets[accountLog.saveDate] = {

@@ -132,7 +132,7 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it('gets myPage data', async () => {
+  it.only('gets myPage data', async () => {
     const { myPageData } = client.useUserHooks();
     const { result } = renderHook(() => myPageData(), {
       wrapper,
@@ -142,7 +142,7 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it.only('gets total assets for each day', async () => {
+  it('gets total assets for each day', async () => {
     const { totalAssets } = client.useUserHooks();
     const { result } = renderHook(() => totalAssets(), {
       wrapper,
