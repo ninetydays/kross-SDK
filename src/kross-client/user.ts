@@ -394,29 +394,20 @@ export class User extends KrossClientBase {
           queryFn: async () => {
             const { data: notesData = [] }: any = await this.get('/notes', {
               params: {
-                query: {
-                  state: ['done'],
-                  returnAt: {
-                    lte: endDate,
-                    gte: startDate,
-                  },
-                },
-                include: {
-                  model: 'loans',
-                  attributes: ['id', 'investor_fee_rate', 'name'],
-                },
+                filter: `state||$eq||done;returnAt||$between||${startDate},${endDate}`,
+                join: 'loan',
               },
             });
 
-            const principal = sumByKey(notesData?.data, 'principal');
-            const rate = sumByKey(notesData?.data, 'rate');
-            const feeRate = sumByKey(notesData?.data, 'fee_rate');
-            const interest = sumByKey(notesData?.data, 'interest');
-            const taxAmount = sumByKey(notesData?.data, 'tax_amount');
-            const feeAmount = sumByKey(notesData?.data, 'fee_amount');
+            const principal = sumByKey(notesData, 'principal');
+            const rate = sumByKey(notesData, 'rate');
+            const feeRate = sumByKey(notesData, 'feeRate');
+            const interest = sumByKey(notesData, 'interest');
+            const taxAmount = sumByKey(notesData, 'taxAmount');
+            const feeAmount = sumByKey(notesData, 'feeAmount');
             const cumulativeReturnAfterTax = interest - taxAmount - feeAmount;
             const cumulativeInterestRatio = (
-              ((rate - feeRate) / notesData?.data?.length || 1) * 100
+              ((rate - feeRate) / notesData?.length || 1) * 100
             ).toFixed(2);
 
             function getRealPeriod(item: any): number {
@@ -426,16 +417,16 @@ export class User extends KrossClientBase {
               );
               return period;
             }
-            const notesReturnRatesAfterTax = notesData?.data?.map(
+            const notesReturnRatesAfterTax = notesData?.map(
               (note: any) => {
                 const returnRateAfterTax =
                   note?.doneAt && getRealPeriod(note) > 0
                     ? ((((note.interest -
-                        (note.fee_amount || 0) -
-                        note.tax_amount) /
+                        (note.feeAmount || 0) -
+                        note.taxAmount) /
                         getRealPeriod(note)) *
                         365) /
-                        note.origin_principal) *
+                        note.originPrincipal) *
                       100
                     : 0;
                 return returnRateAfterTax;
@@ -456,7 +447,7 @@ export class User extends KrossClientBase {
               taxAmount,
               feeAmount,
               investmentsPricipal: principal,
-              notesData: notesData?.data || [],
+              notesData: notesData || [],
             };
           },
         });

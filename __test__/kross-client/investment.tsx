@@ -97,11 +97,7 @@ export const investment = () => {
     const { notes } = client.useInvestmentHooks();
     const { result } = renderHook(
       () =>
-        notes({
-          fields: 'id',
-          limit: '5',
-          sort_by: 'id.asc',
-        }),
+        notes({}),
       {
         wrapper,
       }

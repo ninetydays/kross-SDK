@@ -138,7 +138,6 @@ export const user = () => {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    console.log("data: ", result.current.data)
     expect(result.current.data).toBeDefined();
   });
 
@@ -148,7 +147,6 @@ export const user = () => {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    console.log("data: ", result.current.data);
     expect(result.current.data).toBeDefined();
   });
 
