@@ -76,7 +76,6 @@ export const InquiryTest = () => {
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    console.log('data: ', result.current.data?.pages);
     expect(result.current.data).toBeDefined();
   });
 
