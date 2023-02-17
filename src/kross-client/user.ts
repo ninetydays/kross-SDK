@@ -28,7 +28,7 @@ import {
   parse,
   differenceInCalendarDays,
 } from 'date-fns';
-import {growthCalculator} from '../utils/growthCalculator'
+import { growthCalculator } from '../utils/growthCalculator';
 
 export class User extends KrossClientBase {
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
@@ -39,13 +39,16 @@ export class User extends KrossClientBase {
   releaseDepositControl: FunctionRegistered<ReleaseDepositResponse>;
   accountData: FunctionRegistered<UserQueryDto, AccountResponse>;
   userData: FunctionRegistered<UserQueryDto, UserResponse>;
-  userAccountLogs: FunctionRegistered<UserWengeQueryDto, UserAccountLogsResponse>;
+  userAccountLogs: FunctionRegistered<
+    UserWengeQueryDto,
+    UserAccountLogsResponse
+  >;
   userNoteLogs: FunctionRegistered<UserWengeQueryDto, UserNoteLogsResponse>;
 
   constructor(options: KrossClientOptions) {
     super(options);
     this.userNoteLogs = User.registerFunction<
-    UserWengeQueryDto,
+      UserWengeQueryDto,
       UserNoteLogsResponse
     >({
       url: '/user-note-logs',
@@ -198,7 +201,7 @@ export class User extends KrossClientBase {
               {
                 params: {
                   select: 'id,amount,state',
-                  filter: 'state||$eq||funding'
+                  filter: 'state||$eq||funding',
                 },
               }
             );
@@ -219,7 +222,7 @@ export class User extends KrossClientBase {
               {
                 params: {
                   filter: 'state||$eq||done',
-                  join: 'loan'
+                  join: 'loan',
                 },
               }
             );
@@ -362,8 +365,12 @@ export class User extends KrossClientBase {
         return useQuery('totalAssets', async () => {
           const accountLogs = await this.userAccountLogs({});
           const noteLogs = await this.userNoteLogs({});
-          const accountLogsArray = Array.isArray(accountLogs?.data) ? accountLogs.data : [];
-          const noteLogsArray = Array.isArray(noteLogs?.data) ? noteLogs.data : [];
+          const accountLogsArray: { [key: string]: any }[] = (
+            accountLogs?.data ? Object.values(accountLogs.data) : []
+          ) as { [key: string]: any }[];
+          const noteLogsArray: { [key: string]: any }[] = (
+            noteLogs?.data ? Object.values(noteLogs.data) : []
+          ) as { [key: string]: any }[];
           const totalAssets: TotalAssetsType = {};
           for (const accountLog of accountLogsArray) {
             totalAssets[accountLog.saveDate] = {
@@ -372,12 +379,14 @@ export class User extends KrossClientBase {
           }
           for (const noteLog of noteLogsArray) {
             if (totalAssets[noteLog.saveDate]) {
-              totalAssets[noteLog.saveDate].totalAssets +=
-                parseInt(noteLog.remainPrincipal, 10);
+              totalAssets[noteLog.saveDate].totalAssets += parseInt(
+                noteLog.remainPrincipal,
+                10
+              );
             }
           }
           const totalAssetsArray = Object.entries(totalAssets).sort();
-          
+
           const growthRate = growthCalculator(totalAssetsArray);
           return {
             data: totalAssets,
@@ -415,21 +424,19 @@ export class User extends KrossClientBase {
               );
               return period;
             }
-            const notesReturnRatesAfterTax = notesData?.map(
-              (note: any) => {
-                const returnRateAfterTax =
-                  note?.doneAt && getRealPeriod(note) > 0
-                    ? ((((note.interest -
-                        (note.feeAmount || 0) -
-                        note.taxAmount) /
-                        getRealPeriod(note)) *
-                        365) /
-                        note.originPrincipal) *
-                      100
-                    : 0;
-                return returnRateAfterTax;
-              }
-            );
+            const notesReturnRatesAfterTax = notesData?.map((note: any) => {
+              const returnRateAfterTax =
+                note?.doneAt && getRealPeriod(note) > 0
+                  ? ((((note.interest -
+                      (note.feeAmount || 0) -
+                      note.taxAmount) /
+                      getRealPeriod(note)) *
+                      365) /
+                      note.originPrincipal) *
+                    100
+                  : 0;
+              return returnRateAfterTax;
+            });
             const cumulativeInterestRatioAfterTax =
               notesReturnRatesAfterTax.reduce(
                 (acc: number, cur: number) => acc + cur,

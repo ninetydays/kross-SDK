@@ -95,13 +95,9 @@ export const investment = () => {
 
   it('gets notes list', async () => {
     const { notes } = client.useInvestmentHooks();
-    const { result } = renderHook(
-      () =>
-        notes({}),
-      {
-        wrapper,
-      }
-    );
+    const { result } = renderHook(() => notes({}), {
+      wrapper,
+    });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });

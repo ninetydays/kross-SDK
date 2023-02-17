@@ -31,7 +31,7 @@ export class Investments extends KrossClientBase {
     });
 
     this.notes = Investments.registerFunction<
-    InvestmentsWengeQueryDto,
+      InvestmentsWengeQueryDto,
       NotesResponse
     >({
       url: '/notes',
