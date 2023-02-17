@@ -29,7 +29,7 @@ export const user = () => {
     });
   });
 
-  it.only('gets authToken and refreshToken', async () => {
+  it('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -132,13 +132,12 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it.only('gets myPage data', async () => {
+  it('gets myPage data', async () => {
     const { myPageData } = client.useUserHooks();
     const { result } = renderHook(() => myPageData(), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    console.log("My page data: ", result.current.data);
     expect(result.current.data).toBeDefined();
   });
 
@@ -148,7 +147,6 @@ export const user = () => {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    console.log("total assets: ", result.current?.data)
     expect(result.current.data).toBeDefined();
   });
 
