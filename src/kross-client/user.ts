@@ -28,6 +28,7 @@ import {
   parse,
   differenceInCalendarDays,
 } from 'date-fns';
+import {growthCalculator} from '../utils/growthCalculator'
 
 export class User extends KrossClientBase {
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
@@ -283,8 +284,8 @@ export class User extends KrossClientBase {
               : 0;
             const repaymentScheduledAmount = repaymentsScheduledData
               ? repaymentsScheduledData?.reduce(
-                  (acc: number, cur: { returned_amount: number }) =>
-                    acc + cur.returned_amount,
+                  (acc: number, cur: { returnedAmount: number }) =>
+                    acc + cur.returnedAmount,
                   0
                 )
               : 0;
@@ -378,7 +379,12 @@ export class User extends KrossClientBase {
             }
           }
           const totalAssetsArray = Object.entries(totalAssets).sort();
-          return totalAssetsArray;
+          
+          const growthRate = growthCalculator(totalAssetsArray);
+          return {
+            data: totalAssetsArray,
+            growthRatePercentage: growthRate,
+          };
         });
       },
 

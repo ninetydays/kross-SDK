@@ -29,14 +29,14 @@ export const user = () => {
     });
   });
 
-  it('gets authToken and refreshToken', async () => {
+  it.only('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
     });
     await act(async () => {
       await result.current.mutateAsync({
-        keyid: 'mad@kross.kr',
+        keyid: 'yuzong@naver.com',
         password: 'Kross123!',
       });
     });
@@ -132,12 +132,13 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it('gets myPage data', async () => {
+  it.only('gets myPage data', async () => {
     const { myPageData } = client.useUserHooks();
     const { result } = renderHook(() => myPageData(), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    console.log("data: ", result.current.data)
     expect(result.current.data).toBeDefined();
   });
 
@@ -147,6 +148,7 @@ export const user = () => {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    console.log("data: ", result.current.data);
     expect(result.current.data).toBeDefined();
   });
 
