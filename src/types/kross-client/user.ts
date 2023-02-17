@@ -1,4 +1,12 @@
 import { FunctionResponse } from './index';
+export type UserWengeQueryDto = {
+  select?: string;
+  skip?: string;
+  take?: string;
+  order?: string;
+  filter?: string;
+  join?: string;
+};
 
 export type UserQueryDto = {
   fields?: string;
@@ -87,16 +95,16 @@ export type UserResponse = FunctionResponse<UserResponseData>;
 
 export type UserAccountLogsData = {
   id: number;
-  user_id: number;
-  save_date: string;
-  bank_code: string;
-  account_no: string;
-  v_bank_code: string;
-  v_account_no: string;
+  userId: number;
+  saveDate: string;
+  bankCode: string;
+  accountNo: string;
+  vBankCode: string;
+  vAccountNo: string;
   amount: number;
-  pending_withdrawal: number;
-  pending_investment: number;
-  pending_etc: number;
+  pendingWithdrawal: number;
+  pendingInvestment: number;
+  pendingEtc: number;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -105,12 +113,12 @@ export type UserAccountLogsResponse = FunctionResponse<UserAccountLogsData>;
 
 export type UserNoteLogsData = {
   id: number;
-  user_id: number;
-  save_date: string;
-  note_count: number;
+  userId: number;
+  saveDate: string;
+  noteCount: number;
   principal: number;
-  repaid_principal: number;
-  remain_principal: number;
+  repaidPrincipal: number;
+  remainPrincipal: number;
   data: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
