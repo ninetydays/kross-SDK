@@ -5,7 +5,7 @@ export type InquiryDto = {
   detail: string;
   response?: string;
 };
-export type InquiryResponseDto = {
+export type InquiryResponseData = {
   id: string;
   userId: string;
   type: string;
@@ -28,4 +28,4 @@ export type UpdateInquiryDto = {
   response: string;
 };
 
-export type InquiryResponse = FunctionResponse<InquiryResponseDto>;
+export type InquiryResponse = FunctionResponse<InquiryResponseData>;

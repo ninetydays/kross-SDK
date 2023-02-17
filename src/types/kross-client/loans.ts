@@ -50,6 +50,7 @@ export type LoanResponseData = {
   userInvestedAmount?: number;
   isUserInvested?: boolean;
   investmentId?: number | null;
+  reservedAt: Date;
 };
 
 export type LoansResponse = FunctionResponse<LoanResponseData>;
