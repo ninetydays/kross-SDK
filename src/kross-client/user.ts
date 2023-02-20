@@ -241,7 +241,6 @@ export class User extends KrossClientBase {
                 return notesObject.state === 'investing';
               }
             );
-
             const doneNotesSummary = notesSummaryData?.find(
               (notesObject: any) => {
                 return notesObject.state === 'done';
@@ -250,10 +249,10 @@ export class User extends KrossClientBase {
             const totalAssetAmount =
               amountInAccount +
               (investingNotesSumary?.originPrincipal ||
-                0 - investingNotesSumary?.principal ||
+                0) - (investingNotesSumary?.principal ||
                 0) +
               (delayNotesSummary?.originPrincipal ||
-                0 - delayNotesSummary?.principal ||
+                0) - (delayNotesSummary?.principal ||
                 0);
             const cummulativeReturnOnInvestment =
               (doneNotesSummary?.interest || 0) -
