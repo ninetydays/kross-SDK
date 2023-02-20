@@ -14,15 +14,7 @@ import {
   InvestmentData,
   UserFromToken,
 } from '../types/kross-client/investments';
-import jwtDecode from 'jwt-decode';
-import {
-  calculateAvailableInvAmount,
-  getAmountSumByLoanId,
-} from '../utils/getSumAmountByLoanId';
-import {
-  distributedLoanInvestments,
-  distributedLoanInvestmentsEvenly,
-} from '../utils/distributedLoanInvestments';
+import { Distributor } from 'kross-utils/lib/distributor';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
     InvestmentsWengeQueryDto,
