@@ -51,6 +51,7 @@ export type LoanResponseData = {
   isUserInvested?: boolean;
   investmentId?: number | null;
   reservedAt: Date;
+  investableLimit?: number;
 };
 
 export type LoansResponse = FunctionResponse<LoanResponseData>;
