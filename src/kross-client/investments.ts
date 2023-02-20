@@ -64,7 +64,7 @@ export class Investments extends KrossClientBase {
     );
   }
 
-  async transactionHistory(pageParam: string) {
+  async transactionHistory(investmentQueryDto: InvestmentQueryDto) {
     const resp = await this.cmsTradebook({
       query: {
         category: {
@@ -79,8 +79,7 @@ export class Investments extends KrossClientBase {
         },
       },
       sort_by: 'created_at.desc',
-      offset: pageParam.toString(),
-      limit: '6',
+      ...investmentQueryDto,
     });
     return resp;
   }
@@ -124,24 +123,16 @@ export class Investments extends KrossClientBase {
           },
         });
       },
-      transactionHistory: () => {
-        return useInfiniteQuery(
+      transactionHistory: (investmentQueryDto: InvestmentQueryDto) => {
+        return useQuery(
           'transactionHistory',
-          async ({ pageParam = 0 }) => {
-            const transactionData = await this.transactionHistory(pageParam);
+          async () => {
+            const transactionData = await this.transactionHistory(investmentQueryDto);
             const transactionDataArray = transactionData?.data?.data
               ? Object.values(transactionData.data.data)
               : [];
             return transactionDataArray;
           },
-          {
-            getNextPageParam: (lastPage, pages) => {
-              if (lastPage.length === 0) {
-                return null;
-              }
-              return pages?.length;
-            },
-          }
         );
       },
       investmentRegister: () => {

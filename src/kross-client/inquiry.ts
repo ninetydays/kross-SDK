@@ -54,8 +54,7 @@ export class Inquiry extends KrossClientBase {
               ...inquiriesDto,
               skip,
             });
-            const inquiriesDataArray: { [key: string]: any }[] =
-              inquiriesData?.data ? Object.values(inquiriesData.data) : [];
+            const inquiriesDataArray = Object.values(inquiriesData?.data as InquiriesDto || []);
             return inquiriesDataArray;
           },
           {
