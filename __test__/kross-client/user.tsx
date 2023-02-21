@@ -53,7 +53,7 @@ export const user = () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 30000);
+  });
   it('gets current user data details', async () => {
     const { userData } = client.useUserHooks();
     const { result } = renderHook(() => userData({}), {
@@ -62,62 +62,52 @@ export const user = () => {
     await waitFor(() => {
       expect(result.current).toBeDefined();
     });
-  }, 30000);
+  });
 
   it('gets current user-note list', async () => {
     const { userNoteLogs } = client.useUserHooks();
     const { result } = renderHook(() => userNoteLogs({}), {
       wrapper,
     });
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 
   it('gets current user account-log list', async () => {
     const { userAccountLogs } = client.useUserHooks();
     const { result } = renderHook(() => userAccountLogs({}), {
       wrapper,
     });
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 
   it('gets kftc balance; how much investor can invest', async () => {
     const { kftcBalance } = client.useUserHooks();
     const { result } = renderHook(() => kftcBalance(), {
       wrapper,
     });
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 
   it('gets link for account certificate issuance', async () => {
     const { getVirtualAccCertificate } = client.useUserHooks();
     const { result } = renderHook(() => getVirtualAccCertificate(), {
       wrapper,
     });
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 
   it('gets virtual account status', async () => {
     const { checkVirtualAccount } = client.useUserHooks();
     const { result } = renderHook(() => checkVirtualAccount(), {
       wrapper,
     });
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 
   it.skip('unregisters member from welcome', async () => {
     const { unRegisterMemeber } = client.useUserHooks();
@@ -129,7 +119,7 @@ export const user = () => {
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 30000);
+  });
 
   it('unlock deposit control to allow user deposit to any bank account', async () => {
     const { releaseDepositControl } = client.useUserHooks();
@@ -141,40 +131,34 @@ export const user = () => {
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 30000);
+  });
 
   it('gets virtual account details', async () => {
     const { accountData } = client.useUserHooks();
     const { result } = renderHook(() => accountData({}), {
       wrapper,
     });
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 
   it('gets myPage data', async () => {
     const { myPageData } = client.useUserHooks();
     const { result } = renderHook(() => myPageData(), {
       wrapper,
     });
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 
   it('gets total assets for each day', async () => {
     const { totalAssets } = client.useUserHooks();
     const { result } = renderHook(() => totalAssets(), {
       wrapper,
     });
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 
   it('register a user', async () => {
     const { userRegister } = client.useUserHooks();
@@ -193,5 +177,5 @@ export const user = () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 30000);
+  });
 };

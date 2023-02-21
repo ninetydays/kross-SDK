@@ -109,7 +109,10 @@ export class Loans extends KrossClientBase {
           },
           {
             getNextPageParam: (lastPage, pages) => {
-              return pages?.length >= 1 ? pages.length : null;
+              if (lastPage.length === 0) {
+                return null;
+              }
+              return pages?.length;
             },
           }
         );

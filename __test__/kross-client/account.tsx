@@ -27,7 +27,7 @@ export const account = () => {
       adapter: require('axios/lib/adapters/http'),
     });
   });
-  
+
   it('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
@@ -42,7 +42,7 @@ export const account = () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 30000);
+  });
 
   it.skip('checks bank account owner request', async () => {
     const { check } = client.useAccountHooks();
@@ -57,9 +57,8 @@ export const account = () => {
       });
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
     expect(result.current.data).toBeDefined();
-  }, 10000);
+  });
 
   it.skip('checks request to withdraw amount via withdrawInit', async () => {
     const { withdrawInit } = client.useAccountHooks();
@@ -74,9 +73,8 @@ export const account = () => {
       });
     });
     await waitFor(() => expect(result.current?.isSuccess).toBe(true));
-
     expect(result.current.data).toBeDefined();
-  }, 10000);
+  });
 
   it.skip('checks request to cancel withdraw amount via withdrawCancel', async () => {
     const { withdrawCancel } = client.useAccountHooks();
@@ -90,7 +88,7 @@ export const account = () => {
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 30000);
+  });
 
   it.skip('registers withdraw account via withdrawVerify', async () => {
     const { withdrawVerify } = client.useAccountHooks();
@@ -105,5 +103,5 @@ export const account = () => {
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 30000);
+  });
 };

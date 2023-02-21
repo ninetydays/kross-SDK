@@ -44,7 +44,7 @@ export const InquiryTest = () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 30000);
+  });
 
   it('inquire about bank account verification', async () => {
     const { createInquiry } = client.useInquiriesHooks();
@@ -60,7 +60,7 @@ export const InquiryTest = () => {
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 10000);
+  });
 
   it('gets inquiries list for logged in user', async () => {
     const { fetchInquiries } = client.useInquiriesHooks();
@@ -77,7 +77,7 @@ export const InquiryTest = () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 30000);
+  });
 
   it('respond to  inquiry', async () => {
     const { respondToInquiry } = client.useInquiriesHooks();
@@ -93,5 +93,5 @@ export const InquiryTest = () => {
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 10000);
+  });
 };

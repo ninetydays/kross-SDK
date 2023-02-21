@@ -50,6 +50,8 @@ export type LoanResponseData = {
   userInvestedAmount?: number;
   isUserInvested?: boolean;
   investmentId?: number | null;
+  reservedAt: Date;
+  investableLimit?: number;
 };
 
 export type LoansResponse = Array<LoanResponseData>;

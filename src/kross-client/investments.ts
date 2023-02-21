@@ -10,13 +10,14 @@ import {
   CmsTradebookResponse,
   InvestmentRegisterResponse,
   InvestmentQueryDto,
+  InvestmentsWengeQueryDto,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
     InvestmentQueryDto,
     InvestmentListResponse
   >;
-  notes: FunctionRegistered<InvestmentQueryDto, NotesResponse>;
+  notes: FunctionRegistered<InvestmentsWengeQueryDto, NotesResponse>;
   cmsTradebook: FunctionRegistered<InvestmentQueryDto, CmsTradebookResponse>;
 
   constructor(options: KrossClientOptions) {
@@ -30,7 +31,7 @@ export class Investments extends KrossClientBase {
     });
 
     this.notes = Investments.registerFunction<
-      InvestmentQueryDto,
+      InvestmentsWengeQueryDto,
       NotesResponse
     >({
       url: '/notes',
@@ -62,7 +63,7 @@ export class Investments extends KrossClientBase {
     );
   }
 
-  async transactionHistory(pageParam: string) {
+  async transactionHistory(investmentQueryDto: InvestmentQueryDto) {
     const resp = await this.cmsTradebook({
       query: {
         category: {
@@ -77,8 +78,7 @@ export class Investments extends KrossClientBase {
         },
       },
       sort_by: 'created_at.desc',
-      offset: pageParam.toString() || '0',
-      limit: '6',
+      ...investmentQueryDto,
     });
     return resp;
   }
@@ -112,30 +112,26 @@ export class Investments extends KrossClientBase {
           },
         });
       },
-      notes: (investmentQueryDto: InvestmentQueryDto) => {
+      notes: (investmentsWengeQueryDto: InvestmentsWengeQueryDto) => {
         return useQuery({
           queryKey: 'notes',
           queryFn: async () => {
-            return this.notes(investmentQueryDto).then((res) => {
+            return this.notes(investmentsWengeQueryDto).then((res) => {
               return res.data;
             });
           },
         });
       },
-      transactionHistory: () => {
-        return useInfiniteQuery(
-          'transactionHistory',
-          async ({ pageParam = 0 }) => {
-            return this.transactionHistory(pageParam).then((res) => {
-              return res.data;
-            });
-          },
-          {
-            getNextPageParam: (lastPage, pages) => {
-              return pages?.length >= 1 ? pages.length : null;
-            },
-          }
-        );
+      transactionHistory: (investmentQueryDto: InvestmentQueryDto) => {
+        return useQuery('transactionHistory', async () => {
+          const transactionData = await this.transactionHistory(
+            investmentQueryDto
+          );
+          const transactionDataArray = transactionData?.data?.data
+            ? Object.values(transactionData.data.data)
+            : [];
+          return transactionDataArray;
+        });
       },
       investmentRegister: () => {
         const mutation = useMutation(
