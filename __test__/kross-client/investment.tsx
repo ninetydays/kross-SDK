@@ -20,23 +20,13 @@ export const investment = () => {
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 
-  beforeAll(async () => {
+  beforeAll(() => {
     client = new Investments({
       baseURL,
       accessId,
       secretKey,
       adapter: require('axios/lib/adapters/http'),
     });
-
-    const resp = await client.login({
-      keyid: 'mad@kross.kr',
-      password: 'Kross123!',
-    });
-
-    const { token, refresh } = resp.data;
-
-    client.authToken = token;
-    client.refreshToken = refresh;
   });
 
   it('gets authToken and refreshToken', async () => {
@@ -87,7 +77,6 @@ export const investment = () => {
       await result.current.mutateAsync({
         amount: 0,
         loan_id: 0,
-        user_id: 0,
       });
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
