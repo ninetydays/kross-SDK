@@ -12,7 +12,6 @@ import {
   InvestmentQueryDto,
   InvestmentsWengeQueryDto,
 } from '../types/kross-client/investments';
-import { Distributor } from 'kross-utils/lib/distributor';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
     InvestmentsWengeQueryDto,
