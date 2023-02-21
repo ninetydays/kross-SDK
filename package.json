@@ -1,6 +1,6 @@
 {
   "name": "kross-sdk",
-  "version": "1.0.8-beta.367",
+  "version": "1.0.8-beta.369",
   "description": "90days SDK for login, sigup and loans",
   "main": "dist/index.js",
   "browser": "dist/index.web.js",
@@ -75,7 +75,6 @@
   },
   "peerDependencies": {
     "react": "^18.1.0",
-    "react-native": "*",
-    "react-query": "*"
+    "react-native": "*"
   }
 }
