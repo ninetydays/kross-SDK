@@ -128,4 +128,19 @@ export const investment = () => {
       expect(data).toBeDefined();
     });
   });
+
+  it('get investment limit for user', async () => {
+    const { investmentLimit } = client.useInvestmentHooks();
+    const { result } = renderHook(
+      () =>
+        investmentLimit({
+          enabled: true,
+        }),
+      {
+        wrapper,
+      }
+    );
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 };

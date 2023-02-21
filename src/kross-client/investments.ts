@@ -183,6 +183,24 @@ export class Investments extends KrossClientBase {
           }
         );
       },
+      investmentLimit: ({ enabled = false }: { enabled?: boolean }) => {
+        return useQuery({
+          enabled: enabled ? enabled : false,
+          queryKey: 'invesmentLimit',
+          queryFn: async () => {
+            const kftcInvestInquiry: any = await this.get(
+              '/kftc/invest-inquiry'
+            );
+            const investmentAmountLimit =
+              (kftcInvestInquiry?.data?.data?.limit || 0) -
+              (kftcInvestInquiry?.data?.data?.balance || 0);
+
+            return {
+              investmentAmountLimit,
+            };
+          },
+        });
+      },
     };
   }
 }
