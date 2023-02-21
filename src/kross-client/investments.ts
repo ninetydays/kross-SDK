@@ -1,6 +1,6 @@
 import { KrossClientBase } from './base';
 import { FunctionRegistered, KrossClientOptions } from '../types';
-import { useQuery, useMutation, useInfiniteQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import {
   InvestmentCancelDto,
   InvestmentCancelResponse,
@@ -11,8 +11,6 @@ import {
   InvestmentRegisterResponse,
   InvestmentQueryDto,
   InvestmentsWengeQueryDto,
-  InvestmentData,
-  UserFromToken,
 } from '../types/kross-client/investments';
 import { Distributor } from 'kross-utils/lib/distributor';
 export class Investments extends KrossClientBase {
