@@ -9,7 +9,7 @@ export type LoansQueryDto = {
   join?: string;
 };
 export type LoanResponseData = {
-  id: number;
+  id: string;
   no: number;
   application_id: string;
   user_id: number;
