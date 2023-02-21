@@ -121,7 +121,6 @@ export const investment = () => {
     });
     await waitFor(async () => {
       const { data } = result.current;
-      console.log("Applied investments: ", data?.pages);
       expect(data).toBeDefined();
     });
   });

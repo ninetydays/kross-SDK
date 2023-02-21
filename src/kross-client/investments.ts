@@ -155,8 +155,15 @@ export class Investments extends KrossClientBase {
               join: 'loan',
               skip,
             });
-            const appliedInvestmentArray = Object.values(appliedInvestmentData?.data)|| [];
-            return appliedInvestmentArray;
+            const appliedInvestmentArray = Object.values(appliedInvestmentData?.data || []);
+            const appliedInvestmentResponse = appliedInvestmentArray.filter(
+              (investment: any) => { 
+                if (investment && investment?.state === investment?.loan?.state){
+                  return investment;
+                }
+              },
+            )
+            return appliedInvestmentResponse || [];
           },
           {
             getNextPageParam: (lastPage, pages) => {
