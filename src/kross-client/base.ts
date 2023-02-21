@@ -102,9 +102,7 @@ export class KrossClientBase {
         this.refreshToken = response?.data?.refresh;
         return response;
       })
-      .catch((e) => {
-        throw e;
-      });
+      .catch((e) => console.error(e));
   }
 
   async updateAuthToken(refreshToken?: string) {
