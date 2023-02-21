@@ -111,4 +111,17 @@ export const investment = () => {
       expect(data).toBeDefined();
     });
   });
+
+  it('applied investments', async () => {
+    const { appliedInvestments } = client.useInvestmentHooks();
+    const { result } = renderHook(() => appliedInvestments({
+      filter: 'state||$eq||funding',
+    }), {
+      wrapper,
+    });
+    await waitFor(async () => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
+    });
+  });
 };

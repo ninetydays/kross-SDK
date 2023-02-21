@@ -32,6 +32,7 @@ export type InvestmentListResponseData = {
   data: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
+  loan: Record<string, unknown>;
 };
 
 export type InvestmentListResponse = Array<InvestmentListResponseData>;

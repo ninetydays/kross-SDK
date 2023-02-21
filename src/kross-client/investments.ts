@@ -14,7 +14,7 @@ import {
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
-    InvestmentQueryDto,
+  InvestmentsWengeQueryDto,
     InvestmentListResponse
   >;
   notes: FunctionRegistered<InvestmentsWengeQueryDto, NotesResponse>;
@@ -39,7 +39,7 @@ export class Investments extends KrossClientBase {
     });
 
     this.investmentList = Investments.registerFunction<
-      InvestmentQueryDto,
+    InvestmentsWengeQueryDto,
       InvestmentListResponse
     >({
       url: '/investments',
@@ -92,11 +92,11 @@ export class Investments extends KrossClientBase {
         );
         return mutation;
       },
-      investmentList: (investmentQueryDto: InvestmentQueryDto) => {
+      investmentList: (investmentsWengeQueryDto: InvestmentsWengeQueryDto) => {
         return useQuery({
           queryKey: 'investmentList',
           queryFn: async () => {
-            return this.investmentList(investmentQueryDto).then((res) => {
+            return this.investmentList(investmentsWengeQueryDto).then((res) => {
               return res.data;
             });
           },
@@ -140,6 +140,41 @@ export class Investments extends KrossClientBase {
         );
         return mutation;
       },
+      appliedInvestments: (investmentsWengeQueryDto: InvestmentsWengeQueryDto) =>{
+        return useInfiniteQuery(
+          'appliedInvestments',
+          async ({ pageParam = 0 }) => {
+            const skip = 
+              (isNaN(parseInt(investmentsWengeQueryDto?.take as string, 10)))
+                ? '0'
+                : investmentsWengeQueryDto?.take as string;
+            const take = (pageParam * parseInt(skip, 10)).toString();
+            const appliedInvestmentData = await this.investmentList({
+              ...investmentsWengeQueryDto,
+              join: 'loan',
+              skip,
+              take,
+            });
+            const appliedInvestmentArray = Object.values(appliedInvestmentData?.data || []);
+            const appliedInvestmentResponse = appliedInvestmentArray.filter(
+              (investment: any) => { 
+                if (investment && investment?.state === investment?.loan?.state){
+                  return investment;
+                }
+              },
+            )
+            return appliedInvestmentResponse || [];
+          },
+          {
+            getNextPageParam: (lastPage, pages) => {
+              if (lastPage.length === 0) {
+                return null;
+              }
+              return pages?.length;
+            },
+          }
+        )
+      }
     };
   }
 }
