@@ -14,7 +14,7 @@ import {
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
-  InvestmentsWengeQueryDto,
+    InvestmentsWengeQueryDto,
     InvestmentListResponse
   >;
   notes: FunctionRegistered<InvestmentsWengeQueryDto, NotesResponse>;
@@ -39,7 +39,7 @@ export class Investments extends KrossClientBase {
     });
 
     this.investmentList = Investments.registerFunction<
-    InvestmentsWengeQueryDto,
+      InvestmentsWengeQueryDto,
       InvestmentListResponse
     >({
       url: '/investments',
@@ -140,14 +140,17 @@ export class Investments extends KrossClientBase {
         );
         return mutation;
       },
-      appliedInvestments: (investmentsWengeQueryDto: InvestmentsWengeQueryDto) =>{
+      appliedInvestments: (
+        investmentsWengeQueryDto: InvestmentsWengeQueryDto
+      ) => {
         return useInfiniteQuery(
           'appliedInvestments',
           async ({ pageParam = 0 }) => {
-            const skip = 
-              (isNaN(parseInt(investmentsWengeQueryDto?.take as string, 10)))
-                ? '0'
-                : investmentsWengeQueryDto?.take as string;
+            const skip = isNaN(
+              parseInt(investmentsWengeQueryDto?.take as string, 10)
+            )
+              ? '0'
+              : (investmentsWengeQueryDto?.take as string);
             const take = (pageParam * parseInt(skip, 10)).toString();
             const appliedInvestmentData = await this.investmentList({
               ...investmentsWengeQueryDto,
@@ -155,14 +158,19 @@ export class Investments extends KrossClientBase {
               skip,
               take,
             });
-            const appliedInvestmentArray = Object.values(appliedInvestmentData?.data || []);
+            const appliedInvestmentArray = Object.values(
+              appliedInvestmentData?.data || []
+            );
             const appliedInvestmentResponse = appliedInvestmentArray.filter(
-              (investment: any) => { 
-                if (investment && investment?.state === investment?.loan?.state){
+              (investment: any) => {
+                if (
+                  investment &&
+                  investment?.state === investment?.loan?.state
+                ) {
                   return investment;
                 }
-              },
-            )
+              }
+            );
             return appliedInvestmentResponse || [];
           },
           {
@@ -173,8 +181,26 @@ export class Investments extends KrossClientBase {
               return pages?.length;
             },
           }
-        )
-      }
+        );
+      },
+      investmentLimit: ({ enabled = false }: { enabled?: boolean }) => {
+        return useQuery({
+          enabled: enabled ? enabled : false,
+          queryKey: 'invesmentLimit',
+          queryFn: async () => {
+            const kftcInvestInquiry: any = await this.get(
+              '/kftc/invest-inquiry'
+            );
+            const investmentAmountLimit =
+              (kftcInvestInquiry?.data?.data?.limit || 0) -
+              (kftcInvestInquiry?.data?.data?.balance || 0);
+
+            return {
+              investmentAmountLimit,
+            };
+          },
+        });
+      },
     };
   }
 }

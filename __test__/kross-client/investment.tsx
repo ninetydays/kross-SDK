@@ -114,14 +114,33 @@ export const investment = () => {
 
   it('applied investments', async () => {
     const { appliedInvestments } = client.useInvestmentHooks();
-    const { result } = renderHook(() => appliedInvestments({
-      filter: 'state||$eq||funding',
-    }), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () =>
+        appliedInvestments({
+          filter: 'state||$eq||funding',
+        }),
+      {
+        wrapper,
+      }
+    );
     await waitFor(async () => {
       const { data } = result.current;
       expect(data).toBeDefined();
     });
+  });
+
+  it('get investment limit for user', async () => {
+    const { investmentLimit } = client.useInvestmentHooks();
+    const { result } = renderHook(
+      () =>
+        investmentLimit({
+          enabled: true,
+        }),
+      {
+        wrapper,
+      }
+    );
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
   });
 };
