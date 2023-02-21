@@ -45,7 +45,9 @@ export class KrossClientBase {
 
         if (this.authToken) {
           const user: any = await jwt_decode(this.authToken as string);
-          const isExpired = isBefore(new Date(user.exp * 1000), new Date());
+          const isExpired = user.exp
+            ? isBefore(new Date(user.exp * 1000), new Date())
+            : true;
 
           if (!isExpired) {
             config.headers = {

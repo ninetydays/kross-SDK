@@ -8,6 +8,7 @@ export type InvestmentQueryDto = {
   group_by?: string;
   query?: Record<string, unknown>;
   include?: Record<string, unknown>;
+  filter?: string;
 };
 
 export type InvestmentsWengeQueryDto = {
@@ -33,13 +34,11 @@ export type InvestmentListResponseData = {
   updatedAt: Date;
 };
 
-export type InvestmentListResponse =
-  FunctionResponse<InvestmentListResponseData>;
+export type InvestmentListResponse = Array<InvestmentListResponseData>;
 
 export type InvestmentRegisterDto = {
   amount: number;
   loan_id: number;
-  user_id: number;
 };
 
 export type InvestmentRegisterResponse = FunctionResponse;

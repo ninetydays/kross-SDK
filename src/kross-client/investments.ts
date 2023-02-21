@@ -47,11 +47,10 @@ export class Investments extends KrossClientBase {
     });
   }
 
-  investmentRegister({ amount, loan_id, user_id }: InvestmentRegisterDto) {
+  investmentRegister({ amount, loan_id }: InvestmentRegisterDto) {
     return this.instance.post<InvestmentRegisterResponse>('/investments', {
       amount,
       loan_id,
-      user_id,
     });
   }
 
@@ -124,16 +123,15 @@ export class Investments extends KrossClientBase {
         });
       },
       transactionHistory: (investmentQueryDto: InvestmentQueryDto) => {
-        return useQuery(
-          'transactionHistory',
-          async () => {
-            const transactionData = await this.transactionHistory(investmentQueryDto);
-            const transactionDataArray = transactionData?.data?.data
-              ? Object.values(transactionData.data.data)
-              : [];
-            return transactionDataArray;
-          },
-        );
+        return useQuery('transactionHistory', async () => {
+          const transactionData = await this.transactionHistory(
+            investmentQueryDto
+          );
+          const transactionDataArray = transactionData?.data?.data
+            ? Object.values(transactionData.data.data)
+            : [];
+          return transactionDataArray;
+        });
       },
       investmentRegister: () => {
         const mutation = useMutation(

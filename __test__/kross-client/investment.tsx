@@ -77,7 +77,6 @@ export const investment = () => {
       await result.current.mutateAsync({
         amount: 0,
         loan_id: 0,
-        user_id: 0,
       });
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
