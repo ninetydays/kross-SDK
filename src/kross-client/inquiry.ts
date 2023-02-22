@@ -85,7 +85,6 @@ export class Inquiry extends KrossClientBase {
             const respondedQueriesCount = inquiriesDataArray.filter(
               (inquiry: InquiryResponseData) => inquiry?.state === 'done'
             ).length;
-            console.log('respondedQueriesCount', respondedQueriesCount);
             return respondedQueriesCount;
           },
           cacheTime: 1000 * 60 * 60 * 24 * 30,

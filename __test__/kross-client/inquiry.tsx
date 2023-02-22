@@ -30,7 +30,7 @@ export const InquiryTest = () => {
     });
   });
 
-  it.only('gets authToken and refreshToken', async () => {
+  it('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -63,7 +63,7 @@ export const InquiryTest = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it.only('gets inquiries list for logged in user', async () => {
+  it('gets inquiries list for logged in user', async () => {
     const { fetchInquiries } = client.useInquiriesHooks();
     const { result } = renderHook(
       () =>
@@ -87,9 +87,8 @@ export const InquiryTest = () => {
     });
     await act(async () => {
       await result.current.mutateAsync({
-        response:
-          'You can get your account verified by sending us a picture of your ID card',
-        inquiryId: '42',
+        response: 'hakuna matata',
+        inquiryId: '48',
         state: 'done',
       });
     });
@@ -97,7 +96,7 @@ export const InquiryTest = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it.only('gets inquiries count for not responded yet', async () => {
+  it('gets inquiries count for not responded yet', async () => {
     const { respondedQueriesCount } = client.useInquiriesHooks();
     const { result } = renderHook(() => respondedQueriesCount(), {
       wrapper,
