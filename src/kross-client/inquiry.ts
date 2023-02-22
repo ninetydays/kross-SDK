@@ -2,6 +2,7 @@ import {
   InquiriesDto,
   InquiryDto,
   InquiryResponse,
+  InquiryResponseData,
   UpdateInquiryDto,
 } from './../types/kross-client/inquiry';
 import { KrossClientBase } from './base';
@@ -82,7 +83,7 @@ export class Inquiry extends KrossClientBase {
             const inquiriesData = await this.fetchInquiries({});
             const inquiriesDataArray = (inquiriesData?.data || []) as [];
             const respondedQueriesCount = inquiriesDataArray.filter(
-              (inquiry) => inquiry?.state === 'done'
+              (inquiry: InquiryResponseData) => inquiry?.state === 'done'
             ).length;
             console.log('respondedQueriesCount', respondedQueriesCount);
             return respondedQueriesCount;

@@ -14,6 +14,7 @@ export type InquiryResponseData = {
   response: string;
   createdAt: string;
   updatedAt: string;
+  state: 'pending' | 'done';
 };
 
 export type InquiriesDto = {
