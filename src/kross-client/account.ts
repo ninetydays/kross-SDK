@@ -11,6 +11,10 @@ import {
   AccountWithdrawVerifyResponse,
   AccountWithdrawCancelDto,
   AccountWithdrawCancelResponse,
+  AccountRegisterDto,
+  AccountRegisterResponse,
+  AccountVerifyDto,
+  AccountVerifyResponse,
 } from '../types';
 
 export class Account extends KrossClientBase {
@@ -37,6 +41,17 @@ export class Account extends KrossClientBase {
       accountCheckDto,
     });
   }
+
+  register(accountRegisterDto: AccountRegisterDto) {
+    return this.instance.post<AccountRegisterResponse>('/accounts/register', {
+      accountRegisterDto,
+    });
+  }
+  verify(accountVerifyDto: AccountVerifyDto) {
+    return this.instance.post<AccountVerifyResponse>('/accounts/verify', {
+      accountVerifyDto,
+    });
+  }
   withdrawVerify(accountWithdrawVerifyDto: AccountWithdrawVerifyDto) {
     return this.instance.post<AccountWithdrawVerifyResponse>(
       '/accounts/withdraw/verify',
@@ -55,6 +70,18 @@ export class Account extends KrossClientBase {
       check: () => {
         const mutation = useMutation((accountCheckDto: AccountCheckDto) =>
           this.check(accountCheckDto)
+        );
+        return mutation;
+      },
+      register: () => {
+        const mutation = useMutation((accountRegisterDto: AccountRegisterDto) =>
+          this.register(accountRegisterDto)
+        );
+        return mutation;
+      },
+      verify: () => {
+        const mutation = useMutation((accountVerifyDto: AccountVerifyDto) =>
+          this.verify(accountVerifyDto)
         );
         return mutation;
       },
