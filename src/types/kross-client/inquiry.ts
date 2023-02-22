@@ -4,6 +4,7 @@ export type InquiryDto = {
   type: string;
   detail: string;
   response?: string;
+  state: 'pending' | 'done';
 };
 export type InquiryResponseData = {
   id: string;

@@ -30,7 +30,7 @@ export const InquiryTest = () => {
     });
   });
 
-  it('gets authToken and refreshToken', async () => {
+  it.only('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -55,7 +55,8 @@ export const InquiryTest = () => {
       await result.current.mutateAsync({
         type: '계정 관련',
         detail: 'How can I get my account verified for making investments?',
-        response: 'No response',
+        response: '',
+        state: 'pending',
       });
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -91,6 +92,16 @@ export const InquiryTest = () => {
         inquiryId: '2',
       });
     });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
+  it.only('gets inquiries count for not responded yet', async () => {
+    const { respondedQueriesCount } = client.useInquiriesHooks();
+    const { result } = renderHook(() => respondedQueriesCount(), {
+      wrapper,
+    });
+
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });

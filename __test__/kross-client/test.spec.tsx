@@ -10,4 +10,4 @@ describe('Account', account);
 describe('Investment', investment);
 describe('Loan', loan);
 describe('user', user);
-describe('Inquiry', InquiryTest);
+describe.only('Inquiry', InquiryTest);

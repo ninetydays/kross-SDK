@@ -54,7 +54,8 @@ export class Inquiry extends KrossClientBase {
               ...inquiriesDto,
               skip,
             });
-            const inquiriesDataArray = (inquiriesData?.data || []) as InquiriesDto[];
+            const inquiriesDataArray = (inquiriesData?.data ||
+              []) as InquiriesDto[];
             return inquiriesDataArray;
           },
           {
@@ -72,6 +73,22 @@ export class Inquiry extends KrossClientBase {
           this.respondToInquiry(inqueryUpdate)
         );
         return mutation;
+      },
+
+      respondedQueriesCount: () => {
+        return useQuery({
+          queryKey: 'respondedQueriesCount',
+          queryFn: async () => {
+            const inquiriesData = await this.fetchInquiries({});
+            const inquiriesDataArray = (inquiriesData?.data || []) as [];
+            const respondedQueriesCount = inquiriesDataArray.filter(
+              (inquiry) => inquiry?.state === 'done'
+            ).length;
+            console.log('respondedQueriesCount', respondedQueriesCount);
+            return respondedQueriesCount;
+          },
+          cacheTime: 1000 * 60 * 60 * 24 * 30,
+        });
       },
     };
   }
