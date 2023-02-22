@@ -28,6 +28,7 @@ export type InquiriesDto = {
 export type UpdateInquiryDto = {
   inquiryId: string;
   response: string;
+  state?: 'pending' | 'done';
 };
 
 export type InquiryResponse = FunctionResponse<InquiryResponseData>;

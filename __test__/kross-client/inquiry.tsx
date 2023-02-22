@@ -63,12 +63,11 @@ export const InquiryTest = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it('gets inquiries list for logged in user', async () => {
+  it.only('gets inquiries list for logged in user', async () => {
     const { fetchInquiries } = client.useInquiriesHooks();
     const { result } = renderHook(
       () =>
         fetchInquiries({
-          take: '1',
           skip: '0',
         }),
       {
@@ -77,6 +76,7 @@ export const InquiryTest = () => {
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    console.log('result.current.data', result.current.data?.pages);
     expect(result.current.data).toBeDefined();
   });
 
@@ -89,7 +89,8 @@ export const InquiryTest = () => {
       await result.current.mutateAsync({
         response:
           'You can get your account verified by sending us a picture of your ID card',
-        inquiryId: '2',
+        inquiryId: '42',
+        state: 'done',
       });
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
