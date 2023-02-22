@@ -4,6 +4,7 @@ export type InquiryDto = {
   type: string;
   detail: string;
   response?: string;
+  state: 'pending' | 'done';
 };
 export type InquiryResponseData = {
   id: string;
@@ -13,6 +14,7 @@ export type InquiryResponseData = {
   response: string;
   createdAt: string;
   updatedAt: string;
+  state: 'pending' | 'done';
 };
 
 export type InquiriesDto = {
@@ -26,6 +28,7 @@ export type InquiriesDto = {
 export type UpdateInquiryDto = {
   inquiryId: string;
   response: string;
+  state?: 'pending' | 'done';
 };
 
 export type InquiryResponse = FunctionResponse<InquiryResponseData>;

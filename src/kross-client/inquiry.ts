@@ -2,6 +2,7 @@ import {
   InquiriesDto,
   InquiryDto,
   InquiryResponse,
+  InquiryResponseData,
   UpdateInquiryDto,
 } from './../types/kross-client/inquiry';
 import { KrossClientBase } from './base';
@@ -54,7 +55,8 @@ export class Inquiry extends KrossClientBase {
               ...inquiriesDto,
               skip,
             });
-            const inquiriesDataArray = (inquiriesData?.data || []) as InquiriesDto[];
+            const inquiriesDataArray = (inquiriesData?.data ||
+              []) as InquiriesDto[];
             return inquiriesDataArray;
           },
           {
@@ -72,6 +74,21 @@ export class Inquiry extends KrossClientBase {
           this.respondToInquiry(inqueryUpdate)
         );
         return mutation;
+      },
+
+      respondedQueriesCount: () => {
+        return useQuery({
+          queryKey: 'respondedQueriesCount',
+          queryFn: async () => {
+            const inquiriesData = await this.fetchInquiries({});
+            const inquiriesDataArray = (inquiriesData?.data || []) as [];
+            const respondedQueriesCount = inquiriesDataArray.filter(
+              (inquiry: InquiryResponseData) => inquiry?.state === 'done'
+            ).length;
+            return respondedQueriesCount;
+          },
+          cacheTime: 1000 * 60 * 60 * 24 * 30,
+        });
       },
     };
   }

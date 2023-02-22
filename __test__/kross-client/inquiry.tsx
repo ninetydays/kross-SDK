@@ -55,7 +55,8 @@ export const InquiryTest = () => {
       await result.current.mutateAsync({
         type: '계정 관련',
         detail: 'How can I get my account verified for making investments?',
-        response: 'No response',
+        response: '',
+        state: 'pending',
       });
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -67,7 +68,6 @@ export const InquiryTest = () => {
     const { result } = renderHook(
       () =>
         fetchInquiries({
-          take: '1',
           skip: '0',
         }),
       {
@@ -76,6 +76,7 @@ export const InquiryTest = () => {
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    console.log('result.current.data', result.current.data?.pages);
     expect(result.current.data).toBeDefined();
   });
 
@@ -86,11 +87,21 @@ export const InquiryTest = () => {
     });
     await act(async () => {
       await result.current.mutateAsync({
-        response:
-          'You can get your account verified by sending us a picture of your ID card',
-        inquiryId: '2',
+        response: 'hakuna matata',
+        inquiryId: '48',
+        state: 'done',
       });
     });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
+  it('gets inquiries count for not responded yet', async () => {
+    const { respondedQueriesCount } = client.useInquiriesHooks();
+    const { result } = renderHook(() => respondedQueriesCount(), {
+      wrapper,
+    });
+
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
