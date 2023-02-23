@@ -38,18 +38,18 @@ export class Account extends KrossClientBase {
 
   check(accountCheckDto: AccountCheckDto) {
     return this.instance.post<AccountCheckResponse>('/accounts/check', {
-      accountCheckDto,
+      ...accountCheckDto,
     });
   }
 
   register(accountRegisterDto: AccountRegisterDto) {
     return this.instance.post<AccountRegisterResponse>('/accounts/register', {
-      accountRegisterDto,
+      ...accountRegisterDto,
     });
   }
   verify(accountVerifyDto: AccountVerifyDto) {
     return this.instance.post<AccountVerifyResponse>('/accounts/verify', {
-      accountVerifyDto,
+      ...accountVerifyDto,
     });
   }
   withdrawVerify(accountWithdrawVerifyDto: AccountWithdrawVerifyDto) {
