@@ -77,6 +77,21 @@ export const account = () => {
     expect(result.current.data).toBeDefined();
   });
 
+  it.skip('register bank account', async () => {
+    const { verify } = client.useAccountHooks();
+    const { result } = renderHook(() => verify(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        code: '1234',
+        user_id: 0,
+      });
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
   it.skip('checks request to withdraw amount via withdrawInit', async () => {
     const { withdrawInit } = client.useAccountHooks();
     const { result } = renderHook(() => withdrawInit(), {
