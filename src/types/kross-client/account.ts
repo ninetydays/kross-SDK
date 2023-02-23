@@ -17,6 +17,7 @@ export type AccountRegisterDto = {
 
 export type AccountVerifyDto = {
   code: string;
+  user_id: number;
 };
 
 export type AccountCheckResponseData = {
