@@ -5,6 +5,21 @@ export type AccountCheckDto = {
   name: string;
 };
 
+export type AccountRegisterDto = {
+  user_id?: number;
+  corp_number?: string;
+  email?: string;
+  initial: boolean;
+  bankId: string;
+  accountNumber: string;
+  name: string;
+};
+
+export type AccountVerifyDto = {
+  code: string;
+  user_id: number;
+};
+
 export type AccountCheckResponseData = {
   bankOwnerName: string;
   bankSearch: string;
@@ -13,6 +28,22 @@ export type AccountCheckResponseData = {
 };
 
 export type AccountCheckResponse = FunctionResponse<AccountCheckResponseData>;
+
+export type AccountRegisterResponseData = {
+  memAccntno: string;
+  tid: number;
+};
+
+export type AccountRegisterResponse =
+  FunctionResponse<AccountRegisterResponseData>;
+
+export type AccountVerifyResponseData = {
+  memAccntno: string;
+  tid: number;
+};
+
+export type AccountVerifyResponse =
+  FunctionResponse<AccountRegisterResponseData>;
 
 export type AccountWithdrawInitDto = {
   member_no: number;
