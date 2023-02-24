@@ -20,6 +20,7 @@ import {
   UserQueryDto,
   TotalAssetsType,
   UserWengeQueryDto,
+  UserUpdateDto,
 } from '../types/kross-client/user';
 import {
   subMonths,
@@ -39,6 +40,8 @@ export class User extends KrossClientBase {
   releaseDepositControl: FunctionRegistered<ReleaseDepositResponse>;
   accountData: FunctionRegistered<UserQueryDto, AccountResponse>;
   userData: FunctionRegistered<UserQueryDto, UserResponse>;
+  userDataUpdate: FunctionRegistered<UserUpdateDto, UserResponse>;
+
   userAccountLogs: FunctionRegistered<
     UserWengeQueryDto,
     UserAccountLogsResponse
@@ -106,6 +109,11 @@ export class User extends KrossClientBase {
     this.userData = User.registerFunction<UserQueryDto, UserResponse>({
       url: '/users',
       method: 'get',
+    });
+
+    this.userDataUpdate = User.registerFunction<UserUpdateDto, UserResponse>({
+      url: '/users',
+      method: 'update',
     });
   }
 
@@ -248,12 +256,10 @@ export class User extends KrossClientBase {
             );
             const totalAssetAmount =
               amountInAccount +
-              (investingNotesSumary?.originPrincipal ||
-                0) - (investingNotesSumary?.principal ||
-                0) +
-              (delayNotesSummary?.originPrincipal ||
-                0) - (delayNotesSummary?.principal ||
-                0);
+              (investingNotesSumary?.originPrincipal || 0) -
+              (investingNotesSumary?.principal || 0) +
+              (delayNotesSummary?.originPrincipal || 0) -
+              (delayNotesSummary?.principal || 0);
             const cummulativeReturnOnInvestment =
               (doneNotesSummary?.interest || 0) -
               (doneNotesSummary?.taxAmount || 0) -
@@ -468,6 +474,12 @@ export class User extends KrossClientBase {
               }
             },
           }
+        );
+        return mutation;
+      },
+      userUpdate: () => {
+        const mutation = useMutation((userUpdateDto: UserUpdateDto) =>
+          this.userDataUpdate(userUpdateDto)
         );
         return mutation;
       },

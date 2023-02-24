@@ -17,6 +17,28 @@ export type UserQueryDto = {
   query?: Record<string, unknown>;
   include?: Record<string, unknown>;
 };
+
+export type UserUpdateDto = {
+  password?: string;
+  email?: string;
+  name?: string;
+  memberType?: string;
+  kftcType?: string;
+  state?: string;
+  nickName?: string;
+  mobile?: string;
+  zip?: string;
+  address1?: string;
+  address2?: string;
+  joinPath?: string;
+  retireAt?: string;
+  expireDate?: string;
+  fdsExcept?: boolean;
+  depositControl?: boolean;
+  notifyOnNewProducts?: boolean;
+  notifyOnRepayments?: boolean;
+};
+
 export type kftcBalanceResponseData = {
   rsp_code: string;
   rsp_message: string;

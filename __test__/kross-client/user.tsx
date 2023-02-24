@@ -49,9 +49,9 @@ export const user = () => {
     const { result } = renderHook(() => userData({}), {
       wrapper,
     });
-    await waitFor(() => {
-      expect(result.current).toBeDefined();
-    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
   });
 
   it('gets current user-note list', async () => {
@@ -162,6 +162,21 @@ export const user = () => {
         password2: 'Kross123!',
         isBorrower: false,
         isBusiness: false,
+      });
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
+  it('update a user', async () => {
+    const { userUpdate } = client.useUserHooks();
+    const { result } = renderHook(() => userUpdate(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        email: 'mad@kross.kr',
       });
     });
 
