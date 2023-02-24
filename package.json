@@ -37,8 +37,6 @@
     "jest-puppeteer": "^6.1.0",
     "prettier": "^2.6.2",
     "puppeteer": "^19.6.0",
-    "react": "^18.1.0",
-    "react-dom": "^18.2.0",
     "react-test-renderer": "^18.1.0",
     "ts-loader": "^9.2.8",
     "ts-node": "^10.4.0",
@@ -71,7 +69,9 @@
     "date-fns": "^2.29.3",
     "jwt-decode": "^3.1.2",
     "react-query": "3.39.3",
-    "stream-browserify": "^3.0.0"
+    "stream-browserify": "^3.0.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.2.0"
   },
   "peerDependencies": {
     "react": "^18.1.0",
