@@ -21,6 +21,7 @@ import {
   TotalAssetsType,
   UserWengeQueryDto,
   UserUpdateDto,
+  UserUpdateResponse,
 } from '../types/kross-client/user';
 import {
   subMonths,
@@ -40,7 +41,7 @@ export class User extends KrossClientBase {
   releaseDepositControl: FunctionRegistered<ReleaseDepositResponse>;
   accountData: FunctionRegistered<UserQueryDto, AccountResponse>;
   userData: FunctionRegistered<UserQueryDto, UserResponse>;
-  userDataUpdate: FunctionRegistered<UserUpdateDto, UserResponse>;
+  userDataUpdate: FunctionRegistered<UserUpdateDto, UserUpdateResponse>;
 
   userAccountLogs: FunctionRegistered<
     UserWengeQueryDto,
@@ -111,9 +112,12 @@ export class User extends KrossClientBase {
       method: 'get',
     });
 
-    this.userDataUpdate = User.registerFunction<UserUpdateDto, UserResponse>({
+    this.userDataUpdate = User.registerFunction<
+      UserUpdateDto,
+      UserUpdateResponse
+    >({
       url: '/users',
-      method: 'update',
+      method: 'put',
     });
   }
 
