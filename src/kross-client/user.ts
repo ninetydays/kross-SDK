@@ -206,6 +206,7 @@ export class User extends KrossClientBase {
 
       myPageData: () => {
         return useQuery({
+          cacheTime: 0,
           queryKey: 'myPageData',
           queryFn: async () => {
             const { data: accountData = [] }: any = await this.accountData({});
