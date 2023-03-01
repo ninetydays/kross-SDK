@@ -181,9 +181,10 @@ export class User extends KrossClientBase {
         const mutation = useMutation(() => this.releaseDepositControl());
         return mutation;
       },
-      accountData: (userQueryDto: UserQueryDto) => {
+      accountData: (userQueryDto: UserQueryDto, {enabled = false} : {enabled?: boolean}) => {
         return useQuery({
           cacheTime: 0,
+          enabled: enabled ? enabled : false,
           queryKey: 'accountData',
           queryFn: async () => {
             return this.accountData(userQueryDto).then((res) => {
