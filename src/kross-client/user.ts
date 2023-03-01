@@ -183,6 +183,7 @@ export class User extends KrossClientBase {
       },
       accountData: (userQueryDto: UserQueryDto) => {
         return useQuery({
+          cacheTime: 0,
           queryKey: 'accountData',
           queryFn: async () => {
             return this.accountData(userQueryDto).then((res) => {
