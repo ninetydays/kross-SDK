@@ -185,6 +185,7 @@ export class Investments extends KrossClientBase {
       },
       investmentLimit: ({ enabled = false }: { enabled?: boolean }) => {
         return useQuery({
+          cacheTime: 0,
           enabled: enabled ? enabled : false,
           queryKey: 'invesmentLimit',
           queryFn: async () => {
