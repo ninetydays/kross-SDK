@@ -66,8 +66,6 @@ export class KrossClientBase {
                 'Content-Type': 'multipart/form-data',
               }
           }
-          console.log("Config: ", config);
-
             return config;
           }
           const refreshTokenResponse = await axios.get(
