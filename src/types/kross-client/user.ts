@@ -207,4 +207,4 @@ export type TotalAssetsType = {
   [key: string]: {
     totalAssets: number;
   };
-}
+};

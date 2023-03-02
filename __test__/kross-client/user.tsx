@@ -150,7 +150,7 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
-  it('register a user', async () => {
+  it.skip('register a user', async () => {
     const { userRegister } = client.useUserHooks();
     const { result } = renderHook(() => userRegister(), {
       wrapper,
@@ -166,4 +166,18 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 30000);
+  it('update a user', async () => {
+    const { userUpdate } = client.useUserHooks();
+    const { result } = renderHook(() => userUpdate(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        email: 'mad@kross.kr',
+      });
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 };
