@@ -1,6 +1,5 @@
 import { KrossClientBase } from './base';
 import { useMutation } from 'react-query';
-import axios from 'axios';
 import {
   IdOcrVerificationsDto,
   IdOcrVerificationsResponse,

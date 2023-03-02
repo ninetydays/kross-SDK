@@ -111,36 +111,15 @@ export class User extends KrossClientBase {
       url: '/users',
       method: 'get',
     });
+    
+    this.userDataUpdate = User.registerFunction<
+      UserUpdateDto,
+      UserUpdateResponse
+    >({
+      url: '/users',
+      method: 'put',
+    });
   }
-
-  idCardVerification(idCardVerificationDto: IdCardVerificationsDto) {
-    return this.instance.post<IdCardVerificationsResponse>(
-      '/verifications/idcard',
-      idCardVerificationDto,
-    );
-  }
-  idOcrVerification({isForeigner, imageForm}: IdOcrVerificationsDto) {
-    const headers = {
-      'Content-Type': 'multipart/form-data',
-    };
-    return this.instance.post<IdOcrVerificationsResponse>(
-      '/verifications/idcard/ocr',
-      {
-        isForeigner,
-        imageForm,
-      },
-      {
-        headers,
-      },
-    );
-  }
-  useBToken(useBTokenDto: UseBTokenDto) {
-    return this.instance.post<UseBTokenResponse>(
-      '/verifications/useb/token',
-      useBTokenDto,
-    );
-  }
-
   useUserHooks() {
     return {
       userNoteLogs: (userWengeQueryDto: UserWengeQueryDto) => {

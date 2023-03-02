@@ -29,7 +29,7 @@ export const verifications = () => {
     });
   });
 
-  it.only('gets authToken and refreshToken', async () => {
+  it('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -87,14 +87,14 @@ export const verifications = () => {
     });
   }, 30000);
 
-  it.only('OCR verification', async () => {
+  it('OCR verification', async () => {
     const { idOcrVerification } = client.useVerificationHook();
     const { result } = renderHook(() => idOcrVerification(), {
       wrapper,
     });
     await act(async () => {
       try {
-        let form = new FormData();
+        const form = new FormData();
         const file = fs.readFileSync('__test__/kross-client/id.jpg');
         const blob = new Blob([JSON.stringify(file, null, 2)], { type: 'image/jpeg' });
         console.log("blob: ", blob);

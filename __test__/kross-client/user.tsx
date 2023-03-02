@@ -150,71 +150,6 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
-
-  it('verified id card', async () => {
-    const { idCardVerification } = client.useUserHooks();
-    const { result } = renderHook(() => idCardVerification(), {
-      wrapper,
-    });
-    await act(async () => {
-      await result.current.mutateAsync({
-        idType: '2',
-        driverNo: '123456789',
-        juminNo1: '12345',
-        juminNo2: '12345',
-        userName: 'dummy',
-        issueNo1: '12390123',
-        issueNo2: '12390123',
-        issueDate: '20221201'
-      });
-    });
-    await waitFor(() => {
-      const { data } = result.current;
-      console.log("data: ", data?.data);
-      expect(data?.data).toBeDefined();
-    });
-  }, 30000);
-
-  it('UseBToken', async () => {
-    const { useBToken } = client.useUserHooks();
-    const { result } = renderHook(() => useBToken(), {
-      wrapper,
-    });
-    await act(async () => {
-      await result.current.mutateAsync({
-        email: 'mad@kross.kr',
-        password: 'Kross123!'
-    });
-    });
-    await waitFor(() => {
-      const { data } = result.current;
-      console.log("data: ", data?.data);
-      expect(data).toBeDefined();
-    });
-  }, 30000);
-
-  it('OCR verification', async () => {
-    const { idOcrVerification } = client.useUserHooks();
-    const { result } = renderHook(() => idOcrVerification(), {
-      wrapper,
-    });
-    await act(async () => {
-      const file = Buffer.from(fs.readFileSync('/Users/azimuth/kross-SDK/__test__/kross-client/id.jpg'));
-      const formData = new FormData();
-      const blob = new Blob([file], { type: 'image/jpeg' });
-      formData.append("image", blob, "id.jpg");
-      formData.append('mask_mode', 'true');
-        await result.current.mutateAsync({
-          isForeigner: true,
-          imageForm: formData,
-      });
-  })
-    await waitFor(() => {
-      const { data } = result.current;
-      expect(data).toBeDefined();
-    });
-  }, 30000);
-  
   it('register a user', async () => {
     const { userRegister } = client.useUserHooks();
     const { result } = renderHook(() => userRegister(), {
@@ -222,7 +157,9 @@ export const user = () => {
     });
     await act(async () => {
       await result.current.mutateAsync({
-        email: 'mad@kross.kr',
+        keyid: 'mad@kross.kr',
+        password: 'blablabla',
+        password2: 'blablabla'
       });
     });
 
