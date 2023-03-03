@@ -21,9 +21,10 @@ export type IdCardVerificationsResponseData = {
 export type IdCardVerificationsResponse = FunctionResponse<IdCardVerificationsResponseData>;
 
 export type IdOcrVerificationsDto = {
-  imageForm: FormData;
+  image: FormData;
   isForeigner: boolean;
 }
+
 export type IdOcrVerificationsResponseData = {
   data: Record<string, unknown>;
   success: boolean;

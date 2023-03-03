@@ -76,7 +76,7 @@ export class KrossClientBase {
                 'client-authorization': hmacToken.hmacToken,
                 Authorization: `Bearer ${this.refreshToken}`,
               },
-            }
+            },
           );
 
           if (refreshTokenResponse.status === 200) {
