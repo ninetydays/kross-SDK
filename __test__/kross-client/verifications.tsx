@@ -2,7 +2,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Verifications } from '../../src/kross-client/verifications';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import fs from 'fs'
+import fetch from 'node-fetch';
+
 export const verifications = () => {
   let client: Verifications;
   const baseURL = 'https://olive-dev.kross.kr';
@@ -29,7 +30,7 @@ export const verifications = () => {
     });
   });
 
-  it('gets authToken and refreshToken', async () => {
+  it.only('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -87,32 +88,36 @@ export const verifications = () => {
     });
   }, 30000);
 
-  it('OCR verification', async () => {
+  it.only('OCR verification', async () => {
     const { idOcrVerification } = client.useVerificationHook();
     const { result } = renderHook(() => idOcrVerification(), {
       wrapper,
     });
+  
     await act(async () => {
       try {
+        const response = await fetch('http://localhost:8000/idCard.jpg', {});
+        const blob = new Blob([await response.arrayBuffer()], { type: response.headers.get('content-type') });
         const form = new FormData();
-        const file = fs.readFileSync('__test__/kross-client/id.jpg');
-        const blob = new Blob([JSON.stringify(file, null, 2)], { type: 'image/jpeg' });
-        console.log("blob: ", blob);
-        form.append('id.jpg',blob[0], 'blob');
+        form.append('id.jpg', blob, 'blob');
         await result.current.mutateAsync({
           isForeigner: true,
-          imageForm: form,
+          image: form,
         });
+        
       } catch (error) {
         console.error(error);
-      }
-  })
+      }    
+    });
+  
     await waitFor(() => {
       const { data } = result.current;
       console.log("Data: ", data);
       expect(data).toBeDefined();
     });
   }, 30000);
+  
+  
 
   it('Verifies phone', async () => {
     const { phoneVerification } = client.useVerificationHook();
