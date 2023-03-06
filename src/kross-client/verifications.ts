@@ -10,37 +10,38 @@ import {
   PhoneVerificationDto,
   PhoneVerificationResponse,
 } from '../types/kross-client/verifications';
-
 export class Verifications extends KrossClientBase {
- 
   idCardVerification(idCardVerificationDto: IdCardVerificationsDto) {
     return this.instance.post<IdCardVerificationsResponse>(
       '/verifications/idcard',
-      idCardVerificationDto,
+      idCardVerificationDto
     );
   }
-  idOcrVerification({formData}: IdOcrVerificationsDto) {
+  idOcrVerification(data: IdOcrVerificationsDto) {
     return this.instance.post<IdOcrVerificationsResponse>(
       '/verifications/idcard/ocr',
       {
-        formData,
+        ...data,
       },
       {
-        headers: formData.getHeaders(),
+        headers: {
+          'Content-Type': '*/*',
+        },
+        maxBodyLength: Infinity,
       }
     );
   }
   useBToken(useBTokenDto: UseBTokenDto) {
     return this.instance.post<UseBTokenResponse>(
       '/verifications/useb/token',
-      useBTokenDto,
+      useBTokenDto
     );
   }
 
   phoneVerification(phoneVerificationDto: PhoneVerificationDto) {
     return this.instance.post<PhoneVerificationResponse>(
       '/verifications/phone',
-      phoneVerificationDto,
+      phoneVerificationDto
     );
   }
 
@@ -49,27 +50,30 @@ export class Verifications extends KrossClientBase {
       idCardVerification: () => {
         const mutation = useMutation(
           (idCardVerificationDto: IdCardVerificationsDto) =>
-          this.idCardVerification(idCardVerificationDto));
+            this.idCardVerification(idCardVerificationDto)
+        );
         return mutation;
       },
       idOcrVerification: () => {
         const mutation = useMutation(
           (idOcrVerificationDto: IdOcrVerificationsDto) =>
-          this.idOcrVerification(idOcrVerificationDto));
+            this.idOcrVerification(idOcrVerificationDto)
+        );
         return mutation;
       },
       useBToken: () => {
-        const mutation = useMutation(
-          (useBTokenDto: UseBTokenDto) =>
-          this.useBToken(useBTokenDto));
+        const mutation = useMutation((useBTokenDto: UseBTokenDto) =>
+          this.useBToken(useBTokenDto)
+        );
         return mutation;
       },
       phoneVerification: () => {
         const mutation = useMutation(
           (phoneVerificationDto: PhoneVerificationDto) =>
-          this.phoneVerification(phoneVerificationDto));
+            this.phoneVerification(phoneVerificationDto)
+        );
         return mutation;
-      }
+      },
     };
   }
 }

@@ -2,9 +2,9 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Verifications } from '../../src/kross-client/verifications';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import fetch from 'node-fetch';
-import formData from 'form-data'
-
+import formData from 'form-data';
+import fs from 'fs';
+import path from 'path';
 export const verifications = () => {
   let client: Verifications;
   const baseURL = 'https://olive-dev.kross.kr';
@@ -61,12 +61,12 @@ export const verifications = () => {
         userName: 'dummy',
         issueNo1: '12390123',
         issueNo2: '12390123',
-        issueDate: '20221201'
+        issueDate: '20221201',
       });
     });
     await waitFor(() => {
       const { data } = result.current;
-      console.log("data: ", data?.data);
+      console.log('data: ', data);
       expect(data?.data).toBeDefined();
     });
   }, 30000);
@@ -79,41 +79,44 @@ export const verifications = () => {
     await act(async () => {
       await result.current.mutateAsync({
         email: 'mad@kross.kr',
-        password: 'Kross123!'
-    });
+        password: 'Kross123!',
+      });
     });
     await waitFor(() => {
       const { data } = result.current;
-      console.log("data: ", data?.data);
+      console.log('data: ', data?.data);
       expect(data).toBeDefined();
     });
   }, 30000);
-  
+
   it.only('OCR verification', async () => {
     const { idOcrVerification } = client.useVerificationHook();
     const { result } = renderHook(() => idOcrVerification(), {
       wrapper,
     });
-  
+
     await act(async () => {
       try {
-        const image = await fetch('http://localhost:8000/idCard.jpg', {
-          method: 'GET',
-        });
-        const buffer = await image.buffer();
+        const imagePath = path.resolve(__dirname, 'idCard.jpeg');
+        const imageFile = fs.createReadStream(imagePath);
+
         const form = new formData();
-        form.append('image', buffer);
         const isForeigner = 'true';
         form.append('isForeigner', isForeigner);
+        form.append('image', imageFile, 'idCard.jpeg');
+
+        const data = {
+          isForeigner: isForeigner,
+          image: form,
+        };
         await result.current.mutateAsync({
-          formData: form,
+          ...data,
         });
-        
       } catch (error) {
         console.error(error);
-      }    
+      }
     });
-  
+
     await waitFor(() => {
       const { data } = result.current;
       expect(data).toBeDefined();
@@ -130,7 +133,7 @@ export const verifications = () => {
         name: 'Suranme name',
         phone: '01012341234',
         birthdate: '19990909',
-    });
+      });
     });
     await waitFor(() => {
       const { data } = result.current;
