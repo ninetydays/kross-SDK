@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from 'react-query';
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, Method } from 'axios';
 import {
   KrossClientOptions,
   FunctionOptions,
@@ -60,12 +60,6 @@ export class KrossClientBase {
               ...config.headers,
               Authorization: `Bearer ${this.authToken}`,
             };
-            if (config.url === '/verifications/idcard/ocr'){
-              config.headers = {
-                ...config.headers,
-                'Content-Type': 'multipart/form-data',
-              }
-          }
             return config;
           }
           const refreshTokenResponse = await axios.get(
@@ -221,7 +215,7 @@ export class KrossClientBase {
         options.method === 'get' ? { params: input } : { data: input };
       return this.request({
         url,
-        method: options.method,
+        method: options.method as Method,
         ...paramsAndDataObject,
       });
     };

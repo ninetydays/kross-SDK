@@ -87,7 +87,7 @@ export const verifications = () => {
       expect(data).toBeDefined();
     });
   }, 30000);
-
+  
   it.only('OCR verification', async () => {
     const { idOcrVerification } = client.useVerificationHook();
     const { result } = renderHook(() => idOcrVerification(), {
@@ -96,10 +96,20 @@ export const verifications = () => {
   
     await act(async () => {
       try {
-        const response = await fetch('http://localhost:8000/idCard.jpg', {});
+        const response = await fetch('http://localhost:8000/id.jpg', {
+          method: 'GET',
+          headers: {
+            'content-type': 'image/jpeg'
+          },
+        });
         const blob = new Blob([await response.arrayBuffer()], { type: response.headers.get('content-type') });
+        // image size matched with the blob size = we got image
+        console.log('Blob size:', blob.size);
         const form = new FormData();
-        form.append('id.jpg', blob, 'blob');
+        form.append('image', blob);
+        for (var pair of form.entries()) {
+          console.log("getting", pair[0]+ ', ' + pair[1]); 
+      }
         await result.current.mutateAsync({
           isForeigner: true,
           image: form,
@@ -112,12 +122,10 @@ export const verifications = () => {
   
     await waitFor(() => {
       const { data } = result.current;
-      console.log("Data: ", data);
+      console.log('Data value:', data);
       expect(data).toBeDefined();
     });
   }, 30000);
-  
-  
 
   it('Verifies phone', async () => {
     const { phoneVerification } = client.useVerificationHook();
