@@ -215,7 +215,7 @@ export class KrossClientBase {
         options.method === 'get' ? { params: input } : { data: input };
       return this.request({
         url,
-        method: options.method as Method,
+        method: options.method,
         ...paramsAndDataObject,
       });
     };

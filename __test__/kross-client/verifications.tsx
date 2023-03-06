@@ -3,6 +3,7 @@ import { Verifications } from '../../src/kross-client/verifications';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import fetch from 'node-fetch';
+import formData from 'form-data'
 
 export const verifications = () => {
   let client: Verifications;
@@ -96,23 +97,21 @@ export const verifications = () => {
   
     await act(async () => {
       try {
-        const response = await fetch('http://localhost:8000/id.jpg', {
+        const image = await fetch('http://localhost:8000/idCard.jpg', {
           method: 'GET',
           headers: {
             'content-type': 'image/jpeg'
           },
         });
-        const blob = new Blob([await response.arrayBuffer()], { type: response.headers.get('content-type') });
-        // image size matched with the blob size = we got image
-        console.log('Blob size:', blob.size);
-        const form = new FormData();
-        form.append('image', blob);
-        for (var pair of form.entries()) {
-          console.log("getting", pair[0]+ ', ' + pair[1]); 
-      }
+        const buffer = await image.buffer();
+        console.log("Image buffer: ", buffer);
+        const form = new formData();
+        form.append('image', buffer);
+        form.append('mask_mode', 'true');
+        const isForeigner = 'true';
         await result.current.mutateAsync({
-          isForeigner: true,
           image: form,
+          isForeigner,
         });
         
       } catch (error) {

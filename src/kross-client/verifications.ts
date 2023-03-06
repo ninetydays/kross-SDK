@@ -29,7 +29,9 @@ export class Verifications extends KrossClientBase {
         image,
       },
       {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+           "Content-Type": "multipart/form-data" 
+          },
       }
     );
   }
