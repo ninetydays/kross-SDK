@@ -19,19 +19,14 @@ export class Verifications extends KrossClientBase {
       idCardVerificationDto,
     );
   }
-  idOcrVerification({image, isForeigner}: IdOcrVerificationsDto) {
-    console.log("image: ", image);
-    console.log("Is foreigner: ", isForeigner);
+  idOcrVerification({formData}: IdOcrVerificationsDto) {
     return this.instance.post<IdOcrVerificationsResponse>(
       '/verifications/idcard/ocr',
       {
-        isForeigner,
-        image,
+        formData,
       },
       {
-        headers: {
-           "Content-Type": "multipart/form-data" 
-          },
+        headers: formData.getHeaders(),
       }
     );
   }

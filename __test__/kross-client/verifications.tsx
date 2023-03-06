@@ -99,19 +99,14 @@ export const verifications = () => {
       try {
         const image = await fetch('http://localhost:8000/idCard.jpg', {
           method: 'GET',
-          headers: {
-            'content-type': 'image/jpeg'
-          },
         });
         const buffer = await image.buffer();
-        console.log("Image buffer: ", buffer);
         const form = new formData();
         form.append('image', buffer);
-        form.append('mask_mode', 'true');
         const isForeigner = 'true';
+        form.append('isForeigner', isForeigner);
         await result.current.mutateAsync({
-          image: form,
-          isForeigner,
+          formData: form,
         });
         
       } catch (error) {
@@ -121,7 +116,6 @@ export const verifications = () => {
   
     await waitFor(() => {
       const { data } = result.current;
-      console.log('Data value:', data);
       expect(data).toBeDefined();
     });
   }, 30000);

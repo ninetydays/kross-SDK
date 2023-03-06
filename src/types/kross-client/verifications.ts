@@ -22,8 +22,7 @@ export type IdCardVerificationsResponseData = {
 export type IdCardVerificationsResponse = FunctionResponse<IdCardVerificationsResponseData>;
 
 export type IdOcrVerificationsDto = {
-  image: formData;
-  isForeigner: string;
+  formData: formData;
 }
 
 export type IdOcrVerificationsResponseData = {
