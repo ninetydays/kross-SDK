@@ -80,6 +80,15 @@ export class KrossClientBase {
           }
         }
 
+        console.log('config', config);
+        if (config.url?.includes('/idcard/ocr')) {
+          console.log('hola rakh kam nu');
+          config.headers = {
+            ...config.headers,
+            'Content-type': 'multipart/form-data',
+          };
+        }
+
         return config;
       }
     );
