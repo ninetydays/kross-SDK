@@ -43,6 +43,13 @@ export class KrossClientBase {
           'X-Date': hmacToken.xDate,
         };
 
+        if (config.url?.includes('/idcard/ocr')) {
+          config.headers = {
+            ...config.headers,
+            'Content-type': 'multipart/form-data',
+          };
+        }
+
         if (this.authToken) {
           const user: any = await jwt_decode(this.authToken as string);
           const isExpired = user.exp
