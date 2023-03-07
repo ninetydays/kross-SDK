@@ -43,6 +43,13 @@ export class KrossClientBase {
           'X-Date': hmacToken.xDate,
         };
 
+        if (config.url?.includes('/idcard/ocr')) {
+          config.headers = {
+            ...config.headers,
+            'Content-type': 'multipart/form-data',
+          };
+        }
+
         if (this.authToken) {
           const user: any = await jwt_decode(this.authToken as string);
           const isExpired = user.exp
@@ -78,6 +85,15 @@ export class KrossClientBase {
               Authorization: `Bearer ${refreshTokenResponse.data.token}`,
             };
           }
+        }
+
+        console.log('config', config);
+        if (config.url?.includes('/idcard/ocr')) {
+          console.log('hola rakh kam nu');
+          config.headers = {
+            ...config.headers,
+            'Content-type': 'multipart/form-data',
+          };
         }
 
         return config;
