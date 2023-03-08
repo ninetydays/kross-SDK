@@ -68,7 +68,6 @@
     "crypto-browserify": "^3.12.0",
     "date-fns": "^2.29.3",
     "form-data": "4.0.0",
-    "fs": "^0.0.1-security",
     "jwt-decode": "^3.1.2",
     "react": "^18.1.0",
     "react-dom": "^18.2.0",
