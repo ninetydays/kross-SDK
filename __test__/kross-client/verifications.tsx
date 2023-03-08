@@ -66,7 +66,6 @@ export const verifications = () => {
     });
     await waitFor(() => {
       const { data } = result.current;
-      console.log('data: ', data);
       expect(data?.data).toBeDefined();
     });
   }, 30000);
@@ -84,7 +83,6 @@ export const verifications = () => {
     });
     await waitFor(() => {
       const { data } = result.current;
-      console.log('data: ', data?.data);
       expect(data).toBeDefined();
     });
   }, 30000);
@@ -101,7 +99,6 @@ export const verifications = () => {
         const imageFile = fs.createReadStream(imagePath);
 
         const form = new formData();
-        console.log("Image file: ", imageFile);
         form.append('image', imageFile, 'idCard.jpeg');
         form.append('isForeigner', 'true');
         const IdOcrVerificationsDto = {
