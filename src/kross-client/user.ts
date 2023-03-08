@@ -111,7 +111,7 @@ export class User extends KrossClientBase {
       url: '/users',
       method: 'get',
     });
-
+    
     this.userDataUpdate = User.registerFunction<
       UserUpdateDto,
       UserUpdateResponse
@@ -120,7 +120,6 @@ export class User extends KrossClientBase {
       method: 'put',
     });
   }
-
   useUserHooks() {
     return {
       userNoteLogs: (userWengeQueryDto: UserWengeQueryDto) => {

@@ -4,5 +4,6 @@ export * from './kross-client/account';
 export * from './kross-client/investments';
 export * from './kross-client/loans';
 export * from './kross-client/user';
+export * from './kross-client/verifications'
 export * from './utils/encryptor';
 export * from './kross-client/inquiry';

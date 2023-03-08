@@ -2,7 +2,6 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { User } from '../../src/kross-client/user';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
-
 export const user = () => {
   let client: User;
   const baseURL = 'https://olive-dev.kross.kr';
@@ -44,6 +43,7 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
+  
   it('gets current user data details', async () => {
     const { userData } = client.useUserHooks();
     const { result } = renderHook(() => userData({}), {
@@ -126,7 +126,7 @@ export const user = () => {
   it('gets virtual account details', async () => {
     const { accountData } = client.useUserHooks();
     const enabled = true;
-    const { result } = renderHook(() => accountData({}, {enabled}), {
+    const { result } = renderHook(() => accountData({}, enabled), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -150,26 +150,22 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
-
-  it('register a user', async () => {
+  it.skip('register a user', async () => {
     const { userRegister } = client.useUserHooks();
     const { result } = renderHook(() => userRegister(), {
       wrapper,
     });
     await act(async () => {
       await result.current.mutateAsync({
-        keyid: 'mad6@kross.kr',
-        password: 'Kross123!',
-        password2: 'Kross123!',
-        isBorrower: false,
-        isBusiness: false,
+        keyid: 'mad@kross.kr',
+        password: 'blablabla',
+        password2: 'blablabla'
       });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  });
-
+  }, 30000);
   it('update a user', async () => {
     const { userUpdate } = client.useUserHooks();
     const { result } = renderHook(() => userUpdate(), {

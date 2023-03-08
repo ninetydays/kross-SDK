@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from 'react-query';
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, Method } from 'axios';
 import {
   KrossClientOptions,
   FunctionOptions,
@@ -36,7 +36,6 @@ export class KrossClientBase {
         );
 
         const hmacToken = await getHmacToken(config.method as string);
-
         config.headers = {
           ...config.headers,
           'client-authorization': hmacToken.hmacToken,
@@ -63,7 +62,6 @@ export class KrossClientBase {
             };
             return config;
           }
-
           const refreshTokenResponse = await axios.get(
             `${options.baseURL}/auth/refresh`,
             {
@@ -72,9 +70,8 @@ export class KrossClientBase {
                 'client-authorization': hmacToken.hmacToken,
                 Authorization: `Bearer ${this.refreshToken}`,
               },
-            }
+            },
           );
-
           if (refreshTokenResponse.status === 200) {
             if (this?.refreshTokenCallback) {
               await this.refreshTokenCallback(refreshTokenResponse.data.token);
@@ -86,16 +83,6 @@ export class KrossClientBase {
             };
           }
         }
-
-        console.log('config', config);
-        if (config.url?.includes('/idcard/ocr')) {
-          console.log('hola rakh kam nu');
-          config.headers = {
-            ...config.headers,
-            'Content-type': 'multipart/form-data',
-          };
-        }
-
         return config;
       }
     );
