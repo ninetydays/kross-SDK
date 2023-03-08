@@ -60,6 +60,12 @@ export class KrossClientBase {
               ...config.headers,
               Authorization: `Bearer ${this.authToken}`,
             };
+            if (config.url === '/verifications/idcard/ocr') {
+              config.headers = {
+                ...config.headers,
+                'Content-type': 'multipart/form-data',
+              };
+            }
             return config;
           }
           const refreshTokenResponse = await axios.get(
@@ -84,16 +90,6 @@ export class KrossClientBase {
             };
           }
         }
-
-        console.log('config', config);
-        if (config.url?.includes('/idcard/ocr')) {
-          console.log('hola rakh kam nu');
-          config.headers = {
-            ...config.headers,
-            'Content-type': 'multipart/form-data',
-          };
-        }
-
         return config;
       }
     );

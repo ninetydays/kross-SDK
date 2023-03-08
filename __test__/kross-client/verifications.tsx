@@ -31,7 +31,7 @@ export const verifications = () => {
     });
   });
 
-  it.only('gets authToken and refreshToken', async () => {
+  it('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -89,7 +89,7 @@ export const verifications = () => {
     });
   }, 30000);
 
-  it.only('OCR verification', async () => {
+  it.skip('OCR verification', async () => {
     const { idOcrVerification } = client.useVerificationHook();
     const { result } = renderHook(() => idOcrVerification(), {
       wrapper,
@@ -97,21 +97,19 @@ export const verifications = () => {
 
     await act(async () => {
       try {
-        const imagePath = path.resolve(__dirname, 'idCard.jpeg');
+        const imagePath = path.resolve(__dirname, '__test__/kross-client/idCard.jpg');
         const imageFile = fs.createReadStream(imagePath);
 
         const form = new formData();
-        const isForeigner = 'true';
-        form.append('isForeigner', isForeigner);
+        console.log("Image file: ", imageFile);
         form.append('image', imageFile, 'idCard.jpeg');
-
-        const data = {
-          isForeigner: isForeigner,
+        form.append('isForeigner', 'true');
+        const IdOcrVerificationsDto = {
           image: form,
         };
-        await result.current.mutateAsync({
-          ...data,
-        });
+        await result.current.mutateAsync(
+          IdOcrVerificationsDto,
+        );
       } catch (error) {
         console.error(error);
       }

@@ -17,18 +17,10 @@ export class Verifications extends KrossClientBase {
       idCardVerificationDto
     );
   }
-  idOcrVerification(data: IdOcrVerificationsDto) {
+  idOcrVerification(idOcrVerificationsDto: IdOcrVerificationsDto) {
     return this.instance.post<IdOcrVerificationsResponse>(
       '/verifications/idcard/ocr',
-      {
-        ...data,
-      },
-      {
-        headers: {
-          'Content-Type': '*/*',
-        },
-        maxBodyLength: Infinity,
-      }
+      idOcrVerificationsDto,
     );
   }
   useBToken(useBTokenDto: UseBTokenDto) {
