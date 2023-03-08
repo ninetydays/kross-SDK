@@ -53,6 +53,7 @@ export type UserRegisterDto = {
   keyid: string;
   password: string;
   password2: string;
+  isBusiness?: boolean;
   isBorrower?: boolean;
   email?: string;
   corpRegNo?: string;
