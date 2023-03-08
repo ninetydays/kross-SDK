@@ -60,12 +60,6 @@ export class KrossClientBase {
               ...config.headers,
               Authorization: `Bearer ${this.authToken}`,
             };
-            if (config.url === '/verifications/idcard/ocr') {
-              config.headers = {
-                ...config.headers,
-                'Content-type': 'multipart/form-data',
-              };
-            }
             return config;
           }
           const refreshTokenResponse = await axios.get(
@@ -78,7 +72,6 @@ export class KrossClientBase {
               },
             },
           );
-
           if (refreshTokenResponse.status === 200) {
             if (this?.refreshTokenCallback) {
               await this.refreshTokenCallback(refreshTokenResponse.data.token);

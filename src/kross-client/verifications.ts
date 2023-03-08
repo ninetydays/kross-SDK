@@ -21,6 +21,11 @@ export class Verifications extends KrossClientBase {
     return this.instance.post<IdOcrVerificationsResponse>(
       '/verifications/idcard/ocr',
       idOcrVerificationsDto,
+      {
+        headers: {
+          'Content-type': 'multipart/form-data',
+        },
+      }
     );
   }
   useBToken(useBTokenDto: UseBTokenDto) {
