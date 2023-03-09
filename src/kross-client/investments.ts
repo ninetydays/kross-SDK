@@ -146,17 +146,16 @@ export class Investments extends KrossClientBase {
         return useInfiniteQuery(
           'appliedInvestments',
           async ({ pageParam = 0 }) => {
-            const skip = isNaN(
-              parseInt(investmentsWengeQueryDto?.take as string, 10)
-            )
-              ? '0'
-              : (investmentsWengeQueryDto?.take as string);
-            const take = (pageParam * parseInt(skip, 10)).toString();
+            const skip = (
+              pageParam *
+              (isNaN(parseInt(investmentsWengeQueryDto?.take as string, 10))
+                ? 0
+                : parseInt(investmentsWengeQueryDto?.take as string, 10))
+            ).toString();
             const appliedInvestmentData = await this.investmentList({
               ...investmentsWengeQueryDto,
               join: 'loan',
               skip,
-              take,
             });
             const appliedInvestmentArray = Object.values(
               appliedInvestmentData?.data || []
