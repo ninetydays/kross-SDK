@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from 'react-query';
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, Method } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import {
   KrossClientOptions,
   FunctionOptions,
@@ -40,6 +40,7 @@ export class KrossClientBase {
           ...config.headers,
           'client-authorization': hmacToken.hmacToken,
           'X-Date': hmacToken.xDate,
+          'Cache-Control': 'no-cache',
         };
 
         if (config.url?.includes('/idcard/ocr')) {
@@ -70,7 +71,7 @@ export class KrossClientBase {
                 'client-authorization': hmacToken.hmacToken,
                 Authorization: `Bearer ${this.refreshToken}`,
               },
-            },
+            }
           );
           if (refreshTokenResponse.status === 200) {
             if (this?.refreshTokenCallback) {
