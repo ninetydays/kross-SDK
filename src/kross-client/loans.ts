@@ -70,7 +70,6 @@ export class Loans extends KrossClientBase {
             'loanData',
             {
               ...loansQueryDto,
-              userId,
             },
           ],
           async ({ pageParam = 0 }) => {
