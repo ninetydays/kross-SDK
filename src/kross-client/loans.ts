@@ -66,7 +66,13 @@ export class Loans extends KrossClientBase {
       },
       loanData: (loansQueryDto: LoansQueryDto, userId?: string) => {
         return useInfiniteQuery(
-          'loanData',
+          [
+            'loanData',
+            {
+              ...loansQueryDto,
+              userId,
+            },
+          ],
           async ({ pageParam = 0 }) => {
             const skip = (
               pageParam *
@@ -115,6 +121,7 @@ export class Loans extends KrossClientBase {
               return pages?.length;
             },
             cacheTime: 0,
+            staleTime: 0,
           }
         );
       },
