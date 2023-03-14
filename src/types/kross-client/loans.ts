@@ -47,9 +47,9 @@ export type LoanResponseData = {
   data: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
-  userInvestedAmount?: number;
-  isUserInvested?: boolean;
-  investmentId?: number | null;
+  userInvestedAmount: number;
+  isUserInvested: boolean;
+  investmentId: number | null;
   reservedAt: Date;
   investableLimit?: number;
 };

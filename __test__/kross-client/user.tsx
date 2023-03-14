@@ -181,7 +181,7 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it.only('returnOnInvestmentData', async () => {
+  it('returnOnInvestmentData', async () => {
     const { returnOnInvestmentData } = client.useUserHooks();
     const startDate = '2022-10-10';
     const endDate = '2023-03-14'
