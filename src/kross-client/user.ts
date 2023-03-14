@@ -416,16 +416,16 @@ export class User extends KrossClientBase {
                 join: 'loan',
               },
             });
-
+            const notesLength = notesData?.length > 0 ? notesData.length : 1;
             const principal = sumByKey(notesData, 'principal');
             const rate = sumByKey(notesData, 'rate');
             const feeRate = sumByKey(notesData, 'feeRate');
-            const interest = sumByKey(notesData, 'interest');
+            const interestAmount = sumByKey(notesData, 'interest');
             const taxAmount = sumByKey(notesData, 'taxAmount');
             const feeAmount = sumByKey(notesData, 'feeAmount');
-            const cumulativeReturnAfterTax = interest - taxAmount - feeAmount;
+            const cumulativeReturnAfterTax = interestAmount - taxAmount - feeAmount;
             const cumulativeInterestRatio = (
-              ((rate - feeRate) / notesData?.length || 1) * 100
+              ((rate - feeRate) / notesLength || 0) * 100
             ).toFixed(2);
 
             function getRealPeriod(item: any): number {
@@ -449,17 +449,16 @@ export class User extends KrossClientBase {
               return returnRateAfterTax;
             });
             const cumulativeInterestRatioAfterTax =
-              notesReturnRatesAfterTax.reduce(
+              (notesReturnRatesAfterTax.reduce(
                 (acc: number, cur: number) => acc + cur,
                 0
-              );
-
+              ) / notesLength).toFixed(2);
             return {
               cumulativeReturnAfterTax,
-              cumulativeReturn: interest,
+              cumulativeReturn: interestAmount,
               cumulativeInterestRatio,
               cumulativeInterestRatioAfterTax:
-                cumulativeInterestRatioAfterTax.toFixed(2),
+                cumulativeInterestRatioAfterTax,
               taxAmount,
               feeAmount,
               investmentsPricipal: principal,
