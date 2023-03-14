@@ -463,7 +463,6 @@ export class User extends KrossClientBase {
               feeAmount,
               investmentsPricipal: principal,
             };
-            console.log("Data: ", data);
             return {
               cumulativeReturnAfterTax,
               cumulativeReturn: interestAmount,
