@@ -296,8 +296,8 @@ export class User extends KrossClientBase {
               : 0;
             const repaymentScheduledAmount = repaymentsScheduledData
               ? repaymentsScheduledData?.reduce(
-                  (acc: number, cur: { investedAmount: number }) =>
-                    acc + cur.investedAmount,
+                  (acc: number, cur: { expectedAmount: number }) =>
+                    acc + cur.expectedAmount,
                   0
                 )
               : 0;
