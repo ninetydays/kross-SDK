@@ -296,8 +296,8 @@ export class User extends KrossClientBase {
               : 0;
             const repaymentScheduledAmount = repaymentsScheduledData
               ? repaymentsScheduledData?.reduce(
-                  (acc: number, cur: { investedAmount: number }) =>
-                    acc + cur.investedAmount,
+                  (acc: number, cur: { returnedAmount: number }) =>
+                    acc + cur.returnedAmount,
                   0
                 )
               : 0;
@@ -449,16 +449,27 @@ export class User extends KrossClientBase {
               return returnRateAfterTax;
             });
             const cumulativeInterestRatioAfterTax =
-              notesReturnRatesAfterTax.reduce(
+              (notesReturnRatesAfterTax.reduce(
                 (acc: number, cur: number) => acc + cur,
                 0
-              );
+              ) / notesLength).toFixed(2);
+            const data = {
+              cumulativeReturnAfterTax,
+              cumulativeReturn: interestAmount,
+              cumulativeInterestRatio,
+              cumulativeInterestRatioAfterTax:
+                cumulativeInterestRatioAfterTax,
+              taxAmount,
+              feeAmount,
+              investmentsPricipal: principal,
+            };
+            console.log("Data: ", data);
             return {
               cumulativeReturnAfterTax,
               cumulativeReturn: interestAmount,
               cumulativeInterestRatio,
               cumulativeInterestRatioAfterTax:
-              (cumulativeInterestRatioAfterTax / notesLength).toFixed(2),
+                cumulativeInterestRatioAfterTax,
               taxAmount,
               feeAmount,
               investmentsPricipal: principal,
