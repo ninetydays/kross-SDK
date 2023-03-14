@@ -453,16 +453,6 @@ export class User extends KrossClientBase {
                 (acc: number, cur: number) => acc + cur,
                 0
               ) / notesLength).toFixed(2);
-            const data = {
-              cumulativeReturnAfterTax,
-              cumulativeReturn: interestAmount,
-              cumulativeInterestRatio,
-              cumulativeInterestRatioAfterTax:
-                cumulativeInterestRatioAfterTax,
-              taxAmount,
-              feeAmount,
-              investmentsPricipal: principal,
-            };
             return {
               cumulativeReturnAfterTax,
               cumulativeReturn: interestAmount,
