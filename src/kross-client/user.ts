@@ -1,3 +1,7 @@
+import {
+  PasswordCheckDto,
+  PasswordCheckResponse,
+} from './../types/kross-client/user';
 import { sumByKey } from './../utils/sumByKey';
 import { KrossClientBase } from './base';
 import { useQuery, useMutation } from 'react-query';
@@ -42,6 +46,7 @@ export class User extends KrossClientBase {
   accountData: FunctionRegistered<UserQueryDto, AccountResponse>;
   userData: FunctionRegistered<UserQueryDto, UserResponse>;
   userDataUpdate: FunctionRegistered<UserUpdateDto, UserUpdateResponse>;
+  passwordCheck: FunctionRegistered<PasswordCheckDto, PasswordCheckResponse>;
 
   userAccountLogs: FunctionRegistered<
     UserWengeQueryDto,
@@ -118,6 +123,14 @@ export class User extends KrossClientBase {
     >({
       url: '/users',
       method: 'put',
+    });
+
+    this.passwordCheck = User.registerFunction<
+      PasswordCheckDto,
+      PasswordCheckResponse
+    >({
+      url: '/users/password-check',
+      method: 'post',
     });
   }
   useUserHooks() {
@@ -491,10 +504,8 @@ export class User extends KrossClientBase {
       },
 
       checkPassword: () => {
-        const mutation = useMutation((passwordCheckDto: { password: string }) =>
-          this.post('/users/password-check', {
-            data: passwordCheckDto,
-          })
+        const mutation = useMutation((passwordCheckDto: PasswordCheckDto) =>
+          this.passwordCheck(passwordCheckDto)
         );
         return mutation;
       },

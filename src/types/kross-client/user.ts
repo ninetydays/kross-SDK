@@ -208,3 +208,13 @@ export type TotalAssetsType = {
     totalAssets: number;
   };
 };
+
+export type PasswordCheckDto = {
+  password: string;
+};
+
+export type PasswordCheckResponseData = {
+  message: string;
+  statusCode: number;
+};
+export type PasswordCheckResponse = FunctionResponse<PasswordCheckResponseData>;
