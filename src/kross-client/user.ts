@@ -492,7 +492,7 @@ export class User extends KrossClientBase {
 
       checkPassword: () => {
         const mutation = useMutation((passwordCheckDto: { password: string }) =>
-          this.post('/users/check-password', {
+          this.post('/users/password-check', {
             data: passwordCheckDto,
           })
         );
