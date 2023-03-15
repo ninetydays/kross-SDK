@@ -113,14 +113,33 @@ export class Investments extends KrossClientBase {
         });
       },
       notes: (investmentsWengeQueryDto: InvestmentsWengeQueryDto) => {
-        return useQuery({
-          queryKey: 'notes',
-          queryFn: async () => {
-            return this.notes(investmentsWengeQueryDto).then((res) => {
-              return res.data;
+        return useInfiniteQuery(
+          'notes',
+          async ({ pageParam = 0 }) => {
+            const skip = (
+              pageParam *
+              (isNaN(parseInt(investmentsWengeQueryDto?.take as string, 10))
+                ? 0
+                : parseInt(investmentsWengeQueryDto?.take as string, 10))
+            ).toString();
+            const notesData = await this.notes({
+              ...investmentsWengeQueryDto,
+              skip,
             });
+            const notesArray = Object.values(
+              notesData?.data || []
+            );
+            return notesArray;
           },
-        });
+          {
+            getNextPageParam: (lastPage, pages) => {
+              if (lastPage.length === 0) {
+                return null;
+              }
+              return pages?.length;
+            },
+          }
+        );
       },
       transactionHistory: (investmentQueryDto: InvestmentQueryDto) => {
         return useQuery('transactionHistory', async () => {
