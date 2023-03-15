@@ -142,15 +142,27 @@ export class Investments extends KrossClientBase {
         );
       },
       transactionHistory: (investmentQueryDto: InvestmentQueryDto) => {
-        return useQuery('transactionHistory', async () => {
-          const transactionData = await this.transactionHistory(
-            investmentQueryDto
-          );
-          const transactionDataArray = transactionData?.data?.data
-            ? Object.values(transactionData.data.data)
-            : [];
-          return transactionDataArray;
-        });
+        return useInfiniteQuery(
+          'transactionHistory',
+          async ({ pageParam = 0 }) => {
+            const transactionData = await this.transactionHistory({
+              ...investmentQueryDto,
+              offset: pageParam.toString(),
+            });
+            const transactionDataArray = transactionData?.data?.data
+              ? Object.values(transactionData.data.data)
+              : [];
+            return transactionDataArray;
+          },
+          {
+            getNextPageParam: (lastPage, pages) => {
+              if (lastPage.length === 0) {
+                return null;
+              }
+              return pages?.length;
+            },
+          }
+        );
       },
       investmentRegister: () => {
         const mutation = useMutation(
