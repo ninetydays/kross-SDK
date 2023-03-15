@@ -111,7 +111,7 @@ export class User extends KrossClientBase {
       url: '/users',
       method: 'get',
     });
-    
+
     this.userDataUpdate = User.registerFunction<
       UserUpdateDto,
       UserUpdateResponse
@@ -423,7 +423,8 @@ export class User extends KrossClientBase {
             const interestAmount = sumByKey(notesData, 'interest');
             const taxAmount = sumByKey(notesData, 'taxAmount');
             const feeAmount = sumByKey(notesData, 'feeAmount');
-            const cumulativeReturnAfterTax = interestAmount - taxAmount - feeAmount;
+            const cumulativeReturnAfterTax =
+              interestAmount - taxAmount - feeAmount;
             const cumulativeInterestRatio = (
               ((rate - feeRate) / notesLength || 0) * 100
             ).toFixed(2);
@@ -448,17 +449,17 @@ export class User extends KrossClientBase {
                   : 0;
               return returnRateAfterTax;
             });
-            const cumulativeInterestRatioAfterTax =
-              (notesReturnRatesAfterTax.reduce(
+            const cumulativeInterestRatioAfterTax = (
+              notesReturnRatesAfterTax.reduce(
                 (acc: number, cur: number) => acc + cur,
                 0
-              ) / notesLength).toFixed(2);
+              ) / notesLength
+            ).toFixed(2);
             return {
               cumulativeReturnAfterTax,
               cumulativeReturn: interestAmount,
               cumulativeInterestRatio,
-              cumulativeInterestRatioAfterTax:
-                cumulativeInterestRatioAfterTax,
+              cumulativeInterestRatioAfterTax: cumulativeInterestRatioAfterTax,
               taxAmount,
               feeAmount,
               investmentsPricipal: principal,
@@ -485,6 +486,15 @@ export class User extends KrossClientBase {
       userUpdate: () => {
         const mutation = useMutation((userUpdateDto: UserUpdateDto) =>
           this.userDataUpdate(userUpdateDto)
+        );
+        return mutation;
+      },
+
+      checkPassword: () => {
+        const mutation = useMutation((passwordCheckDto: { password: string }) =>
+          this.post('/users/check-password', {
+            data: passwordCheckDto,
+          })
         );
         return mutation;
       },
