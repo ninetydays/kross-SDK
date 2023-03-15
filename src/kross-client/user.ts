@@ -1,3 +1,7 @@
+import {
+  PasswordCheckDto,
+  PasswordCheckResponse,
+} from './../types/kross-client/user';
 import { sumByKey } from './../utils/sumByKey';
 import { KrossClientBase } from './base';
 import { useQuery, useMutation } from 'react-query';
@@ -42,6 +46,7 @@ export class User extends KrossClientBase {
   accountData: FunctionRegistered<UserQueryDto, AccountResponse>;
   userData: FunctionRegistered<UserQueryDto, UserResponse>;
   userDataUpdate: FunctionRegistered<UserUpdateDto, UserUpdateResponse>;
+  passwordCheck: FunctionRegistered<PasswordCheckDto, PasswordCheckResponse>;
 
   userAccountLogs: FunctionRegistered<
     UserWengeQueryDto,
@@ -111,13 +116,21 @@ export class User extends KrossClientBase {
       url: '/users',
       method: 'get',
     });
-    
+
     this.userDataUpdate = User.registerFunction<
       UserUpdateDto,
       UserUpdateResponse
     >({
       url: '/users',
       method: 'put',
+    });
+
+    this.passwordCheck = User.registerFunction<
+      PasswordCheckDto,
+      PasswordCheckResponse
+    >({
+      url: '/users/password-check',
+      method: 'post',
     });
   }
   useUserHooks() {
@@ -423,7 +436,8 @@ export class User extends KrossClientBase {
             const interestAmount = sumByKey(notesData, 'interest');
             const taxAmount = sumByKey(notesData, 'taxAmount');
             const feeAmount = sumByKey(notesData, 'feeAmount');
-            const cumulativeReturnAfterTax = interestAmount - taxAmount - feeAmount;
+            const cumulativeReturnAfterTax =
+              interestAmount - taxAmount - feeAmount;
             const cumulativeInterestRatio = (
               ((rate - feeRate) / notesLength || 0) * 100
             ).toFixed(2);
@@ -448,17 +462,17 @@ export class User extends KrossClientBase {
                   : 0;
               return returnRateAfterTax;
             });
-            const cumulativeInterestRatioAfterTax =
-              (notesReturnRatesAfterTax.reduce(
+            const cumulativeInterestRatioAfterTax = (
+              notesReturnRatesAfterTax.reduce(
                 (acc: number, cur: number) => acc + cur,
                 0
-              ) / notesLength).toFixed(2);
+              ) / notesLength
+            ).toFixed(2);
             return {
               cumulativeReturnAfterTax,
               cumulativeReturn: interestAmount,
               cumulativeInterestRatio,
-              cumulativeInterestRatioAfterTax:
-                cumulativeInterestRatioAfterTax,
+              cumulativeInterestRatioAfterTax: cumulativeInterestRatioAfterTax,
               taxAmount,
               feeAmount,
               investmentsPricipal: principal,
@@ -485,6 +499,13 @@ export class User extends KrossClientBase {
       userUpdate: () => {
         const mutation = useMutation((userUpdateDto: UserUpdateDto) =>
           this.userDataUpdate(userUpdateDto)
+        );
+        return mutation;
+      },
+
+      checkPassword: () => {
+        const mutation = useMutation((passwordCheckDto: PasswordCheckDto) =>
+          this.passwordCheck(passwordCheckDto)
         );
         return mutation;
       },

@@ -43,7 +43,7 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
-  
+
   it('gets current user data details', async () => {
     const { userData } = client.useUserHooks();
     const { result } = renderHook(() => userData({}), {
@@ -159,7 +159,7 @@ export const user = () => {
       await result.current.mutateAsync({
         keyid: 'mad@kross.kr',
         password: 'blablabla',
-        password2: 'blablabla'
+        password2: 'blablabla',
       });
     });
 
@@ -181,13 +181,31 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
+  it('check password of a user', async () => {
+    const { checkPassword } = client.useUserHooks();
+    const { result } = renderHook(() => checkPassword(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        password: 'abcde',
+      });
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
   it('returnOnInvestmentData', async () => {
     const { returnOnInvestmentData } = client.useUserHooks();
     const startDate = '2022-10-10';
-    const endDate = '2023-03-14'
-    const { result } = renderHook(() => returnOnInvestmentData(startDate, endDate), {
-      wrapper,
-    });
+    const endDate = '2023-03-14';
+    const { result } = renderHook(
+      () => returnOnInvestmentData(startDate, endDate),
+      {
+        wrapper,
+      }
+    );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
