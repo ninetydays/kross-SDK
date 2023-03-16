@@ -427,6 +427,7 @@ export class User extends KrossClientBase {
               params: {
                 filter: `state||$eq||done;returnAt||$between||${startDate},${endDate}`,
                 join: 'loan',
+                order: 'doneAt.desc'
               },
             });
             const notesLength = notesData?.length > 0 ? notesData.length : 1;
