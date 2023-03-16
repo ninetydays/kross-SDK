@@ -1,3 +1,7 @@
+import {
+  LoanDetailQueryDto,
+  LoanDetailResponse,
+} from './../types/kross-client/loans';
 import { KrossClientBase } from './base';
 import { FunctionRegistered, KrossClientOptions } from '../types';
 import { useInfiniteQuery, useQuery } from 'react-query';
@@ -8,12 +12,13 @@ import {
   LoanConfigResponse,
   LoanRepaymentResponse,
   LoansQueryDto,
-  LoanResponseData
+  LoanResponseData,
 } from '../types/kross-client/loans';
 export class Loans extends KrossClientBase {
   loanData: FunctionRegistered<LoansQueryDto, LoansResponse>;
   loanRepayments: FunctionRegistered<LoansQueryDto, LoanRepaymentResponse>;
   loanConfigs: FunctionRegistered<LoansQueryDto, LoanConfigResponse>;
+  loanDetail: FunctionRegistered<LoanDetailQueryDto, LoanDetailResponse>;
   constructor(options: KrossClientOptions) {
     super(options);
     this.loanConfigs = Loans.registerFunction<
@@ -33,6 +38,13 @@ export class Loans extends KrossClientBase {
     });
     this.loanData = Loans.registerFunction<LoansQueryDto, LoansResponse>({
       url: '/loans',
+      method: 'get',
+    });
+    this.loanDetail = Loans.registerFunction<
+      LoanDetailQueryDto,
+      LoanDetailResponse
+    >({
+      url: '/loan-detail',
       method: 'get',
     });
   }
@@ -86,8 +98,8 @@ export class Loans extends KrossClientBase {
               skip,
             });
             const loansArray = Object.values(loan?.data);
-            const loansResponseArray = loansArray.map(
-              (item: any): LoanResponseData => {
+            const loansResponseArray = loansArray
+              .map((item: any): LoanResponseData => {
                 const investments = item.investments.filter(
                   (investment: any) =>
                     investment?.userId == userId &&
@@ -108,8 +120,8 @@ export class Loans extends KrossClientBase {
                   userInvestedAmount: 0,
                   investmentId: null,
                 };
-              }
-            ).sort((a, b) => (a.isUserInvested && !b.isUserInvested ? 1 : -1));
+              })
+              .sort((a, b) => (a.isUserInvested && !b.isUserInvested ? 1 : -1));
 
             return loansResponseArray || [];
           },
@@ -122,6 +134,19 @@ export class Loans extends KrossClientBase {
             },
             cacheTime: 0,
             staleTime: 0,
+          }
+        );
+      },
+      loanDetail: (loanDetailId: string, enabled?: boolean) => {
+        return useQuery(
+          'loanDetail',
+          async () => {
+            return this.loanDetail({ id: loanDetailId }).then((res) => {
+              return res.data;
+            });
+          },
+          {
+            enabled: enabled !== undefined ? enabled : true,
           }
         );
       },

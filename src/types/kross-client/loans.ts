@@ -101,3 +101,20 @@ export type LoanRepaymentReponseData = {
 };
 
 export type LoanRepaymentResponse = FunctionResponse<LoanRepaymentReponseData>;
+
+export type LoanDetailQueryDto = {
+  id: string | number;
+};
+
+export type LoanDetailData = {
+  id: number;
+  title: string;
+  content: string;
+  files: string[];
+  loan: Record<string, unknown>; // You can replace "unknown" with a more specific type if you have one
+  loanApplication: Record<string, unknown>; // You can replace "unknown" with a more specific type if you have one
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type LoanDetailResponse = FunctionResponse<LoanDetailData>;

@@ -108,4 +108,12 @@ export const loan = () => {
       expect(data?.pages).toBeDefined();
     });
   });
+  it('get loan detail', async () => {
+    const { loanDetail } = client.useLoanHooks();
+    const { result } = renderHook(() => loanDetail('39'), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  }, 150000);
 };
