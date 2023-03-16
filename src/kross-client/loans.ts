@@ -137,12 +137,18 @@ export class Loans extends KrossClientBase {
           }
         );
       },
-      loanDetail: (loanDetailId: string) => {
-        return useQuery('loanDetail', async () => {
-          return this.loanDetail({ loanDetailId: loanDetailId }).then((res) => {
-            return res.data;
-          });
-        });
+      loanDetail: (loanDetailId: string, enabled?: boolean) => {
+        return useQuery(
+          'loanDetail',
+          async () => {
+            return this.loanDetail({ id: loanDetailId }).then((res) => {
+              return res.data;
+            });
+          },
+          {
+            enabled: enabled !== undefined ? enabled : true,
+          }
+        );
       },
     };
   }

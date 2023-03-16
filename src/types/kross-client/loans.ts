@@ -103,7 +103,7 @@ export type LoanRepaymentReponseData = {
 export type LoanRepaymentResponse = FunctionResponse<LoanRepaymentReponseData>;
 
 export type LoanDetailQueryDto = {
-  loanDetailId: string | number;
+  id: string | number;
 };
 
 export type LoanDetailData = {
