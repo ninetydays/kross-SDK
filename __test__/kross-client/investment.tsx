@@ -103,11 +103,15 @@ export const investment = () => {
 
   it('transactionHistory', async () => {
     const { transactionHistory } = client.useInvestmentHooks();
-    const { result } = renderHook(() => transactionHistory({}), {
+    const { result } = renderHook(() => transactionHistory({
+      include: 'deposit',
+      
+    }), {
       wrapper,
     });
     await waitFor(async () => {
       const { data } = result.current;
+      console.log("Data: ", data?.pages)
       expect(data).toBeDefined();
     });
   });

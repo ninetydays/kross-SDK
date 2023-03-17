@@ -11,6 +11,17 @@ export type InvestmentQueryDto = {
   filter?: string;
 };
 
+export type TransactionQueryDto = {
+  fields?: string;
+  offset?: string;
+  limit?: string;
+  sort_by?: string;
+  group_by?: string;
+  query?: Record<string, unknown>;
+  include: string;
+  filter?: string;
+};
+
 export type InvestmentsWengeQueryDto = {
   select?: string;
   skip?: string;
