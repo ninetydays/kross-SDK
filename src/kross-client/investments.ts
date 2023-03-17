@@ -11,6 +11,7 @@ import {
   InvestmentRegisterResponse,
   InvestmentQueryDto,
   InvestmentsWengeQueryDto,
+  TransactionQueryDto,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
@@ -63,22 +64,26 @@ export class Investments extends KrossClientBase {
     );
   }
 
-  async transactionHistory(investmentQueryDto: InvestmentQueryDto) {
+  async transactionHistory(transactionQueryDto: TransactionQueryDto) {
+    const {include, ...rest} = transactionQueryDto;
+    const paramInclude = include !== undefined
+      ? include
+      : [
+          'deposit',
+          'withdraw',
+          'invest',
+          'distribute',
+          'merchant_withdraw',
+          'merchant_deposit',
+        ];
     const resp = await this.cmsTradebook({
       query: {
         category: {
-          in: [
-            'deposit',
-            'withdraw',
-            'invest',
-            'distribute',
-            'merchant_withdraw',
-            'merchant_deposit',
-          ],
+          in: paramInclude,
         },
       },
       sort_by: 'created_at.desc',
-      ...investmentQueryDto,
+      ...rest,
     });
     return resp;
   }
@@ -141,12 +146,12 @@ export class Investments extends KrossClientBase {
           }
         );
       },
-      transactionHistory: (investmentQueryDto: InvestmentQueryDto) => {
+      transactionHistory: (transactionQueryDto: TransactionQueryDto) => {
         return useInfiniteQuery(
           'transactionHistory',
           async ({ pageParam = 0 }) => {
             const transactionData = await this.transactionHistory({
-              ...investmentQueryDto,
+              ...transactionQueryDto,
               offset: pageParam.toString(),
             });
             const transactionDataArray = transactionData?.data?.data
