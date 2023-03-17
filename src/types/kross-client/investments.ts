@@ -18,7 +18,7 @@ export type TransactionQueryDto = {
   sort_by?: string;
   group_by?: string;
   query?: Record<string, unknown>;
-  include?: string[];
+  include: string;
   filter?: string;
 };
 

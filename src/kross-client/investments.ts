@@ -66,8 +66,8 @@ export class Investments extends KrossClientBase {
 
   async transactionHistory(transactionQueryDto: TransactionQueryDto) {
     const {include, ...rest} = transactionQueryDto;
-    const paramInclude = include !== undefined
-      ? include
+    const paramInclude = include !== 'all'
+      ? [include]
       : [
           'deposit',
           'withdraw',
