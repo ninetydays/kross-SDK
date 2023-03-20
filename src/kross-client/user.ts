@@ -27,13 +27,7 @@ import {
   UserUpdateDto,
   UserUpdateResponse,
 } from '../types/kross-client/user';
-import {
-  subMonths,
-  isBefore,
-  isAfter,
-  parse,
-  differenceInCalendarDays,
-} from 'date-fns';
+import { subMonths, differenceInCalendarDays, format } from 'date-fns';
 import { growthCalculator } from '../utils/growthCalculator';
 
 export class User extends KrossClientBase {
@@ -244,12 +238,17 @@ export class User extends KrossClientBase {
               }
             );
 
+            const currentDate = new Date();
+            const lastMonth = subMonths(currentDate, 1);
+
             const { data: repaymentsDoneData = [] }: any = await this.get(
               '/notes',
               {
                 params: {
-                  filter: 'state||$eq||done',
-                  join: 'loan',
+                  filter: `state||$eq||done;doneAt||$gte||${format(
+                    lastMonth,
+                    'yyyy-MM-dd'
+                  )};doneAt||$lte||${format(currentDate, 'yyyy-MM-dd')}`,
                 },
               }
             );
@@ -315,56 +314,29 @@ export class User extends KrossClientBase {
                 )
               : 0;
             // Repayment Done content
-            const repaymentDoneCount = repaymentsDoneData?.length || 0;
-            const repaymentDoneAmount = repaymentsDoneData
-              ? repaymentsDoneData?.reduce(
-                  (acc: number, cur: { returnedAmount: number }) =>
-                    acc + cur.returnedAmount,
-                  0
-                )
-              : 0;
+            const repaymentDoneCount = doneNotesSummary?.count || 0;
+            const repaymentDoneAmount =
+              (doneNotesSummary?.investedAmount || 0) +
+              (doneNotesSummary?.interest || 0);
 
             // Repayment Done LastMonth content
-            const currentDate = new Date();
-            const lastMonth = subMonths(currentDate, 1);
-            const repaymentDoneLastMonthData = repaymentsDoneData
-              ? repaymentsDoneData?.filter(
-                  (note: { doneAt: any }) =>
-                    !isBefore(
-                      parse(
-                        note.doneAt,
-                        "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
-                        new Date()
-                      ),
-                      lastMonth
-                    ) &&
-                    !isAfter(
-                      parse(
-                        note.doneAt,
-                        "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
-                        new Date()
-                      ),
-                      currentDate
-                    )
-                )
-              : [];
 
             const repaymentDoneLastMonthAmount =
-              repaymentDoneLastMonthData.length !== 0
-                ? repaymentDoneLastMonthData.reduce(
+              repaymentsDoneData.length !== 0
+                ? repaymentsDoneData.reduce(
                     (acc: number, cur: { interest: number }) =>
                       acc + cur.interest,
                     0
                   )
                 : 0;
             const repaymentDoneLastMonthRate =
-              repaymentDoneLastMonthData.length !== 0
+              repaymentsDoneData.length !== 0
                 ? (
-                    repaymentDoneLastMonthData.reduce(
+                    repaymentsDoneData.reduce(
                       (acc: number, cur: { rate: number }) =>
                         acc + cur.rate * 100,
                       0
-                    ) / repaymentDoneLastMonthData.length
+                    ) / repaymentsDoneData.length
                   ).toFixed(2)
                 : 0;
 
@@ -427,7 +399,7 @@ export class User extends KrossClientBase {
               params: {
                 filter: `state||$eq||done;returnAt||$between||${startDate},${endDate}`,
                 join: 'loan',
-                order: 'doneAt.desc'
+                order: 'doneAt.desc',
               },
             });
             const notesLength = notesData?.length > 0 ? notesData.length : 1;
