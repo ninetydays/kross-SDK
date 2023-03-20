@@ -216,42 +216,53 @@ export class User extends KrossClientBase {
           cacheTime: 0,
           queryKey: 'myPageData',
           queryFn: async () => {
-            const { data: accountData = [] }: any = await this.accountData({});
-            const { data: investmentsAppliedToData = [] }: any = await this.get(
-              '/investments',
-              {
-                params: {
-                  select: 'id,amount,state',
-                  filter: 'state||$eq||funding',
-                },
-              }
-            );
-            const { data: notesSummaryData = [] }: any = await this.get(
-              '/notes/summary'
-            );
-            const { data: repaymentsScheduledData = [] }: any = await this.get(
-              '/notes',
-              {
-                params: {
-                  filter: 'state||$eq||investing',
-                },
-              }
-            );
-
+            const accountDataPromise = this.accountData({});
+            const investmentsAppliedToDataPromise = this.get('/investments', {
+              params: {
+                select: 'id,amount,state',
+                filter: 'state||$eq||funding',
+              },
+            });
+            const notesSummaryDataPromise = this.get('/notes/summary');
+            const repaymentsScheduledDataPromise = this.get('/notes', {
+              params: {
+                filter: 'state||$eq||investing',
+              },
+            });
             const currentDate = new Date();
             const lastMonth = subMonths(currentDate, 1);
+            const repaymentsDoneDataPromise = this.get('/notes', {
+              params: {
+                filter: `state||$eq||done;doneAt||$gte||${format(
+                  lastMonth,
+                  'yyyy-MM-dd'
+                )};doneAt||$lte||${format(currentDate, 'yyyy-MM-dd')}`,
+              },
+            });
 
-            const { data: repaymentsDoneData = [] }: any = await this.get(
-              '/notes',
-              {
-                params: {
-                  filter: `state||$eq||done;doneAt||$gte||${format(
-                    lastMonth,
-                    'yyyy-MM-dd'
-                  )};doneAt||$lte||${format(currentDate, 'yyyy-MM-dd')}`,
-                },
-              }
-            );
+            const [
+              accountDataRes,
+              investmentsAppliedToDataRes,
+              notesSummaryDataRes,
+              repaymentsScheduledDataRes,
+              repaymentsDoneDataRes,
+            ] = await Promise.all([
+              accountDataPromise,
+              investmentsAppliedToDataPromise,
+              notesSummaryDataPromise,
+              repaymentsScheduledDataPromise,
+              repaymentsDoneDataPromise,
+            ]);
+
+            const { data: accountData = [] }: any = accountDataRes;
+            const { data: investmentsAppliedToData = [] }: any =
+              investmentsAppliedToDataRes;
+            const { data: notesSummaryData = [] }: any = notesSummaryDataRes;
+            const { data: repaymentsScheduledData = [] }: any =
+              repaymentsScheduledDataRes;
+            const { data: repaymentsDoneData = [] }: any =
+              repaymentsDoneDataRes;
+
             const amountInAccount = accountData?.data?.amount || 0;
 
             // Assets and cummulative return content
