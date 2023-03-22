@@ -120,13 +120,6 @@ export class Loans extends KrossClientBase {
                   userInvestedAmount: 0,
                   investmentId: null,
                 };
-              }).sort((a, b) => {
-                if (a.isUserInvested && !b.isUserInvested) {
-                  return -1;
-                } else if (!a.isUserInvested && b.isUserInvested) {
-                  return 1;
-                }
-                return 0;
               });
             return loansResponseArray || [];
           },
