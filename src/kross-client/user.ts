@@ -27,6 +27,7 @@ import {
   UserUpdateDto,
   UserUpdateResponse,
 } from '../types/kross-client/user';
+import { getRealPeriod } from '../utils/getRealPeriod';
 import { subMonths, differenceInCalendarDays, format } from 'date-fns';
 import { growthCalculator } from '../utils/growthCalculator';
 
@@ -233,10 +234,10 @@ export class User extends KrossClientBase {
             const lastMonth = subMonths(currentDate, 1);
             const repaymentsDoneDataPromise = this.get('/notes', {
               params: {
-                filter: `state||$eq||done;doneAt||$gte||${format(
+                filter: `state||$eq||done;doneAt||$between||${format(
                   lastMonth,
                   'yyyy-MM-dd'
-                )};doneAt||$lte||${format(currentDate, 'yyyy-MM-dd')}`,
+                )},${format(currentDate, 'yyyy-MM-dd')}`,
               },
             });
 
@@ -289,6 +290,7 @@ export class User extends KrossClientBase {
               (investingNotesSumary?.principal || 0) +
               (delayNotesSummary?.originPrincipal || 0) -
               (delayNotesSummary?.principal || 0);
+
             const cummulativeReturnOnInvestment =
               (doneNotesSummary?.interest || 0) -
               (doneNotesSummary?.taxAmount || 0) -
@@ -335,8 +337,8 @@ export class User extends KrossClientBase {
             const repaymentDoneLastMonthAmount =
               repaymentsDoneData.length !== 0
                 ? repaymentsDoneData.reduce(
-                    (acc: number, cur: { interest: number }) =>
-                      acc + cur.interest,
+                    (acc: number, cur: { interest: number, feeAmount: number, taxAmount: number }) =>
+                      acc + (cur.interest - cur.feeAmount - cur.taxAmount),
                     0
                   )
                 : 0;
@@ -344,13 +346,30 @@ export class User extends KrossClientBase {
               repaymentsDoneData.length !== 0
                 ? (
                     repaymentsDoneData.reduce(
-                      (acc: number, cur: { rate: number }) =>
-                        acc + cur.rate * 100,
+                      (
+                        acc: number,
+                        cur: {
+                          interest: number,
+                          taxAmount: number,
+                          feeAmount: number,
+                          doneAt: string,
+                          originPrincipal: number,
+                        }
+                      ) => {
+                        const rateAfterTax =
+                          cur.doneAt && getRealPeriod(cur) > 0
+                            ? ((((cur.interest - (cur.feeAmount || 0) - cur.taxAmount) /
+                                getRealPeriod(cur)) *
+                                365) /
+                                cur.originPrincipal) *
+                              100
+                            : 0;
+                        return acc + rateAfterTax;
+                      },
                       0
                     ) / repaymentsDoneData.length
                   ).toFixed(2)
                 : 0;
-
             return {
               amountInAccount,
               investmentAppliedCount,
