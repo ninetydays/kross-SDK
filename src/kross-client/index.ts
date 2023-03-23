@@ -23,3 +23,14 @@ export class KrossClient extends KrossClientBase {
     this.verifications = new Verifications(options);
   }
 }
+
+export {
+  KrossClientBase,
+  KrossClientOptions,
+  Account,
+  User,
+  Loans,
+  Investments,
+  Verifications,
+  Inquiry,
+};
