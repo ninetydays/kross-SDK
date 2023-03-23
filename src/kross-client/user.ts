@@ -408,7 +408,7 @@ export class User extends KrossClientBase {
           queryFn: async () => {
             const { data: notesData = [] }: any = await this.get('/notes', {
               params: {
-                filter: `state||$eq||done;returnAt||$between||${startDate},${endDate}`,
+                filter: `state||$eq||done;doneAt||$between||${startDate},${endDate}`,
                 join: 'loan',
                 order: 'doneAt.desc',
               },
