@@ -30,7 +30,7 @@ export const investment = () => {
     });
   });
 
-  it.only('gets authToken and refreshToken', async () => {
+  it('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -149,7 +149,7 @@ export const investment = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it.only('get roi', async () => {
+  it('get returnOnInvestments', async () => {
     const { returnOnInvestments } = client.useInvestmentHooks();
     const curDate = new Date;
     const endDate = format(new Date, 'yyyy-MM-dd');
@@ -162,7 +162,6 @@ export const investment = () => {
       }
     );
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    console.log("data: ", result?.current?.data)
     expect(result.current.data).toBeDefined();
   });
 };
