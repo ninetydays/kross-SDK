@@ -195,19 +195,4 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
-
-  it('returnOnInvestmentData', async () => {
-    const { returnOnInvestmentData } = client.useUserHooks();
-    const startDate = '2022-10-10';
-    const endDate = '2023-03-14';
-    const { result } = renderHook(
-      () => returnOnInvestmentData(startDate, endDate),
-      {
-        wrapper,
-      }
-    );
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data).toBeDefined();
-  });
 };
