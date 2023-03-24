@@ -253,7 +253,7 @@ export class User extends KrossClientBase {
               repaymentsScheduledDataPromise,
               repaymentsDoneDataPromise,
             ]);
-            console.log("Notes summary: ", notesSummaryDataRes);
+
             const { data: accountData = [] }: any = accountDataRes;
             const { data: investmentsAppliedToData = [] }: any =
               investmentsAppliedToDataRes;
@@ -306,8 +306,7 @@ export class User extends KrossClientBase {
                 : 0;
 
             // Repayment Scheduled content
-            const repaymentScheduledCount =
-              repaymentsScheduledData?.length || 0;
+            const repaymentScheduledCount = (investingNotesSumary?.count || 0);
             const repaymentScheduledRate = repaymentsScheduledData
               ? (
                   repaymentsScheduledData?.reduce(
@@ -317,13 +316,7 @@ export class User extends KrossClientBase {
                   ) / (repaymentScheduledCount || 1)
                 ).toFixed(2)
               : 0;
-            const repaymentScheduledAmount = repaymentsScheduledData
-              ? repaymentsScheduledData?.reduce(
-                  (acc: number, cur: { expectedAmount: number }) =>
-                    acc + cur.expectedAmount,
-                  0
-                )
-              : 0;
+            const repaymentScheduledAmount = (investingNotesSumary?.originPrincipal || 0) - (investingNotesSumary?.principal || 0) +  (investingNotesSumary?.investingNotesSumary || 0);
             // Repayment Done content
             const repaymentDoneCount = doneNotesSummary?.count || 0;
             const repaymentDoneAmount = (doneNotesSummary?.originPrincipal || 0) + (doneNotesSummary?.interest || 0);
