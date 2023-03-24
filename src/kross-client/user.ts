@@ -253,7 +253,7 @@ export class User extends KrossClientBase {
               repaymentsScheduledDataPromise,
               repaymentsDoneDataPromise,
             ]);
-
+            console.log("Notes summary: ", notesSummaryDataRes);
             const { data: accountData = [] }: any = accountDataRes;
             const { data: investmentsAppliedToData = [] }: any =
               investmentsAppliedToDataRes;
@@ -326,9 +326,7 @@ export class User extends KrossClientBase {
               : 0;
             // Repayment Done content
             const repaymentDoneCount = doneNotesSummary?.count || 0;
-            const repaymentDoneAmount =
-              (doneNotesSummary?.investedAmount || 0) +
-              (doneNotesSummary?.interest || 0);
+            const repaymentDoneAmount = (doneNotesSummary?.originPrincipal || 0) + (doneNotesSummary?.interest || 0);
 
             // Repayment Done LastMonth content
 
