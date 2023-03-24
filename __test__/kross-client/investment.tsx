@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Investments } from '../../src/kross-client/investments';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
+import { format, subMonths } from 'date-fns';
 
 export const investment = () => {
   let client: Investments;
@@ -140,6 +141,22 @@ export const investment = () => {
         investmentLimit({
           enabled: true,
         }),
+      {
+        wrapper,
+      }
+    );
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
+  it('get returnOnInvestments', async () => {
+    const { returnOnInvestments } = client.useInvestmentHooks();
+    const curDate = new Date;
+    const endDate = format(new Date, 'yyyy-MM-dd');
+    const startDate = format(subMonths(curDate, 1), 'yyyy-MM-dd');
+    const { result } = renderHook(
+      () =>
+        returnOnInvestments(startDate, endDate),
       {
         wrapper,
       }
