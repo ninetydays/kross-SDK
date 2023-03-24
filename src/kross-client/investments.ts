@@ -19,10 +19,6 @@ export class Investments extends KrossClientBase {
     InvestmentsWengeQueryDto,
     InvestmentListResponse
   >;
-  returnOnInvestments: FunctionRegistered<
-    InvestmentsWengeQueryDto,
-    InvestmentListResponse
-  >;
   notes: FunctionRegistered<InvestmentsWengeQueryDto, NotesResponse>;
   cmsTradebook: FunctionRegistered<InvestmentQueryDto, CmsTradebookResponse>;
 
@@ -49,14 +45,6 @@ export class Investments extends KrossClientBase {
       InvestmentListResponse
     >({
       url: '/investments',
-      method: 'get',
-    });
-
-    this.returnOnInvestments = Investments.registerFunction<
-      InvestmentsWengeQueryDto,
-      InvestmentListResponse
-    >({
-      url: '/investments/roi',
       method: 'get',
     });
   }
@@ -120,15 +108,14 @@ export class Investments extends KrossClientBase {
           },
         });
       },
-      returnOnInvestments: (investmentsWengeQueryDto: InvestmentsWengeQueryDto) => {
+      returnOnInvestments: (startDate: string, endDate: string) => {
         return useQuery({
           queryKey: 'returnOnInvestments',
           queryFn: async () => {
-            return this.returnOnInvestments(
-              investmentsWengeQueryDto
-            ).then((res) => {
-              return res.data;
-            });
+            const returnOnInvestmentData: any = await this.get(
+              `/investments/roi?startDate=${startDate}&endDate=${endDate}`
+            );
+            return returnOnInvestmentData?.data;
           },
         });
       },
