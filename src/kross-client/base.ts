@@ -49,6 +49,8 @@ export class KrossClientBase {
             'Content-type': 'multipart/form-data',
           };
         }
+        console.log("condig: ", config);
+        console.log("refresh: ", this.refreshToken);
 
         if (this.authToken) {
           const user: any = await jwt_decode(this.authToken as string);

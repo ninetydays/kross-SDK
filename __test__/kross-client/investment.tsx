@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Investments } from '../../src/kross-client/investments';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
+import { subMonths } from 'date-fns';
 
 export const investment = () => {
   let client: Investments;
@@ -29,7 +30,7 @@ export const investment = () => {
     });
   });
 
-  it('gets authToken and refreshToken', async () => {
+  it.only('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -145,6 +146,27 @@ export const investment = () => {
       }
     );
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
+  it.only('get investment limit for user', async () => {
+    const { returnOnInvestments } = client.useInvestmentHooks();
+    const eDate = new Date;
+    const endDate = (new Date).toISOString();
+    const startDate = subMonths(eDate, 1).toISOString();
+    console.log("start date: ", startDate);
+    const filter = `${startDate}&${endDate}`;
+    const { result } = renderHook(
+      () =>
+        returnOnInvestments({
+          filter
+        }),
+      {
+        wrapper,
+      }
+    );
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    console.log("data: ", result?.current?.data)
     expect(result.current.data).toBeDefined();
   });
 };

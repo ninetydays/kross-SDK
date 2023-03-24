@@ -13,8 +13,13 @@ import {
   InvestmentsWengeQueryDto,
   TransactionQueryDto,
 } from '../types/kross-client/investments';
+import { subMonths } from 'date-fns';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
+    InvestmentsWengeQueryDto,
+    InvestmentListResponse
+  >;
+  returnOnInvestments: FunctionRegistered<
     InvestmentsWengeQueryDto,
     InvestmentListResponse
   >;
@@ -44,6 +49,14 @@ export class Investments extends KrossClientBase {
       InvestmentListResponse
     >({
       url: '/investments',
+      method: 'get',
+    });
+
+    this.returnOnInvestments = Investments.registerFunction<
+      InvestmentsWengeQueryDto,
+      InvestmentListResponse
+    >({
+      url: '/investments/roi',
       method: 'get',
     });
   }
@@ -102,6 +115,18 @@ export class Investments extends KrossClientBase {
           queryKey: 'investmentList',
           queryFn: async () => {
             return this.investmentList(investmentsWengeQueryDto).then((res) => {
+              return res.data;
+            });
+          },
+        });
+      },
+      returnOnInvestments: (investmentsWengeQueryDto: InvestmentsWengeQueryDto) => {
+        return useQuery({
+          queryKey: 'returnOnInvestments',
+          queryFn: async () => {
+            return this.returnOnInvestments(
+              investmentsWengeQueryDto
+            ).then((res) => {
               return res.data;
             });
           },
