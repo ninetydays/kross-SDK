@@ -66,17 +66,18 @@ export class Investments extends KrossClientBase {
   }
 
   async transactionHistory(transactionQueryDto: TransactionQueryDto) {
-    const {include, ...rest} = transactionQueryDto;
-    const paramInclude = include !== 'all'
-      ? [include]
-      : [
-          'deposit',
-          'withdraw',
-          'invest',
-          'distribute',
-          'merchant_withdraw',
-          'merchant_deposit',
-        ];
+    const { include, ...rest } = transactionQueryDto;
+    const paramInclude =
+      include !== 'all'
+        ? [include]
+        : [
+            'deposit',
+            'withdraw',
+            'invest',
+            'distribute',
+            'merchant_withdraw',
+            'merchant_deposit',
+          ];
     const resp = await this.cmsTradebook({
       query: {
         category: {
@@ -129,7 +130,10 @@ export class Investments extends KrossClientBase {
           },
         });
       },
-      notes: (investmentsWengeQueryDto: InvestmentsWengeQueryDto) => {
+      notes: (
+        investmentsWengeQueryDto: InvestmentsWengeQueryDto,
+        cacheTime?: number
+      ) => {
         return useInfiniteQuery(
           'notes',
           async ({ pageParam = 0 }) => {
@@ -143,9 +147,7 @@ export class Investments extends KrossClientBase {
               ...investmentsWengeQueryDto,
               skip,
             });
-            const notesArray = Object.values(
-              notesData?.data || []
-            );
+            const notesArray = Object.values(notesData?.data || []);
             return notesArray;
           },
           {
@@ -155,6 +157,7 @@ export class Investments extends KrossClientBase {
               }
               return pages?.length;
             },
+            cacheTime: cacheTime !== undefined ? cacheTime : 300000,
           }
         );
       },
