@@ -49,11 +49,11 @@ export class Investments extends KrossClientBase {
     });
   }
 
-  investmentRegister({ amount, loan_id }: InvestmentRegisterDto) {
-    return this.instance.post<InvestmentRegisterResponse>('/investments', {
-      amount,
-      loan_id,
-    });
+  investmentRegister(investments: InvestmentRegisterDto[]) {
+    return this.instance.post<InvestmentRegisterResponse>(
+      '/investments',
+      investments
+    );
   }
 
   investmentCancel({ investment_id }: InvestmentCancelDto) {
@@ -154,9 +154,7 @@ export class Investments extends KrossClientBase {
               notes: notesData?.data,
               notesCount: notesCount,
             };
-            const notesArray = Object.values(
-              result || []
-            );       
+            const notesArray = Object.values(result || []);
             return notesArray;
           },
           {
@@ -195,7 +193,7 @@ export class Investments extends KrossClientBase {
       },
       investmentRegister: () => {
         const mutation = useMutation(
-          (investmentRegisterDto: InvestmentRegisterDto) =>
+          (investmentRegisterDto: InvestmentRegisterDto[]) =>
             this.investmentRegister(investmentRegisterDto)
         );
         return mutation;

@@ -75,10 +75,12 @@ export const investment = () => {
       wrapper,
     });
     await act(async () => {
-      await result.current.mutateAsync({
-        amount: 0,
-        loan_id: 0,
-      });
+      await result.current.mutateAsync([
+        {
+          amount: 0,
+          loan_id: 0,
+        },
+      ]);
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
@@ -95,32 +97,37 @@ export const investment = () => {
 
   it('gets notes list', async () => {
     const { notes } = client.useInvestmentHooks();
-    const curDate = new Date;
-    const endDate = format(new Date, 'yyyy-MM-dd');
+    const curDate = new Date();
+    const endDate = format(new Date(), 'yyyy-MM-dd');
     const startDate = format(subMonths(curDate, 1), 'yyyy-MM-dd');
-    const { result } = renderHook(() => notes(
+    const { result } = renderHook(
+      () =>
+        notes({
+          filter: `state||$eq||done;doneAt||$between||${startDate},${endDate}`,
+          join: 'loan',
+          order: 'doneAt.desc',
+          skip: '0',
+          take: '6',
+        }),
       {
-        filter: `state||$eq||done;doneAt||$between||${startDate},${endDate}`,
-        join: 'loan',
-        order: 'doneAt.desc',
-        skip: '0',
-        take: '6',
+        wrapper,
       }
-    ), {
-      wrapper,
-    });
+    );
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
 
   it('transactionHistory', async () => {
     const { transactionHistory } = client.useInvestmentHooks();
-    const { result } = renderHook(() => transactionHistory({
-      include: 'deposit',
-      
-    }), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () =>
+        transactionHistory({
+          include: 'deposit',
+        }),
+      {
+        wrapper,
+      }
+    );
     await waitFor(async () => {
       const { data } = result.current;
       expect(data).toBeDefined();
@@ -161,12 +168,11 @@ export const investment = () => {
 
   it('get returnOnInvestments', async () => {
     const { returnOnInvestments } = client.useInvestmentHooks();
-    const curDate = new Date;
-    const endDate = format(new Date, 'yyyy-MM-dd');
+    const curDate = new Date();
+    const endDate = format(new Date(), 'yyyy-MM-dd');
     const startDate = format(subMonths(curDate, 1), 'yyyy-MM-dd');
     const { result } = renderHook(
-      () =>
-        returnOnInvestments(startDate, endDate),
+      () => returnOnInvestments(startDate, endDate),
       {
         wrapper,
       }
