@@ -95,7 +95,18 @@ export const investment = () => {
 
   it('gets notes list', async () => {
     const { notes } = client.useInvestmentHooks();
-    const { result } = renderHook(() => notes({}), {
+    const curDate = new Date;
+    const endDate = format(new Date, 'yyyy-MM-dd');
+    const startDate = format(subMonths(curDate, 1), 'yyyy-MM-dd');
+    const { result } = renderHook(() => notes(
+      {
+        filter: `state||$eq||done;doneAt||$between||${startDate},${endDate}`,
+        join: 'loan',
+        order: 'doneAt.desc',
+        skip: '0',
+        take: '6',
+      }
+    ), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -112,7 +123,6 @@ export const investment = () => {
     });
     await waitFor(async () => {
       const { data } = result.current;
-      console.log("Data: ", data?.pages)
       expect(data).toBeDefined();
     });
   });

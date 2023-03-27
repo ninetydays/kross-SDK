@@ -147,7 +147,16 @@ export class Investments extends KrossClientBase {
               ...investmentsWengeQueryDto,
               skip,
             });
-            const notesArray = Object.values(notesData?.data || []);
+
+            const myHeaders = new Headers(notesData?.headers);
+            const notesCount = myHeaders.get('x-total-count');
+            const result = {
+              notes: notesData?.data,
+              notesCount: notesCount,
+            };
+            const notesArray = Object.values(
+              result || []
+            );       
             return notesArray;
           },
           {
