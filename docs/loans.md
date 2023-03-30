@@ -4,11 +4,13 @@ The `Loans` class is a client for interacting with the Kross API's loans-related
 ### Table of Contents
 
 **Constructor** <br/>
+
 **Methods** <br/>
 ***- loanData()*** <br/>
 ***- loanRepayments()*** <br/>
 ***- loanConfigs()*** <br/>
 ***- loanDetail()*** <br/>
+
 **Hooks** <br/>
 ***- useLoanHooks()***
 

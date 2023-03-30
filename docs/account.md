@@ -4,6 +4,7 @@ The `Account` class is a client for interacting with the Kross API's account-rel
 ### Table of Contents
 
 **Constructor** <br/>
+
 **Methods** <br/>
 ***- check()*** <br/>
 ***- register()*** <br/>
@@ -11,6 +12,7 @@ The `Account` class is a client for interacting with the Kross API's account-rel
 ***- withdrawInit()*** <br/>
 ***- withdrawCancel()*** <br/>
 ***- withdrawVerify()*** <br/>
+
 **Hooks** <br/>
 ***- useAccountHooks()***
 

@@ -4,12 +4,14 @@ The `Investments` class is a client for interacting with the Kross API's loans-r
 ### Table of Contents
 
 **Constructor** <br/>
+
 **Methods** <br/>
 ***- investmentList()*** <br/>
 ***- notes()*** <br/>
 ***- cmsTradebook()*** <br/>
 ***- investmentRegister()*** <br/>
 ***- investmentCancel()*** <br/>
+
 **Hooks** <br/>
 ***- useInvestmentHooks()***
 

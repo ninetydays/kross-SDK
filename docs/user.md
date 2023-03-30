@@ -4,6 +4,7 @@ The `User` class is a client for interacting with the Kross API's user-related e
 ### Table of Contents
 
 **Constructor** <br/>
+
 **Methods** <br/>
 ***- userData()*** <br/>
 ***- getVirtualAccCertificate()*** <br/>
@@ -17,6 +18,7 @@ The `User` class is a client for interacting with the Kross API's user-related e
 ***- userAccountLogs()*** <br/>
 ***- kftcBalance()*** <br/>
 ***- userNoteLogs()*** <br/>
+
 **Hooks** <br/>
 ***- useAccountHooks()***
 
