@@ -5,13 +5,13 @@ The `Investments` class is a client for interacting with the Kross API's loans-r
 
 **Constructor** <br/>
 **Methods** <br/>
-*** - investmentList()*** <br/>
-*** - notes()*** <br/>
+***- investmentList()*** <br/>
+***- notes()*** <br/>
 ***- cmsTradebook()*** <br/>
 ***- investmentRegister()*** <br/>
 ***- investmentCancel()*** <br/>
 **Hooks** <br/>
-*** -useInvestmentHooks()***
+***- useInvestmentHooks()***
 
 **Constructor** <br/>
 The `Investments` class constructor accepts a KrossClientOptions object as its only argument. This object is used to configure the underlying Axios instance that makes the HTTP requests to the Kross API.

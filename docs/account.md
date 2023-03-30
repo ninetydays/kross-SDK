@@ -5,14 +5,14 @@ The `Account` class is a client for interacting with the Kross API's account-rel
 
 **Constructor** <br/>
 **Methods** <br/>
-*** - check()*** <br/>
-*** - register()*** <br/>
+***- check()*** <br/>
+***- register()*** <br/>
 ***- verify()*** <br/>
 ***- withdrawInit()*** <br/>
 ***- withdrawCancel()*** <br/>
 ***- withdrawVerify()*** <br/>
 **Hooks** <br/>
-*** -useAccountHooks()***
+***- useAccountHooks()***
 
 **Constructor** <br/>
 The `Account` class constructor accepts a KrossClientOptions object as its only argument. This object is used to configure the underlying Axios instance that makes the HTTP requests to the Kross API.

@@ -5,12 +5,12 @@ The `Loans` class is a client for interacting with the Kross API's loans-related
 
 **Constructor** <br/>
 **Methods** <br/>
-*** - loanData()*** <br/>
-*** - loanRepayments()*** <br/>
+***- loanData()*** <br/>
+***- loanRepayments()*** <br/>
 ***- loanConfigs()*** <br/>
 ***- loanDetail()*** <br/>
 **Hooks** <br/>
-*** -useLoanHooks()***
+***- useLoanHooks()***
 
 **Constructor** <br/>
 The `Loans` class constructor accepts a KrossClientOptions object as its only argument. This object is used to configure the underlying Axios instance that makes the HTTP requests to the Kross API.

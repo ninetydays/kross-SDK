@@ -6,7 +6,7 @@ The `User` class is a client for interacting with the Kross API's user-related e
 **Constructor** <br/>
 **Methods** <br/>
 ***- userData()*** <br/>
-*** - getVirtualAccCertificate()*** <br/>
+***- getVirtualAccCertificate()*** <br/>
 ***- checkVirtualAccount()*** <br/>
 ***- registerMember()*** <br/>
 ***- unRegisterMemeber()*** <br/>
@@ -15,10 +15,10 @@ The `User` class is a client for interacting with the Kross API's user-related e
 ***- userDataUpdate()*** <br/>
 ***- passwordCheck()*** <br/>
 ***- userAccountLogs()*** <br/>
-*** - kftcBalance()*** <br/>
+***- kftcBalance()*** <br/>
 ***- userNoteLogs()*** <br/>
 **Hooks** <br/>
-*** -useAccountHooks()***
+***- useAccountHooks()***
 
 **Constructor** <br/>
 The `User` class constructor accepts a KrossClientOptions object as its only argument. This object is used to configure the underlying Axios instance that makes the HTTP requests to the Kross API.
