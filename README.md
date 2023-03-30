@@ -24,19 +24,9 @@ const client = new KrossClient({
 
 ```
 
-### Optional Params Description
-authToken, refreshToken, refreshTokenCallback:  These are optional Params
+### KrossClient Params Description
+[Client Options Object](docs/client_options.md)
 
-authToken: token received after login
-refreshToken: refresh token after login
-refreshTokenCallback: this is a callback that will accept function which will set token and refresh token in storage you are using in your client for refreshing tokens.
-
-##### refreshTokenCallback will be like
-```js 
-  const refreshTokenCallback = (token: string) => {
-    storage.set('authToken', token);
-  };
-```
 
 -----------------------------------------------------
 
