@@ -38,9 +38,12 @@ loans.loanData({
 });
 ```
 ##### Arguments <br/>
-`filter` - filter for loans. <br/>
-`skip, take` : pagination props <br/>
-`order`: order lets you sort loans data based on fields <br/>
+`select (optional)`: A string that specifies which columns to select in the query. If not provided, all columns will be selected.<br/>
+`skip (optional)`: A string that specifies the number of rows to skip in the result set. If not provided, no rows will be skipped.<br/>
+`take (optional)`: A string that specifies the maximum number of rows to return in the result set. If not provided, all rows will be returned.<br/>
+`order (optional)`: A string that specifies the sorting order for the result set. It can be used to sort data based on one or more columns in ascending or descending order. If not provided, the result set will not be sorted.<br/>
+`filter (optional)`: A string that specifies the filter conditions to apply to the result set. It can be used to select rows that meet certain criteria based on the values of one or more columns. If not provided, no filters will be applied.<br/>
+`join (optional)`: A string that specifies the join conditions to use when querying data from multiple tables. It can be used to retrieve data from related tables by specifying how the tables are related to each other. If not provided, no joins will be performed.<br/>
 
 Return an array of loans in response on success
 ```
@@ -100,10 +103,12 @@ loans.loansRepayments({
 ```
 
 ##### Arguments
-
-`filter` - filter for loans. <br/>
-`skip, take` : pagination props <br/>
-`order`: order lets you sort loans data based on fields <br/>
+`select (optional)`: A string that specifies which columns to select in the query. If not provided, all columns will be selected.<br/>
+`skip (optional)`: A string that specifies the number of rows to skip in the result set. If not provided, no rows will be skipped.<br/>
+`take (optional)`: A string that specifies the maximum number of rows to return in the result set. If not provided, all rows will be returned.<br/>
+`order (optional)`: A string that specifies the sorting order for the result set. It can be used to sort data based on one or more columns in ascending or descending order. If not provided, the result set will not be sorted.<br/>
+`filter (optional)`: A string that specifies the filter conditions to apply to the result set. It can be used to select rows that meet certain criteria based on the values of one or more columns. If not provided, no filters will be applied.<br/>
+`join (optional)`: A string that specifies the join conditions to use when querying data from multiple tables. It can be used to retrieve data from related tables by specifying how the tables are related to each other. If not provided, no joins will be performed.<br/>
 
 Return an array of repayment in response on success
 ```
@@ -140,9 +145,12 @@ loans.loanConfigs({
 
 ##### Arguments
 
-`filter` - filter for loans. <br/>
-`skip, take` : pagination props <br/>
-`order`: order lets you sort loans data based on fields <br/>
+`select (optional)`: A string that specifies which columns to select in the query. If not provided, all columns will be selected.<br/>
+`skip (optional)`: A string that specifies the number of rows to skip in the result set. If not provided, no rows will be skipped.<br/>
+`take (optional)`: A string that specifies the maximum number of rows to return in the result set. If not provided, all rows will be returned.<br/>
+`order (optional)`: A string that specifies the sorting order for the result set. It can be used to sort data based on one or more columns in ascending or descending order. If not provided, the result set will not be sorted.<br/>
+`filter (optional)`: A string that specifies the filter conditions to apply to the result set. It can be used to select rows that meet certain criteria based on the values of one or more columns. If not provided, no filters will be applied.<br/>
+`join (optional)`: A string that specifies the join conditions to use when querying data from multiple tables. It can be used to retrieve data from related tables by specifying how the tables are related to each other. If not provided, no joins will be performed.<br/>
 
 Return an array of loan Configs in response on success
 ```
