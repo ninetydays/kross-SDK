@@ -216,17 +216,7 @@ export class Investments extends KrossClientBase {
               join: 'loan',
               skip,
             });
-            const appliedInvestmentArray = Object.values(
-              appliedInvestmentData?.data || []
-            );
-            const appliedInvestmentResponse = appliedInvestmentArray.filter(
-              (investment: any) => {
-                if (investment) {
-                  return investment;
-                }
-              }
-            );
-            return appliedInvestmentResponse || [];
+            return appliedInvestmentData?.data || [];
           },
           {
             getNextPageParam: (lastPage, pages) => {
