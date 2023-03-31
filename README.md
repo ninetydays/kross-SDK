@@ -38,7 +38,7 @@ KrossClient, Account, Loans, Investments, Inquiry, User, Verifications
 ##### KrossClient : It is a base client through which you will be able to make requests any of the data providing APIs via axios instance.
 ##### Account : Contains functions and hooks through which you can make requests for account related data [Accounts](docs/account.md)
 ##### Investment : Contains functions and hooks through which you can make requests for investments related data [Investments](docs/investment.md)
-##### Inquiry : Contains functions and hooks through which you can make requests for inquiries related data 
+##### Inquiry : Contains functions and hooks through which you can make requests for inquiries related data [Inquiry](docs/inquiry.md)
 ##### User : Contains functions and hooks through which you can make requests for users related data [User](docs/user.md)
 ##### Loans : Contains functions and hooks through which you can make requests for loans related data [Loans](docs/loans.md)
 ----------------------------------------------------
