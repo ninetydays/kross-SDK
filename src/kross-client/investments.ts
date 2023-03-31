@@ -221,10 +221,7 @@ export class Investments extends KrossClientBase {
             );
             const appliedInvestmentResponse = appliedInvestmentArray.filter(
               (investment: any) => {
-                if (
-                  investment &&
-                  investment?.state === investment?.loan?.state
-                ) {
+                if (investment) {
                   return investment;
                 }
               }
