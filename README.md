@@ -35,7 +35,7 @@ const client = new KrossClient({
 # Clients Provided
 KrossClient, Account, Loans, Investments, Inquiry, User, Verifications
 
-##### KrossClient : It is a base client through which you will be able to make requests any of the data providing APIs via axios instance.
+##### KrossClient : It is a base client through which you will be able to make requests any of the data providing APIs via axios instance. [KrossClient](docs/client.md)
 ##### Account : Contains functions and hooks through which you can make requests for account related data [Accounts](docs/account.md)
 ##### Investment : Contains functions and hooks through which you can make requests for investments related data [Investments](docs/investment.md)
 ##### Inquiry : Contains functions and hooks through which you can make requests for inquiries related data [Inquiry](docs/inquiry.md)
