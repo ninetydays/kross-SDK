@@ -241,13 +241,19 @@ export class Investments extends KrossClientBase {
             const accountData: any = await this.get('/users/account');
 
             const kftcInvestmentLimit =
-              (kftcInvestInquiry?.data?.data?.limit || 0) -
-              (kftcInvestInquiry?.data?.data?.balance || 0);
+              kftcInvestInquiry?.data?.code === 'A8151'
+                ? -1
+                : (kftcInvestInquiry?.data?.data?.limit || 0) -
+                  (kftcInvestInquiry?.data?.data?.balance || 0);
+
             const availableAmountToWithdrawInAccount =
               accountData?.data?.data?.available_withdraw_amount || 0;
+
             const investmentAmountLimit = Math.min(
-              kftcInvestmentLimit,
-              availableAmountToWithdrawInAccount
+              availableAmountToWithdrawInAccount,
+              kftcInvestmentLimit < 0
+                ? availableAmountToWithdrawInAccount
+                : kftcInvestmentLimit
             );
 
             return {
