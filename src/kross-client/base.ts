@@ -35,7 +35,7 @@ export class KrossClientBase {
           this.secretKey as string
         );
 
-        const hmacToken = await getHmacToken(config.method as string);
+        const hmacToken = await getHmacToken();
         config.headers = {
           ...config.headers,
           'client-authorization': hmacToken.hmacToken,

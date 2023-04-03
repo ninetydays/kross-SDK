@@ -6,12 +6,9 @@ export const hmacHashString = (secretKey: string, message: string) => {
 };
 
 export const hmacTokenFunction =
-  (accessId: string, secretKey: string) => (method: string) => {
+  (accessId: string, secretKey: string) => () => {
     const date = new Date().toUTCString();
-    const hashString = hmacHashString(
-      secretKey as string,
-      [date, method].join(' ')
-    );
+    const hashString = hmacHashString(secretKey, String(date));
 
     return {
       hmacToken: `KROSS ${accessId}:${hashString}`,
