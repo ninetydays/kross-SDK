@@ -2,6 +2,8 @@ Investments class
 The `Investments` class is a client for interacting with the Kross API's loans-related endpoints. It extends the `KrossClientBase class` and provides methods for investment registeration, cancellation, notes and getting investment details.
 
 ### Table of Contents
+ --------------------------------------------
+
 
 **Constructor** <br/>
 
@@ -16,6 +18,8 @@ The `Investments` class is a client for interacting with the Kross API's loans-r
 ***- useInvestmentHooks()***
 
 **Constructor** <br/>
+ --------------------------------------------
+
 The `Investments` class constructor accepts a KrossClientOptions object as its only argument. This object is used to configure the underlying Axios instance that makes the HTTP requests to the Kross API.
 
 ```ts
@@ -29,6 +33,8 @@ const investments = new Investments({
 ```
 
 **Methods** <br/>
+ --------------------------------------------
+
 `- loanData()` <br/>
 The `loanData()` method is used to get Loans data.
 
@@ -63,6 +69,8 @@ Return an array of investments in response on success
       "updatedAt": "2023-03-30T08:41:46.967Z"
     }]
 ```
+ --------------------------------------------
+
 
 `- notes()` <br/>
 The `notes()` method is used to get list of notes.
@@ -75,6 +83,7 @@ investments.notes({
     order: 'id.desc',
 });
 ```
+
 
 ##### Arguments
 
@@ -116,6 +125,7 @@ Return an array of notes in response on success
       "updatedAt": "2023-03-30T08:43:40.942Z"
     }]
 ``` 
+ --------------------------------------------
 
 `- cmsTradebook()` <br/>
 The `cmsTradebook()` method is used to get cms tradebooks data.
@@ -155,6 +165,7 @@ Return an array of cmsTradebooks data in response on success
       "updatedAt": "2023-03-30T08:23:33.251Z"
     }]
 ``` 
+ --------------------------------------------
 
 `- investmentRegister()` <br/>
 The `investmentRegister()` method is used to register investments.
@@ -185,8 +196,10 @@ Return an array of investment registered in response on success
     }
 ]
 ``` 
+ --------------------------------------------
 
 **Hooks** <br/>
+ --------------------------------------------
 
 `- useInvestmentHooks()` <br />
 The `useInvestmentHooks()` method is used to return the react-query hooks for notes(), investmentList(), transactionHistory(), returnOnInvestments(), appliedInvestments() and methods above.
@@ -199,3 +212,4 @@ const {data, isFetching} = transactionHistory({
 })
 ```
 Return a response with react-query hooks for `notes()`, `investmentList()`, `transactionHistory()`, `returnOnInvestments()`, `appliedInvestments()` and methods above.
+ --------------------------------------------

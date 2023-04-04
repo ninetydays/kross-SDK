@@ -2,6 +2,7 @@ Account class
 The `Account` class is a client for interacting with the Kross API's account-related endpoints. It extends the `KrossClientBase class` and provides methods for checking account information, registering and verifying accounts, and initiating and canceling withdrawals.
 
 ### Table of Contents
+ --------------------------------------------
 
 **Constructor** <br/>
 
@@ -17,6 +18,7 @@ The `Account` class is a client for interacting with the Kross API's account-rel
 ***- useAccountHooks()***
 
 **Constructor** <br/>
+ --------------------------------------------
 The `Account` class constructor accepts a KrossClientOptions object as its only argument. This object is used to configure the underlying Axios instance that makes the HTTP requests to the Kross API.
 
 ```ts
@@ -30,6 +32,7 @@ const account = new Account({
 ```
 
 **Methods** <br/>
+ --------------------------------------------
 `- check()` <br/>
 The `check()` method is used to check the status of an account.
 
@@ -54,7 +57,7 @@ Return a response on success
   tid: number;
 }
 ```
-
+ --------------------------------------------
 `- register()` <br/>
 The `register()` method is used to register a new account.
 
@@ -83,7 +86,7 @@ Return a response on success
 }
 ``` 
 
-
+ --------------------------------------------
 `- verify()`
 
 The `verify()` method is used to verify an account.
@@ -107,7 +110,7 @@ Return a response on success
   tid: number;
 }
 ```
-
+ --------------------------------------------
 `- withdrawInit()` <br />
 The `withdrawInit()` method is used to initiate a withdrawal from account.
 
@@ -130,7 +133,7 @@ Return a response on success
   idempotency_key: string;
 }
 ```
-
+ --------------------------------------------
 `- withdrawVerify()` <br />
 The `withdrawVerify()` method is used to initiate a withdrawal from account.
 
@@ -152,6 +155,7 @@ Return a response on success
   verifyWord: string;
 }
 ```
+ --------------------------------------------
 
 `- withdrawCancel()` <br />
 The `withdrawCancel()` method is used to initiate a withdrawal from account.
@@ -170,4 +174,33 @@ Return a response on success
   tid: number;
 }
 ```
+ --------------------------------------------
+
+ **Hooks** <br/>
+
+`- useAccountHooks()` <br />
+The `useAccountHooks()` method is used to return the react-query hooks for check(), verify(), register() and methods above.
+
+```ts
+const {check} = user.useAccountHooks();
+const {
+    mutate: accountCheck,
+    data: accountCheckData,
+    status: accountCheckingStatus,
+  } = check();
+
+     accountCheck(
+        {
+          bankId: '011',
+          accountNumber: '123466789757866',
+          name: 'username' || 'none',
+        },
+        {
+          onSuccess: () => {},
+          onError: error => {},
+        },
+      );
+
+```
+Return a response with react-query hooks for `check()`, `verify()`, `register()` and methods above.
 

@@ -1,6 +1,8 @@
 The KrossClint class is a client for interacting with the Kross API's auth-related endpoints and other instances/clients like loans, investments and inquiry. It extends the KrossClientBase class and provides methods for login and refreshing tokens.
 
 ### Table of Contents
+ --------------------------------------------
+
 **Constructor** <br/>
 
 **Methods** <br/>
@@ -11,6 +13,8 @@ The KrossClint class is a client for interacting with the Kross API's auth-relat
 ***- useAuthHooks()***
 
 **Constructor** <br/>
+ --------------------------------------------
+
 The KrossClient class constructor accepts a KrossClientOptions object as its only argument. This object is used to configure the underlying Axios instance that makes the HTTP requests to the Kross API.
 ```ts
 import { KrossClient } from 'kross-sdk';
@@ -22,6 +26,8 @@ const krossClient = new KrossClient({
 });
 ```
 **Methods** <br/>
+ --------------------------------------------
+
 `- login()` <br/>
 The `login()` method is used to login.
 ```ts
@@ -44,6 +50,8 @@ Return a response on success
   "refresh": "string"
 }
 ```
+ --------------------------------------------
+
 `- updateAuthToken()` <br/>
 The `updateAuthToken()` method is used to refresh tokens.
 
@@ -58,8 +66,12 @@ Return response on success
   "token": "string"
 }
 ```
+ --------------------------------------------
+
 
 **Hooks** <br/>
+ --------------------------------------------
+
 
 
 `- useAuthHooks()` <br />

@@ -1,6 +1,8 @@
 The Inquiries class is a client for interacting with the Kross API's inquiry-related endpoints. It extends the KrossClientBase class and provides methods for creating and fetching inquiries, and responding to inquiries.
 
 ### Table of Contents
+ --------------------------------------------
+
 **Constructor** <br/>
 
 **Methods** <br/>
@@ -12,6 +14,8 @@ The Inquiries class is a client for interacting with the Kross API's inquiry-rel
 ***- useInquiriesHooks()***
 
 **Constructor** <br/>
+ --------------------------------------------
+
 The Inquiries class constructor accepts a KrossClientOptions object as its only argument. This object is used to configure the underlying Axios instance that makes the HTTP requests to the Kross API.
 ```ts
 import { Inquiries } from 'kross-sdk';
@@ -23,6 +27,8 @@ const inquiries = new Inquiries({
 });
 ```
 **Methods** <br/>
+ --------------------------------------------
+
 `- createInquiry()` <br/>
 The `createInquiry()` method is used to create a new inquiry.
 ```ts
@@ -51,6 +57,8 @@ Return a response on success
   "updatedAt": "2023-03-30T11:53:40.573Z"
 }
 ```
+ --------------------------------------------
+
 `- fetchInquiries()` <br/>
 The `fetchInquiries()` method is used to fetch inquiries.
 
@@ -85,6 +93,8 @@ Return an array of inquiries in response on success
   ]
 }
 ```
+ --------------------------------------------
+
 `- respondToInquiry()` <br />
 The `respondToInquiry()` method is used to respond to an inquiry.
 
@@ -113,8 +123,11 @@ Return a response on success
   "updatedAt": "2023-03-30T11:57:57.318Z"
 }
 ```
+ --------------------------------------------
 
 **Hooks** <br/>
+ --------------------------------------------
+
 
 `- useInquiriesHooks()` <br />
 The `useInquiriesHooks()` method is used to return the react-query hooks for createInquiry(), fetchInquiries() and methods above.
@@ -140,3 +153,4 @@ const {mutate: createInquiryMutate, status} = createInquiry();
           );
 ```
 Return a response with react-query hooks for `createInquiry()`, `fetchInquiries()`, `responseToInquiry()` methods.
+ --------------------------------------------
