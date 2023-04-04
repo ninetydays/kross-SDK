@@ -53,17 +53,19 @@ export type InvestmentRegisterDto = {
   loan_id: number;
 };
 
+export type InvestmentCauseResponse = {
+  okay: boolean;
+  error: {
+    message: string;
+  }
+}
+
 export type InvestmentRegisterResponse = {
-  data: Record<string, unknown>;
+  data: Record<string, unknown>[];
   status?: number;
   statusText?: string;
   message?: string;
-  cause?: {
-    okay: boolean;
-    error: {
-      message: string;
-    }
-  }[],
+  cause?: InvestmentCauseResponse[];
 };
 
 export type InvestmentCancelDto = {
