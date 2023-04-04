@@ -291,7 +291,7 @@ export class User extends KrossClientBase {
                 : 0;
 
             // Repayment Scheduled content
-            const repaymentScheduledCount = (investingNotesSumary?.count || 0);
+            const repaymentScheduledCount = investingNotesSumary?.count || 0;
             const repaymentScheduledRate = repaymentsScheduledData
               ? (
                   repaymentsScheduledData?.reduce(
@@ -301,10 +301,15 @@ export class User extends KrossClientBase {
                   ) / (repaymentScheduledCount || 1)
                 ).toFixed(2)
               : 0;
-            const repaymentScheduledAmount = (investingNotesSumary?.originPrincipal || 0) - (investingNotesSumary?.principal || 0) +  (investingNotesSumary?.investingNotesSumary || 0);
+            const repaymentScheduledAmount =
+              (investingNotesSumary?.originPrincipal || 0) -
+              (investingNotesSumary?.principal || 0) +
+              (investingNotesSumary?.investingNotesSumary || 0);
             // Repayment Done content
             const repaymentDoneCount = doneNotesSummary?.count || 0;
-            const repaymentDoneAmount = (doneNotesSummary?.originPrincipal || 0) + (doneNotesSummary?.interest || 0);
+            const repaymentDoneAmount =
+              (doneNotesSummary?.originPrincipal || 0) +
+              (doneNotesSummary?.interest || 0);
 
             return {
               amountInAccount,
