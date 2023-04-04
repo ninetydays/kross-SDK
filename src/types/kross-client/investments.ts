@@ -51,9 +51,20 @@ export type InvestmentListResponse = Array<InvestmentListResponseData>;
 export type InvestmentRegisterDto = {
   amount: number;
   loan_id: number;
-}[];
+};
 
-export type InvestmentRegisterResponse = FunctionResponse;
+export type InvestmentRegisterResponse = {
+  data: Record<string, unknown>;
+  status?: number;
+  statusText?: string;
+  message?: string;
+  cause?: {
+    okay: boolean;
+    error: {
+      message: string;
+    }
+  }[],
+};
 
 export type InvestmentCancelDto = {
   investment_id: number;

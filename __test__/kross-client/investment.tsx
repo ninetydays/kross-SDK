@@ -76,10 +76,10 @@ export const investment = () => {
     });
     await act(async () => {
       await result.current.mutateAsync([
-        [{
-          amount: 0,
-          loan_id: 0,
-        }]
+        {
+          amount: 10000,
+          loan_id: 19431,
+        }
       ]);
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
