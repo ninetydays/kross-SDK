@@ -113,10 +113,30 @@ Return a response on success
   "updatedAt": "2023-03-30T11:57:57.318Z"
 }
 ```
+
+**Hooks** <br/>
+
 `- useInquiriesHooks()` <br />
-The `useInquiriesHooks()` method is used to return the react-query hooks for createInquiry() and fetchInquiries() methods.
+The `useInquiriesHooks()` method is used to return the react-query hooks for createInquiry(), fetchInquiries() and methods above.
 
 ```ts
-inquiries.useInquiriesHooks();
+const {createInquiry} = inquiries.useInquiriesHooks();
+const {mutate: createInquiryMutate, status} = createInquiry();
+       createInquiryMutate(
+            {
+              detail: 'This is a normal inquiry',
+              type: 'Inquiry Filter',
+              state: 'pending',
+            },
+            {
+              onSuccess: () => {
+                showToast('문의가 등록되었습니다.', 'green');
+                onChangeQueryText('');
+              },
+              onError: () => {
+                showToast('문의 등록에 실패했습니다.', 'red');
+              },
+            },
+          );
 ```
-Return a response with react-query hooks for `createInquiry()`, `fetchInquiries()` and `responseToInquiry()` methods.
+Return a response with react-query hooks for `createInquiry()`, `fetchInquiries()`, `responseToInquiry()` methods.

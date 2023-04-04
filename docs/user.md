@@ -20,7 +20,7 @@ The `User` class is a client for interacting with the Kross API's user-related e
 ***- userNoteLogs()*** <br/>
 
 **Hooks** <br/>
-***- useAccountHooks()***
+***- useUserHooks()***
 
 **Constructor** <br/>
 The `User` class constructor accepts a KrossClientOptions object as its only argument. This object is used to configure the underlying Axios instance that makes the HTTP requests to the Kross API.
@@ -396,3 +396,18 @@ Return response on success
     }
 }
 ```
+
+**Hooks** <br/>
+
+`- useUserHooks()` <br />
+The `useUserHooks()` method is used to return the react-query hooks for myPageData(), userData(), totalAssets() and methods above.
+
+```ts
+const {myPageData} = user.useUserHooks();
+const {data, isFetching} = myPageData();
+
+```
+Return a response with react-query hooks for `myPageData()`, `userData()`, `totalAssets()` and methods above.
+
+`myPageData` - myPageData provides profile overview of the user like repayments, account and investments analysis
+`totalAssets` - totalAssets gives overview and data of accounts and money that can be invested/withdrawn

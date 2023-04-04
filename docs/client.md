@@ -59,10 +59,24 @@ Return response on success
 }
 ```
 
+**Hooks** <br/>
+
+
 `- useAuthHooks()` <br />
-The `useAuthHooks()` method is used to return the react-query hooks for login() and updateAuthToken() methods.
+The `useAuthHooks()` method is used to return the react-query hooks for useLogin() and updateAuthToken() methods.
 
 ```ts
-krossClient.useAuthHooks();
+const {useLogin} = krossClient.useAuthHooks();
+const {mutate: login, status} = useLogin();
+
+login({
+  keyid: 12323554646456,
+  passoword: 132323555
+}, {
+  onSuccess : response => {},
+  onError: error => {}
+})
+
+
 ```
-Return a response with react-query hooks for `login()` and `updateAuthToken()` methods.
+Return a response with react-query hooks for `useLogin()` and `updateAuthToken()` methods.

@@ -185,3 +185,17 @@ Return an array of investment registered in response on success
     }
 ]
 ``` 
+
+**Hooks** <br/>
+
+`- useInvestmentHooks()` <br />
+The `useInvestmentHooks()` method is used to return the react-query hooks for notes(), investmentList(), transactionHistory(), returnOnInvestments(), appliedInvestments() and methods above.
+
+```ts
+const {transactionHistory} = investments.useInvestmentHooks();
+const {data, isFetching} = transactionHistory({
+    skip: '0',
+    take: '1'
+})
+```
+Return a response with react-query hooks for `notes()`, `investmentList()`, `transactionHistory()`, `returnOnInvestments()`, `appliedInvestments()` and methods above.

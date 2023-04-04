@@ -205,3 +205,16 @@ Return response on success
 }
 ``` 
 
+**Hooks** <br/>
+
+`- useLoanHooks()` <br />
+The `useLoanHooks()` method is used to return the react-query hooks for loanData(), loanDetail(), loanPaymentSchedule() and methods above.
+
+```ts
+const {loanData} = loans.useLoanHooks();
+const {data, isFetching} = loanData({
+  skip: '0',
+  take: '4'
+})
+```
+Return a response with react-query hooks for `loanData()`, `loanDetail()`, `loanPaymentSchedule()` and methods above.
