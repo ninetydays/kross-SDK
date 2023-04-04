@@ -2,7 +2,6 @@ import {
   PasswordCheckDto,
   PasswordCheckResponse,
 } from './../types/kross-client/user';
-import { sumByKey } from './../utils/sumByKey';
 import { KrossClientBase } from './base';
 import { useQuery, useMutation } from 'react-query';
 import {
@@ -27,7 +26,6 @@ import {
   UserUpdateDto,
   UserUpdateResponse,
 } from '../types/kross-client/user';
-import { subMonths, differenceInCalendarDays, format } from 'date-fns';
 import { growthCalculator } from '../utils/growthCalculator';
 
 export class User extends KrossClientBase {

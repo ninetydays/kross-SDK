@@ -13,7 +13,6 @@ import {
   InvestmentsWengeQueryDto,
   TransactionQueryDto,
 } from '../types/kross-client/investments';
-import { subMonths } from 'date-fns';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
     InvestmentsWengeQueryDto,
