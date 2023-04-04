@@ -12,6 +12,8 @@ const clientOptions = {
 ```
 
 ### Client Options Description
+--------------------------------------------
+
 `baseURL`: A string that specifies the base URL of the API. This is the root URL that is used for all API requests. <br/>
 `accessId`: A string that specifies the access ID for the API. This is a unique identifier that is used to authenticate the client with the API server.<br/>
 `secretKey`: A string that specifies the secret key for the API. This is a secret value that is used to authenticate the client with the API server.<br/>

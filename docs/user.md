@@ -2,6 +2,7 @@ User class
 The `User` class is a client for interacting with the Kross API's user-related endpoints. It extends the `KrossClientBase class` and provides methods for checking user information, user register/unregister and user virtual account information.
 
 ### Table of Contents
+ --------------------------------------------
 
 **Constructor** <br/>
 
@@ -23,6 +24,7 @@ The `User` class is a client for interacting with the Kross API's user-related e
 ***- useUserHooks()***
 
 **Constructor** <br/>
+ --------------------------------------------
 The `User` class constructor accepts a KrossClientOptions object as its only argument. This object is used to configure the underlying Axios instance that makes the HTTP requests to the Kross API.
 
 ```ts
@@ -36,6 +38,7 @@ const user = new User({
 ```
 
 **Methods** <br/>
+ --------------------------------------------
 `- userData()` <br/>
 The `userData()` method is used to get user details.
 
@@ -84,6 +87,7 @@ Return an array of users data response on success
       "retireAt": "2023-03-30T10:55:44.490Z"
 }]
 ```
+ --------------------------------------------
 
 `- getVirtualAccCertificate()` <br/>
 The `getVirtualAccCertificate()` method is used to get virtual account certificate.
@@ -98,6 +102,7 @@ Return a response on success
   url: string
 }
 ``` 
+ --------------------------------------------
 
 `- checkVirtualAccount()`
 
@@ -117,6 +122,7 @@ Return a response on success
     depoctlDepoBankAccNo: string
 }
 ```
+ --------------------------------------------
 
 `- registerMember()` <br />
 The `registerMember()` method is used to register a user.
@@ -146,6 +152,8 @@ Return a response on success
 }
 ```
 
+ --------------------------------------------
+
 `- unRegisterMemeber()` <br />
 The `unRegisterMemeber()` method is used to unregister user.
 
@@ -162,6 +170,8 @@ Return a response on success
 }
 ```
 
+ --------------------------------------------
+
 `- releaseDepositControl()` <br />
 The `releaseDepositControl()` method is used unlock deposit control (that mean to allow to deposit any bank account).
 
@@ -177,6 +187,7 @@ Return a response on success
   vaccntNo: string
 }
 ```
+ --------------------------------------------
 
 `- accountData()` <br />
 The `accountData()` method is used to get user account data.
@@ -209,6 +220,7 @@ Return an array of user data in response on success
     "v_bank_code": "string"
 }]
 ```
+ --------------------------------------------
 
 `- userDataUpdate()` <br />
 The `userDataUpdate()` method is used to update user data.
@@ -271,6 +283,7 @@ Return updated user data in response on success
   "retireAt": "2023-03-30T10:35:31.908Z"
 }
 ```
+ --------------------------------------------
 
 `- passwordCheck()` <br />
 The `passwordCheck()` method is check validate password before doing secured manipulation.
@@ -292,6 +305,7 @@ Return response on success
     status: 0
 }
 ```
+ --------------------------------------------
 
 
 `- userAccountLogs()` <br />
@@ -335,7 +349,7 @@ Return response on success
   ]
 }
 ```
-
+ --------------------------------------------
 
 `- userNoteLogs()` <br />
 The `userNoteLogs()` method is used to get user notes log.
@@ -375,6 +389,7 @@ Return response on success
   ]
 }
 ```
+ --------------------------------------------
 
 `- kftcBalance()` <br />
 The `kftcBalance()` get how much borrower loan amount.
@@ -396,8 +411,10 @@ Return response on success
     }
 }
 ```
+ --------------------------------------------
 
 **Hooks** <br/>
+ --------------------------------------------
 
 `- useUserHooks()` <br />
 The `useUserHooks()` method is used to return the react-query hooks for myPageData(), userData(), totalAssets() and methods above.

@@ -2,6 +2,7 @@ Loans class
 The `Loans` class is a client for interacting with the Kross API's loans-related endpoints. It extends the `KrossClientBase class` and provides methods for checking loans information.
 
 ### Table of Contents
+ --------------------------------------------
 
 **Constructor** <br/>
 
@@ -15,6 +16,7 @@ The `Loans` class is a client for interacting with the Kross API's loans-related
 ***- useLoanHooks()***
 
 **Constructor** <br/>
+ --------------------------------------------
 The `Loans` class constructor accepts a KrossClientOptions object as its only argument. This object is used to configure the underlying Axios instance that makes the HTTP requests to the Kross API.
 
 ```ts
@@ -28,6 +30,7 @@ const loans = new Loans({
 ```
 
 **Methods** <br/>
+ --------------------------------------------
 `- loanData()` <br/>
 The `loanData()` method is used to get Loans data.
 
@@ -91,6 +94,7 @@ Return an array of loans in response on success
       "investableLimit": 0
     }]
 ```
+ --------------------------------------------
 
 `- loansRepayments()` <br/>
 The `loansRepayments()` method is used to get list of loan repayments.
@@ -133,6 +137,8 @@ Return an array of repayment in response on success
       "updatedAt": "2023-03-30T08:21:04.063Z"
     }]
 ``` 
+ --------------------------------------------
+
 `- loanConfigs()` <br/>
 The `loanConfigs()` method is used to get loan configurations.
 
@@ -174,6 +180,7 @@ Return an array of loan Configs in response on success
       "updatedAt": "2023-03-30T08:23:33.251Z"
     }]
 ``` 
+ --------------------------------------------
 
 `- loanDetails()` <br/>
 The `loanDetails()` method is used to get loan details.
@@ -204,8 +211,10 @@ Return response on success
   "updatedAt": "2023-03-30T08:31:40.743Z"
 }
 ``` 
+ --------------------------------------------
 
 **Hooks** <br/>
+ --------------------------------------------
 
 `- useLoanHooks()` <br />
 The `useLoanHooks()` method is used to return the react-query hooks for loanData(), loanDetail(), loanPaymentSchedule() and methods above.
