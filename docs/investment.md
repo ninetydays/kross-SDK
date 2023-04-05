@@ -216,6 +216,30 @@ Return an array of investment registered in response on success
 ``` 
  --------------------------------------------
 
+ `- investmentCancel()` <br/>
+The `investmentCancel()` method is used to cancel investments.
+
+```ts
+investments.investmentRegister(123);
+```
+
+##### Arguments
+
+ - accepts investmentId for investments cancelation <br/>
+
+Return an array of investment registered in response on success
+```
+{
+  data: {
+    rsp_code: "string",
+    rsp_message: "string"
+  },
+  okay: true,
+  message: "string"
+}
+``` 
+--------------------------------------------
+
 **Hooks** <br/>
  --------------------------------------------
 

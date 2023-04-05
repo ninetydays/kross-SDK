@@ -138,7 +138,9 @@ export const investment = () => {
     const { result } = renderHook(
       () =>
         appliedInvestments({
-          filter: 'state||$eq||funding',
+          investmentsQuery: {
+            filter: 'state||$eq||funding',
+          },
         }),
       {
         wrapper,

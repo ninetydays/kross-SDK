@@ -195,21 +195,24 @@ export class Investments extends KrossClientBase {
         );
         return mutation;
       },
-      appliedInvestments: (
-        investmentsWengeQueryDto?: InvestmentsWengeQueryDto,
-        cacheTime?: number
-      ) => {
+      appliedInvestments: ({
+        investmentsQuery = {},
+        cacheTime = 300000,
+      }: {
+        investmentsQuery?: InvestmentsWengeQueryDto;
+        cacheTime?: number;
+      }) => {
         return useInfiniteQuery(
           'appliedInvestments',
           async ({ pageParam = 0 }) => {
             const skip = (
               pageParam *
-              (isNaN(parseInt(investmentsWengeQueryDto?.take as string, 10))
+              (isNaN(parseInt(investmentsQuery?.take as string, 10))
                 ? 0
-                : parseInt(investmentsWengeQueryDto?.take as string, 10))
+                : parseInt(investmentsQuery?.take as string, 10))
             ).toString();
             const appliedInvestmentData = await this.investmentList({
-              ...investmentsWengeQueryDto,
+              ...investmentsQuery,
               join: 'loan',
               skip,
             });

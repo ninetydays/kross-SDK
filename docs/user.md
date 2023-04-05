@@ -43,10 +43,14 @@ const user = new User({
 The `userData()` method is used to get user details.
 
 ```ts
-user.userData({
+user.userData(
+  {
+  userQuery :{
     take: '1',
     skip: '0'
-});
+     }, 
+   enabled
+   });
 ```
 ##### Arguments <br/>
 `select (optional)`: A string that specifies which columns to select in the query. If not provided, all columns will be selected.<br/>
@@ -55,6 +59,7 @@ user.userData({
 `order (optional)`: A string that specifies the sorting order for the result set. It can be used to sort data based on one or more columns in ascending or descending order. If not provided, the result set will not be sorted.<br/>
 `filter (optional)`: A string that specifies the filter conditions to apply to the result set. It can be used to select rows that meet certain criteria based on the values of one or more columns. If not provided, no filters will be applied.<br/>
 `join (optional)`: A string that specifies the join conditions to use when querying data from multiple tables. It can be used to retrieve data from related tables by specifying how the tables are related to each other. If not provided, no joins will be performed.<br/>
+`enabled (0ptional)`: enabled to true means make request to backend false means don't make request to backend
 
 Return an array of users data response on success
 ```
@@ -193,9 +198,16 @@ Return a response on success
 The `accountData()` method is used to get user account data.
 
 ```js
-user.accountData({
- limit: '1',
- offset: '0'
+user.accountData(
+  {
+    accountQuery : {
+      limit: '1',
+      offset: '0'
+    },
+    enabled: true
+  }
+{
+ 
 });
 ```
 
