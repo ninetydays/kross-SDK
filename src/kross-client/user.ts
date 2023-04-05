@@ -127,7 +127,7 @@ export class User extends KrossClientBase {
   }
   useUserHooks() {
     return {
-      userNoteLogs: (userWengeQueryDto: UserWengeQueryDto) => {
+      userNoteLogs: (userWengeQueryDto?: UserWengeQueryDto) => {
         return useQuery({
           queryKey: 'userNoteLogs',
           queryFn: async () => {
@@ -137,7 +137,7 @@ export class User extends KrossClientBase {
           },
         });
       },
-      userAccountLogs: (userWengeQueryDto: UserWengeQueryDto) => {
+      userAccountLogs: (userWengeQueryDto?: UserWengeQueryDto) => {
         return useQuery({
           queryKey: 'userAccountLogs',
           queryFn: async () => {
@@ -185,7 +185,7 @@ export class User extends KrossClientBase {
         const mutation = useMutation(() => this.releaseDepositControl());
         return mutation;
       },
-      accountData: (userQueryDto: UserQueryDto, enabled?: boolean) => {
+      accountData: (userQueryDto?: UserQueryDto, enabled?: boolean) => {
         return useQuery({
           cacheTime: 0,
           queryKey: 'accountData',
@@ -197,7 +197,7 @@ export class User extends KrossClientBase {
           enabled: enabled === undefined ? true : enabled,
         });
       },
-      userData: (userQueryDto: UserQueryDto, enabled?: boolean) => {
+      userData: (userQueryDto?: UserQueryDto, enabled?: boolean) => {
         return useQuery({
           queryKey: 'userData',
           queryFn: async () => {

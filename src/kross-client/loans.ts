@@ -7,7 +7,6 @@ import { FunctionRegistered, KrossClientOptions } from '../types';
 import { useInfiniteQuery, useQuery } from 'react-query';
 import {
   LoansResponse,
-  PaymentScheduleDto,
   PaymentScheduleResponse,
   LoanConfigResponse,
   LoanRepaymentResponse,
@@ -49,35 +48,35 @@ export class Loans extends KrossClientBase {
     });
   }
 
-  loanPaymentSchedule({ loan_id }: PaymentScheduleDto) {
+  loanPaymentSchedule(loanId: number) {
     return this.instance.get<PaymentScheduleResponse>(
-      `/loans/${loan_id}/payment-schedule`
+      `/loans/${loanId}/payment-schedule`
     );
   }
   useLoanHooks() {
     return {
-      loanConfigs: (loansQueryDto: LoansQueryDto) => {
+      loanConfigs: (loansQueryDto?: LoansQueryDto) => {
         return useQuery('loanConfigs', async () => {
           return this.loanConfigs(loansQueryDto).then((res) => {
             return res.data;
           });
         });
       },
-      loanRepayments: (loansQueryDto: LoansQueryDto) => {
+      loanRepayments: (loansQueryDto?: LoansQueryDto) => {
         return useQuery('loanRepayments', async () => {
           return this.loanRepayments(loansQueryDto).then((res) => {
             return res.data;
           });
         });
       },
-      loanPaymentSchedule: (loan_id: PaymentScheduleDto) => {
+      loanPaymentSchedule: (loanId: number) => {
         return useQuery('loanPaymentSchedule', async () => {
-          return this.loanPaymentSchedule(loan_id).then((res) => {
+          return this.loanPaymentSchedule(loanId).then((res) => {
             return res.data;
           });
         });
       },
-      loanData: (loansQueryDto: LoansQueryDto, userId?: string) => {
+      loanData: (loansQueryDto?: LoansQueryDto, userId?: string) => {
         return useInfiniteQuery(
           [
             'loanData',
@@ -98,8 +97,8 @@ export class Loans extends KrossClientBase {
               skip,
             });
             const loansArray = Object.values(loan?.data);
-            const loansResponseArray = loansArray
-              .map((item: any): LoanResponseData => {
+            const loansResponseArray = loansArray.map(
+              (item: any): LoanResponseData => {
                 const investments = item.investments.filter(
                   (investment: any) =>
                     investment?.userId == userId &&
@@ -120,7 +119,8 @@ export class Loans extends KrossClientBase {
                   userInvestedAmount: 0,
                   investmentId: null,
                 };
-              });
+              }
+            );
             return loansResponseArray || [];
           },
           {

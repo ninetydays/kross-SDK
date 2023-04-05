@@ -41,7 +41,7 @@ export class Inquiry extends KrossClientBase {
         );
         return mutation;
       },
-      fetchInquiries: (inquiriesDto: InquiriesDto) => {
+      fetchInquiries: (inquiriesDto?: InquiriesDto) => {
         return useInfiniteQuery(
           'inquiries',
           async ({ pageParam = 0 }) => {

@@ -56,9 +56,6 @@ export type LoanResponseData = {
 
 export type LoansResponse = Array<LoanResponseData>;
 
-export type PaymentScheduleDto = {
-  loan_id: number;
-};
 export type PaymentScheduleResponse = FunctionResponse;
 
 export type LoanConfigResponseData = {

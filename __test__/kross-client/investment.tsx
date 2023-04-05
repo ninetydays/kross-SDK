@@ -60,10 +60,9 @@ export const investment = () => {
     const { result } = renderHook(() => investmentCancel(), {
       wrapper,
     });
+    const investmentId = 0;
     await act(async () => {
-      await result.current.mutateAsync({
-        investment_id: 0,
-      });
+      await result.current.mutateAsync(investmentId);
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
@@ -79,7 +78,7 @@ export const investment = () => {
         {
           amount: 10000,
           loan_id: 19431,
-        }
+        },
       ]);
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -153,15 +152,10 @@ export const investment = () => {
 
   it('get investment limit for user', async () => {
     const { investmentLimit } = client.useInvestmentHooks();
-    const { result } = renderHook(
-      () =>
-        investmentLimit({
-          enabled: true,
-        }),
-      {
-        wrapper,
-      }
-    );
+    const enabled = true;
+    const { result } = renderHook(() => investmentLimit(enabled), {
+      wrapper,
+    });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
