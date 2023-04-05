@@ -126,7 +126,7 @@ export const user = () => {
   it('gets virtual account details', async () => {
     const { accountData } = client.useUserHooks();
     const enabled = true;
-    const { result } = renderHook(() => accountData({}, enabled), {
+    const { result } = renderHook(() => accountData({ enabled }), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));

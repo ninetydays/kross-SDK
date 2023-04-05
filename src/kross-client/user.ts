@@ -127,7 +127,7 @@ export class User extends KrossClientBase {
   }
   useUserHooks() {
     return {
-      userNoteLogs: (userWengeQueryDto: UserWengeQueryDto) => {
+      userNoteLogs: (userWengeQueryDto?: UserWengeQueryDto) => {
         return useQuery({
           queryKey: 'userNoteLogs',
           queryFn: async () => {
@@ -137,7 +137,7 @@ export class User extends KrossClientBase {
           },
         });
       },
-      userAccountLogs: (userWengeQueryDto: UserWengeQueryDto) => {
+      userAccountLogs: (userWengeQueryDto?: UserWengeQueryDto) => {
         return useQuery({
           queryKey: 'userAccountLogs',
           queryFn: async () => {
@@ -185,23 +185,35 @@ export class User extends KrossClientBase {
         const mutation = useMutation(() => this.releaseDepositControl());
         return mutation;
       },
-      accountData: (userQueryDto: UserQueryDto, enabled?: boolean) => {
+      accountData: ({
+        accountQuery = {},
+        enabled,
+      }: {
+        accountQuery?: UserQueryDto;
+        enabled?: boolean;
+      }) => {
         return useQuery({
           cacheTime: 0,
           queryKey: 'accountData',
           queryFn: async () => {
-            return this.accountData(userQueryDto).then((res) => {
+            return this.accountData(accountQuery).then((res) => {
               return res.data;
             });
           },
           enabled: enabled === undefined ? true : enabled,
         });
       },
-      userData: (userQueryDto: UserQueryDto, enabled?: boolean) => {
+      userData: ({
+        userQuery = {},
+        enabled,
+      }: {
+        userQuery?: UserQueryDto;
+        enabled?: boolean;
+      }) => {
         return useQuery({
           queryKey: 'userData',
           queryFn: async () => {
-            return this.userData(userQueryDto).then((res) => {
+            return this.userData(userQuery).then((res) => {
               return res.data;
             });
           },
@@ -214,7 +226,7 @@ export class User extends KrossClientBase {
           cacheTime: 0,
           queryKey: 'myPageData',
           queryFn: async () => {
-            const accountDataPromise = this.accountData({});
+            const accountDataPromise = this.accountData();
             const investmentsAppliedToDataPromise = this.get('/investments', {
               params: {
                 select: 'id,amount,state',

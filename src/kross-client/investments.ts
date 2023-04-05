@@ -2,7 +2,6 @@ import { KrossClientBase } from './base';
 import { FunctionRegistered, KrossClientOptions } from '../types';
 import { useQuery, useMutation, useInfiniteQuery } from 'react-query';
 import {
-  InvestmentCancelDto,
   InvestmentCancelResponse,
   InvestmentListResponse,
   InvestmentRegisterDto,
@@ -55,11 +54,11 @@ export class Investments extends KrossClientBase {
     );
   }
 
-  investmentCancel({ investment_id }: InvestmentCancelDto) {
+  investmentCancel(investmentId: number) {
     return this.instance.patch<InvestmentCancelResponse>(
-      `/investments/${investment_id}/cancel`,
+      `/investments/${investmentId}/cancel`,
       {
-        investment_id,
+        investment_id: investmentId,
       }
     );
   }
@@ -92,13 +91,12 @@ export class Investments extends KrossClientBase {
   useInvestmentHooks() {
     return {
       investmentCancel: () => {
-        const mutation = useMutation(
-          (investmentCancelDto: InvestmentCancelDto) =>
-            this.investmentCancel(investmentCancelDto)
+        const mutation = useMutation((investmentId: number) =>
+          this.investmentCancel(investmentId)
         );
         return mutation;
       },
-      investmentList: (investmentsWengeQueryDto: InvestmentsWengeQueryDto) => {
+      investmentList: (investmentsWengeQueryDto?: InvestmentsWengeQueryDto) => {
         return useQuery({
           queryKey: 'investmentList',
           queryFn: async () => {
@@ -119,7 +117,7 @@ export class Investments extends KrossClientBase {
           },
         });
       },
-      cmsTradebook: (investmentQueryDto: InvestmentQueryDto) => {
+      cmsTradebook: (investmentQueryDto?: InvestmentQueryDto) => {
         return useQuery({
           queryKey: 'cmsTradebooks',
           queryFn: async () => {
@@ -130,7 +128,7 @@ export class Investments extends KrossClientBase {
         });
       },
       notes: (
-        investmentsWengeQueryDto: InvestmentsWengeQueryDto,
+        investmentsWengeQueryDto?: InvestmentsWengeQueryDto,
         cacheTime?: number
       ) => {
         return useInfiniteQuery(
@@ -197,21 +195,24 @@ export class Investments extends KrossClientBase {
         );
         return mutation;
       },
-      appliedInvestments: (
-        investmentsWengeQueryDto: InvestmentsWengeQueryDto,
-        cacheTime?: number
-      ) => {
+      appliedInvestments: ({
+        investmentsQuery = {},
+        cacheTime = 300000,
+      }: {
+        investmentsQuery?: InvestmentsWengeQueryDto;
+        cacheTime?: number;
+      }) => {
         return useInfiniteQuery(
           'appliedInvestments',
           async ({ pageParam = 0 }) => {
             const skip = (
               pageParam *
-              (isNaN(parseInt(investmentsWengeQueryDto?.take as string, 10))
+              (isNaN(parseInt(investmentsQuery?.take as string, 10))
                 ? 0
-                : parseInt(investmentsWengeQueryDto?.take as string, 10))
+                : parseInt(investmentsQuery?.take as string, 10))
             ).toString();
             const appliedInvestmentData = await this.investmentList({
-              ...investmentsWengeQueryDto,
+              ...investmentsQuery,
               join: 'loan',
               skip,
             });
@@ -228,10 +229,10 @@ export class Investments extends KrossClientBase {
           }
         );
       },
-      investmentLimit: ({ enabled = false }: { enabled?: boolean }) => {
+      investmentLimit: (enabled?: boolean) => {
         return useQuery({
           cacheTime: 0,
-          enabled: enabled ? enabled : false,
+          enabled: enabled !== undefined ? enabled : true,
           queryKey: 'invesmentLimit',
           queryFn: async () => {
             const kftcInvestInquiry: any = await this.get(

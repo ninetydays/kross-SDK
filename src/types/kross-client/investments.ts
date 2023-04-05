@@ -57,8 +57,8 @@ export type InvestmentCauseResponse = {
   okay: boolean;
   error: {
     message: string;
-  }
-}
+  };
+};
 
 export type InvestmentRegisterResponse = {
   data: Record<string, unknown>[];
@@ -66,10 +66,6 @@ export type InvestmentRegisterResponse = {
   statusText?: string;
   message?: string;
   cause?: InvestmentCauseResponse[];
-};
-
-export type InvestmentCancelDto = {
-  investment_id: number;
 };
 
 export type InvestmentCancelReponseData = {

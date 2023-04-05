@@ -74,15 +74,10 @@ export const loan = () => {
 
   it('gets loan payment schedule when investors pays for borrowers', async () => {
     const { loanPaymentSchedule } = client.useLoanHooks();
-    const { result } = renderHook(
-      () =>
-        loanPaymentSchedule({
-          loan_id: 19246,
-        }),
-      {
-        wrapper,
-      }
-    );
+    const loan_id = 19246;
+    const { result } = renderHook(() => loanPaymentSchedule(loan_id), {
+      wrapper,
+    });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();

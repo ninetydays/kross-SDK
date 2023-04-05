@@ -47,9 +47,19 @@ investments.investmentList({
 });
 ```
 ##### Arguments <br/>
-`filter` - filter for loans. <br/>
-`skip, take` : pagination props <br/>
-`order`: order lets you sort investments data based on fields <br/>
+`select (Optional)`: This parameter is used to specify the columns that should be returned in the result set. If not provided, all columns will be selected.
+
+`skip (Optional)`: This parameter is used to skip a certain number of rows in the result set. It can be used to implement pagination or to exclude the first few rows from the result set. If not provided, no rows will be skipped.
+
+`take (Optional)`: This parameter is used to limit the number of rows returned in the result set. It can be used to implement pagination or to restrict the size of the result set. If not provided, all rows will be returned.
+
+`order (Optional)`: This parameter is used to specify the order in which the rows should be returned in the result set. It can be used to sort the rows based on one or more columns, in either ascending or descending order. If not provided, the result set will not be sorted.
+
+`filter (Optional)`: This parameter is used to filter the rows in the result set based on certain criteria. It can be used to select rows that meet specific conditions based on the values of one or more columns. If not provided, no filters will be applied.
+
+`join (Optional)`: This parameter is used to specify the join conditions when querying data from multiple tables. It can be used to retrieve related data from different tables by specifying how the tables are related to each other. If not provided, no joins will be performed.
+
+
 
 Return an array of investments in response on success
 ```
@@ -87,9 +97,17 @@ investments.notes({
 
 ##### Arguments
 
-`filter` - filter for notes. <br/>
-`skip, take` : pagination props <br/>
-`order`: order lets you sort notes data based on fields <br/>
+`select (Optional)`: This parameter is used to specify the columns that should be returned in the result set. If not provided, all columns will be selected.
+
+`skip (Optional)`: This parameter is used to skip a certain number of rows in the result set. It can be used to implement pagination or to exclude the first few rows from the result set. If not provided, no rows will be skipped.
+
+`take (Optional)`: This parameter is used to limit the number of rows returned in the result set. It can be used to implement pagination or to restrict the size of the result set. If not provided, all rows will be returned.
+
+`order (Optional)`: This parameter is used to specify the order in which the rows should be returned in the result set. It can be used to sort the rows based on one or more columns, in either ascending or descending order. If not provided, the result set will not be sorted.
+
+`filter (Optional)`: This parameter is used to filter the rows in the result set based on certain criteria. It can be used to select rows that meet specific conditions based on the values of one or more columns. If not provided, no filters will be applied.
+
+`join (Optional)`: This parameter is used to specify the join conditions when querying data from multiple tables. It can be used to retrieve related data from different tables by specifying how the tables are related to each other. If not provided, no joins will be performed.
 
 Return an array of notes in response on success
 ```
@@ -197,6 +215,30 @@ Return an array of investment registered in response on success
 ]
 ``` 
  --------------------------------------------
+
+ `- investmentCancel()` <br/>
+The `investmentCancel()` method is used to cancel investments.
+
+```ts
+investments.investmentRegister(123);
+```
+
+##### Arguments
+
+ - accepts investmentId for investments cancelation <br/>
+
+Return an array of investment registered in response on success
+```
+{
+  data: {
+    rsp_code: "string",
+    rsp_message: "string"
+  },
+  okay: true,
+  message: "string"
+}
+``` 
+--------------------------------------------
 
 **Hooks** <br/>
  --------------------------------------------
