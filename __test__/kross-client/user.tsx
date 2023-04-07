@@ -195,4 +195,14 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
+
+  it('gets user portfolio details', async () => {
+    const { portfolio } = client.useUserHooks();
+    const enabled = true;
+    const { result } = renderHook(() => portfolio({ enabled }), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 };
