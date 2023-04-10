@@ -403,7 +403,7 @@ export class User extends KrossClientBase {
         );
         return mutation;
       },
-      portfolio: ({ enabled }: { enabled?: boolean }) => {
+      portfolio: ({ enabled }: { enabled?: boolean } = {}) => {
         return useQuery({
           cacheTime: 0,
           queryKey: 'portfolio',
@@ -412,7 +412,7 @@ export class User extends KrossClientBase {
               return res.data;
             });
           },
-          enabled: enabled === undefined ? true : enabled,
+          enabled: enabled ?? true,
         });
       },
     };
