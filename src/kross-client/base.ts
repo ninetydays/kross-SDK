@@ -170,9 +170,9 @@ export class KrossClientBase {
     return this.instance.request<T>(options);
   }
 
-  static registerFunction<I = unknown, O = unknown>(
+  static registerFunction<O = unknown, I = unknown>(
     options: FunctionOptions
-  ): (input?: I) => Promise<AxiosResponse<O>> {
+  ): (input?: I) => Promise<AxiosResponse<O, I>> {
     return function (
       this: KrossClientBase,
       input?: I

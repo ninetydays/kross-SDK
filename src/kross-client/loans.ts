@@ -14,34 +14,34 @@ import {
   LoanResponseData,
 } from '../types/kross-client/loans';
 export class Loans extends KrossClientBase {
-  loanData: FunctionRegistered<LoansQueryDto, LoansResponse>;
-  loanRepayments: FunctionRegistered<LoansQueryDto, LoanRepaymentResponse>;
-  loanConfigs: FunctionRegistered<LoansQueryDto, LoanConfigResponse>;
-  loanDetail: FunctionRegistered<LoanDetailQueryDto, LoanDetailResponse>;
+  loanData: FunctionRegistered<LoansResponse, LoansQueryDto>;
+  loanRepayments: FunctionRegistered<LoanRepaymentResponse, LoansQueryDto>;
+  loanConfigs: FunctionRegistered<LoanConfigResponse, LoansQueryDto>;
+  loanDetail: FunctionRegistered<LoanDetailResponse, LoanDetailQueryDto>;
   constructor(options: KrossClientOptions) {
     super(options);
     this.loanConfigs = Loans.registerFunction<
-      LoansQueryDto,
-      LoanConfigResponse
+      LoanConfigResponse,
+      LoansQueryDto
     >({
       url: '/loan-configs',
       method: 'get',
     });
 
     this.loanRepayments = Loans.registerFunction<
-      LoansQueryDto,
-      LoanRepaymentResponse
+      LoanRepaymentResponse,
+      LoansQueryDto
     >({
       url: '/loan-repayments',
       method: 'get',
     });
-    this.loanData = Loans.registerFunction<LoansQueryDto, LoansResponse>({
+    this.loanData = Loans.registerFunction<LoansResponse, LoansQueryDto>({
       url: '/loans',
       method: 'get',
     });
     this.loanDetail = Loans.registerFunction<
-      LoanDetailQueryDto,
-      LoanDetailResponse
+      LoanDetailResponse,
+      LoanDetailQueryDto
     >({
       url: '/loan-detail',
       method: 'get',

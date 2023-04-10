@@ -14,33 +14,33 @@ import {
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
-    InvestmentsWengeQueryDto,
-    InvestmentListResponse
+    InvestmentListResponse,
+    InvestmentsWengeQueryDto
   >;
-  notes: FunctionRegistered<InvestmentsWengeQueryDto, NotesResponse>;
-  cmsTradebook: FunctionRegistered<InvestmentQueryDto, CmsTradebookResponse>;
+  notes: FunctionRegistered<NotesResponse, InvestmentsWengeQueryDto>;
+  cmsTradebook: FunctionRegistered<CmsTradebookResponse, InvestmentQueryDto>;
 
   constructor(options: KrossClientOptions) {
     super(options);
     this.cmsTradebook = Investments.registerFunction<
-      InvestmentQueryDto,
-      CmsTradebookResponse
+      CmsTradebookResponse,
+      InvestmentQueryDto
     >({
       url: '/cms-tradebooks',
       method: 'get',
     });
 
     this.notes = Investments.registerFunction<
-      InvestmentsWengeQueryDto,
-      NotesResponse
+      NotesResponse,
+      InvestmentsWengeQueryDto
     >({
       url: '/notes',
       method: 'get',
     });
 
     this.investmentList = Investments.registerFunction<
-      InvestmentsWengeQueryDto,
-      InvestmentListResponse
+      InvestmentListResponse,
+      InvestmentsWengeQueryDto
     >({
       url: '/investments',
       method: 'get',

@@ -19,16 +19,16 @@ import {
 
 export class Account extends KrossClientBase {
   withdrawCancel: FunctionRegistered<
-    AccountWithdrawCancelDto,
-    AccountWithdrawCancelResponse
+    AccountWithdrawCancelResponse,
+    AccountWithdrawCancelDto
   >;
 
   constructor(options: KrossClientOptions) {
     super(options);
 
     this.withdrawCancel = Account.registerFunction<
-      AccountWithdrawCancelDto,
-      AccountWithdrawCancelResponse
+      AccountWithdrawCancelResponse,
+      AccountWithdrawCancelDto
     >({
       url: '/accounts/withdraw/cancel',
       urlParam: 'idempotency_key',
