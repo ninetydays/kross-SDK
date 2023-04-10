@@ -30,7 +30,7 @@ export type FunctionResponse<T = unknown> = {
   message?: string;
 };
 
-export type FunctionRegistered<I = unknown, O = unknown> = (
+export type FunctionRegistered<O = unknown, I = unknown> = (
   input?: I
 ) => Promise<AxiosResponse<O>>;
 

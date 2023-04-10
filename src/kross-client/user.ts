@@ -33,34 +33,34 @@ export class User extends KrossClientBase {
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
   getVirtualAccCertificate: FunctionRegistered<AccountCertificateResponse>;
   checkVirtualAccount: FunctionRegistered<VirtualAccountCheckResponse>;
-  registerMember: FunctionRegistered<UserRegisterDto, GetAuthTokenResponse>;
+  registerMember: FunctionRegistered<GetAuthTokenResponse, UserRegisterDto>;
   unRegisterMemeber: FunctionRegistered<WelcomeUnregisterResponse>;
   releaseDepositControl: FunctionRegistered<ReleaseDepositResponse>;
-  accountData: FunctionRegistered<UserQueryDto, AccountResponse>;
-  userData: FunctionRegistered<UserQueryDto, UserResponse>;
-  userDataUpdate: FunctionRegistered<UserUpdateDto, UserUpdateResponse>;
-  passwordCheck: FunctionRegistered<PasswordCheckDto, PasswordCheckResponse>;
+  accountData: FunctionRegistered<AccountResponse, UserQueryDto>;
+  userData: FunctionRegistered<UserResponse, UserQueryDto>;
+  userDataUpdate: FunctionRegistered<UserUpdateResponse, UserUpdateDto>;
+  passwordCheck: FunctionRegistered<PasswordCheckResponse, PasswordCheckDto>;
 
   userAccountLogs: FunctionRegistered<
-    UserWengeQueryDto,
-    UserAccountLogsResponse
+    UserAccountLogsResponse,
+    UserWengeQueryDto
   >;
-  userNoteLogs: FunctionRegistered<UserWengeQueryDto, UserNoteLogsResponse>;
+  userNoteLogs: FunctionRegistered<UserNoteLogsResponse, UserWengeQueryDto>;
   portfolio: FunctionRegistered<PortfolioResponse>;
 
   constructor(options: KrossClientOptions) {
     super(options);
     this.userNoteLogs = User.registerFunction<
-      UserWengeQueryDto,
-      UserNoteLogsResponse
+      UserNoteLogsResponse,
+      UserWengeQueryDto
     >({
       url: '/user-note-logs',
       method: 'get',
     });
 
     this.userAccountLogs = User.registerFunction<
-      UserWengeQueryDto,
-      UserAccountLogsResponse
+      UserAccountLogsResponse,
+      UserWengeQueryDto
     >({
       url: '/user-account-logs',
       method: 'get',
@@ -84,8 +84,8 @@ export class User extends KrossClientBase {
       });
 
     this.registerMember = User.registerFunction<
-      UserRegisterDto,
-      GetAuthTokenResponse
+      GetAuthTokenResponse,
+      UserRegisterDto
     >({
       url: '/users',
       method: 'post',
@@ -101,27 +101,27 @@ export class User extends KrossClientBase {
       method: 'patch',
     });
 
-    this.accountData = User.registerFunction<UserQueryDto, AccountResponse>({
+    this.accountData = User.registerFunction<AccountResponse, UserQueryDto>({
       url: '/users/account',
       method: 'get',
     });
 
-    this.userData = User.registerFunction<UserQueryDto, UserResponse>({
+    this.userData = User.registerFunction<UserResponse, UserQueryDto>({
       url: '/users',
       method: 'get',
     });
 
     this.userDataUpdate = User.registerFunction<
-      UserUpdateDto,
-      UserUpdateResponse
+      UserUpdateResponse,
+      UserUpdateDto
     >({
       url: '/users',
       method: 'put',
     });
 
     this.passwordCheck = User.registerFunction<
-      PasswordCheckDto,
-      PasswordCheckResponse
+      PasswordCheckResponse,
+      PasswordCheckDto
     >({
       url: '/users/password-check',
       method: 'post',
