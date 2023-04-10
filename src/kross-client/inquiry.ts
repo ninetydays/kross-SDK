@@ -10,17 +10,17 @@ import { useMutation, useQuery, useInfiniteQuery } from 'react-query';
 import { FunctionRegistered, KrossClientOptions } from '../types';
 
 export class Inquiry extends KrossClientBase {
-  createInquiry: FunctionRegistered<InquiryDto, InquiryResponse>;
-  fetchInquiries: FunctionRegistered<InquiriesDto>;
+  createInquiry: FunctionRegistered<InquiryResponse, InquiryDto>;
+  fetchInquiries: FunctionRegistered<unknown, InquiriesDto>;
 
   constructor(options: KrossClientOptions) {
     super(options);
 
-    this.createInquiry = Inquiry.registerFunction<InquiryDto, InquiryResponse>({
+    this.createInquiry = Inquiry.registerFunction<InquiryResponse, InquiryDto>({
       url: '/inquiries',
       method: 'post',
     });
-    this.fetchInquiries = Inquiry.registerFunction<InquiriesDto>({
+    this.fetchInquiries = Inquiry.registerFunction<unknown, InquiriesDto>({
       url: '/inquiries',
       method: 'get',
     });
