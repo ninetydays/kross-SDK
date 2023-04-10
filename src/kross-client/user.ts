@@ -37,7 +37,7 @@ export class User extends KrossClientBase {
   unRegisterMemeber: FunctionRegistered<WelcomeUnregisterResponse>;
   releaseDepositControl: FunctionRegistered<ReleaseDepositResponse>;
   accountData: FunctionRegistered<AccountResponse, UserQueryDto>;
-  userData: FunctionRegistered<UserResponse, UserQueryDto>;
+  userData: FunctionRegistered<UserResponse, UserWengeQueryDto>;
   userDataUpdate: FunctionRegistered<UserUpdateResponse, UserUpdateDto>;
   passwordCheck: FunctionRegistered<PasswordCheckResponse, PasswordCheckDto>;
 
@@ -106,7 +106,7 @@ export class User extends KrossClientBase {
       method: 'get',
     });
 
-    this.userData = User.registerFunction<UserResponse, UserQueryDto>({
+    this.userData = User.registerFunction<UserResponse, UserWengeQueryDto>({
       url: '/users',
       method: 'get',
     });
@@ -214,7 +214,7 @@ export class User extends KrossClientBase {
         userQuery = {},
         enabled,
       }: {
-        userQuery?: UserQueryDto;
+        userQuery?: UserWengeQueryDto;
         enabled?: boolean;
       }) => {
         return useQuery({
