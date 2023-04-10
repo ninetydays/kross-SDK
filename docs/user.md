@@ -19,6 +19,7 @@ The `User` class is a client for interacting with the Kross API's user-related e
 ***- userAccountLogs()*** <br/>
 ***- kftcBalance()*** <br/>
 ***- userNoteLogs()*** <br/>
+***- portfolio()*** <br/>
 
 **Hooks** <br/>
 ***- useUserHooks()***
@@ -421,6 +422,33 @@ Return response on success
         "in_progress_result_info": {},
         "complete_result_info": {}
     }
+}
+```
+ --------------------------------------------
+ `- portfolio()` <br />
+The `portfolio()` method is used to get user portfolio data.
+
+```js
+user.portfolio({
+  enabled: true
+});
+```
+
+Return a response on success
+```
+{
+    depositsAmount: number;
+    notesAmount: number;
+    totalAssetsAmount: number;
+    totalNotes: number;
+    totalExpectedReturn: number;
+    returnAfterTax: number;
+    actualReturn: number;
+    totalTodayInvestment: number;
+    totalInvestmentAmount: number;
+    totalTodayRepayment: number;
+    totalRepaymentAmount: number;
+    notes: any[];
 }
 ```
  --------------------------------------------
