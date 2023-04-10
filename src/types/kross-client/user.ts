@@ -218,3 +218,20 @@ export type PasswordCheckResponseData = {
   statusCode: number;
 };
 export type PasswordCheckResponse = FunctionResponse<PasswordCheckResponseData>;
+
+export type PortfolioResponseData = {
+  depositsAmount: number;
+  notesAmount: number;
+  totalAssetsAmount: number;
+  totalNotes: number;
+  totalExpectedReturn: number;
+  returnAfterTax: number;
+  actualReturn: number;
+  totalTodayInvestment: number;
+  totalInvestmentAmount: number;
+  totalTodayRepayment: number;
+  totalRepaymentAmount: number;
+  notes: any[];
+};
+
+export type PortfolioResponse = FunctionResponse<PortfolioResponseData>;

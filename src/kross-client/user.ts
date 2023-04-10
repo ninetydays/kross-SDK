@@ -1,6 +1,7 @@
 import {
   PasswordCheckDto,
   PasswordCheckResponse,
+  PortfolioResponse,
 } from './../types/kross-client/user';
 import { KrossClientBase } from './base';
 import { useQuery, useMutation } from 'react-query';
@@ -45,6 +46,7 @@ export class User extends KrossClientBase {
     UserAccountLogsResponse
   >;
   userNoteLogs: FunctionRegistered<UserWengeQueryDto, UserNoteLogsResponse>;
+  portfolio: FunctionRegistered<PortfolioResponse>;
 
   constructor(options: KrossClientOptions) {
     super(options);
@@ -123,6 +125,11 @@ export class User extends KrossClientBase {
     >({
       url: '/users/password-check',
       method: 'post',
+    });
+
+    this.portfolio = User.registerFunction<PortfolioResponse>({
+      url: '/sienna/portfolio',
+      method: 'get',
     });
   }
   useUserHooks() {
@@ -395,6 +402,18 @@ export class User extends KrossClientBase {
           this.passwordCheck(passwordCheckDto)
         );
         return mutation;
+      },
+      portfolio: ({ enabled }: { enabled?: boolean } = {}) => {
+        return useQuery({
+          cacheTime: 0,
+          queryKey: 'portfolio',
+          queryFn: async () => {
+            return this.portfolio().then((res) => {
+              return res.data;
+            });
+          },
+          enabled: enabled ?? true,
+        });
       },
     };
   }
