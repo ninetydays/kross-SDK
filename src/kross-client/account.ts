@@ -32,7 +32,7 @@ export class Account extends KrossClientBase {
     >({
       url: '/accounts/withdraw/cancel',
       urlParam: 'idempotency_key',
-      method: 'post',
+      method: 'patch',
     });
   }
 
