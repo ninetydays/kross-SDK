@@ -63,31 +63,6 @@ export class Investments extends KrossClientBase {
     );
   }
 
-  async transactionHistory(transactionQueryDto: TransactionQueryDto) {
-    const { include, ...rest } = transactionQueryDto;
-    const paramInclude =
-      include !== 'all'
-        ? [include]
-        : [
-            'deposit',
-            'withdraw',
-            'invest',
-            'distribute',
-            'merchant_withdraw',
-            'merchant_deposit',
-          ];
-    const resp = await this.cmsTradebook({
-      query: {
-        category: {
-          in: paramInclude,
-        },
-      },
-      sort_by: 'created_at.desc',
-      ...rest,
-    });
-    return resp;
-  }
-
   useInvestmentHooks() {
     return {
       investmentCancel: () => {
@@ -169,9 +144,33 @@ export class Investments extends KrossClientBase {
         return useInfiniteQuery(
           'transactionHistory',
           async ({ pageParam = 0 }) => {
-            const transactionData = await this.transactionHistory({
-              ...transactionQueryDto,
-              offset: pageParam.toString(),
+            const offset = (
+              pageParam *
+              (isNaN(parseInt(transactionQueryDto?.limit as string, 10))
+                ? 0
+                : parseInt(transactionQueryDto?.limit as string, 10))
+            ).toString();
+            const { include, ...rest } = transactionQueryDto;
+
+            const paramInclude =
+              include !== 'all'
+                ? [include]
+                : [
+                    'deposit',
+                    'withdraw',
+                    'invest',
+                    'distribute',
+                    'merchant_withdraw',
+                    'merchant_deposit',
+                  ];
+            const transactionData = await this.cmsTradebook({
+              query: {
+                category: {
+                  in: paramInclude,
+                },
+              },
+              offset,
+              ...rest,
             });
             const transactionDataArray = transactionData?.data?.data
               ? Object.values(transactionData.data.data)
