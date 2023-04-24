@@ -87,16 +87,12 @@ export class KrossClientBase {
       }
     );
   }
-  login({ keyid, password, refreshExpiresIn }: LoginDto) {
-    const loginDto = refreshExpiresIn
-      ? {
+  login({ keyid, password}: LoginDto) {
+    const expiresIn30Days = 60 * 24 * 30;
+    const loginDto = {
           keyid,
           password,
-          refreshExpiresIn,
-        }
-      : {
-          keyid,
-          password,
+          refreshExpiresIn: expiresIn30Days,
         };
     return this.instance
       .post<LoginResponse>('/auth/login', loginDto)
