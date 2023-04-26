@@ -71,8 +71,10 @@ export class KrossClientBase {
             ? isBefore(new Date(userRefreshToken.exp * 1000), new Date())
             : true;
 
-          if (isRefreshTokenExpired && this?.forceLogoutCallback) {
-            await this.forceLogoutCallback();
+          if (isRefreshTokenExpired) {
+            this.authToken = null;
+            this.refreshToken = null;
+            if (this?.forceLogoutCallback) await this.forceLogoutCallback();
             return config;
           }
 
