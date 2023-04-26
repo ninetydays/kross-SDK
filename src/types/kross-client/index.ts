@@ -8,6 +8,7 @@ export * from './account';
 export * from './inquiry';
 
 type RefreshTokenCallback = (token: string) => void;
+type forceLogoutCallback = () => void;
 
 export type KrossClientOptions = AxiosRequestConfig & {
   baseURL: string;
@@ -16,6 +17,7 @@ export type KrossClientOptions = AxiosRequestConfig & {
   authToken?: string;
   refreshToken?: string;
   refreshTokenCallback?: RefreshTokenCallback;
+  forceLogoutCallback?: forceLogoutCallback;
 };
 
 export type FunctionOptions = {

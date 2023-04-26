@@ -16,6 +16,7 @@ export class KrossClientBase {
   authToken?: string | null | undefined;
   refreshToken?: string | null | undefined;
   refreshTokenCallback?: ((token: string) => void) | null | undefined;
+  forceLogoutCallback?: (() => void) | null | undefined;
 
   accessId: string;
   secretKey: string;
@@ -25,6 +26,7 @@ export class KrossClientBase {
     this.authToken = options?.authToken || null;
     this.refreshToken = options?.refreshToken || null;
     this.refreshTokenCallback = options?.refreshTokenCallback || null;
+    this.forceLogoutCallback = options?.forceLogoutCallback || null;
     this.accessId = options.accessId;
     this.secretKey = options.secretKey;
 
@@ -62,6 +64,20 @@ export class KrossClientBase {
             };
             return config;
           }
+          const userRefreshToken: any = await jwt_decode(
+            this.authToken as string
+          );
+          const isRefreshTokenExpired = userRefreshToken.exp
+            ? isBefore(new Date(userRefreshToken.exp * 1000), new Date())
+            : true;
+
+          if (isRefreshTokenExpired) {
+            this.authToken = null;
+            this.refreshToken = null;
+            if (this?.forceLogoutCallback) await this.forceLogoutCallback();
+            return config;
+          }
+
           const refreshTokenResponse = await axios.get(
             `${options.baseURL}/auth/refresh`,
             {
