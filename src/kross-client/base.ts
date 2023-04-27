@@ -68,8 +68,10 @@ export class KrossClientBase {
             this.authToken as string
           );
           const isRefreshTokenExpired = userRefreshToken.exp
-            ? isBefore(new Date(userRefreshToken.exp * 1000), new Date())
-            : true;
+            ? userRefreshToken.exp
+              ? isBefore(new Date(userRefreshToken.exp * 1000), new Date())
+              : true
+            : false;
 
           if (isRefreshTokenExpired) {
             this.authToken = null;
