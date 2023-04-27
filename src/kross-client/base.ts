@@ -65,7 +65,7 @@ export class KrossClientBase {
             return config;
           }
           const userRefreshToken: any = await jwt_decode(
-            this.authToken as string
+            this.refreshToken as string
           );
           const isRefreshTokenExpired = userRefreshToken.exp
             ? userRefreshToken.exp
