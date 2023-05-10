@@ -4,9 +4,9 @@ import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 export const user = () => {
   let client: User;
-  const baseURL = 'https://olive-dev.kross.kr';
-  const accessId = 'XLD7UY9GETOK7TPY';
-  const secretKey = 'yLbVRHGgwT5c22ndOVT2';
+  const baseURL = 'https://olive-staging.kross.kr';
+  const accessId = 'M9N8B7V6C5X4Z3Q2';
+  const secretKey = 'aSdFgHjK2@3#4$5';
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -28,14 +28,14 @@ export const user = () => {
     });
   });
 
-  it('gets authToken and refreshToken', async () => {
+  it.only('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
     });
     await act(async () => {
       await result.current.mutateAsync({
-        keyid: 'mad@kross.kr',
+        keyid: 'fss5w@naver.com',
         password: 'Kross123!',
       });
     });
@@ -133,12 +133,13 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it('gets myPage data', async () => {
+  it.only('gets myPage data', async () => {
     const { myPageData } = client.useUserHooks();
     const { result } = renderHook(() => myPageData(), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    console.log("res: ", result.current.data)
     expect(result.current.data).toBeDefined();
   });
 
