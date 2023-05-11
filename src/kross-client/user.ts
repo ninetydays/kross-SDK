@@ -22,12 +22,10 @@ import {
   UserAccountLogsResponse,
   UserNoteLogsResponse,
   UserQueryDto,
-  TotalAssetsType,
   UserWengeQueryDto,
   UserUpdateDto,
   UserUpdateResponse,
 } from '../types/kross-client/user';
-import { growthCalculator } from '../utils/growthCalculator';
 
 export class User extends KrossClientBase {
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
@@ -312,8 +310,8 @@ export class User extends KrossClientBase {
             const repaymentScheduledRate = repaymentsScheduledData
               ? (
                   repaymentsScheduledData?.reduce(
-                    (acc: number, cur: { rate: number }) =>
-                      acc + cur.rate * 100,
+                    (acc: number, cur: { rate: number, feeRate: number }) =>
+                      acc + (cur.rate - cur.feeRate) * 100,
                     0
                   ) / (repaymentScheduledCount || 1)
                 ).toFixed(2)
@@ -341,39 +339,6 @@ export class User extends KrossClientBase {
               cummulativeReturnOnInvestment,
             };
           },
-        });
-      },
-      totalAssets: () => {
-        return useQuery('totalAssets', async () => {
-          const accountLogs = await this.userAccountLogs({});
-          const noteLogs = await this.userNoteLogs({});
-          const accountLogsArray: { [key: string]: any }[] = (
-            accountLogs?.data ? Object.values(accountLogs.data) : []
-          ) as { [key: string]: any }[];
-          const noteLogsArray: { [key: string]: any }[] = (
-            noteLogs?.data ? Object.values(noteLogs.data) : []
-          ) as { [key: string]: any }[];
-          const totalAssets: TotalAssetsType = {};
-          for (const accountLog of accountLogsArray) {
-            totalAssets[accountLog.saveDate] = {
-              totalAssets: parseInt(accountLog.amount, 10),
-            };
-          }
-          for (const noteLog of noteLogsArray) {
-            if (totalAssets[noteLog.saveDate]) {
-              totalAssets[noteLog.saveDate].totalAssets += parseInt(
-                noteLog.remainPrincipal,
-                10
-              );
-            }
-          }
-          const totalAssetsArray = Object.entries(totalAssets).sort();
-
-          const growthRate = growthCalculator(totalAssetsArray);
-          return {
-            data: totalAssets,
-            growthRatePercentage: growthRate,
-          };
         });
       },
       userRegister: () => {

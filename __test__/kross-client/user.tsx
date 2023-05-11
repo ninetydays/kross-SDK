@@ -141,15 +141,7 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
-
-  it('gets total assets for each day', async () => {
-    const { totalAssets } = client.useUserHooks();
-    const { result } = renderHook(() => totalAssets(), {
-      wrapper,
-    });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data).toBeDefined();
-  });
+  
   it.skip('register a user', async () => {
     const { userRegister } = client.useUserHooks();
     const { result } = renderHook(() => userRegister(), {
