@@ -3,6 +3,7 @@ import { Investments } from '../../src/kross-client/investments';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { format, subMonths } from 'date-fns';
+import { ca } from 'date-fns/locale';
 
 export const investment = () => {
   let client: Investments;
@@ -111,9 +112,14 @@ export const investment = () => {
     const { transactionLogs } = client.useInvestmentHooks();
     const { result } = renderHook(
       () =>
-        transactionLogs({
-          select: 'deposit',
-        }),
+        transactionLogs(
+          {
+            transactionQueryDto: {
+              filter: 'select||$eq||deposit',
+            },
+            cacheTime: 0,
+          }
+        ),
       {
         wrapper,
       }
