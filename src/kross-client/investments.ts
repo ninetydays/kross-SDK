@@ -10,7 +10,6 @@ import {
   InvestmentsWengeQueryDto,
   TransactionResponse
 } from '../types/kross-client/investments';
-import { sk } from 'date-fns/locale';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
     InvestmentListResponse,
