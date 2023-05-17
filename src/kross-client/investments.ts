@@ -128,7 +128,7 @@ export class Investments extends KrossClientBase {
           }
         );
       },
-      transactionLogs: (transactionQueryDto: InvestmentsWengeQueryDto, cacheTime?: 0) => {
+      transactionLogs: (transactionQueryDto: InvestmentsWengeQueryDto, cacheTime?: number) => {
         return useInfiniteQuery(
           'transactionLogs',
           async ({ pageParam = 0 }) => {
