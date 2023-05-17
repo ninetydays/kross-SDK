@@ -1,5 +1,5 @@
-import { FunctionResponse } from './index';
-
+import { FunctionResponse, LoanResponseData } from './index';
+import { UserData } from './index';
 export type InvestmentsWengeQueryDto = {
   select?: string;
   skip?: string;
@@ -89,16 +89,14 @@ export type NotesResponseData = {
 export type NotesResponse = FunctionResponse<NotesResponseData>;
 
 export type TransactionResponseData = {
-  id: number;
+  id: string;
   category: string;
-  tag: string;
-  amount: number;
-  exposure: boolean;
-  status: string;
-  member_no: string;
+  amount: string;
+  balance: string;
   data: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
+  loan: Record<string, unknown> | null;
 };
 
 export type TransactionResponse = FunctionResponse<TransactionResponseData>;
