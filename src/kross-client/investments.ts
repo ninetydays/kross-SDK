@@ -6,11 +6,9 @@ import {
   InvestmentListResponse,
   InvestmentRegisterDto,
   NotesResponse,
-  CmsTradebookResponse,
   InvestmentRegisterResponse,
-  InvestmentQueryDto,
   InvestmentsWengeQueryDto,
-  TransactionQueryDto,
+  TransactionResponse
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
@@ -18,15 +16,15 @@ export class Investments extends KrossClientBase {
     InvestmentsWengeQueryDto
   >;
   notes: FunctionRegistered<NotesResponse, InvestmentsWengeQueryDto>;
-  cmsTradebook: FunctionRegistered<CmsTradebookResponse, InvestmentQueryDto>;
+  transactionLogs: FunctionRegistered<TransactionResponse, InvestmentsWengeQueryDto>;
 
   constructor(options: KrossClientOptions) {
     super(options);
-    this.cmsTradebook = Investments.registerFunction<
-      CmsTradebookResponse,
-      InvestmentQueryDto
+    this.transactionLogs = Investments.registerFunction<
+      TransactionResponse,
+      InvestmentsWengeQueryDto
     >({
-      url: '/cms-tradebooks',
+      url: '/transaction-logs',
       method: 'get',
     });
 
@@ -92,16 +90,6 @@ export class Investments extends KrossClientBase {
           },
         });
       },
-      cmsTradebook: (investmentQueryDto?: InvestmentQueryDto) => {
-        return useQuery({
-          queryKey: 'cmsTradebooks',
-          queryFn: async () => {
-            return this.cmsTradebook(investmentQueryDto).then((res) => {
-              return res.data;
-            });
-          },
-        });
-      },
       notes: (
         investmentsWengeQueryDto?: InvestmentsWengeQueryDto,
         cacheTime?: number
@@ -140,40 +128,28 @@ export class Investments extends KrossClientBase {
           }
         );
       },
-      transactionHistory: (transactionQueryDto: TransactionQueryDto) => {
+      transactionLogs: (transactionQueryDto: InvestmentsWengeQueryDto) => {
         return useInfiniteQuery(
-          'transactionHistory',
+          'transactionLogs',
           async ({ pageParam = 0 }) => {
-            const offset = (
+            const skip = (
               pageParam *
-              (isNaN(parseInt(transactionQueryDto?.limit as string, 10))
+              (isNaN(parseInt(transactionQueryDto?.take as string, 10))
                 ? 0
-                : parseInt(transactionQueryDto?.limit as string, 10))
+                : parseInt(transactionQueryDto?.take as string, 10))
             ).toString();
-            const { include, ...rest } = transactionQueryDto;
-
+            const { select, ...rest } = transactionQueryDto;
             const paramInclude =
-              include !== 'all'
-                ? [include]
-                : [
-                    'deposit',
-                    'withdraw',
-                    'invest',
-                    'distribute',
-                    'merchant_withdraw',
-                    'merchant_deposit',
-                  ];
-            const transactionData = await this.cmsTradebook({
-              query: {
-                category: {
-                  in: paramInclude,
-                },
-              },
-              offset,
+              select !== 'all'
+                ? select
+                : 'deposit,withdraw,invest,distribute,merchant_withdraw,merchant_deposit';
+            const transactionData = await this.transactionLogs({
+              filter: `category||$in||${paramInclude}`,
+              skip,
               ...rest,
             });
-            const transactionDataArray = transactionData?.data?.data
-              ? Object.values(transactionData.data.data)
+            const transactionDataArray = transactionData?.data
+              ? Object.values(transactionData.data)
               : [];
             return transactionDataArray;
           },
