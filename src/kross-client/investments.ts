@@ -10,6 +10,7 @@ import {
   InvestmentsWengeQueryDto,
   TransactionResponse
 } from '../types/kross-client/investments';
+import { sk } from 'date-fns/locale';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
     InvestmentListResponse,
@@ -160,6 +161,8 @@ export class Investments extends KrossClientBase {
               }
               return pages?.length;
             },
+            cacheTime: 0,
+            staleTime: 0,
           }
         );
       },
