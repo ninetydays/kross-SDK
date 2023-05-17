@@ -1,27 +1,5 @@
-import { FunctionResponse } from './index';
-
-export type InvestmentQueryDto = {
-  fields?: string;
-  offset?: string;
-  limit?: string;
-  sort_by?: string;
-  group_by?: string;
-  query?: Record<string, unknown>;
-  include?: Record<string, unknown>;
-  filter?: string;
-};
-
-export type TransactionQueryDto = {
-  fields?: string;
-  offset?: string;
-  limit?: string;
-  sort_by?: string;
-  group_by?: string;
-  query?: Record<string, unknown>;
-  include: string;
-  filter?: string;
-};
-
+import { FunctionResponse, LoanResponseData } from './index';
+import { UserData } from './index';
 export type InvestmentsWengeQueryDto = {
   select?: string;
   skip?: string;
@@ -110,20 +88,18 @@ export type NotesResponseData = {
 
 export type NotesResponse = FunctionResponse<NotesResponseData>;
 
-export type CmsTradebookResponseData = {
-  id: number;
+export type TransactionResponseData = {
+  id: string;
   category: string;
-  tag: string;
-  amount: number;
-  exposure: boolean;
-  status: string;
-  member_no: string;
+  amount: string;
+  balance: string;
   data: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
+  loan: Record<string, unknown> | null;
 };
 
-export type CmsTradebookResponse = FunctionResponse<CmsTradebookResponseData>;
+export type TransactionResponse = FunctionResponse<TransactionResponseData>;
 
 export interface InvestmentData {
   id: string;

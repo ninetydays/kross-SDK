@@ -10,7 +10,7 @@ The `Investments` class is a client for interacting with the Kross API's loans-r
 **Methods** <br/>
 ***- investmentList()*** <br/>
 ***- notes()*** <br/>
-***- cmsTradebook()*** <br/>
+***- transactionLogs()*** <br/>
 ***- investmentRegister()*** <br/>
 ***- investmentCancel()*** <br/>
 
@@ -149,38 +149,31 @@ Return an array of notes in response on success
 The `cmsTradebook()` method is used to get cms tradebooks data.
 
 ```ts
-investments.cmsTradebook({
-    query: 'id||$in||1,2,3',
-    offset: '0',
-    limit: '3',
-    sort_by: 'id.desc',
+investments.transactionLogs({
+    filter: 'id||$in||1,2,3',
+    skip: '0',
+    take: '3',
+    order: 'id.desc',
 });
 ```
 
 ##### Arguments
 
-`query` - query for cmsTradebooks data. <br/>
-`offset, limit` : pagination props <br/>
-`sort_by`: sort lets you sort cmsTradebooks data based on fields <br/>
+`filter` - query for transactionLogs data. <br/>
+`skip, offset` : pagination props <br/>
+`order`: sort lets you sort transactionLogs data based on fields <br/>
 
-Return an array of cmsTradebooks data in response on success
+Return an array of transactionLogs data in response on success
 ```
 [{
-      "id": 0,
-      "userId": 0,
-      "loanCategory": "string",
-      "loanName": "string",
-      "period": 0,
-      "interestRate": 0,
-      "investorFeeRate": 0,
-      "borrowerFeeRate": 0,
-      "repaymentType": "string",
-      "repaymentCycle": "string",
-      "repaymentCount": 0,
-      "path": "string",
-      "auditNumber": "string",
-      "createdAt": "2023-03-30T08:23:33.251Z",
-      "updatedAt": "2023-03-30T08:23:33.251Z"
+      "id": string;
+      "category": string;
+      "amount": string;
+      "balance": string;
+      "data": Record<string, unknown>;
+      "createdAt": Date;
+      "updatedAt": Date;
+      "loan": Record<string, unknown> | null;
     }]
 ``` 
  --------------------------------------------
