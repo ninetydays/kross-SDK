@@ -93,9 +93,13 @@ export class Investments extends KrossClientBase {
           },
         });
       },
-      notes: (
-        investmentsWengeQueryDto?: InvestmentsWengeQueryDto,
-        cacheTime?: number
+      notes: ({
+        investmentsWengeQueryDto = {},
+        cacheTime = 300000,
+        enabled = true,
+      }: {investmentsWengeQueryDto?: InvestmentsWengeQueryDto,
+        cacheTime?: number,
+        enabled?: boolean,}
       ) => {
         return useInfiniteQuery(
           ['notes', { ...investmentsWengeQueryDto }],
@@ -128,6 +132,7 @@ export class Investments extends KrossClientBase {
               return pages?.length;
             },
             cacheTime: cacheTime !== undefined ? cacheTime : 300000,
+            enabled: enabled !== undefined ? enabled : true,
           }
         );
       },

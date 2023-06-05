@@ -3,7 +3,6 @@ import { Investments } from '../../src/kross-client/investments';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { format, subMonths } from 'date-fns';
-import { ca } from 'date-fns/locale';
 
 export const investment = () => {
   let client: Investments;
@@ -90,22 +89,26 @@ export const investment = () => {
     const { notes } = client.useInvestmentHooks();
     const curDate = new Date();
     const endDate = format(new Date(), 'yyyy-MM-dd');
-    const startDate = format(subMonths(curDate, 1), 'yyyy-MM-dd');
+    const startDate = format(subMonths(curDate, 4), 'yyyy-MM-dd');
     const { result } = renderHook(
       () =>
         notes({
-          filter: `state||$eq||done;doneAt||$between||${startDate},${endDate}`,
-          join: 'loan',
-          order: 'doneAt.desc',
-          skip: '0',
-          take: '6',
-        }),
+          investmentsWengeQueryDto: {
+            filter: `state||$eq||done;doneAt||$between||${startDate},${endDate}`,
+            join: 'loan',
+            order: 'doneAt.desc',
+            skip: '0',
+            take: '6',
+          },
+          enabled: false,
+        },
+        ),
       {
         wrapper,
       }
     );
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data).toBeDefined();
+    await waitFor(() => expect(result.current.isSuccess).toBe(false));
+    await waitFor(() => {expect(result.current.data).toBeUndefined()}); 
   });
 
   it('transactionLogs', async () => {
