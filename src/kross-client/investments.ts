@@ -243,6 +243,7 @@ export class Investments extends KrossClientBase {
 
             return {
               investmentAmountLimit,
+              kftcInvestmentLimit,
             };
           },
         });
