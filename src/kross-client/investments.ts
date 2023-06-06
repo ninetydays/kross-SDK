@@ -8,7 +8,7 @@ import {
   NotesResponse,
   InvestmentRegisterResponse,
   InvestmentsWengeQueryDto,
-  TransactionResponse
+  TransactionResponse,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
@@ -16,7 +16,10 @@ export class Investments extends KrossClientBase {
     InvestmentsWengeQueryDto
   >;
   notes: FunctionRegistered<NotesResponse, InvestmentsWengeQueryDto>;
-  transactionLogs: FunctionRegistered<TransactionResponse, InvestmentsWengeQueryDto>;
+  transactionLogs: FunctionRegistered<
+    TransactionResponse,
+    InvestmentsWengeQueryDto
+  >;
 
   constructor(options: KrossClientOptions) {
     super(options);
@@ -95,7 +98,7 @@ export class Investments extends KrossClientBase {
         cacheTime?: number
       ) => {
         return useInfiniteQuery(
-          'notes',
+          ['notes', { ...investmentsWengeQueryDto }],
           async ({ pageParam = 0 }) => {
             const skip = (
               pageParam *
@@ -129,12 +132,12 @@ export class Investments extends KrossClientBase {
         );
       },
       transactionLogs: ({
-          transactionQueryDto = {},
-          cacheTime = 300000
-        }: {
-          transactionQueryDto?: InvestmentsWengeQueryDto;
-          cacheTime?: number;
-        }) => {
+        transactionQueryDto = {},
+        cacheTime = 300000,
+      }: {
+        transactionQueryDto?: InvestmentsWengeQueryDto;
+        cacheTime?: number;
+      }) => {
         return useInfiniteQuery(
           'transactionLogs',
           async ({ pageParam = 0 }) => {
