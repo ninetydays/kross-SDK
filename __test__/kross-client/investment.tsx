@@ -89,26 +89,24 @@ export const investment = () => {
     const { notes } = client.useInvestmentHooks();
     const curDate = new Date();
     const endDate = format(new Date(), 'yyyy-MM-dd');
-    const startDate = format(subMonths(curDate, 4), 'yyyy-MM-dd');
+    const startDate = format(subMonths(curDate, 8), 'yyyy-MM-dd');
     const { result } = renderHook(
       () =>
         notes({
-          investmentsWengeQueryDto: {
             filter: `state||$eq||done;doneAt||$between||${startDate},${endDate}`,
             join: 'loan',
             order: 'doneAt.desc',
             skip: '0',
             take: '6',
-          },
-          enabled: false,
-        },
-        ),
+          },0,
+          false,
+          ),
       {
         wrapper,
       }
     );
-    await waitFor(() => expect(result.current.isSuccess).toBe(false));
-    await waitFor(() => {expect(result.current.data).toBeUndefined()}); 
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {expect(result.current.data).toBeDefined()});
   });
 
   it('transactionLogs', async () => {

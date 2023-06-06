@@ -93,16 +93,12 @@ export class Investments extends KrossClientBase {
           },
         });
       },
-      notes: ({
-        investmentsWengeQueryDto = {},
-        cacheTime = 300000,
-        enabled = true,
-      }: {investmentsWengeQueryDto?: InvestmentsWengeQueryDto,
+      notes: (investmentsWengeQueryDto?: InvestmentsWengeQueryDto,
         cacheTime?: number,
-        enabled?: boolean,}
+        enabled?: boolean,
       ) => {
         return useInfiniteQuery(
-          ['notes', { ...investmentsWengeQueryDto }],
+        ['notes', { ...investmentsWengeQueryDto }],
           async ({ pageParam = 0 }) => {
             const skip = (
               pageParam *
