@@ -99,7 +99,7 @@ export const investment = () => {
             skip: '0',
             take: '6',
           },0,
-          false,
+          true,
           ),
       {
         wrapper,
