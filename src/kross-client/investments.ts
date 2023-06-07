@@ -93,12 +93,13 @@ export class Investments extends KrossClientBase {
           },
         });
       },
-      notes: (investmentsWengeQueryDto?: InvestmentsWengeQueryDto,
+      notes: (
+        investmentsWengeQueryDto?: InvestmentsWengeQueryDto,
         cacheTime?: number,
-        enabled?: boolean,
+        enabled?: boolean
       ) => {
         return useInfiniteQuery(
-        ['notes', { ...investmentsWengeQueryDto }],
+          ['notes', { ...investmentsWengeQueryDto }],
           async ({ pageParam = 0 }) => {
             const skip = (
               pageParam *
@@ -184,9 +185,11 @@ export class Investments extends KrossClientBase {
       appliedInvestments: ({
         investmentsQuery = {},
         cacheTime = 300000,
+        enabled = true,
       }: {
         investmentsQuery?: InvestmentsWengeQueryDto;
         cacheTime?: number;
+        enabled?: boolean;
       }) => {
         return useInfiniteQuery(
           'appliedInvestments',
@@ -212,6 +215,7 @@ export class Investments extends KrossClientBase {
               return pages?.length;
             },
             cacheTime: cacheTime !== undefined ? cacheTime : 300000,
+            enabled: enabled !== undefined ? enabled : true,
           }
         );
       },
