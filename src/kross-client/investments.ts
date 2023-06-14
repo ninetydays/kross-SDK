@@ -236,6 +236,8 @@ export class Investments extends KrossClientBase {
                 : (kftcInvestInquiry?.data?.data?.limit || 0) -
                   (kftcInvestInquiry?.data?.data?.balance || 0);
 
+            const kftcTotalLimit = kftcInvestInquiry?.data?.data?.limit || 0;
+
             const availableAmountToWithdrawInAccount =
               accountData?.data?.data?.available_withdraw_amount || 0;
 
@@ -249,6 +251,7 @@ export class Investments extends KrossClientBase {
             return {
               investmentAmountLimit,
               kftcInvestmentLimit,
+              kftcTotalLimit,
             };
           },
         });
