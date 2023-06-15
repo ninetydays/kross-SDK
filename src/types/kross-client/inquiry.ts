@@ -5,6 +5,7 @@ export type InquiryDto = {
   detail: string;
   response?: string;
   state: 'pending' | 'done';
+  attachments?: string[];
 };
 export type InquiryResponseData = {
   id: string;
@@ -15,6 +16,7 @@ export type InquiryResponseData = {
   createdAt: string;
   updatedAt: string;
   state: 'pending' | 'done';
+  attachments?: string[] | null;
 };
 
 export type InquiriesDto = {
