@@ -159,10 +159,15 @@ export class Investments extends KrossClientBase {
               skip,
               ...rest,
             });
-            const transactionDataArray = transactionData?.data
-              ? Object.values(transactionData.data)
-              : [];
-            return transactionDataArray;
+            const myHeaders = new Headers(transactionData?.headers);
+            const transactionsCount = myHeaders.get('x-total-count');
+
+            const result = {
+              transactions: transactionData?.data,
+              notesCount: transactionsCount,
+            };
+            const transactionsArray = Object.values(result || []);
+            return transactionsArray;
           },
           {
             getNextPageParam: (lastPage, pages) => {
