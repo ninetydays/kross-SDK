@@ -229,3 +229,18 @@ export type PortfolioResponseData = {
 };
 
 export type PortfolioResponse = FunctionResponse<PortfolioResponseData>;
+
+type SignedUrlSuccess = {
+  url: string;
+  okay: boolean;
+  message: string;
+};
+
+type SignedUrlFail = {
+  url: string;
+  statusCode: number;
+};
+
+export type SignedUrlResponse = FunctionResponse<
+  SignedUrlSuccess | SignedUrlFail
+>;

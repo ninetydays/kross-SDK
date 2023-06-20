@@ -141,7 +141,7 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
-  
+
   it.skip('register a user', async () => {
     const { userRegister } = client.useUserHooks();
     const { result } = renderHook(() => userRegister(), {
@@ -191,6 +191,15 @@ export const user = () => {
   it('gets user portfolio details', async () => {
     const { portfolio } = client.useUserHooks();
     const { result } = renderHook(() => portfolio(), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
+  it('gets presigned url for s3 storage', async () => {
+    const { signedURL } = client.useUserHooks();
+    const { result } = renderHook(() => signedURL('randomfile'), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));

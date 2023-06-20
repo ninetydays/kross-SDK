@@ -2,6 +2,7 @@ import {
   PasswordCheckDto,
   PasswordCheckResponse,
   PortfolioResponse,
+  SignedUrlResponse,
 } from './../types/kross-client/user';
 import { KrossClientBase } from './base';
 import { useQuery, useMutation } from 'react-query';
@@ -45,6 +46,7 @@ export class User extends KrossClientBase {
   >;
   userNoteLogs: FunctionRegistered<UserNoteLogsResponse, UserWengeQueryDto>;
   portfolio: FunctionRegistered<PortfolioResponse>;
+  signedURL: FunctionRegistered<SignedUrlResponse>;
 
   constructor(options: KrossClientOptions) {
     super(options);
@@ -127,6 +129,11 @@ export class User extends KrossClientBase {
 
     this.portfolio = User.registerFunction<PortfolioResponse>({
       url: '/sienna/portfolio',
+      method: 'get',
+    });
+
+    this.signedURL = User.registerFunction<SignedUrlResponse>({
+      url: '/users/signed-url/:fileName',
       method: 'get',
     });
   }
@@ -310,7 +317,7 @@ export class User extends KrossClientBase {
             const repaymentScheduledRate = repaymentsScheduledData
               ? (
                   repaymentsScheduledData?.reduce(
-                    (acc: number, cur: { rate: number, feeRate: number }) =>
+                    (acc: number, cur: { rate: number; feeRate: number }) =>
                       acc + (cur.rate - cur.feeRate) * 100,
                     0
                   ) / (repaymentScheduledCount || 1)
@@ -378,6 +385,18 @@ export class User extends KrossClientBase {
             });
           },
           enabled: enabled ?? true,
+        });
+      },
+
+      signedURL: (fileName: string) => {
+        return useQuery({
+          cacheTime: 0,
+          queryKey: 'signedUrl',
+          queryFn: async () => {
+            return this.signedURL({ fileName }).then((res) => {
+              return res.data;
+            });
+          },
         });
       },
     };
