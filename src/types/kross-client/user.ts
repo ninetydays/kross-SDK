@@ -244,3 +244,9 @@ type SignedUrlFail = {
 export type SignedUrlResponse = FunctionResponse<
   SignedUrlSuccess | SignedUrlFail
 >;
+
+export type UserFilesResponse = {
+  files: ['string'];
+  okay: boolean;
+  message: 'string';
+};

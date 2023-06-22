@@ -26,6 +26,7 @@ import {
   UserWengeQueryDto,
   UserUpdateDto,
   UserUpdateResponse,
+  UserFilesResponse,
 } from '../types/kross-client/user';
 
 export class User extends KrossClientBase {
@@ -39,7 +40,7 @@ export class User extends KrossClientBase {
   userData: FunctionRegistered<UserResponse, UserWengeQueryDto>;
   userDataUpdate: FunctionRegistered<UserUpdateResponse, UserUpdateDto>;
   passwordCheck: FunctionRegistered<PasswordCheckResponse, PasswordCheckDto>;
-
+  userFilesList: FunctionRegistered<any>;
   userAccountLogs: FunctionRegistered<
     UserAccountLogsResponse,
     UserWengeQueryDto
@@ -134,6 +135,10 @@ export class User extends KrossClientBase {
 
     this.signedURL = User.registerFunction<SignedUrlResponse>({
       url: '/users/signed-url/:fileName',
+      method: 'get',
+    });
+    this.userFilesList = User.registerFunction<UserFilesResponse>({
+      url: '/users/files-list',
       method: 'get',
     });
   }
@@ -394,6 +399,17 @@ export class User extends KrossClientBase {
           queryKey: 'signedUrl',
           queryFn: async () => {
             return this.signedURL({ fileName }).then((res) => {
+              return res.data;
+            });
+          },
+        });
+      },
+      userFilesList: () => {
+        return useQuery({
+          cacheTime: 0,
+          queryKey: 'userFilesList',
+          queryFn: async () => {
+            return this.userFilesList().then((res) => {
               return res.data;
             });
           },

@@ -205,4 +205,13 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
+
+  it('gets user verification files list', async () => {
+    const { userFilesList } = client.useUserHooks();
+    const { result } = renderHook(() => userFilesList(), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 };
