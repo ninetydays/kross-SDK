@@ -1,5 +1,4 @@
-import { FunctionResponse, LoanResponseData } from './index';
-import { UserData } from './index';
+import { FunctionResponse } from './index';
 export type InvestmentsWengeQueryDto = {
   select?: string;
   skip?: string;

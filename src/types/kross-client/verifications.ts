@@ -11,6 +11,28 @@ export type IdCardVerificationsDto = {
   issueNo2: string;
 };
 
+export type VerificationsWengeDto = {
+  select?: string;
+  skip?: string;
+  take?: string;
+  order?: string;
+  filter?: string;
+  join?: string;
+};
+
+export type VerificationResponseData = {
+  id: string;
+  userId:	string;
+  type: string
+  certification: string;
+  encodedData: Record<string, unknown>;
+  expireDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type VerificationsResponse = FunctionResponse<VerificationResponseData>;
+
 export type IdCardVerificationsResponseData = {
   success: boolean;
   message: string;

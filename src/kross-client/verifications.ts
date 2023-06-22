@@ -1,5 +1,5 @@
 import { KrossClientBase } from './base';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import {
   IdOcrVerificationsDto,
   IdOcrVerificationsResponse,
@@ -9,8 +9,22 @@ import {
   UseBTokenResponse,
   PhoneVerificationDto,
   PhoneVerificationResponse,
+  VerificationsWengeDto,
+  VerificationsResponse
 } from '../types/kross-client/verifications';
+import { KrossClientOptions, FunctionRegistered } from '../types';
 export class Verifications extends KrossClientBase {
+  verifications: FunctionRegistered<VerificationsResponse, VerificationsWengeDto>;
+
+  constructor(options: KrossClientOptions) {
+    super(options);
+
+    this.verifications = Verifications.registerFunction<VerificationsResponse, VerificationsWengeDto>({
+      url: '/verifications',
+      method: 'get',
+    });
+  }
+
   idCardVerification(idCardVerificationDto: IdCardVerificationsDto) {
     return this.instance.post<IdCardVerificationsResponse>(
       '/verifications/idcard',
@@ -42,12 +56,23 @@ export class Verifications extends KrossClientBase {
     );
   }
 
+
+
   useVerificationHook() {
     return {
+      verifications: (verificationsWengeDto: VerificationsWengeDto) => {
+        return useQuery({
+          queryKey: 'verifications',
+          queryFn: async () => {
+            const verificationData = await this.verifications(verificationsWengeDto);
+            return verificationData;
+          },
+        });
+        },
       idCardVerification: () => {
         const mutation = useMutation(
-          (idCardVerificationDto: IdCardVerificationsDto) =>
-            this.idCardVerification(idCardVerificationDto)
+          (idOcrVerificationDto: IdOcrVerificationsDto) =>
+            this.idOcrVerification(idOcrVerificationDto)
         );
         return mutation;
       },
