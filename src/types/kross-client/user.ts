@@ -276,5 +276,5 @@ export type updateCorporationResponse = {
   chargeName: 'string';
   ceoName: 'string';
   state: 'string';
-  data: {};
+  data: any;
 };
