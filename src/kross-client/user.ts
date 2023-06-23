@@ -27,6 +27,9 @@ import {
   UserUpdateDto,
   UserUpdateResponse,
   UserFilesResponse,
+  CorporationDto,
+  getCorporationResponse,
+  updateCorporationResponse,
 } from '../types/kross-client/user';
 
 export class User extends KrossClientBase {
@@ -48,7 +51,8 @@ export class User extends KrossClientBase {
   userNoteLogs: FunctionRegistered<UserNoteLogsResponse, UserWengeQueryDto>;
   portfolio: FunctionRegistered<PortfolioResponse>;
   signedURL: FunctionRegistered<SignedUrlResponse>;
-
+  getCorporations: FunctionRegistered<getCorporationResponse>;
+  updateCorporation: FunctionRegistered<updateCorporationResponse>;
   constructor(options: KrossClientOptions) {
     super(options);
     this.userNoteLogs = User.registerFunction<
@@ -141,7 +145,19 @@ export class User extends KrossClientBase {
       url: '/users/files-list',
       method: 'get',
     });
+
+    this.getCorporations = User.registerFunction<getCorporationResponse>({
+      url: '/corporations',
+      method: 'get',
+    });
+
+    this.updateCorporation = User.registerFunction<updateCorporationResponse>({
+      url: '/corporations',
+      method: 'patch',
+      urlParam: 'corporationId',
+    });
   }
+
   useUserHooks() {
     return {
       userNoteLogs: (userWengeQueryDto?: UserWengeQueryDto) => {
@@ -410,6 +426,28 @@ export class User extends KrossClientBase {
           queryKey: 'userFilesList',
           queryFn: async () => {
             return this.userFilesList().then((res) => {
+              return res.data;
+            });
+          },
+        });
+      },
+      getCorporations: () => {
+        return useQuery({
+          cacheTime: 0,
+          queryKey: 'getCorporation',
+          queryFn: async () => {
+            return this.getCorporations().then((res) => {
+              return res.data;
+            });
+          },
+        });
+      },
+      updateCorporations: (corporationDto: CorporationDto) => {
+        return useQuery({
+          cacheTime: 0,
+          queryKey: 'updateCorporations',
+          queryFn: async () => {
+            return this.updateCorporation(corporationDto).then((res) => {
               return res.data;
             });
           },

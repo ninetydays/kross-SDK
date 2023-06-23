@@ -250,3 +250,31 @@ export type UserFilesResponse = {
   okay: boolean;
   message: 'string';
 };
+export type CorporationDto = {
+  corporationId: number;
+  state: string;
+};
+export type getCorporationResponse = {
+  id: string;
+  userId: string;
+  memberNo: string;
+  businessNo: string;
+  corpRegNo: string;
+  chargeName: string;
+  ceoName: string;
+  data: {};
+  createdAt: string;
+  updatedAt: string;
+  state: string;
+  chargeMobile: string;
+};
+
+export type updateCorporationResponse = {
+  corpRegNo: 'string';
+  businessNo: 'string';
+  chargeMobile: 'string';
+  chargeName: 'string';
+  ceoName: 'string';
+  state: 'string';
+  data: {};
+};

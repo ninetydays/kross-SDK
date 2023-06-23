@@ -214,4 +214,23 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
+  it('gets corporations ', async () => {
+    const { getCorporations } = client.useUserHooks();
+    const { result } = renderHook(() => getCorporations(), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+  it('update corporations ', async () => {
+    const { updateCorporations } = client.useUserHooks();
+    const { result } = renderHook(
+      () => updateCorporations({ corporationId: 4007, state: 'request' }),
+      {
+        wrapper,
+      }
+    );
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 };
