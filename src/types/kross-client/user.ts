@@ -262,7 +262,7 @@ export type getCorporationResponse = {
   corpRegNo: string;
   chargeName: string;
   ceoName: string;
-  data: {};
+  data: any;
   createdAt: string;
   updatedAt: string;
   state: string;
