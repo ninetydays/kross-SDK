@@ -411,12 +411,12 @@ export class User extends KrossClientBase {
         });
       },
 
-      signedURL: (fileName: string) => {
+      signedURL: (file_name: string) => {
         return useQuery({
           cacheTime: 0,
           queryKey: 'signedUrl',
           queryFn: async () => {
-            return this.signedURL({ fileName }).then((res) => {
+            return this.signedURL({ file_name }).then((res) => {
               return res.data;
             });
           },
