@@ -27,10 +27,10 @@ import {
   UserUpdateDto,
   UserUpdateResponse,
   UserFilesResponse,
-  CorporationDto,
   getCorporationResponse,
   updateCorporationResponse,
 } from '../types/kross-client/user';
+import { updateCorporationDto } from '../types/kross-client/corporations';
 
 export class User extends KrossClientBase {
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
@@ -50,9 +50,7 @@ export class User extends KrossClientBase {
   >;
   userNoteLogs: FunctionRegistered<UserNoteLogsResponse, UserWengeQueryDto>;
   portfolio: FunctionRegistered<PortfolioResponse>;
-  signedURL: FunctionRegistered<SignedUrlResponse>;
   getCorporations: FunctionRegistered<getCorporationResponse>;
-  updateCorporation: FunctionRegistered<updateCorporationResponse>;
   constructor(options: KrossClientOptions) {
     super(options);
     this.userNoteLogs = User.registerFunction<
@@ -137,12 +135,6 @@ export class User extends KrossClientBase {
       method: 'get',
     });
 
-    this.signedURL = User.registerFunction<SignedUrlResponse>({
-      url: '/users/signed-url/:file_name',
-      method: 'get',
-      urlParam: 'file_name',
-    });
-
     this.userFilesList = User.registerFunction<UserFilesResponse>({
       url: '/users/files-list',
       method: 'get',
@@ -152,12 +144,18 @@ export class User extends KrossClientBase {
       url: '/corporations',
       method: 'get',
     });
+  }
 
-    this.updateCorporation = User.registerFunction<updateCorporationResponse>({
-      url: '/corporations/:id',
-      method: 'patch',
-      urlParam: 'id',
-    });
+  signedURL(fileName: string) {
+    return this.instance.get<SignedUrlResponse>(
+      `/users/signed-url/${fileName}`
+    );
+  }
+  updateCorporation(corpId: string, corpObject: updateCorporationDto) {
+    return this.instance.patch<updateCorporationResponse>(
+      `/corporations/${corpId}`,
+      { ...corpObject }
+    );
   }
 
   useUserHooks() {
@@ -411,17 +409,6 @@ export class User extends KrossClientBase {
         });
       },
 
-      signedURL: (file_name: string) => {
-        return useQuery({
-          cacheTime: 0,
-          queryKey: 'signedUrl',
-          queryFn: async () => {
-            return this.signedURL({ file_name }).then((res) => {
-              return res.data;
-            });
-          },
-        });
-      },
       userFilesList: () => {
         return useQuery({
           cacheTime: 0,
@@ -439,17 +426,6 @@ export class User extends KrossClientBase {
           queryKey: 'getCorporation',
           queryFn: async () => {
             return this.getCorporations().then((res) => {
-              return res.data;
-            });
-          },
-        });
-      },
-      updateCorporations: (corporationDto: CorporationDto) => {
-        return useQuery({
-          cacheTime: 0,
-          queryKey: 'updateCorporations',
-          queryFn: async () => {
-            return this.updateCorporation(corporationDto).then((res) => {
               return res.data;
             });
           },
