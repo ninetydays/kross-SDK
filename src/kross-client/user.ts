@@ -138,9 +138,11 @@ export class User extends KrossClientBase {
     });
 
     this.signedURL = User.registerFunction<SignedUrlResponse>({
-      url: '/users/signed-url/:fileName',
+      url: '/users/signed-url/:file_name',
       method: 'get',
+      urlParam: 'file_name',
     });
+
     this.userFilesList = User.registerFunction<UserFilesResponse>({
       url: '/users/files-list',
       method: 'get',
@@ -152,9 +154,9 @@ export class User extends KrossClientBase {
     });
 
     this.updateCorporation = User.registerFunction<updateCorporationResponse>({
-      url: '/corporations',
+      url: '/corporations/:id',
       method: 'patch',
-      urlParam: 'corporationId',
+      urlParam: 'id',
     });
   }
 
