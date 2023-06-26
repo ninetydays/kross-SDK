@@ -234,13 +234,10 @@ export class KrossClientBase {
         }
         url = options.url.replace(`:${options.urlParam}`, urlParam);
       } else {
-        const matches = options.url.match(/\/:/g);
-        url = matches
-          ? options.url.replace(`/:${input}`, `/${input}`)
-          : options.url;
+        url = options.url;
       }
       const paramsAndDataObject =
-        options.method === 'get' ? null : { data: input };
+        options.method === 'get' ? { params: input } : { data: input };
       return this.request({
         url,
         method: options.method,
