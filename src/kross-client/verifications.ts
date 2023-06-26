@@ -60,8 +60,10 @@ export class Verifications extends KrossClientBase {
 
   useVerificationHook() {
     return {
-      verifications: (verificationsWengeDto: VerificationsWengeDto) => {
+      verifications: (verificationsWengeDto: VerificationsWengeDto, enabled?: boolean) => {
         return useQuery({
+          cacheTime: 0,
+          enabled: enabled !== undefined ? enabled : true,
           queryKey: 'verifications',
           queryFn: async () => {
             const verificationData = await this.verifications(verificationsWengeDto);

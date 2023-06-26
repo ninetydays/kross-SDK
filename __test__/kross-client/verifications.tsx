@@ -138,7 +138,8 @@ export const verifications = () => {
 
   it('get verification data', async () => {
     const { verifications } = client.useVerificationHook();
-    const { result } = renderHook(() => verifications({}), {
+    const { result } = renderHook(() => verifications({},
+      true), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
