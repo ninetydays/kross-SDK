@@ -8,7 +8,6 @@ import {
   GetAuthTokenResponse,
 } from '../types';
 import { hmacTokenFunction } from '../utils/encryptor';
-import { isBefore } from 'date-fns';
 import jwt_decode from 'jwt-decode';
 
 export class KrossClientBase {
@@ -51,27 +50,23 @@ export class KrossClientBase {
             'Content-type': 'multipart/form-data',
           };
         }
-        if (this.authToken) {
+        if (this.refreshToken && this.authToken) {
           const user: any = await jwt_decode(this.authToken as string);
-          const isExpired = user.exp
-            ? isBefore(new Date(user.exp * 1000), new Date())
-            : true;
+          const isAuthTokenExpired = user.exp * 1000 < Date.now();
 
-          if (!isExpired) {
+          if (!isAuthTokenExpired) {
             config.headers = {
               ...config.headers,
               Authorization: `Bearer ${this.authToken}`,
             };
+
             return config;
           }
           const userRefreshToken: any = await jwt_decode(
             this.refreshToken as string
           );
-          const isRefreshTokenExpired = userRefreshToken.exp
-            ? userRefreshToken.exp
-              ? isBefore(new Date(userRefreshToken.exp * 1000), new Date())
-              : true
-            : false;
+          const isRefreshTokenExpired =
+            userRefreshToken.exp * 1000 < Date.now();
 
           if (isRefreshTokenExpired) {
             this.authToken = null;
@@ -80,25 +75,36 @@ export class KrossClientBase {
             return config;
           }
 
-          const refreshTokenResponse = await axios.get(
-            `${options.baseURL}/auth/refresh`,
-            {
-              headers: {
-                'X-Date': hmacToken.xDate,
-                'client-authorization': hmacToken.hmacToken,
-                Authorization: `Bearer ${this.refreshToken}`,
-              },
+          try {
+            const refreshTokenResponse = await axios.get(
+              `${options.baseURL}/auth/refresh`,
+              {
+                headers: {
+                  'X-Date': hmacToken.xDate,
+                  'client-authorization': hmacToken.hmacToken,
+                  Authorization: `Bearer ${this.refreshToken}`,
+                },
+              }
+            );
+            if (refreshTokenResponse?.data?.token) {
+              if (this?.refreshTokenCallback) {
+                this.authToken = refreshTokenResponse.data.token;
+                await this.refreshTokenCallback(
+                  refreshTokenResponse.data.token
+                );
+              }
+              config.headers = {
+                ...config.headers,
+                Authorization: `Bearer ${refreshTokenResponse.data.token}`,
+              };
+            } else {
+              this.authToken = null;
+              this.refreshToken = null;
+              if (this?.forceLogoutCallback) await this.forceLogoutCallback();
             }
-          );
-          if (refreshTokenResponse.status === 200) {
-            if (this?.refreshTokenCallback) {
-              await this.refreshTokenCallback(refreshTokenResponse.data.token);
-            }
-            this.authToken = refreshTokenResponse.data.token;
-            config.headers = {
-              ...config.headers,
-              Authorization: `Bearer ${refreshTokenResponse.data.token}`,
-            };
+          } catch (error) {
+            console.error('Error refreshing token:', error);
+            if (this?.forceLogoutCallback) await this.forceLogoutCallback();
           }
         }
         return config;
