@@ -18,12 +18,18 @@ export class DocTerms extends KrossClientBase {
 
   useDocTermsHook() {
     return {
-      docTerms: (docTermsQuery?: DocTermsQuery) => {
-        return useQuery(['docTerms', { ...docTermsQuery }], async () => {
-          return this.docTerms(docTermsQuery).then((res) => {
-            return res.data;
-          });
-        });
+      docTerms: (docTermsQuery?: DocTermsQuery, enabled?: boolean) => {
+        return useQuery(
+          ['docTerms', { ...docTermsQuery }],
+          async () => {
+            return this.docTerms(docTermsQuery).then((res) => {
+              return res.data;
+            });
+          },
+          {
+            enabled: enabled !== undefined ? enabled : true,
+          }
+        );
       },
     };
   }
