@@ -73,8 +73,8 @@ export class Verifications extends KrossClientBase {
         },
       idCardVerification: () => {
         const mutation = useMutation(
-          (idOcrVerificationDto: IdOcrVerificationsDto) =>
-            this.idOcrVerification(idOcrVerificationDto)
+          (idCardVerificationDto: IdCardVerificationsDto) =>
+            this.idCardVerification(idCardVerificationDto)
         );
         return mutation;
       },
