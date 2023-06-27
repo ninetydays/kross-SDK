@@ -5,6 +5,7 @@ import { loan } from './loan';
 import { user } from './user';
 import { InquiryTest } from './inquiry';
 import { verifications } from './verifications';
+import { docTerms } from './doc-terms';
 
 describe('Base test for login and updateToken', base);
 describe('Account', account);
@@ -13,3 +14,4 @@ describe('Loan', loan);
 describe('user', user);
 describe('Inquiry', InquiryTest);
 describe('verifications', verifications);
+describe.only('doc terms', docTerms);
