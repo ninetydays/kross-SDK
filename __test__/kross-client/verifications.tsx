@@ -38,7 +38,7 @@ export const verifications = () => {
     });
     await act(async () => {
       await result.current.mutateAsync({
-        keyid: 'aziyatalik4@gmail.com',
+        keyid: 'mad@kross.kr',
         password: 'Kross123!',
       });
     });
@@ -135,4 +135,16 @@ export const verifications = () => {
       expect(data).toBeDefined();
     });
   }, 30000);
+
+  it('get verification data', async () => {
+    const { verifications } = client.useVerificationHook();
+    const { result } = renderHook(() => verifications({
+      filter: 'type||$eq||user_detail'
+    },
+      true), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  }, 150000);
 };

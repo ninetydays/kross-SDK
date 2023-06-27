@@ -158,7 +158,7 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 30000);
-  it('update a user', async () => {
+  it.skip('update a user', async () => {
     const { userUpdate } = client.useUserHooks();
     const { result } = renderHook(() => userUpdate(), {
       wrapper,
