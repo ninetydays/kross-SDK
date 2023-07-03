@@ -198,11 +198,11 @@ export const user = () => {
   });
 
   it('gets presigned url for s3 storage', async () => {
-    const { signedURL } = client.useUserHooks();
-    const { result } = renderHook(() => signedURL('randomfile'), {
+    const { getSignedURL } = client.useUserHooks();
+    const { result } = renderHook(() => getSignedURL('randomfile'), {
       wrapper,
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => expect(result?.current?.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
 
@@ -223,13 +223,16 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
   it('update corporations ', async () => {
-    const { updateCorporations } = client.useUserHooks();
-    const { result } = renderHook(
-      () => updateCorporations({ corporationId: 4007, state: 'request' }),
-      {
-        wrapper,
-      }
-    );
+    const { updateCorporation } = client.useUserHooks();
+    const { result } = renderHook(() => updateCorporation(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        corpId: 4015,
+        state: 'request',
+      });
+    });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });

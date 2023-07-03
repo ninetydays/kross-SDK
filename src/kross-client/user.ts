@@ -151,10 +151,11 @@ export class User extends KrossClientBase {
       `/users/signed-url/${fileName}`
     );
   }
-  updateCorporation(corpId: string, corpObject: updateCorporationDto) {
+  updateCorporation(corpObject: updateCorporationDto) {
+    const { state } = corpObject;
     return this.instance.patch<updateCorporationResponse>(
-      `/corporations/${corpId}`,
-      { ...corpObject }
+      `/corporations/${corpObject.corpId}`,
+      state
     );
   }
 
@@ -430,6 +431,24 @@ export class User extends KrossClientBase {
             });
           },
         });
+      },
+      getSignedURL: (fileName: string) => {
+        return useQuery({
+          cacheTime: 0,
+          queryKey: 'getSignedURL',
+          queryFn: async () => {
+            return this.signedURL(fileName).then((res) => {
+              return res.data;
+            });
+          },
+        });
+      },
+      updateCorporation: () => {
+        const mutation = useMutation(
+          (updateCorporation: updateCorporationDto) =>
+            this.updateCorporation(updateCorporation)
+        );
+        return mutation;
       },
     };
   }
