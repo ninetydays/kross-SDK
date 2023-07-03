@@ -1,10 +1,10 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { DocTerms } from '../../src/kross-client';
+import { General } from '../../src/kross-client';
 
-export const docTerms = () => {
-  let client: DocTerms;
+export const general = () => {
+  let client: General;
   const baseURL = 'https://olive-dev.kross.kr';
   const accessId = 'XLD7UY9GETOK7TPY';
   const secretKey = 'yLbVRHGgwT5c22ndOVT2';
@@ -22,7 +22,7 @@ export const docTerms = () => {
   );
 
   beforeAll(() => {
-    client = new DocTerms({
+    client = new General({
       baseURL,
       accessId,
       secretKey,
@@ -61,5 +61,23 @@ export const docTerms = () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-  }, 150000);
+    console.log("res doc terms: ", result.current.data);
+  }, 15000);
+
+    it('gets articles', async () => {
+      const { articles } = client.useDocTermsHook();
+      const { result } = renderHook(
+        () =>
+          articles({
+            skip: '0',
+            take: '4',
+          }),
+        {
+          wrapper,
+        }
+      );
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  }, 150000)
 };

@@ -1,6 +1,6 @@
 import { FunctionResponse } from './index';
 
-export type DocTermsSuccess = {
+export type GeneralSuccess = {
   id: string;
   version: string;
   type: string;
@@ -10,12 +10,12 @@ export type DocTermsSuccess = {
   updatedAt: string;
 }[];
 
-export type DocTermsFailure = {
+export type GeneralFailure = {
   message: string;
   statusCode: number;
 };
 
-export type DocTermsQuery = {
+export type GeneralQuery = {
   select?: string;
   skip?: string;
   take?: string;
@@ -24,6 +24,6 @@ export type DocTermsQuery = {
   join?: string;
 };
 
-export type DocTermsResponse = FunctionResponse<
-  DocTermsSuccess | DocTermsFailure
+export type GeneralResponse = FunctionResponse<
+  GeneralSuccess | GeneralFailure
 >;

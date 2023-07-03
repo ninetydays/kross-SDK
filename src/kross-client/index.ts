@@ -6,7 +6,7 @@ import { Loans } from './loans';
 import { Investments } from './investments';
 import { Verifications } from './verifications';
 import { Inquiry } from './inquiry';
-import { DocTerms } from './doc-terms';
+import { General } from './general';
 export class KrossClient extends KrossClientBase {
   verifications: Verifications;
   account: Account;
@@ -14,7 +14,7 @@ export class KrossClient extends KrossClientBase {
   investments: Investments;
   loans: Loans;
   inquiries: Inquiry;
-  docTerms: DocTerms;
+  general: General;
   constructor(options: KrossClientOptions) {
     super(options);
     this.account = new Account(options);
@@ -23,7 +23,7 @@ export class KrossClient extends KrossClientBase {
     this.loans = new Loans(options);
     this.inquiries = new Inquiry(options);
     this.verifications = new Verifications(options);
-    this.docTerms = new DocTerms(options);
+    this.general = new General(options);
   }
 }
 
@@ -36,5 +36,5 @@ export {
   Investments,
   Verifications,
   Inquiry,
-  DocTerms,
+  General,
 };
