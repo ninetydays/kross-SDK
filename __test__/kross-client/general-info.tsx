@@ -1,10 +1,10 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { General } from '../../src/kross-client';
+import { GeneralInfo } from '../../src/kross-client';
 
 export const general = () => {
-  let client: General;
+  let client: GeneralInfo;
   const baseURL = 'https://olive-dev.kross.kr';
   const accessId = 'XLD7UY9GETOK7TPY';
   const secretKey = 'yLbVRHGgwT5c22ndOVT2';
@@ -22,7 +22,7 @@ export const general = () => {
   );
 
   beforeAll(() => {
-    client = new General({
+    client = new GeneralInfo({
       baseURL,
       accessId,
       secretKey,

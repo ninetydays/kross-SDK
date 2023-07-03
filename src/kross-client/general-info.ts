@@ -2,20 +2,20 @@ import { KrossClientBase } from './base';
 import { FunctionRegistered, KrossClientOptions } from '../types';
 import { useQuery } from 'react-query';
 import {
-  GeneralResponse,
-  GeneralQuery,
-} from '../types/kross-client/doc-terms';
-export class General extends KrossClientBase {
-  docTerms: FunctionRegistered<GeneralResponse, GeneralQuery>;
-  articles: FunctionRegistered<GeneralResponse, GeneralQuery>;
+  GeneralInfoResponse,
+  GeneralInfoQuery,
+} from '../types/kross-client/general-info';
+export class GeneralInfo extends KrossClientBase {
+  docTerms: FunctionRegistered<GeneralInfoResponse, GeneralInfoQuery>;
+  articles: FunctionRegistered<GeneralInfoResponse, GeneralInfoQuery>;
 
   constructor(options: KrossClientOptions) {
     super(options);
-    this.docTerms = General.registerFunction<GeneralResponse, GeneralQuery>({
+    this.docTerms = GeneralInfo.registerFunction<GeneralInfoResponse, GeneralInfoQuery>({
       url: '/doc-terms',
       method: 'get',
     });
-    this.articles = General.registerFunction<GeneralResponse, GeneralQuery>({
+    this.articles = GeneralInfo.registerFunction<GeneralInfoResponse, GeneralInfoQuery>({
       url: '/articles',
       method: 'get',
     });
@@ -23,7 +23,7 @@ export class General extends KrossClientBase {
 
   useDocTermsHook() {
     return {
-      docTerms: (docTermsQuery?: GeneralQuery, enabled?: boolean) => {
+      docTerms: (docTermsQuery?: GeneralInfoQuery, enabled?: boolean) => {
         return useQuery(
           ['docTerms', { ...docTermsQuery }],
           async () => {
@@ -36,7 +36,7 @@ export class General extends KrossClientBase {
           }
         );
       },
-      articles: (articles?: GeneralQuery) => {
+      articles: (articles?: GeneralInfoQuery) => {
         return useQuery(
           ['articles', { ...articles }],
           async () => {

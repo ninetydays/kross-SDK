@@ -6,7 +6,7 @@ export * from './user';
 export * from './investments';
 export * from './account';
 export * from './inquiry';
-export * from './doc-terms';
+export * from './general-info';
 
 type RefreshTokenCallback = (token: string) => void;
 type forceLogoutCallback = () => void;
