@@ -432,17 +432,14 @@ export class User extends KrossClientBase {
           },
         });
       },
-      getSignedURL: (fileName: string) => {
-        return useQuery({
-          cacheTime: 0,
-          queryKey: 'getSignedURL',
-          queryFn: async () => {
-            return this.signedURL(fileName).then((res) => {
-              return res.data;
-            });
-          },
-        });
+
+      getSignedURL: () => {
+        const mutation = useMutation((fileName: string) =>
+          this.signedURL(fileName)
+        );
+        return mutation;
       },
+
       updateCorporation: () => {
         const mutation = useMutation(
           (updateCorporation: updateCorporationDto) =>

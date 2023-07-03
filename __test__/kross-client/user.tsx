@@ -199,8 +199,11 @@ export const user = () => {
 
   it('gets presigned url for s3 storage', async () => {
     const { getSignedURL } = client.useUserHooks();
-    const { result } = renderHook(() => getSignedURL('randomfile'), {
+    const { result } = renderHook(() => getSignedURL(), {
       wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync('randomfile');
     });
     await waitFor(() => expect(result?.current?.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
