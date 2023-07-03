@@ -21,7 +21,7 @@ export class GeneralInfo extends KrossClientBase {
     });
   }
 
-  useDocTermsHook() {
+  useGeneralInfoHook() {
     return {
       docTerms: (docTermsQuery?: GeneralInfoQuery, enabled?: boolean) => {
         return useQuery(
