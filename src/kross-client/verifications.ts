@@ -10,7 +10,9 @@ import {
   PhoneVerificationDto,
   PhoneVerificationResponse,
   VerificationsWengeDto,
-  VerificationsResponse
+  VerificationsResponse,
+  EddVerificationDto,
+  EddVerificationResponse
 } from '../types/kross-client/verifications';
 import { KrossClientOptions, FunctionRegistered } from '../types';
 export class Verifications extends KrossClientBase {
@@ -56,6 +58,13 @@ export class Verifications extends KrossClientBase {
     );
   }
 
+  eddVerification(eddVerificationDto: EddVerificationDto) {
+    return this.instance.post<EddVerificationResponse>(
+      '/verifications/user-detail',
+      eddVerificationDto
+    );
+  }
+
 
 
   useVerificationHook() {
@@ -95,6 +104,13 @@ export class Verifications extends KrossClientBase {
         const mutation = useMutation(
           (phoneVerificationDto: PhoneVerificationDto) =>
             this.phoneVerification(phoneVerificationDto)
+        );
+        return mutation;
+      },
+      eddVerification: () => {
+        const mutation = useMutation(
+          (eddVerificationDto: EddVerificationDto) =>
+            this.eddVerification(eddVerificationDto)
         );
         return mutation;
       },
