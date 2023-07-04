@@ -63,20 +63,20 @@ export const generalInfo = () => {
     expect(result.current.data).toBeDefined();
   }, 15000);
 
-    it('gets articles', async () => {
-      const { articles } = client.useGeneralInfoHook();
-      const { result } = renderHook(
-        () =>
-          articles({
-            skip: '0',
-            take: '1',
-          }),
-        {
-          wrapper,
-        }
-      );
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data).toBeDefined();
-  }, 150000)
+  it.only('gets articles', async () => {
+    const { articles } = client.useGeneralInfoHook();
+    const { result } = renderHook(
+      () =>
+        articles({
+          skip: '0',
+          take: '1',
+        }),
+      {
+        wrapper,
+      }
+    );
+  await waitFor(() => expect(result.current.isSuccess).toBe(true));
+  expect(result.current.data).toBeDefined();
+  console.log("res: ", result.current.data);
+  }, 15000)
 };

@@ -2,20 +2,21 @@ import { KrossClientBase } from './base';
 import { FunctionRegistered, KrossClientOptions } from '../types';
 import { useQuery } from 'react-query';
 import {
-  GeneralInfoResponse,
+  DocTermsResponse,
+  ArticlesResponse,
   GeneralInfoQuery,
 } from '../types/kross-client/general-info';
 export class GeneralInfo extends KrossClientBase {
-  docTerms: FunctionRegistered<GeneralInfoResponse, GeneralInfoQuery>;
-  articles: FunctionRegistered<GeneralInfoResponse, GeneralInfoQuery>;
+  docTerms: FunctionRegistered<DocTermsResponse, GeneralInfoQuery>;
+  articles: FunctionRegistered<ArticlesResponse, GeneralInfoQuery>;
 
   constructor(options: KrossClientOptions) {
     super(options);
-    this.docTerms = GeneralInfo.registerFunction<GeneralInfoResponse, GeneralInfoQuery>({
+    this.docTerms = GeneralInfo.registerFunction<DocTermsResponse, GeneralInfoQuery>({
       url: '/doc-terms',
       method: 'get',
     });
-    this.articles = GeneralInfo.registerFunction<GeneralInfoResponse, GeneralInfoQuery>({
+    this.articles = GeneralInfo.registerFunction<ArticlesResponse, GeneralInfoQuery>({
       url: '/articles',
       method: 'get',
     });
@@ -23,24 +24,21 @@ export class GeneralInfo extends KrossClientBase {
 
   useGeneralInfoHook() {
     return {
-      docTerms: (docTermsQuery?: GeneralInfoQuery, enabled?: boolean) => {
+      docTerms: (docTermsQuery?: GeneralInfoQuery) => {
         return useQuery(
-          ['docTerms', { ...docTermsQuery }],
+          'docTerms',
           async () => {
             return this.docTerms(docTermsQuery).then((res) => {
               return res.data;
             });
           },
-          {
-            enabled: enabled !== undefined ? enabled : true,
-          }
         );
       },
       articles: (articles?: GeneralInfoQuery) => {
         return useQuery(
-          ['articles', { ...articles }],
+          'articles',
           async () => {
-            return this.docTerms(articles).then((res) => {
+            return this.articles(articles).then((res) => {
               return res.data;
             });
           },

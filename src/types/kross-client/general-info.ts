@@ -1,13 +1,22 @@
 import { FunctionResponse } from './index';
 
-export type GeneralInfoSuccess = {
+export type DocTermsSuccess = {
   id: string;
   version: string;
   type: string;
   subject: string;
   contents: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
+}[];
+
+export type ArticleSuccess = {
+  id: string;
+  title: string;
+  content: string;
+  files: string[];
+  type: string;
+  status: string;
 }[];
 
 export type GeneralInfoFailure = {
@@ -24,6 +33,8 @@ export type GeneralInfoQuery = {
   join?: string;
 };
 
-export type GeneralInfoResponse = FunctionResponse<
-  GeneralInfoSuccess | GeneralInfoFailure
+export type ArticlesResponse = FunctionResponse<ArticleSuccess | GeneralInfoFailure>;
+
+export type DocTermsResponse = FunctionResponse<
+  DocTermsSuccess | GeneralInfoFailure
 >;
