@@ -3,7 +3,7 @@ import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { GeneralInfo } from '../../src/kross-client';
 
-export const general = () => {
+export const generalInfo = () => {
   let client: GeneralInfo;
   const baseURL = 'https://olive-dev.kross.kr';
   const accessId = 'XLD7UY9GETOK7TPY';
@@ -47,12 +47,12 @@ export const general = () => {
   });
 
   it('get doc terms for investor', async () => {
-    const { docTerms } = client.useDocTermsHook();
+    const { docTerms } = client.useGeneralInfoHook();
     const { result } = renderHook(
       () =>
         docTerms({
           skip: '0',
-          take: '4',
+          take: '1',
         }),
       {
         wrapper,
@@ -61,16 +61,15 @@ export const general = () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-    console.log("res doc terms: ", result.current.data);
   }, 15000);
 
     it('gets articles', async () => {
-      const { articles } = client.useDocTermsHook();
+      const { articles } = client.useGeneralInfoHook();
       const { result } = renderHook(
         () =>
           articles({
             skip: '0',
-            take: '4',
+            take: '1',
           }),
         {
           wrapper,
