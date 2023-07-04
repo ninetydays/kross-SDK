@@ -63,7 +63,7 @@ export const generalInfo = () => {
     expect(result.current.data).toBeDefined();
   }, 15000);
 
-  it.only('gets articles', async () => {
+  it('gets articles', async () => {
     const { articles } = client.useGeneralInfoHook();
     const { result } = renderHook(
       () =>
@@ -77,6 +77,5 @@ export const generalInfo = () => {
     );
   await waitFor(() => expect(result.current.isSuccess).toBe(true));
   expect(result.current.data).toBeDefined();
-  console.log("res: ", result.current.data);
   }, 15000)
 };
