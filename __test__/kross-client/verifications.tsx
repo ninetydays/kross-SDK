@@ -38,7 +38,7 @@ export const verifications = () => {
     });
     await act(async () => {
       await result.current.mutateAsync({
-        keyid: 'mad@kross.kr',
+        keyid: 'batman6@kross.kr',
         password: 'Kross123!',
       });
     });
@@ -147,4 +147,26 @@ export const verifications = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 150000);
+
+  it('Verifies edd aka user-detail', async () => {
+    const { eddVerification } = client.useVerificationHook();
+    const { result } = renderHook(() => eddVerification(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        address1: 'Ulsan station',
+        address2: '201호',  
+        zip: '001',
+        gender: 'male',
+        transactionPurpose: 'test',
+        job: 'test',
+        fundingSource: 'test',
+      });
+    });
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
+    });
+  }, 30000);
 };

@@ -85,6 +85,18 @@ export type PhoneVerificationResponseData = {
   message: string;
 };
 
+export type EddVerificationDto = {
+  address1: string;
+  address2: string;
+  zip: string;
+  gender: string;
+  transactionPurpose: string;
+  job: string;
+  fundingSource: string;
+};
+
+export type EddVerificationResponse = FunctionResponse<EddVerificationDto>;
+
 export type PhoneVerificationResponse =
   FunctionResponse<PhoneVerificationResponseData>;
 export type UseBTokenResponse = FunctionResponse<UseBTokenResponseData>;
