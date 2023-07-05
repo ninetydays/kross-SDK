@@ -24,14 +24,17 @@ export class GeneralInfo extends KrossClientBase {
 
   useGeneralInfoHook() {
     return {
-      docTerms: (docTermsQuery?: GeneralInfoQuery) => {
+      docTerms: (docTermsQuery?: GeneralInfoQuery, enabled?: boolean) => {
         return useQuery(
-          'docTerms',
+          ['docTerms', { ...docTermsQuery }],
           async () => {
             return this.docTerms(docTermsQuery).then((res) => {
               return res.data;
             });
           },
+          {
+            enabled: enabled !== undefined ? enabled : true,
+          }
         );
       },
       articles: (articles?: GeneralInfoQuery) => {
