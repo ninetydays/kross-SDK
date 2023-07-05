@@ -155,7 +155,7 @@ export class User extends KrossClientBase {
     const { state } = corpObject;
     return this.instance.patch<updateCorporationResponse>(
       `/corporations/${corpObject.corpId}`,
-      state
+      { state }
     );
   }
 
