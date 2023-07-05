@@ -1,5 +1,3 @@
-import { FunctionResponse } from './index';
-
 export type DocTermsSuccess = {
   id: string;
   version: string;
@@ -33,8 +31,6 @@ export type GeneralInfoQuery = {
   join?: string;
 };
 
-export type ArticlesResponse = FunctionResponse<ArticleSuccess | GeneralInfoFailure>;
+export type ArticlesResponse = ArticleSuccess | GeneralInfoFailure;
 
-export type DocTermsResponse = FunctionResponse<
-  DocTermsSuccess | GeneralInfoFailure
->;
+export type DocTermsResponse = DocTermsSuccess | GeneralInfoFailure;
