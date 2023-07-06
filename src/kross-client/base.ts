@@ -112,6 +112,9 @@ export class KrossClientBase {
             if (this?.forceLogoutCallback) await this.forceLogoutCallback();
           }
         }
+        if (!this.refreshToken && !this.authToken) {
+          if (this.forceLogoutCallback) this?.forceLogoutCallback();
+        }
         return config;
       }
     );
