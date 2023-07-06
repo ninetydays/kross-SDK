@@ -50,18 +50,21 @@ export class KrossClientBase {
             'Content-type': 'multipart/form-data',
           };
         }
-        if (this.refreshToken && this.authToken) {
-          const user: any = await jwt_decode(this.authToken as string);
-          const isAuthTokenExpired = user.exp * 1000 < Date.now();
+        if (this.refreshToken || this.authToken) {
+          if (this.authToken) {
+            const user: any = await jwt_decode(this.authToken as string);
+            const isAuthTokenExpired = user.exp * 1000 < Date.now();
 
-          if (!isAuthTokenExpired) {
-            config.headers = {
-              ...config.headers,
-              Authorization: `Bearer ${this.authToken}`,
-            };
+            if (!isAuthTokenExpired) {
+              config.headers = {
+                ...config.headers,
+                Authorization: `Bearer ${this.authToken}`,
+              };
 
-            return config;
+              return config;
+            }
           }
+
           const userRefreshToken: any = await jwt_decode(
             this.refreshToken as string
           );
@@ -104,6 +107,8 @@ export class KrossClientBase {
             }
           } catch (error) {
             console.error('Error refreshing token:', error);
+            this.authToken = null;
+            this.refreshToken = null;
             if (this?.forceLogoutCallback) await this.forceLogoutCallback();
           }
         }
