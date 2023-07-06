@@ -76,7 +76,7 @@ export class Loans extends KrossClientBase {
           });
         });
       },
-      loanData: (loansQueryDto?: LoansQueryDto, userId?: string) => {
+      loanData: (loansQueryDto?: LoansQueryDto) => {
         return useInfiniteQuery(
           [
             'loanData',
@@ -101,10 +101,9 @@ export class Loans extends KrossClientBase {
               (item: any): LoanResponseData => {
                 const investments = item.investments.filter(
                   (investment: any) =>
-                    investment?.userId == userId &&
                     investment?.state != 'cancelled'
                 );
-                if (userId && investments.length > 0) {
+                if (investments.length > 0) {
                   const investment = investments[0];
                   return {
                     ...item,
