@@ -198,9 +198,43 @@ export const user = () => {
   });
 
   it('gets presigned url for s3 storage', async () => {
-    const { signedURL } = client.useUserHooks();
-    const { result } = renderHook(() => signedURL('randomfile'), {
+    const { getSignedURL } = client.useUserHooks();
+    const { result } = renderHook(() => getSignedURL(), {
       wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync('randomfile');
+    });
+    await waitFor(() => expect(result?.current?.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
+  it('gets user verification files list', async () => {
+    const { userFilesList } = client.useUserHooks();
+    const { result } = renderHook(() => userFilesList(), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+  it('gets corporations ', async () => {
+    const { getCorporations } = client.useUserHooks();
+    const { result } = renderHook(() => getCorporations(), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+  it('update corporations ', async () => {
+    const { updateCorporation } = client.useUserHooks();
+    const { result } = renderHook(() => updateCorporation(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        corpId: 4023,
+        state: 'request',
+      });
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();

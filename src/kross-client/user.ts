@@ -26,7 +26,11 @@ import {
   UserWengeQueryDto,
   UserUpdateDto,
   UserUpdateResponse,
+  UserFilesResponse,
+  getCorporationResponse,
+  updateCorporationResponse,
 } from '../types/kross-client/user';
+import { updateCorporationDto } from '../types/kross-client/corporations';
 
 export class User extends KrossClientBase {
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
@@ -39,15 +43,14 @@ export class User extends KrossClientBase {
   userData: FunctionRegistered<UserResponse, UserWengeQueryDto>;
   userDataUpdate: FunctionRegistered<UserUpdateResponse, UserUpdateDto>;
   passwordCheck: FunctionRegistered<PasswordCheckResponse, PasswordCheckDto>;
-
+  userFilesList: FunctionRegistered<any>;
   userAccountLogs: FunctionRegistered<
     UserAccountLogsResponse,
     UserWengeQueryDto
   >;
   userNoteLogs: FunctionRegistered<UserNoteLogsResponse, UserWengeQueryDto>;
   portfolio: FunctionRegistered<PortfolioResponse>;
-  signedURL: FunctionRegistered<SignedUrlResponse>;
-
+  getCorporations: FunctionRegistered<getCorporationResponse>;
   constructor(options: KrossClientOptions) {
     super(options);
     this.userNoteLogs = User.registerFunction<
@@ -132,11 +135,30 @@ export class User extends KrossClientBase {
       method: 'get',
     });
 
-    this.signedURL = User.registerFunction<SignedUrlResponse>({
-      url: '/users/signed-url/:fileName',
+    this.userFilesList = User.registerFunction<UserFilesResponse>({
+      url: '/users/files-list',
+      method: 'get',
+    });
+
+    this.getCorporations = User.registerFunction<getCorporationResponse>({
+      url: '/corporations',
       method: 'get',
     });
   }
+
+  signedURL(fileName: string) {
+    return this.instance.get<SignedUrlResponse>(
+      `/users/signed-url/${fileName}`
+    );
+  }
+  updateCorporation(corpObject: updateCorporationDto) {
+    const { state } = corpObject;
+    return this.instance.patch<updateCorporationResponse>(
+      `/corporations/${corpObject.corpId}`,
+      { state }
+    );
+  }
+
   useUserHooks() {
     return {
       userNoteLogs: (userWengeQueryDto?: UserWengeQueryDto) => {
@@ -388,16 +410,42 @@ export class User extends KrossClientBase {
         });
       },
 
-      signedURL: (fileName: string) => {
+      userFilesList: () => {
         return useQuery({
           cacheTime: 0,
-          queryKey: 'signedUrl',
+          queryKey: 'userFilesList',
           queryFn: async () => {
-            return this.signedURL({ fileName }).then((res) => {
+            return this.userFilesList().then((res) => {
               return res.data;
             });
           },
         });
+      },
+      getCorporations: () => {
+        return useQuery({
+          cacheTime: 0,
+          queryKey: 'getCorporation',
+          queryFn: async () => {
+            return this.getCorporations().then((res) => {
+              return res.data;
+            });
+          },
+        });
+      },
+
+      getSignedURL: () => {
+        const mutation = useMutation((fileName: string) =>
+          this.signedURL(fileName)
+        );
+        return mutation;
+      },
+
+      updateCorporation: () => {
+        const mutation = useMutation(
+          (updateCorporation: updateCorporationDto) =>
+            this.updateCorporation(updateCorporation)
+        );
+        return mutation;
       },
     };
   }
