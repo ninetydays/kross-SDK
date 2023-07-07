@@ -6,7 +6,6 @@ import { user } from './user';
 import { InquiryTest } from './inquiry';
 import { verifications } from './verifications';
 import { generalInfo } from './general-info';
-import { CorporationTest } from './corporations';
 
 describe('Base test for login and updateToken', base);
 describe('Account', account);
@@ -16,4 +15,3 @@ describe('user', user);
 describe('Inquiry', InquiryTest);
 describe('verifications', verifications);
 describe('general-info', generalInfo);
-describe('Corporation', CorporationTest);

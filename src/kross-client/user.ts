@@ -3,6 +3,7 @@ import {
   PasswordCheckResponse,
   PasswordResetDto,
   PasswordResetResponse,
+  PasswordUpdateDto,
   PasswordUpdateResponse,
   PortfolioResponse,
   SignedUrlResponse,
@@ -47,7 +48,7 @@ export class User extends KrossClientBase {
   userDataUpdate: FunctionRegistered<UserUpdateResponse, UserUpdateDto>;
   passwordCheck: FunctionRegistered<PasswordCheckResponse, PasswordCheckDto>;
   userFilesList: FunctionRegistered<any>;
-  passwordUpdate: FunctionRegistered<PasswordUpdateResponse>;
+  passwordUpdate: FunctionRegistered<PasswordUpdateResponse, PasswordUpdateDto>;
   passwordReset: FunctionRegistered<PasswordResetResponse, PasswordResetDto>;
 
   userAccountLogs: FunctionRegistered<
@@ -156,7 +157,7 @@ export class User extends KrossClientBase {
       method: 'post',
     });
 
-    this.passwordUpdate = User.registerFunction<PasswordUpdateResponse>({
+    this.passwordUpdate = User.registerFunction<PasswordUpdateResponse, PasswordUpdateDto>({
       url: 'users/password',
       method: 'patch',
     })
@@ -421,7 +422,8 @@ export class User extends KrossClientBase {
         return mutation;
       },
       updatePassword: () => {
-        const mutation = useMutation(() => this.passwordUpdate());
+        const mutation = useMutation((passwordUpdateDto: PasswordUpdateDto) => 
+        this.passwordUpdate(passwordUpdateDto));
         return mutation;
       },
       portfolio: ({ enabled }: { enabled?: boolean } = {}) => {

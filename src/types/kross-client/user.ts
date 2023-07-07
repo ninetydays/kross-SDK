@@ -170,6 +170,11 @@ export type UserUpdateResponse = {
 
 export type UserResponse = UserResponseData;
 
+export type PasswordUpdateDto = {
+  oldPassword: string;
+  newPassword: string;
+}
+
 export type PasswordUpdateResponse = UserResponse;
 
 export type UserAccountLogsData = {

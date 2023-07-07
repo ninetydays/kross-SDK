@@ -7,6 +7,7 @@ export const user = () => {
   const baseURL = 'https://olive-dev.kross.kr';
   const accessId = 'XLD7UY9GETOK7TPY';
   const secretKey = 'yLbVRHGgwT5c22ndOVT2';
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -203,13 +204,16 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it.skip('updates the user password', async () => {
+  it('updates the user password', async () => {
     const { updatePassword } = client.useUserHooks();
     const { result } = renderHook(() => updatePassword(), {
       wrapper,
     });
     await act(async () => {
-      await result.current.mutateAsync();
+      await result.current.mutateAsync({
+        oldPassword: '234q3211!',
+        newPassword: '!4321dcba'
+      });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
