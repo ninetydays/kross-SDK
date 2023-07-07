@@ -1,6 +1,9 @@
 import {
   PasswordCheckDto,
   PasswordCheckResponse,
+  PasswordResetDto,
+  PasswordResetResponse,
+  PasswordUpdateResponse,
   PortfolioResponse,
   SignedUrlResponse,
 } from './../types/kross-client/user';
@@ -44,6 +47,9 @@ export class User extends KrossClientBase {
   userDataUpdate: FunctionRegistered<UserUpdateResponse, UserUpdateDto>;
   passwordCheck: FunctionRegistered<PasswordCheckResponse, PasswordCheckDto>;
   userFilesList: FunctionRegistered<any>;
+  passwordUpdate: FunctionRegistered<PasswordUpdateResponse>;
+  passwordReset: FunctionRegistered<PasswordResetResponse, PasswordResetDto>;
+
   userAccountLogs: FunctionRegistered<
     UserAccountLogsResponse,
     UserWengeQueryDto
@@ -144,6 +150,16 @@ export class User extends KrossClientBase {
       url: '/corporations',
       method: 'get',
     });
+
+    this.passwordReset = User.registerFunction<PasswordResetResponse, PasswordResetDto>({
+      url: 'users/reset-password',
+      method: 'post',
+    });
+
+    this.passwordUpdate = User.registerFunction<PasswordUpdateResponse>({
+      url: 'users/password',
+      method: 'patch',
+    })
   }
 
   signedURL(fileName: string) {
@@ -396,6 +412,16 @@ export class User extends KrossClientBase {
         const mutation = useMutation((passwordCheckDto: PasswordCheckDto) =>
           this.passwordCheck(passwordCheckDto)
         );
+        return mutation;
+      },
+      resetPassword: () => {
+        const mutation = useMutation((passwordResetDto: PasswordResetDto) =>
+        this.passwordReset(passwordResetDto)
+        );
+        return mutation;
+      },
+      updatePassword: () => {
+        const mutation = useMutation(() => this.passwordUpdate());
         return mutation;
       },
       portfolio: ({ enabled }: { enabled?: boolean } = {}) => {

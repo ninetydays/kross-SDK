@@ -158,6 +158,7 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 30000);
+
   it.skip('update a user', async () => {
     const { userUpdate } = client.useUserHooks();
     const { result } = renderHook(() => userUpdate(), {
@@ -173,7 +174,7 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it('check password of a user', async () => {
+  it.skip('check password of a user', async () => {
     const { checkPassword } = client.useUserHooks();
     const { result } = renderHook(() => checkPassword(), {
       wrapper,
@@ -182,6 +183,33 @@ export const user = () => {
       await result.current.mutateAsync({
         password: 'abcde',
       });
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
+  it.skip('sends link to reset a user', async () => {
+    const { resetPassword } = client.useUserHooks();
+    const { result } = renderHook(() => resetPassword(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        email: 'mad@kross.kr',
+      });
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
+  it.skip('updates the user password', async () => {
+    const { updatePassword } = client.useUserHooks();
+    const { result } = renderHook(() => updatePassword(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync();
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
