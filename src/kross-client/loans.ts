@@ -103,7 +103,7 @@ export class Loans extends KrossClientBase {
                   (investment: any) =>
                     investment?.state != 'cancelled'
                 );
-                if (investments.length > 0) {
+                if (investments?.length > 0) {
                   const investment = investments[0];
                   return {
                     ...item,
