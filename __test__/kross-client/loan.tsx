@@ -89,10 +89,9 @@ export const loan = () => {
       () =>
         loanData(
           {
-            filter: 'state||$in||funding,pending',
+            filter: 'state||$in||funding',
             take: '5',
           },
-          '14218'
         ),
       {
         wrapper,

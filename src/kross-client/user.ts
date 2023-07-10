@@ -245,6 +245,7 @@ export class User extends KrossClientBase {
         enabled?: boolean;
       }) => {
         return useQuery({
+          cacheTime: 0,
           queryKey: 'userData',
           queryFn: async () => {
             return this.userData(userQuery).then((res) => {
