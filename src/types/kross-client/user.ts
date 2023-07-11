@@ -170,6 +170,13 @@ export type UserUpdateResponse = {
 
 export type UserResponse = UserResponseData;
 
+export type PasswordUpdateDto = {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export type PasswordUpdateResponse = UserResponse;
+
 export type UserAccountLogsData = {
   id: number;
   userId: number;
@@ -212,6 +219,18 @@ export type PasswordCheckResponseData = {
   statusCode: number;
 };
 export type PasswordCheckResponse = FunctionResponse<PasswordCheckResponseData>;
+
+export type PasswordResetDto = {
+  email: string;
+};
+
+export type PasswordResetResponseData = {
+  name: string;
+  email: string;
+  link: string;
+}
+
+export type PasswordResetResponse = FunctionResponse<PasswordResetResponseData>;
 
 export type PortfolioResponseData = {
   depositsAmount: number;
