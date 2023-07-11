@@ -7,6 +7,7 @@ export * from './investments';
 export * from './account';
 export * from './inquiry';
 export * from './general-info';
+export * from './sign-contract';
 
 type RefreshTokenCallback = (token: string) => void;
 type forceLogoutCallback = () => void;
