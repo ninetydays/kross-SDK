@@ -64,7 +64,7 @@ export const signContractTest = () => {
   
   it('gets sign contract', async () => {
     const { getSignContract } = client.useSignContracts();
-    const { result } = renderHook(() => getSignContract({id: 20}),
+    const { result } = renderHook(() => getSignContract({id: 20}, true),
        {
       wrapper,
     });

@@ -30,14 +30,19 @@ export class SignContract extends KrossClientBase {
         );
         return mutation;
       },
-      getSignContract: (id: SignContractDto) => {
-        return useQuery({
-          queryKey: 'signContract',
-          queryFn: async () => {
+      getSignContract: (id: SignContractDto, enabled?: boolean) => {
+        return useQuery(
+          'signContract',
+          async () => {
             const getSignContractData: any = await this.getSignContract(id);
             return getSignContractData?.data;
           },
-        });
+          {
+            enabled: enabled !== undefined ? enabled : true,
+            cacheTime: 0,
+            staleTime: 0,
+          }
+        );
       },
     };
   }
