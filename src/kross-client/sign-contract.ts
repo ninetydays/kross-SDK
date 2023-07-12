@@ -4,12 +4,19 @@ import {
   SignContractResponse,
   SignContractDto,
   SignContractVerificationDto,
+  ContractDocumentDto,
+  ContractDocumentResponse,
 } from '../types';
 
 export class SignContract extends KrossClientBase {
-  getSignContract({id}: SignContractDto) {
+  getContractSign({id}: SignContractDto) {
     return this.instance.get<SignContractResponse>(
       `/signs/${id}`,
+    );
+  }
+  getContractDocument({document_id}: ContractDocumentDto){
+    return this.instance.get<ContractDocumentResponse>(
+      `/documents/${document_id}`,
     );
   }
   signContractVerification(signContractVerficarion: SignContractVerificationDto) {
@@ -30,12 +37,25 @@ export class SignContract extends KrossClientBase {
         );
         return mutation;
       },
-      getSignContract: (id: SignContractDto, enabled?: boolean) => {
+      getContractSign: (id: SignContractDto) => {
         return useQuery(
-          'signContract',
+          'getSignContract',
           async () => {
-            const getSignContractData: any = await this.getSignContract(id);
+            const getSignContractData: any = await this.getContractSign(id);
             return getSignContractData?.data;
+          },
+          {
+            cacheTime: 0,
+            staleTime: 0,
+          }
+        );
+      },
+      getContractDocument: (document_id: ContractDocumentDto, enabled?: boolean) => {
+        return useQuery(
+          'getContractDocument',
+          async () => {
+            const data: any = await this.getContractDocument(document_id);
+            return data?.data;
           },
           {
             enabled: enabled !== undefined ? enabled : true,

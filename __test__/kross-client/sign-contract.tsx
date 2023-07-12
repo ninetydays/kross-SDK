@@ -36,7 +36,7 @@ export const signContractTest = () => {
     });
     await act(async () => {
       await result.current.mutateAsync({
-        keyid: '35@kross.kr',
+        keyid: 'mad@kross.kr',
         password: 'Kross123!',
       });
     });
@@ -63,8 +63,18 @@ export const signContractTest = () => {
 
   
   it('gets sign contract', async () => {
-    const { getSignContract } = client.useSignContracts();
-    const { result } = renderHook(() => getSignContract({id: 20}, true),
+    const { getContractSign } = client.useSignContracts();
+    const { result } = renderHook(() => getContractSign({id: 20}),
+       {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  }, 150000);
+
+  it('gets sign contract', async () => {
+    const { getContractDocument } = client.useSignContracts();
+    const { result } = renderHook(() => getContractDocument({document_id: 401}, true),
        {
       wrapper,
     });

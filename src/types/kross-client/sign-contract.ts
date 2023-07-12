@@ -24,3 +24,10 @@ export type SignContractVerificationDto = {
   verificationCode: string;
 }
 
+export type ContractDocumentDto = {
+  document_id: number;
+}
+
+
+export type ContractDocumentResponse = FunctionResponse;
+
