@@ -17,6 +17,9 @@ export class SignContract extends KrossClientBase {
   getContractDocument({document_id}: ContractDocumentDto){
     return this.instance.get<ContractDocumentResponse>(
       `/documents/${document_id}`,
+      {
+        responseType: 'arraybuffer',
+      }
     );
   }
   signContractVerification(signContractVerficarion: SignContractVerificationDto) {

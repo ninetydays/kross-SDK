@@ -36,7 +36,7 @@ export const signContractTest = () => {
     });
     await act(async () => {
       await result.current.mutateAsync({
-        keyid: 'mad@kross.kr',
+        keyid: '52@kross.kr',
         password: 'Kross123!',
       });
     });
