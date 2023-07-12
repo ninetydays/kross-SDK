@@ -8,7 +8,6 @@ import {
 
 export class SignContract extends KrossClientBase {
   getSignContract({id}: SignContractDto) {
-    console.log("IDIDIDID", id);
     return this.instance.get<SignContractResponse>(
       `/signs/${id}`,
     );
@@ -17,7 +16,7 @@ export class SignContract extends KrossClientBase {
     const {verificationCode, id} = signContractVerficarion;
     return this.instance.put<SignContractResponse>(
       `/signs/${id}/verification`,
-      verificationCode,
+      {verificationCode: verificationCode},
     );
   }
 
@@ -32,7 +31,6 @@ export class SignContract extends KrossClientBase {
         return mutation;
       },
       getSignContract: (id: SignContractDto) => {
-        console.log("id: ", id);
         return useQuery({
           queryKey: 'signContract',
           queryFn: async () => {
