@@ -2,6 +2,8 @@ import {
   PasswordCheckDto,
   PasswordCheckResponse,
   PasswordResetDto,
+  PasswordResetNewDto,
+  PasswordResetNewResponse,
   PasswordResetResponse,
   PasswordUpdateDto,
   PasswordUpdateResponse,
@@ -49,8 +51,8 @@ export class User extends KrossClientBase {
   passwordCheck: FunctionRegistered<PasswordCheckResponse, PasswordCheckDto>;
   userFilesList: FunctionRegistered<any>;
   passwordUpdate: FunctionRegistered<PasswordUpdateResponse, PasswordUpdateDto>;
-  passwordReset: FunctionRegistered<PasswordResetResponse, PasswordResetDto>;
-
+  passwordResetUpdate: FunctionRegistered<PasswordResetNewResponse, PasswordResetNewDto>;
+  passwordResetEmail: FunctionRegistered<PasswordResetResponse, PasswordResetDto>;
   userAccountLogs: FunctionRegistered<
     UserAccountLogsResponse,
     UserWengeQueryDto
@@ -152,11 +154,15 @@ export class User extends KrossClientBase {
       method: 'get',
     });
 
-    this.passwordReset = User.registerFunction<PasswordResetResponse, PasswordResetDto>({
-      url: 'users/reset-password',
+    this.passwordResetEmail = User.registerFunction<PasswordResetResponse, PasswordResetDto>({
+      url: 'users/reset-password/email',
       method: 'post',
     });
 
+    this.passwordResetUpdate = User.registerFunction<PasswordResetNewResponse, PasswordResetNewDto>({
+      url: 'users/reset-password/update',
+      method: 'put',
+    });
     this.passwordUpdate = User.registerFunction<PasswordUpdateResponse, PasswordUpdateDto>({
       url: 'users/password',
       method: 'patch',
@@ -415,9 +421,15 @@ export class User extends KrossClientBase {
         );
         return mutation;
       },
-      resetPassword: () => {
+      resetPasswordEmail: () => {
         const mutation = useMutation((passwordResetDto: PasswordResetDto) =>
-        this.passwordReset(passwordResetDto)
+        this.passwordResetEmail(passwordResetDto)
+        );
+        return mutation;
+      },
+      resetPasswordUpdate: () => {
+        const mutation = useMutation((passwordResetNewDto: PasswordResetNewDto) =>
+        this.passwordResetUpdate(passwordResetNewDto)
         );
         return mutation;
       },
