@@ -190,13 +190,29 @@ export const user = () => {
   });
 
   it.skip('sends link to reset a user', async () => {
-    const { resetPassword } = client.useUserHooks();
-    const { result } = renderHook(() => resetPassword(), {
+    const { resetPasswordEmail } = client.useUserHooks();
+    const { result } = renderHook(() => resetPasswordEmail(), {
       wrapper,
     });
     await act(async () => {
       await result.current.mutateAsync({
         email: 'mad@kross.kr',
+      });
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+  
+  it.skip('sends link to reset a user', async () => {
+    const { resetPasswordUpdate } = client.useUserHooks();
+    const { result } = renderHook(() => resetPasswordUpdate(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        password: '12321312',
+        token: '21321321',
       });
     });
 
