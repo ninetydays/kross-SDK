@@ -168,7 +168,7 @@ export type UserUpdateResponse = {
   notifyOnRepayments: boolean;
 };
 
-export type UserResponse = UserResponseData;
+export type UserResponse = FunctionResponse<UserResponseData>;
 
 export type PasswordUpdateDto = {
   oldPassword: string;
@@ -224,10 +224,16 @@ export type PasswordResetDto = {
   email: string;
 };
 
+export type PasswordResetNewDto = {
+  password: string;
+  token: string;
+}
+
+export type PasswordResetNewResponse = UserResponse;
+
 export type PasswordResetResponseData = {
   name: string;
   email: string;
-  link: string;
 }
 
 export type PasswordResetResponse = FunctionResponse<PasswordResetResponseData>;
