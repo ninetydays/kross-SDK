@@ -33,7 +33,7 @@ const client = new KrossClient({
 
 
 # Clients Provided
-KrossClient, Account, Loans, Investments, Inquiry, User, Verifications, GeneralInfo
+KrossClient, Account, Loans, Investments, Inquiry, User, Verifications, GeneralInfo, SignContract
 
 ##### [KrossClient](docs/client.md) : It is a base client through which you will be able to make requests any of the data providing APIs via axios instance. 
 ##### [Accounts](docs/account.md) : Contains functions and hooks through which you can make requests for account related data 
@@ -42,6 +42,7 @@ KrossClient, Account, Loans, Investments, Inquiry, User, Verifications, GeneralI
 ##### [User](docs/user.md) : Contains functions and hooks through which you can make requests for users related data 
 ##### [Loans](docs/loans.md) : Contains functions and hooks through which you can make requests for loans related data 
 ##### [GeneralInfo](docs/general-info.md) : Contains functions and hooks through which you can make requests for generalInfo related public data such as articles, docs-terms and loan statistics
+##### [SignContract](docs/sign-contract.md) : Contains functions and hooks through which you can make requests for generating sign-contract document, getting sign-contract list per user and sign contract verification
 ----------------------------------------------------
 
 
@@ -57,7 +58,8 @@ import {
   User,
   Account,
   Inquiry,
-  GeneralInfo
+  GeneralInfo,
+  SignContract,
 } from 'kross-sdk';
 
 export const useClients = () => {
@@ -84,6 +86,7 @@ export const useClients = () => {
     AccountClient: new Account(clientOptions),
     InquiryClient: new Inquiry(clientOptions),
     GeneralInfoClient: new GeneralInfo(clientOptions),
+    SignContract: new SignContract(clientOptions),
   };
 
   return clients;
