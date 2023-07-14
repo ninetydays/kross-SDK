@@ -236,7 +236,7 @@ export class Investments extends KrossClientBase {
             const accountData: any = await this.get('/users/account');
 
             const kftcInvestmentLimit =
-              kftcInvestInquiry?.data?.code === 'A8151'
+              kftcInvestInquiry?.data?.data?.code === 'A8151'
                 ? -1
                 : (kftcInvestInquiry?.data?.data?.limit || 0) -
                   (kftcInvestInquiry?.data?.data?.balance || 0);
