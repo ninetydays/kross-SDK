@@ -130,6 +130,7 @@ export type UserData = {
   depositControl: boolean;
   notifyOnNewProducts: boolean;
   notifyOnRepayments: boolean;
+  corporation?: Record<string, unknown>;
 };
 
 export type UserResponseData = UserData[];

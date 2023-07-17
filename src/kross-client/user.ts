@@ -271,7 +271,10 @@ export class User extends KrossClientBase {
           cacheTime: 0,
           queryKey: 'userData',
           queryFn: async () => {
-            return this.userData(userQuery).then((res) => {
+            return this.userData({
+              join: 'corporation',
+              ...userQuery,
+            }).then((res) => {
               return res.data;
             });
           },
