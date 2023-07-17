@@ -260,6 +260,19 @@ export class User extends KrossClientBase {
           enabled: enabled === undefined ? true : enabled,
         });
       },
+      isUserVerified: async() => {
+        const res: any = await this.userData({
+          join: 'corporation',
+        });
+        const userData = res?.data?.[0];
+        const phoneIdBankVerified = userData?.phoneVerified && userData?.idCardVerified && userData?.bankAccountVerified;
+        const corporateDocVerified = userData?.corporation?.state === 'approve';
+        const verificationData: any = await this.get('/verifications');
+        const userDetailData = verificationData?.data?.filter((verification: any) => verification?.type === 'user_detail')
+        const eddVerified = Boolean(userDetailData?.length) || false;
+        const response = (phoneIdBankVerified && corporateDocVerified) || (phoneIdBankVerified && eddVerified);
+        return response;
+      },
       userData: ({
         userQuery = {},
         enabled,
@@ -271,10 +284,7 @@ export class User extends KrossClientBase {
           cacheTime: 0,
           queryKey: 'userData',
           queryFn: async () => {
-            return this.userData({
-              join: 'corporation',
-              ...userQuery,
-            }).then((res) => {
+            return this.userData(userQuery).then((res) => {
               return res.data;
             });
           },
