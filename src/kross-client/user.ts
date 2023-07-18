@@ -266,12 +266,13 @@ export class User extends KrossClientBase {
         });
         const userData = res?.data?.[0];
         const phoneIdBankVerified = userData?.phoneVerified && userData?.idCardVerified && userData?.bankAccountVerified;
-        const corporateDocVerified = userData?.corporation?.state === 'approve';
-        const verificationData: any = await this.get('/verifications');
-        const userDetailData = verificationData?.data?.filter((verification: any) => verification?.type === 'user_detail')
-        const eddVerified = Boolean(userDetailData?.length) || false;
-        const response = (phoneIdBankVerified && corporateDocVerified) || (phoneIdBankVerified && eddVerified);
-        return response;
+        if (userData?.corporation){
+          return userData?.corporation?.state === 'approve' && phoneIdBankVerified;
+        }else{
+          const verificationData: any = await this.get('/verifications');
+          const userDetailData = verificationData?.data?.filter((verification: any) => verification?.type === 'user_detail')
+          return Boolean(userDetailData?.length) && phoneIdBankVerified;
+        }
       },
       userData: ({
         userQuery = {},
