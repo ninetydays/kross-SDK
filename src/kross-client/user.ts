@@ -261,17 +261,29 @@ export class User extends KrossClientBase {
         });
       },
       isUserVerified: async() => {
-        const res: any = await this.userData({
-          join: 'corporation',
-        });
-        const userData = res?.data?.[0];
-        const phoneIdBankVerified = userData?.phoneVerified && userData?.idCardVerified && userData?.bankAccountVerified;
-        if (userData?.corporation){
-          return userData?.corporation?.state === 'approve' && phoneIdBankVerified;
-        }else{
-          const verificationData: any = await this.get('/verifications');
-          const userDetailData = verificationData?.data?.filter((verification: any) => verification?.type === 'user_detail')
-          return Boolean(userDetailData?.length) && phoneIdBankVerified;
+        try {
+          const [userDataResponse, userDetailResponse] = await Promise.all([
+            this.userData({
+              select: 'phoneVerified,idCardVerified,bankAccountVerified',
+              join: 'corporation',
+            }) as any,
+            this.get('/verifications', {
+              params: {
+                type: 'user_detail',
+              },
+            }) as any,
+          ]);
+          const userData = userDataResponse?.data?.[0];
+          const { phoneVerified, idCardVerified, bankAccountVerified, corporation } = userData;
+          const phoneIdBankVerified = phoneVerified && idCardVerified && bankAccountVerified;
+          if (corporation) {
+            return corporation.state === 'approve' && phoneIdBankVerified;
+          } else {
+            return Boolean(userDetailResponse?.data?.length) && phoneIdBankVerified;
+          }
+        } catch (error) {
+          console.error('Error in isUserVerified:', error);
+          return false;
         }
       },
       userData: ({
