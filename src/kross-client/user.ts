@@ -214,7 +214,7 @@ export class User extends KrossClientBase {
           },
         });
       },
-      getVirtualAccCertificate: () => {
+      getVirtualAccCertificate: (enabled?: boolean) => {
         return useQuery({
           queryKey: 'getVirtualAccCertificate',
           queryFn: async () => {
@@ -222,6 +222,7 @@ export class User extends KrossClientBase {
               return res.data;
             });
           },
+          enabled: enabled === undefined ? true : enabled,
         });
       },
       checkVirtualAccount: () => {
