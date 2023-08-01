@@ -55,14 +55,6 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it('gets if user is verified or not', async () => {
-    const { isUserVerified } = client.useUserHooks();
-    const { result } = renderHook(() => isUserVerified(), {
-      wrapper,
-    });
-    await waitFor(() => expect(result.current).toBe(true));
-  });
-
   it('gets current user-note list', async () => {
     const { userNoteLogs } = client.useUserHooks();
     const { result } = renderHook(() => userNoteLogs({}), {

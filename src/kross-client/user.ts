@@ -260,32 +260,6 @@ export class User extends KrossClientBase {
           enabled: enabled === undefined ? true : enabled,
         });
       },
-      isUserVerified: async() => {
-        try {
-          const [userDataResponse, userDetailResponse] = await Promise.all([
-            this.userData({
-              select: 'phoneVerified,idCardVerified,bankAccountVerified',
-              join: 'corporation',
-            }) as any,
-            this.get('/verifications', {
-              params: {
-                type: 'user_detail',
-              },
-            }) as any,
-          ]);
-          const userData = userDataResponse?.data?.[0];
-          const { phoneVerified, idCardVerified, bankAccountVerified, corporation } = userData;
-          const phoneIdBankVerified = phoneVerified && idCardVerified && bankAccountVerified;
-          if (corporation) {
-            return corporation.state === 'approve' && phoneIdBankVerified;
-          } else {
-            return Boolean(userDetailResponse?.data?.length) && phoneIdBankVerified;
-          }
-        } catch (error) {
-          console.error('Error in isUserVerified:', error);
-          return false;
-        }
-      },
       userData: ({
         userQuery = {},
         enabled,
