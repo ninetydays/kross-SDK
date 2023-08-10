@@ -75,7 +75,16 @@ export const generalInfo = () => {
         wrapper,
       }
     );
-  await waitFor(() => expect(result.current.isSuccess).toBe(true));
-  expect(result.current.data).toBeDefined();
-  }, 15000)
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  }, 15000);
+
+  it('gets todays stats', async () => {
+    const { todayStats } = client.useGeneralInfoHook();
+    const { result } = renderHook(() => todayStats(), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  }, 15000);
 };
