@@ -41,7 +41,7 @@ KrossClient, Account, Loans, Investments, Inquiry, User, Verifications, GeneralI
 ##### [Inquiry](docs/inquiry.md) : Contains functions and hooks through which you can make requests for inquiries related data 
 ##### [User](docs/user.md) : Contains functions and hooks through which you can make requests for users related data 
 ##### [Loans](docs/loans.md) : Contains functions and hooks through which you can make requests for loans related data 
-##### [GeneralInfo](docs/general-info.md) : Contains functions and hooks through which you can make requests for generalInfo related public data such as articles, docs-terms and loan statistics
+##### [GeneralInfo](docs/general-info.md) : Contains functions and hooks through which you can make requests for generalInfo related public data such as articles, docs-terms, gets todays stats and loan statistics.
 ##### [SignContract](docs/sign-contract.md) : Contains functions and hooks through which you can make requests for generating sign-contract document, getting sign-contract list per user and sign contract verification
 ----------------------------------------------------
 
