@@ -460,7 +460,7 @@ export class User extends KrossClientBase {
               filter: `id||$eq||${userId}`,
               join: 'borrowerInfos,loans',
             });
-            const {loans, ...rest}: any = data?.data[0];
+            const {loans, ...rest}: any = data.data[0];
             const { investingSum, totalSum } = loans.reduce(
               (acc: any, cur: any) => {
                   const fundAmount = parseInt(cur?.fundAmount, 10);
