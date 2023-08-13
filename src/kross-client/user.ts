@@ -37,9 +37,10 @@ import {
   updateCorporationResponse,
 } from '../types/kross-client/user';
 import { updateCorporationDto } from '../types/kross-client/corporations';
+import axios from 'axios';
 
 export class User extends KrossClientBase {
-  kftcBalance: FunctionRegistered<kftcBalanceResponse>;
+  kftcBalance: FunctionRegistered<kftcBalanceResponse, UserWengeQueryDto>;
   getVirtualAccCertificate: FunctionRegistered<AccountCertificateResponse>;
   checkVirtualAccount: FunctionRegistered<VirtualAccountCheckResponse>;
   registerMember: FunctionRegistered<GetAuthTokenResponse, UserRegisterDto>;
@@ -78,7 +79,7 @@ export class User extends KrossClientBase {
       method: 'get',
     });
 
-    this.kftcBalance = User.registerFunction<kftcBalanceResponse>({
+    this.kftcBalance = User.registerFunction<kftcBalanceResponse, UserWengeQueryDto>({
       url: '/users/borrower-amount',
       method: 'get',
     });
@@ -450,7 +451,41 @@ export class User extends KrossClientBase {
           enabled: enabled ?? true,
         });
       },
-
+      borrowerInfo: (userId: string, enabled?: boolean) => {
+        return useQuery({
+          cacheTime: 0,
+          queryKey: 'borrowerInfo',
+          queryFn: async () => {
+            const data = await this.userData({
+              select: 'address1,borrowerInfos,isCorp',
+              filter: `id||$eq||${userId}`,
+              join: 'borrowerInfos,loans',
+            });
+            const borrowerInfo: any = data?.data;
+            const { investingSum, totalSum } = borrowerInfo[0].loans.reduce(
+              (acc: any, cur: any) => {
+                  const fundAmount = parseInt(cur?.fundAmount, 10);
+                  if (cur.state === 'investing') {
+                      acc.investingSum += fundAmount;
+                  }
+                  if (cur.state === 'investing' || cur.state === 'done') {
+                      acc.totalSum += fundAmount;
+                  }
+                  return acc;
+              },
+              { investingSum: 0, totalSum: 0 }
+          );
+            return {
+              borrowerInfo: borrowerInfo,
+              loanInfo: {
+                currentFundAmount: investingSum,
+                totalFundAmount: totalSum,
+              }
+            };
+          },
+          enabled: enabled ?? true,
+        });
+      },
       userFilesList: () => {
         return useQuery({
           cacheTime: 0,
@@ -491,3 +526,7 @@ export class User extends KrossClientBase {
     };
   }
 }
+function numeral(sales: any) {
+  throw new Error('Function not implemented.');
+}
+

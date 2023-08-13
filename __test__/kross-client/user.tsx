@@ -55,6 +55,15 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
+  it('gets borrower info', async () => {
+    const { borrowerInfo } = client.useUserHooks();
+    const { result } = renderHook(() => borrowerInfo('1234'), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
   it('gets current user-note list', async () => {
     const { userNoteLogs } = client.useUserHooks();
     const { result } = renderHook(() => userNoteLogs({}), {
