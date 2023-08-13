@@ -57,7 +57,7 @@ export const user = () => {
 
   it('gets borrower info', async () => {
     const { borrowerInfo } = client.useUserHooks();
-    const { result } = renderHook(() => borrowerInfo('1234'), {
+    const { result } = renderHook(() => borrowerInfo('8856'), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));

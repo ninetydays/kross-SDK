@@ -455,13 +455,13 @@ export class User extends KrossClientBase {
           cacheTime: 0,
           queryKey: 'borrowerInfo',
           queryFn: async () => {
-            const data = await this.userData({
+            const data: any = await this.userData({
               select: 'address1,borrowerInfos,isCorp',
               filter: `id||$eq||${userId}`,
               join: 'borrowerInfos,loans',
             });
-            const borrowerInfo: any = data?.data;
-            const { investingSum, totalSum } = borrowerInfo[0].loans.reduce(
+            const {loans, ...rest}: any = data?.data[0];
+            const { investingSum, totalSum } = loans.reduce(
               (acc: any, cur: any) => {
                   const fundAmount = parseInt(cur?.fundAmount, 10);
                   if (cur.state === 'investing') {
@@ -475,7 +475,7 @@ export class User extends KrossClientBase {
               { investingSum: 0, totalSum: 0 }
           );
             return {
-              borrowerInfo: borrowerInfo,
+              borrowerInfo: rest,
               loanInfo: {
                 currentFundAmount: investingSum,
                 totalFundAmount: totalSum,
