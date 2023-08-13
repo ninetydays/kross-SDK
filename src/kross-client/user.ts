@@ -37,10 +37,9 @@ import {
   updateCorporationResponse,
 } from '../types/kross-client/user';
 import { updateCorporationDto } from '../types/kross-client/corporations';
-import axios from 'axios';
 
 export class User extends KrossClientBase {
-  kftcBalance: FunctionRegistered<kftcBalanceResponse, UserWengeQueryDto>;
+  kftcBalance: FunctionRegistered<kftcBalanceResponse>;
   getVirtualAccCertificate: FunctionRegistered<AccountCertificateResponse>;
   checkVirtualAccount: FunctionRegistered<VirtualAccountCheckResponse>;
   registerMember: FunctionRegistered<GetAuthTokenResponse, UserRegisterDto>;
@@ -79,7 +78,7 @@ export class User extends KrossClientBase {
       method: 'get',
     });
 
-    this.kftcBalance = User.registerFunction<kftcBalanceResponse, UserWengeQueryDto>({
+    this.kftcBalance = User.registerFunction<kftcBalanceResponse>({
       url: '/users/borrower-amount',
       method: 'get',
     });
