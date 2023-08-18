@@ -35,8 +35,8 @@ export type ArticleSuccess = {
 export type ContactUsDto = {
   name: string;
   email: string;
-  subject: string;
-  phone: string;
+  subject?: string;
+  phone?: string;
   message: string;
 };
 
