@@ -1,16 +1,19 @@
 import { KrossClientBase } from './base';
 import { FunctionRegistered, KrossClientOptions } from '../types';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import {
+  ContactUsDto,
   DocTermsResponse,
   ArticlesResponse,
   TodayStatsResponse,
   GeneralInfoQuery,
+  ContactUsReponse,
 } from '../types/kross-client/general-info';
 export class GeneralInfo extends KrossClientBase {
   docTerms: FunctionRegistered<DocTermsResponse, GeneralInfoQuery>;
   articles: FunctionRegistered<ArticlesResponse, GeneralInfoQuery>;
   todayStats: FunctionRegistered<TodayStatsResponse>;
+  contactUs: FunctionRegistered<ContactUsReponse, ContactUsDto>;
   constructor(options: KrossClientOptions) {
     super(options);
     this.docTerms = GeneralInfo.registerFunction<
@@ -30,6 +33,10 @@ export class GeneralInfo extends KrossClientBase {
     this.todayStats = GeneralInfo.registerFunction<TodayStatsResponse>({
       url: '/today-stats',
       method: 'get',
+    });
+    this.contactUs = GeneralInfo.registerFunction<ContactUsReponse, ContactUsDto>({
+      url: '/contact-us',
+      method: 'post',
     });
   }
 
@@ -61,6 +68,12 @@ export class GeneralInfo extends KrossClientBase {
             return res.data;
           });
         });
+      },
+      contactUs: () => {
+        const mutation = useMutation((contactUsDto: ContactUsDto) =>
+            this.contactUs(contactUsDto)
+        );
+        return mutation;
       },
     };
   }
