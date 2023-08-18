@@ -94,3 +94,24 @@ Return an array of repayment in response on success
     }]
 ``` 
  --------------------------------------------
+
+
+`- contactUs()` <br/>
+The `contactUs()` method is used to create a new inquiry via cs@kross.kr.
+```ts
+contactUs({
+  name: 'Aziyat',
+  email: 'test@test.com',
+  subject: 'Test',
+  phone: '01012121223',
+  message: 'I am going for vacation, yay ',
+});
+```
+Return a response on success
+
+```ts
+{
+  success: true,
+}
+```
+ --------------------------------------------

@@ -87,4 +87,22 @@ export const generalInfo = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 15000);
+
+  it('sends email to cs@kross.kr when user contacts', async () => {
+    const { contactUs } = client.useGeneralInfoHook();
+    const { result } = renderHook(() => contactUs(), {
+      wrapper,
+    });
+    await act(async () => {
+      const responsePromise = result.current.mutateAsync({
+        name: 'Aziyat',
+        email: 'test@test.com',
+        subject: 'Test',
+        phone: '010232083432',
+        message: 'I am going for vacation, yay ',
+      });
+      const response = await responsePromise;
+      expect(response).toBeDefined();
+    });
+  });
 };

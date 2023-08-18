@@ -32,6 +32,18 @@ export type ArticleSuccess = {
   status: string;
 };
 
+export type ContactUsDto = {
+  name: string;
+  email: string;
+  subject: string;
+  phone: string;
+  message: string;
+};
+
+export type ContactUsSuccess = {
+  success: boolean;
+}
+
 export type GeneralInfoFailure = {
   message: string;
   statusCode: number;
@@ -56,4 +68,8 @@ export type DocTermsResponse = FunctionResponse<
 
 export type TodayStatsResponse = FunctionResponse<
   TodayStatsSuccess | GeneralInfoFailure
+>;
+
+export type ContactUsReponse = FunctionResponse<
+ContactUsSuccess | GeneralInfoFailure
 >;
