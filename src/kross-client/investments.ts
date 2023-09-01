@@ -9,6 +9,8 @@ import {
   InvestmentRegisterResponse,
   InvestmentsWengeQueryDto,
   TransactionResponse,
+  tradeNotesDto,
+  tradeNotesResponse,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
@@ -46,6 +48,9 @@ export class Investments extends KrossClientBase {
       url: '/investments',
       method: 'get',
     });
+  }
+  tradeNotes(notes: tradeNotesDto) {
+    return this.instance.post<tradeNotesResponse>('/notes/trade', notes);
   }
 
   investmentRegister(investments: InvestmentRegisterDto[]) {
@@ -260,6 +265,12 @@ export class Investments extends KrossClientBase {
             };
           },
         });
+      },
+      tradeNotes: () => {
+        const mutation = useMutation((notesDto: tradeNotesDto) =>
+          this.tradeNotes(notesDto)
+        );
+        return mutation;
       },
     };
   }

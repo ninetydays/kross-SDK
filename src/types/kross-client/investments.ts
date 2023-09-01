@@ -29,7 +29,22 @@ export type InvestmentRegisterDto = {
   amount: number;
   loan_id: number;
 };
-
+export type tradeNotesDto = {
+  note_id: number;
+  buyer_id: number;
+  origin_amount: number;
+  trade_price: number;
+  idempotency_key: string;
+};
+export type tradeNotesResponse = {
+  data: {
+    idempotency_key: string;
+  };
+  okay: boolean;
+  error: {
+    message: string;
+  };
+};
 export type InvestmentCauseResponse = {
   okay: boolean;
   error: {
