@@ -31,10 +31,9 @@ export type InvestmentRegisterDto = {
 };
 export type tradeNotesDto = {
   note_id: number;
-  buyer_id: number;
   origin_amount: number;
   trade_price: number;
-  idempotency_key: string;
+  idempotency_key?: string;
 };
 export type tradeNotesResponse = {
   data: {
