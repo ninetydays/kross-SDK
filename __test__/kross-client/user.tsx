@@ -203,7 +203,7 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
-  
+
   it.skip('sends link to reset a user', async () => {
     const { resetPasswordUpdate } = client.useUserHooks();
     const { result } = renderHook(() => resetPasswordUpdate(), {
@@ -228,7 +228,7 @@ export const user = () => {
     await act(async () => {
       await result.current.mutateAsync({
         oldPassword: '234q3211!',
-        newPassword: '!4321dcba'
+        newPassword: '!4321dcba',
       });
     });
 

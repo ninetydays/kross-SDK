@@ -9,12 +9,10 @@ import {
 } from '../types';
 
 export class SignContract extends KrossClientBase {
-  getContractSign({id}: SignContractDto) {
-    return this.instance.get<SignContractResponse>(
-      `/signs/${id}`,
-    );
+  getContractSign({ id }: SignContractDto) {
+    return this.instance.get<SignContractResponse>(`/signs/${id}`);
   }
-  getContractDocument({document_id}: ContractDocumentDto){
+  getContractDocument({ document_id }: ContractDocumentDto) {
     return this.instance.get<ContractDocumentResponse>(
       `/documents/${document_id}`,
       {
@@ -22,14 +20,15 @@ export class SignContract extends KrossClientBase {
       }
     );
   }
-  signContractVerification(signContractVerficarion: SignContractVerificationDto) {
-    const {verificationCode, id} = signContractVerficarion;
+  signContractVerification(
+    signContractVerficarion: SignContractVerificationDto
+  ) {
+    const { verificationCode, id } = signContractVerficarion;
     return this.instance.put<SignContractResponse>(
       `/signs/${id}/verification`,
-      {verificationCode: verificationCode},
+      { verificationCode: verificationCode }
     );
   }
-
 
   useSignContracts() {
     return {
@@ -53,7 +52,10 @@ export class SignContract extends KrossClientBase {
           }
         );
       },
-      getContractDocument: (document_id: ContractDocumentDto, enabled?: boolean) => {
+      getContractDocument: (
+        document_id: ContractDocumentDto,
+        enabled?: boolean
+      ) => {
         return useQuery(
           'getContractDocument',
           async () => {

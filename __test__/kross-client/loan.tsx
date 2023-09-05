@@ -87,12 +87,10 @@ export const loan = () => {
     const { loanData } = client.useLoanHooks();
     const { result } = renderHook(
       () =>
-        loanData(
-          {
-            filter: 'state||$in||funding',
-            take: '5',
-          },
-        ),
+        loanData({
+          filter: 'state||$in||funding',
+          take: '5',
+        }),
       {
         wrapper,
       }

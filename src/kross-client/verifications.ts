@@ -12,16 +12,22 @@ import {
   VerificationsWengeDto,
   VerificationsResponse,
   EddVerificationDto,
-  EddVerificationResponse
+  EddVerificationResponse,
 } from '../types/kross-client/verifications';
 import { KrossClientOptions, FunctionRegistered } from '../types';
 export class Verifications extends KrossClientBase {
-  verifications: FunctionRegistered<VerificationsResponse, VerificationsWengeDto>;
+  verifications: FunctionRegistered<
+    VerificationsResponse,
+    VerificationsWengeDto
+  >;
 
   constructor(options: KrossClientOptions) {
     super(options);
 
-    this.verifications = Verifications.registerFunction<VerificationsResponse, VerificationsWengeDto>({
+    this.verifications = Verifications.registerFunction<
+      VerificationsResponse,
+      VerificationsWengeDto
+    >({
       url: '/verifications',
       method: 'get',
     });
@@ -65,21 +71,24 @@ export class Verifications extends KrossClientBase {
     );
   }
 
-
-
   useVerificationHook() {
     return {
-      verifications: (verificationsWengeDto: VerificationsWengeDto, enabled?: boolean) => {
+      verifications: (
+        verificationsWengeDto: VerificationsWengeDto,
+        enabled?: boolean
+      ) => {
         return useQuery({
           cacheTime: 0,
           enabled: enabled !== undefined ? enabled : true,
           queryKey: 'verifications',
           queryFn: async () => {
-            const verificationData = await this.verifications(verificationsWengeDto);
+            const verificationData = await this.verifications(
+              verificationsWengeDto
+            );
             return verificationData;
           },
         });
-        },
+      },
       idCardVerification: () => {
         const mutation = useMutation(
           (idCardVerificationDto: IdCardVerificationsDto) =>
@@ -108,9 +117,8 @@ export class Verifications extends KrossClientBase {
         return mutation;
       },
       eddVerification: () => {
-        const mutation = useMutation(
-          (eddVerificationDto: EddVerificationDto) =>
-            this.eddVerification(eddVerificationDto)
+        const mutation = useMutation((eddVerificationDto: EddVerificationDto) =>
+          this.eddVerification(eddVerificationDto)
         );
         return mutation;
       },

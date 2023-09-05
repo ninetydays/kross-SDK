@@ -92,35 +92,37 @@ export const investment = () => {
     const startDate = format(subMonths(curDate, 8), 'yyyy-MM-dd');
     const { result } = renderHook(
       () =>
-        notes({
+        notes(
+          {
             filter: `state||$eq||done;doneAt||$between||${startDate},${endDate}`,
             join: 'loan',
             order: 'doneAt.desc',
             skip: '0',
             take: '6',
-          },0,
-          true,
-          ),
+          },
+          0,
+          true
+        ),
       {
         wrapper,
       }
     );
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    await waitFor(() => {expect(result.current.data).toBeDefined()});
+    await waitFor(() => {
+      expect(result.current.data).toBeDefined();
+    });
   });
 
   it('transactionLogs', async () => {
     const { transactionLogs } = client.useInvestmentHooks();
     const { result } = renderHook(
       () =>
-        transactionLogs(
-          {
-            transactionQueryDto: {
-              filter: 'select||$eq||deposit',
-            },
-            cacheTime: 0,
-          }
-        ),
+        transactionLogs({
+          transactionQueryDto: {
+            filter: 'select||$eq||deposit',
+          },
+          cacheTime: 0,
+        }),
       {
         wrapper,
       }

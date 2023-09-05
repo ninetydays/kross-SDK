@@ -61,11 +61,9 @@ export const signContractTest = () => {
     expect(result.current.data).toBeDefined();
   }, 30000);
 
-  
   it('gets sign contract', async () => {
     const { getContractSign } = client.useSignContracts();
-    const { result } = renderHook(() => getContractSign({id: 20}),
-       {
+    const { result } = renderHook(() => getContractSign({ id: 20 }), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -74,10 +72,12 @@ export const signContractTest = () => {
 
   it('gets sign contract', async () => {
     const { getContractDocument } = client.useSignContracts();
-    const { result } = renderHook(() => getContractDocument({document_id: 401}, true),
-       {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => getContractDocument({ document_id: 401 }, true),
+      {
+        wrapper,
+      }
+    );
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 150000);

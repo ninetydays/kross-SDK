@@ -34,7 +34,10 @@ export class GeneralInfo extends KrossClientBase {
       url: '/today-stats',
       method: 'get',
     });
-    this.contactUs = GeneralInfo.registerFunction<ContactUsReponse, ContactUsDto>({
+    this.contactUs = GeneralInfo.registerFunction<
+      ContactUsReponse,
+      ContactUsDto
+    >({
       url: '/contact-us',
       method: 'post',
     });
@@ -46,7 +49,7 @@ export class GeneralInfo extends KrossClientBase {
         return useQuery(
           ['docTerms', { ...docTermsQuery }],
           async () => {
-            return this.docTerms(docTermsQuery).then((res) => {
+            return this.docTerms(docTermsQuery).then(res => {
               return res.data;
             });
           },
@@ -57,21 +60,21 @@ export class GeneralInfo extends KrossClientBase {
       },
       articles: (articles?: GeneralInfoQuery) => {
         return useQuery('articles', async () => {
-          return this.articles(articles).then((res) => {
+          return this.articles(articles).then(res => {
             return res.data;
           });
         });
       },
       todayStats: () => {
         return useQuery('todayStats', async () => {
-          return this.todayStats().then((res) => {
+          return this.todayStats().then(res => {
             return res.data;
           });
         });
       },
       contactUs: () => {
         const mutation = useMutation((contactUsDto: ContactUsDto) =>
-            this.contactUs(contactUsDto)
+          this.contactUs(contactUsDto)
         );
         return mutation;
       },

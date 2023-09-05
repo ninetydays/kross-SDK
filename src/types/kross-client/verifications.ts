@@ -22,14 +22,14 @@ export type VerificationsWengeDto = {
 
 export type VerificationResponseData = {
   id: string;
-  userId:	string;
-  type: string
+  userId: string;
+  type: string;
   certification: string;
   encodedData: Record<string, unknown>;
   expireDate: Date;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 export type VerificationsResponse = FunctionResponse<VerificationResponseData>;
 
