@@ -42,7 +42,7 @@ export type ContactUsDto = {
 
 export type ContactUsSuccess = {
   success: boolean;
-}
+};
 
 export type GeneralInfoFailure = {
   message: string;
@@ -71,5 +71,5 @@ export type TodayStatsResponse = FunctionResponse<
 >;
 
 export type ContactUsReponse = FunctionResponse<
-ContactUsSuccess | GeneralInfoFailure
+  ContactUsSuccess | GeneralInfoFailure
 >;

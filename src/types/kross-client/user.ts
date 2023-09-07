@@ -173,7 +173,7 @@ export type UserResponse = FunctionResponse<UserResponseData>;
 export type PasswordUpdateDto = {
   oldPassword: string;
   newPassword: string;
-}
+};
 
 export type PasswordUpdateResponse = UserResponse;
 
@@ -227,14 +227,14 @@ export type PasswordResetDto = {
 export type PasswordResetNewDto = {
   password: string;
   token: string;
-}
+};
 
 export type PasswordResetNewResponse = UserResponse;
 
 export type PasswordResetResponseData = {
   name: string;
   email: string;
-}
+};
 
 export type PasswordResetResponse = FunctionResponse<PasswordResetResponseData>;
 

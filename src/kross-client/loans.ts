@@ -57,21 +57,21 @@ export class Loans extends KrossClientBase {
     return {
       loanConfigs: (loansQueryDto?: LoansQueryDto) => {
         return useQuery('loanConfigs', async () => {
-          return this.loanConfigs(loansQueryDto).then((res) => {
+          return this.loanConfigs(loansQueryDto).then(res => {
             return res.data;
           });
         });
       },
       loanRepayments: (loansQueryDto?: LoansQueryDto) => {
         return useQuery('loanRepayments', async () => {
-          return this.loanRepayments(loansQueryDto).then((res) => {
+          return this.loanRepayments(loansQueryDto).then(res => {
             return res.data;
           });
         });
       },
       loanPaymentSchedule: (loanId: number) => {
         return useQuery('loanPaymentSchedule', async () => {
-          return this.loanPaymentSchedule(loanId).then((res) => {
+          return this.loanPaymentSchedule(loanId).then(res => {
             return res.data;
           });
         });
@@ -100,8 +100,7 @@ export class Loans extends KrossClientBase {
             const loansResponseArray = loansArray.map(
               (item: any): LoanResponseData => {
                 const investments = item.investments?.filter(
-                  (investment: any) =>
-                    investment?.state != 'cancelled'
+                  (investment: any) => investment?.state != 'cancelled'
                 );
                 if (investments?.length > 0) {
                   const investment = investments[0];
@@ -138,7 +137,7 @@ export class Loans extends KrossClientBase {
         return useQuery(
           'loanDetail',
           async () => {
-            return this.loanDetail({ id: loanDetailId }).then((res) => {
+            return this.loanDetail({ id: loanDetailId }).then(res => {
               return res.data;
             });
           },

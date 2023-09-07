@@ -17,4 +17,3 @@ describe('Inquiry', InquiryTest);
 describe('verifications', verifications);
 describe('general-info', generalInfo);
 describe('general-info', signContractTest);
-

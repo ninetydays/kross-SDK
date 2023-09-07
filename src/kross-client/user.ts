@@ -51,8 +51,14 @@ export class User extends KrossClientBase {
   passwordCheck: FunctionRegistered<PasswordCheckResponse, PasswordCheckDto>;
   userFilesList: FunctionRegistered<any>;
   passwordUpdate: FunctionRegistered<PasswordUpdateResponse, PasswordUpdateDto>;
-  passwordResetUpdate: FunctionRegistered<PasswordResetNewResponse, PasswordResetNewDto>;
-  passwordResetEmail: FunctionRegistered<PasswordResetResponse, PasswordResetDto>;
+  passwordResetUpdate: FunctionRegistered<
+    PasswordResetNewResponse,
+    PasswordResetNewDto
+  >;
+  passwordResetEmail: FunctionRegistered<
+    PasswordResetResponse,
+    PasswordResetDto
+  >;
   userAccountLogs: FunctionRegistered<
     UserAccountLogsResponse,
     UserWengeQueryDto
@@ -154,19 +160,28 @@ export class User extends KrossClientBase {
       method: 'get',
     });
 
-    this.passwordResetEmail = User.registerFunction<PasswordResetResponse, PasswordResetDto>({
+    this.passwordResetEmail = User.registerFunction<
+      PasswordResetResponse,
+      PasswordResetDto
+    >({
       url: 'users/reset-password/email',
       method: 'post',
     });
 
-    this.passwordResetUpdate = User.registerFunction<PasswordResetNewResponse, PasswordResetNewDto>({
+    this.passwordResetUpdate = User.registerFunction<
+      PasswordResetNewResponse,
+      PasswordResetNewDto
+    >({
       url: 'users/reset-password/update',
       method: 'put',
     });
-    this.passwordUpdate = User.registerFunction<PasswordUpdateResponse, PasswordUpdateDto>({
+    this.passwordUpdate = User.registerFunction<
+      PasswordUpdateResponse,
+      PasswordUpdateDto
+    >({
       url: 'users/password',
       method: 'patch',
-    })
+    });
   }
 
   signedURL(fileName: string) {
@@ -188,7 +203,7 @@ export class User extends KrossClientBase {
         return useQuery({
           queryKey: 'userNoteLogs',
           queryFn: async () => {
-            return this.userNoteLogs(userWengeQueryDto).then((res) => {
+            return this.userNoteLogs(userWengeQueryDto).then(res => {
               return res.data;
             });
           },
@@ -198,7 +213,7 @@ export class User extends KrossClientBase {
         return useQuery({
           queryKey: 'userAccountLogs',
           queryFn: async () => {
-            return this.userAccountLogs(userWengeQueryDto).then((res) => {
+            return this.userAccountLogs(userWengeQueryDto).then(res => {
               return res.data;
             });
           },
@@ -208,7 +223,7 @@ export class User extends KrossClientBase {
         return useQuery({
           queryKey: 'kftcBalance',
           queryFn: async () => {
-            return this.kftcBalance().then((res) => {
+            return this.kftcBalance().then(res => {
               return res.data;
             });
           },
@@ -218,7 +233,7 @@ export class User extends KrossClientBase {
         return useQuery({
           queryKey: 'getVirtualAccCertificate',
           queryFn: async () => {
-            return this.getVirtualAccCertificate().then((res) => {
+            return this.getVirtualAccCertificate().then(res => {
               return res.data;
             });
           },
@@ -228,7 +243,7 @@ export class User extends KrossClientBase {
         return useQuery({
           queryKey: 'checkVirtualAccount',
           queryFn: async () => {
-            return this.checkVirtualAccount().then((res) => {
+            return this.checkVirtualAccount().then(res => {
               return res.data;
             });
           },
@@ -253,7 +268,7 @@ export class User extends KrossClientBase {
           cacheTime: 0,
           queryKey: 'accountData',
           queryFn: async () => {
-            return this.accountData(accountQuery).then((res) => {
+            return this.accountData(accountQuery).then(res => {
               return res.data;
             });
           },
@@ -271,7 +286,7 @@ export class User extends KrossClientBase {
           cacheTime: 0,
           queryKey: 'userData',
           queryFn: async () => {
-            return this.userData(userQuery).then((res) => {
+            return this.userData(userQuery).then(res => {
               return res.data;
             });
           },
@@ -399,7 +414,7 @@ export class User extends KrossClientBase {
           (userRegisterDto: UserRegisterDto) =>
             this.registerMember(userRegisterDto),
           {
-            onSuccess: (response) => {
+            onSuccess: response => {
               if (response?.data?.token) {
                 this.authToken = response?.data?.token;
               }
@@ -423,19 +438,21 @@ export class User extends KrossClientBase {
       },
       resetPasswordEmail: () => {
         const mutation = useMutation((passwordResetDto: PasswordResetDto) =>
-        this.passwordResetEmail(passwordResetDto)
+          this.passwordResetEmail(passwordResetDto)
         );
         return mutation;
       },
       resetPasswordUpdate: () => {
-        const mutation = useMutation((passwordResetNewDto: PasswordResetNewDto) =>
-        this.passwordResetUpdate(passwordResetNewDto)
+        const mutation = useMutation(
+          (passwordResetNewDto: PasswordResetNewDto) =>
+            this.passwordResetUpdate(passwordResetNewDto)
         );
         return mutation;
       },
       updatePassword: () => {
-        const mutation = useMutation((passwordUpdateDto: PasswordUpdateDto) => 
-        this.passwordUpdate(passwordUpdateDto));
+        const mutation = useMutation((passwordUpdateDto: PasswordUpdateDto) =>
+          this.passwordUpdate(passwordUpdateDto)
+        );
         return mutation;
       },
       portfolio: ({ enabled }: { enabled?: boolean } = {}) => {
@@ -443,7 +460,7 @@ export class User extends KrossClientBase {
           cacheTime: 0,
           queryKey: 'portfolio',
           queryFn: async () => {
-            return this.portfolio().then((res) => {
+            return this.portfolio().then(res => {
               return res.data;
             });
           },
@@ -456,7 +473,7 @@ export class User extends KrossClientBase {
           cacheTime: 0,
           queryKey: 'userFilesList',
           queryFn: async () => {
-            return this.userFilesList().then((res) => {
+            return this.userFilesList().then(res => {
               return res.data;
             });
           },
@@ -467,7 +484,7 @@ export class User extends KrossClientBase {
           cacheTime: 0,
           queryKey: 'getCorporation',
           queryFn: async () => {
-            return this.getCorporations().then((res) => {
+            return this.getCorporations().then(res => {
               return res.data;
             });
           },

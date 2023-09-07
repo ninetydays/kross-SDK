@@ -1,7 +1,7 @@
-import { FunctionResponse } from ".";
+import { FunctionResponse } from '.';
 export type SignContractDto = {
   id: number;
-}
+};
 
 export type SignContractResponseData = {
   id: string;
@@ -11,23 +11,21 @@ export type SignContractResponseData = {
   targetId: string;
   state: string;
   verificationCode: string;
-  messageId: string,
+  messageId: string;
   apiKey: string;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 export type SignContractResponse = FunctionResponse<SignContractResponseData>;
 
 export type SignContractVerificationDto = {
   id: number;
   verificationCode: string;
-}
+};
 
 export type ContractDocumentDto = {
   document_id: number;
-}
-
+};
 
 export type ContractDocumentResponse = FunctionResponse;
-

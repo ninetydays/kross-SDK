@@ -95,7 +95,10 @@ export const verifications = () => {
 
     await act(async () => {
       try {
-        const imagePath = path.resolve(__dirname, '__test__/kross-client/idCard.jpg');
+        const imagePath = path.resolve(
+          __dirname,
+          '__test__/kross-client/idCard.jpg'
+        );
         const imageFile = fs.createReadStream(imagePath);
 
         const form = new formData();
@@ -104,9 +107,7 @@ export const verifications = () => {
         const IdOcrVerificationsDto = {
           image: form,
         };
-        await result.current.mutateAsync(
-          IdOcrVerificationsDto,
-        );
+        await result.current.mutateAsync(IdOcrVerificationsDto);
       } catch (error) {
         console.error(error);
       }
@@ -138,12 +139,18 @@ export const verifications = () => {
 
   it('get verification data', async () => {
     const { verifications } = client.useVerificationHook();
-    const { result } = renderHook(() => verifications({
-      filter: 'type||$eq||user_detail'
-    },
-      true), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () =>
+        verifications(
+          {
+            filter: 'type||$eq||user_detail',
+          },
+          true
+        ),
+      {
+        wrapper,
+      }
+    );
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   }, 150000);
@@ -156,7 +163,7 @@ export const verifications = () => {
     await act(async () => {
       await result.current.mutateAsync({
         address1: 'Ulsan station',
-        address2: '201호',  
+        address2: '201호',
         zip: '001',
         gender: 'male',
         transactionPurpose: 'test',

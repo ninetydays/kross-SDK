@@ -130,12 +130,12 @@ export class KrossClientBase {
         };
     return this.instance
       .post<LoginResponse>('/auth/login', loginDto)
-      .then((response) => {
+      .then(response => {
         this.authToken = response.data.token;
         this.refreshToken = response?.data?.refresh;
         return response;
       })
-      .catch((error) => {
+      .catch(error => {
         return {
           ...error,
         };
@@ -163,7 +163,7 @@ export class KrossClientBase {
         return useQuery({
           queryKey: 'updateAuthToken',
           queryFn: async () => {
-            return this.updateAuthToken().then((res) => {
+            return this.updateAuthToken().then(res => {
               return res.data;
             });
           },

@@ -76,7 +76,7 @@ export class Investments extends KrossClientBase {
         return useQuery({
           queryKey: 'investmentList',
           queryFn: async () => {
-            return this.investmentList(investmentsWengeQueryDto).then((res) => {
+            return this.investmentList(investmentsWengeQueryDto).then(res => {
               return res.data;
             });
           },
