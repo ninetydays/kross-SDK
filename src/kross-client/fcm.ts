@@ -7,6 +7,7 @@ import {
   KrossClientOptions,
   UpdateFCMTokenDto,
 } from '../types';
+import { useMutation, useQuery } from 'react-query';
 
 export class FCMManagement extends KrossClientBase {
   fcmTokens: FunctionRegistered<FCMTokenResponse>;
@@ -31,5 +32,31 @@ export class FCMManagement extends KrossClientBase {
       `/fcm-tokens/${fcmUpdateDto.deviceId}`,
       fcmUpdateDto
     );
+  }
+
+  useFCMTokenHook() {
+    return {
+      fcmTokens: () => {
+        return useQuery(['fcmtokens'], async () => {
+          return this.fcmTokens().then(res => {
+            return res.data;
+          });
+        });
+      },
+
+      createFCMToken: () => {
+        const mutation = useMutation((fcmTokenDto: FCMTokenDto) =>
+          this.createFCMToken(fcmTokenDto)
+        );
+        return mutation;
+      },
+
+      updateFCMToken: () => {
+        const mutation = useMutation((fcmTokenDto: FCMTokenDto) =>
+          this.updateFCMToken(fcmTokenDto)
+        );
+        return mutation;
+      },
+    };
   }
 }
