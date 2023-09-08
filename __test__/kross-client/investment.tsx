@@ -176,4 +176,19 @@ export const investment = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
+  it('create trade notes', async () => {
+    const { tradeNotes } = client.useInvestmentHooks();
+    const { result } = renderHook(() => tradeNotes(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        note_id: 348201,
+        origin_amount: 1000000,
+        trade_price: 1000000,
+      });
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 };
