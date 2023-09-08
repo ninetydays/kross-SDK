@@ -8,7 +8,7 @@ export * from './account';
 export * from './inquiry';
 export * from './general-info';
 export * from './sign-contract';
-export * from './fcm';
+export * from './fcm-management';
 
 type RefreshTokenCallback = (token: string) => void;
 type forceLogoutCallback = () => void;
