@@ -113,6 +113,29 @@ export const investment = () => {
     });
   });
 
+  it('gets notes list with owners name', async () => {
+    const { notesByOwnersName } = client.useInvestmentHooks();
+    const { result } = renderHook(
+      () =>
+        notesByOwnersName(
+          {
+            order: 'id.desc',
+            skip: '0',
+            take: '6',
+          },
+          0,
+          true
+        ),
+      {
+        wrapper,
+      }
+    );
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.data).toBeDefined();
+    });
+  });
+
   it('transactionLogs', async () => {
     const { transactionLogs } = client.useInvestmentHooks();
     const { result } = renderHook(
