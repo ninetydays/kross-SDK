@@ -121,11 +121,7 @@ export type NotesByOwnersNameResponseData = {
   feeAmount: number;
   taxAmount: number;
   state: string;
-  data: {
-    bond_type: string;
-    member_no: number;
-    owner_history: string[];
-  };
+  data: Record<string, unknown>;
   principal: number;
   interest: number;
   originPrincipal: number;
