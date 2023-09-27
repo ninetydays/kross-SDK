@@ -307,6 +307,7 @@ export class User extends KrossClientBase {
               },
             });
             const notesSummaryDataPromise = this.get('/notes/summary');
+
             const repaymentsScheduledDataPromise = this.get('/notes', {
               params: {
                 filter: 'state||$eq||investing',
@@ -324,6 +325,7 @@ export class User extends KrossClientBase {
               notesSummaryDataPromise,
               repaymentsScheduledDataPromise,
             ]);
+
             const { data: accountData = [] }: any = accountDataRes;
             const { data: investmentsAppliedToData = [] }: any =
               investmentsAppliedToDataRes;
@@ -334,33 +336,45 @@ export class User extends KrossClientBase {
             const amountInAccount = accountData?.data?.amount || 0;
 
             // Assets and cummulative return content
-
-            const delayNotesSummary = notesSummaryData?.find(
-              (notesObject: any) => {
+            const delayNotesSummary =
+              notesSummaryData?.find((notesObject: any) => {
                 return notesObject.state === 'delay';
-              }
-            );
+              }) || {};
 
-            const investingNotesSumary = notesSummaryData?.find(
-              (notesObject: any) => {
+            const lateNotesSummary =
+              notesSummaryData?.find((notesObject: any) => {
+                return notesObject.state === 'late';
+              }) || {};
+
+            const investingNotesSumary =
+              notesSummaryData?.find((notesObject: any) => {
                 return notesObject.state === 'investing';
-              }
-            );
-            const doneNotesSummary = notesSummaryData?.find(
-              (notesObject: any) => {
+              }) || {};
+
+            const doneNotesSummary =
+              notesSummaryData?.find((notesObject: any) => {
                 return notesObject.state === 'done';
-              }
-            );
+              }) || {};
+
             const totalAssetAmount =
               amountInAccount +
               (investingNotesSumary?.originPrincipal || 0) -
               (investingNotesSumary?.principal || 0) +
               (delayNotesSummary?.originPrincipal || 0) -
               (delayNotesSummary?.principal || 0);
+
             const cummulativeReturnOnInvestment =
               (doneNotesSummary?.interest || 0) -
               (doneNotesSummary?.taxAmount || 0) -
               (doneNotesSummary?.feeAmount || 0);
+
+            // delay, late repayments
+            const repaymentLateCount = lateNotesSummary?.count || 0;
+            const repaymentLateAmount = lateNotesSummary?.buriedPrincipal || 0;
+
+            const repaymentDelayAmount =
+              delayNotesSummary?.buriedPrincipal || 0;
+            const repaymentDelayCount = delayNotesSummary?.count || 0;
 
             // Investment Applied To content
             const investmentAppliedCount =
@@ -395,15 +409,24 @@ export class User extends KrossClientBase {
               (doneNotesSummary?.interest || 0);
 
             return {
+              totalAssetAmount,
               amountInAccount,
+
+              repaymentDelayAmount,
+              repaymentDelayCount,
+
+              repaymentLateAmount,
+              repaymentLateCount,
+
               investmentAppliedCount,
               investmentAppliedToAmount,
+
               repaymentScheduledCount,
               repaymentScheduledRate,
+              repaymentScheduledAmount,
+
               repaymentDoneCount,
               repaymentDoneAmount,
-              repaymentScheduledAmount,
-              totalAssetAmount,
               cummulativeReturnOnInvestment,
             };
           },
