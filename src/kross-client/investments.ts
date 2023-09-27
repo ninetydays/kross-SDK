@@ -10,6 +10,7 @@ import {
   InvestmentsWengeQueryDto,
   TransactionResponse,
   tradeNotesDto,
+  NotesByOwnersNameResponse,
   tradeNotesResponse,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
@@ -18,6 +19,10 @@ export class Investments extends KrossClientBase {
     InvestmentsWengeQueryDto
   >;
   notes: FunctionRegistered<NotesResponse, InvestmentsWengeQueryDto>;
+  notesByOwnersName: FunctionRegistered<
+    NotesByOwnersNameResponse,
+    InvestmentsWengeQueryDto
+  >;
   transactionLogs: FunctionRegistered<
     TransactionResponse,
     InvestmentsWengeQueryDto
@@ -38,6 +43,14 @@ export class Investments extends KrossClientBase {
       InvestmentsWengeQueryDto
     >({
       url: '/notes',
+      method: 'get',
+    });
+
+    this.notesByOwnersName = Investments.registerFunction<
+      NotesByOwnersNameResponse,
+      InvestmentsWengeQueryDto
+    >({
+      url: '/notes/includes/owner-name',
       method: 'get',
     });
 
@@ -138,6 +151,48 @@ export class Investments extends KrossClientBase {
           }
         );
       },
+
+      notesByOwnersName: (
+        investmentsWengeQueryDto?: InvestmentsWengeQueryDto,
+        cacheTime?: number,
+        enabled?: boolean
+      ) => {
+        return useInfiniteQuery(
+          ['notesByOwnersName', { ...investmentsWengeQueryDto }],
+          async ({ pageParam = 0 }) => {
+            const skip = (
+              pageParam *
+              (isNaN(parseInt(investmentsWengeQueryDto?.take as string, 10))
+                ? 0
+                : parseInt(investmentsWengeQueryDto?.take as string, 10))
+            ).toString();
+            const notesByOwnersNameData = await this.notesByOwnersName({
+              ...investmentsWengeQueryDto,
+              skip,
+            });
+
+            const myHeaders = new Headers(notesByOwnersNameData?.headers);
+            const notesCount = myHeaders.get('x-total-count');
+            const result = {
+              notesByOwnersNameData: notesByOwnersNameData?.data,
+              notesCount: notesCount,
+            };
+            const notesArray = Object.values(result || []);
+            return notesArray;
+          },
+          {
+            getNextPageParam: (lastPage, pages) => {
+              if (lastPage.length === 0) {
+                return null;
+              }
+              return pages?.length;
+            },
+            cacheTime: cacheTime !== undefined ? cacheTime : 300000,
+            enabled: enabled !== undefined ? enabled : true,
+          }
+        );
+      },
+
       transactionLogs: ({
         transactionQueryDto = {},
         cacheTime = 300000,

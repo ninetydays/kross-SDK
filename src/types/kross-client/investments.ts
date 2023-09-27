@@ -99,7 +99,46 @@ export type NotesResponseData = {
   updatedAt: Date;
 };
 
+export type NotesByOwnersNameResponseData = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  productId: string;
+  productCode: string;
+  applicantId: string;
+  memberId: string;
+  rate: number;
+  feeRate: number;
+  period: number;
+  startAt: string;
+  issueAt: string;
+  returnAt: string | null;
+  doneAt: string | null;
+  fundAmount: number;
+  investedAmount: number;
+  returnedAmount: number;
+  expectedAmount: number;
+  feeAmount: number;
+  taxAmount: number;
+  state: string;
+  data: Record<string, unknown>;
+  principal: number;
+  interest: number;
+  originPrincipal: number;
+  userId: string | null;
+  documentId: string | null;
+  kftcContractId: string | null;
+  transfer: boolean;
+  kftcInvestmentRegisterId: string | null;
+  paymentDate: string;
+  dueDate: string;
+  repaymentDate: string | null;
+  userName: string;
+};
+
 export type NotesResponse = FunctionResponse<NotesResponseData>;
+export type NotesByOwnersNameResponse =
+  FunctionResponse<NotesByOwnersNameResponseData>;
 
 export type TransactionResponseData = {
   id: string;
