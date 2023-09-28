@@ -163,6 +163,7 @@ export const investment = () => {
         appliedInvestments({
           investmentsQuery: {
             filter: 'state||$eq||funding',
+            take: '1',
           },
         }),
       {

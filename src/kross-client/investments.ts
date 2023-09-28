@@ -129,7 +129,6 @@ export class Investments extends KrossClientBase {
               ...investmentsWengeQueryDto,
               skip,
             });
-
             const myHeaders = new Headers(notesData?.headers);
             const notesCount = myHeaders.get('x-total-count');
             const result = {
@@ -270,7 +269,13 @@ export class Investments extends KrossClientBase {
               join: 'loan',
               skip,
             });
-            return appliedInvestmentData?.data || [];
+            new Headers(appliedInvestmentData?.headers).get('x-total-count');
+            const data = {
+              data: appliedInvestmentData?.data || [],
+              count: new Headers(appliedInvestmentData?.headers).get('x-total-count'),
+            };
+            const response = Object.values(data || []);
+            return response;
           },
           {
             getNextPageParam: (lastPage, pages) => {
