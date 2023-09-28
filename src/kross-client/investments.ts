@@ -272,7 +272,9 @@ export class Investments extends KrossClientBase {
             new Headers(appliedInvestmentData?.headers).get('x-total-count');
             const data = {
               data: appliedInvestmentData?.data || [],
-              count: new Headers(appliedInvestmentData?.headers).get('x-total-count'),
+              count: new Headers(appliedInvestmentData?.headers).get(
+                'x-total-count'
+              ),
             };
             const response = Object.values(data || []);
             return response;
