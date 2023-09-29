@@ -217,33 +217,25 @@ export const investment = () => {
   });
   it('gets soldoff notes', async () => {
     const { soldOffNotes } = client.useInvestmentHooks();
-    const { result } = renderHook(
-      () =>
-        soldOffNotes({}),
-      {
-        wrapper,
-      }
-    );
+    const { result } = renderHook(() => soldOffNotes({}), {
+      wrapper,
+    });
     await waitFor(async () => {
       const { data } = result.current;
       expect(data).toBeDefined();
-      console.log("data: ", data);
+      console.log('data: ', data);
     });
   });
 
   it('gets soldoff notes', async () => {
     const { soldOffSummary } = client.useInvestmentHooks();
-    const { result } = renderHook(
-      () =>
-        soldOffSummary({}),
-      {
-        wrapper,
-      }
-    );
+    const { result } = renderHook(() => soldOffSummary({}), {
+      wrapper,
+    });
     await waitFor(async () => {
       const { data } = result.current;
       expect(data).toBeDefined();
-      console.log("data: ", data);
+      console.log('data: ', data);
     });
   });
 };

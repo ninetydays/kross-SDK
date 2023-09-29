@@ -112,9 +112,10 @@ export type SoldOffNotesSummaryData = {
   yearPretaxInterest: number;
   expectedPretaxInterest: number;
   returnRatio: number;
-}
+};
 
-export type SoldOffNotesSummaryResponse= FunctionResponse<SoldOffNotesSummaryData>;
+export type SoldOffNotesSummaryResponse =
+  FunctionResponse<SoldOffNotesSummaryData>;
 export type SoldOffNotesData = {
   id: string;
   productId: string;
@@ -124,7 +125,7 @@ export type SoldOffNotesData = {
   state: string;
   rate: number;
   feeRate: number;
-  period: number
+  period: number;
   fundAmount: number;
   investedAmount: number;
   returnedAmount: number;
@@ -134,14 +135,14 @@ export type SoldOffNotesData = {
   escrowAmount: number;
   principal: number;
   interest: number;
-  originPrincipal: number,
+  originPrincipal: number;
   startAt: Date;
   issueAt: Date;
   returnAt: Date;
   doneAt: Date;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 export type SoldOffNotesResponse = FunctionResponse<SoldOffNotesData>;
 

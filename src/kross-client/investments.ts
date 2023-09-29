@@ -381,9 +381,7 @@ export class Investments extends KrossClientBase {
             });
             const data = {
               data: soldOffNote?.data || [],
-              count: new Headers(soldOffNote?.headers).get(
-                'x-total-count'
-              ),
+              count: new Headers(soldOffNote?.headers).get('x-total-count'),
             };
             const response = Object.values(data || []);
             return response;
@@ -404,9 +402,11 @@ export class Investments extends KrossClientBase {
         return useQuery({
           queryKey: 'soldOffSummary',
           queryFn: async () => {
-            return this.soldOffNoteSummary(investmentsWengeQueryDto).then(res => {
-              return res.data;
-            });
+            return this.soldOffNoteSummary(investmentsWengeQueryDto).then(
+              res => {
+                return res.data;
+              }
+            );
           },
         });
       },
