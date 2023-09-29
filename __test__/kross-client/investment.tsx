@@ -223,11 +223,10 @@ export const investment = () => {
     await waitFor(async () => {
       const { data } = result.current;
       expect(data).toBeDefined();
-      console.log('data: ', data);
     });
   });
 
-  it('gets soldoff notes', async () => {
+  it('gets soldoff notes summary', async () => {
     const { soldOffSummary } = client.useInvestmentHooks();
     const { result } = renderHook(() => soldOffSummary({}), {
       wrapper,
@@ -235,7 +234,6 @@ export const investment = () => {
     await waitFor(async () => {
       const { data } = result.current;
       expect(data).toBeDefined();
-      console.log('data: ', data);
     });
   });
 };
