@@ -12,6 +12,8 @@ import {
   tradeNotesDto,
   NotesByOwnersNameResponse,
   tradeNotesResponse,
+  SoldOffNotesResponse,
+  SoldOffNotesSummaryResponse,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
@@ -25,6 +27,14 @@ export class Investments extends KrossClientBase {
   >;
   transactionLogs: FunctionRegistered<
     TransactionResponse,
+    InvestmentsWengeQueryDto
+  >;
+  soldOffNoteList: FunctionRegistered<
+    SoldOffNotesResponse,
+    InvestmentsWengeQueryDto
+  >;
+  soldOffNoteSummary: FunctionRegistered<
+    SoldOffNotesSummaryResponse,
     InvestmentsWengeQueryDto
   >;
 
@@ -59,6 +69,20 @@ export class Investments extends KrossClientBase {
       InvestmentsWengeQueryDto
     >({
       url: '/investments',
+      method: 'get',
+    });
+    this.soldOffNoteList = Investments.registerFunction<
+      SoldOffNotesResponse,
+      InvestmentsWengeQueryDto
+    >({
+      url: '/users/soldoff-notes',
+      method: 'get',
+    });
+    this.soldOffNoteSummary = Investments.registerFunction<
+      SoldOffNotesSummaryResponse,
+      InvestmentsWengeQueryDto
+    >({
+      url: '/users/soldoff-notes/summary',
       method: 'get',
     });
   }
@@ -269,7 +293,6 @@ export class Investments extends KrossClientBase {
               join: 'loan',
               skip,
             });
-            new Headers(appliedInvestmentData?.headers).get('x-total-count');
             const data = {
               data: appliedInvestmentData?.data || [],
               count: new Headers(appliedInvestmentData?.headers).get(
@@ -333,6 +356,59 @@ export class Investments extends KrossClientBase {
           this.tradeNotes(notesDto)
         );
         return mutation;
+      },
+      soldOffNotes: ({
+        investmentsQuery = {},
+        cacheTime = 300000,
+        enabled = true,
+      }: {
+        investmentsQuery?: InvestmentsWengeQueryDto;
+        cacheTime?: number;
+        enabled?: boolean;
+      }) => {
+        return useInfiniteQuery(
+          'soldOffNotes',
+          async ({ pageParam = 0 }) => {
+            const skip = (
+              pageParam *
+              (isNaN(parseInt(investmentsQuery?.take as string, 10))
+                ? 0
+                : parseInt(investmentsQuery?.take as string, 10))
+            ).toString();
+            const soldOffNote = await this.soldOffNoteList({
+              ...investmentsQuery,
+              skip,
+            });
+            const data = {
+              data: soldOffNote?.data || [],
+              count: new Headers(soldOffNote?.headers).get(
+                'x-total-count'
+              ),
+            };
+            const response = Object.values(data || []);
+            return response;
+          },
+          {
+            getNextPageParam: (lastPage, pages) => {
+              if (lastPage.length === 0) {
+                return null;
+              }
+              return pages?.length;
+            },
+            cacheTime: cacheTime !== undefined ? cacheTime : 300000,
+            enabled: enabled !== undefined ? enabled : true,
+          }
+        );
+      },
+      soldOffSummary: (investmentsWengeQueryDto?: InvestmentsWengeQueryDto) => {
+        return useQuery({
+          queryKey: 'soldOffSummary',
+          queryFn: async () => {
+            return this.soldOffNoteSummary(investmentsWengeQueryDto).then(res => {
+              return res.data;
+            });
+          },
+        });
       },
     };
   }
