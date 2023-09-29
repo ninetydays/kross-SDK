@@ -13,7 +13,6 @@ import {
   NotesByOwnersNameResponse,
   tradeNotesResponse,
   SoldOffNotesResponse,
-  SoldOffNotesSummaryResponse,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
@@ -31,10 +30,6 @@ export class Investments extends KrossClientBase {
   >;
   soldOffNoteList: FunctionRegistered<
     SoldOffNotesResponse,
-    InvestmentsWengeQueryDto
-  >;
-  soldOffNoteSummary: FunctionRegistered<
-    SoldOffNotesSummaryResponse,
     InvestmentsWengeQueryDto
   >;
 
@@ -76,13 +71,6 @@ export class Investments extends KrossClientBase {
       InvestmentsWengeQueryDto
     >({
       url: '/users/soldoff-notes',
-      method: 'get',
-    });
-    this.soldOffNoteSummary = Investments.registerFunction<
-      SoldOffNotesSummaryResponse,
-      InvestmentsWengeQueryDto
-    >({
-      url: '/users/soldoff-notes/summary',
       method: 'get',
     });
   }
@@ -397,18 +385,6 @@ export class Investments extends KrossClientBase {
             enabled: enabled !== undefined ? enabled : true,
           }
         );
-      },
-      soldOffSummary: (investmentsWengeQueryDto?: InvestmentsWengeQueryDto) => {
-        return useQuery({
-          queryKey: 'soldOffSummary',
-          queryFn: async () => {
-            return this.soldOffNoteSummary(investmentsWengeQueryDto).then(
-              res => {
-                return res.data;
-              }
-            );
-          },
-        });
       },
     };
   }

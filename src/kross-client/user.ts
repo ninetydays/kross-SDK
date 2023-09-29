@@ -314,16 +314,22 @@ export class User extends KrossClientBase {
               },
             });
 
+            const soldOffNotesPromise = this.get(
+              '/users/soldoff-notes/summary'
+            );
+
             const [
               accountDataRes,
               investmentsAppliedToDataRes,
               notesSummaryDataRes,
               repaymentsScheduledDataRes,
+              soldOffNotesRes,
             ] = await Promise.all([
               accountDataPromise,
               investmentsAppliedToDataPromise,
               notesSummaryDataPromise,
               repaymentsScheduledDataPromise,
+              soldOffNotesPromise,
             ]);
 
             const { data: accountData = [] }: any = accountDataRes;
@@ -332,6 +338,8 @@ export class User extends KrossClientBase {
             const { data: notesSummaryData = [] }: any = notesSummaryDataRes;
             const { data: repaymentsScheduledData = [] }: any =
               repaymentsScheduledDataRes;
+
+            const { data: soldOffNoteData = {} }: any = soldOffNotesRes;
 
             const amountInAccount = accountData?.data?.amount || 0;
 
@@ -408,6 +416,9 @@ export class User extends KrossClientBase {
               (doneNotesSummary?.originPrincipal || 0) +
               (doneNotesSummary?.interest || 0);
 
+            const soldOffNoteCount = soldOffNoteData?.count;
+            const soldOffNoteAmount = soldOffNoteData?.buriedPrincipal;
+
             return {
               totalAssetAmount,
               amountInAccount,
@@ -428,6 +439,9 @@ export class User extends KrossClientBase {
               repaymentDoneCount,
               repaymentDoneAmount,
               cummulativeReturnOnInvestment,
+
+              soldOffNoteCount,
+              soldOffNoteAmount,
             };
           },
         });

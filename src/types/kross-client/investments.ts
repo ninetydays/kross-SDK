@@ -98,24 +98,7 @@ export type NotesResponseData = {
   createdAt: Date;
   updatedAt: Date;
 };
-export type SoldOffNotesSummaryData = {
-  count: number;
-  investedAmount: number;
-  buriedPrincipal: number;
-  principal: number;
-  originPrincipal: number;
-  interest: number;
-  feeAmount: number;
-  taxAmount: number;
-  yearInterest: number;
-  yearTaxAmount: number;
-  yearPretaxInterest: number;
-  expectedPretaxInterest: number;
-  returnRatio: number;
-};
 
-export type SoldOffNotesSummaryResponse =
-  FunctionResponse<SoldOffNotesSummaryData>;
 export type SoldOffNotesData = {
   id: string;
   productId: string;
