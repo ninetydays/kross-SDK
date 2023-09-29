@@ -98,6 +98,53 @@ export type NotesResponseData = {
   createdAt: Date;
   updatedAt: Date;
 };
+export type SoldOffNotesSummaryData = {
+  count: number;
+  investedAmount: number;
+  buriedPrincipal: number;
+  principal: number;
+  originPrincipal: number;
+  interest: number;
+  feeAmount: number;
+  taxAmount: number;
+  yearInterest: number;
+  yearTaxAmount: number;
+  yearPretaxInterest: number;
+  expectedPretaxInterest: number;
+  returnRatio: number;
+};
+
+export type SoldOffNotesSummaryResponse =
+  FunctionResponse<SoldOffNotesSummaryData>;
+export type SoldOffNotesData = {
+  id: string;
+  productId: string;
+  productCode: string;
+  applicantId: string;
+  memberId: string;
+  state: string;
+  rate: number;
+  feeRate: number;
+  period: number;
+  fundAmount: number;
+  investedAmount: number;
+  returnedAmount: number;
+  expectedAmount: number;
+  feeAmount: number;
+  taxAmount: number;
+  escrowAmount: number;
+  principal: number;
+  interest: number;
+  originPrincipal: number;
+  startAt: Date;
+  issueAt: Date;
+  returnAt: Date;
+  doneAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type SoldOffNotesResponse = FunctionResponse<SoldOffNotesData>;
 
 export type NotesByOwnersNameResponseData = {
   id: string;
