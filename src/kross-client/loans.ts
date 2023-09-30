@@ -1,6 +1,8 @@
 import {
   LoanDetailQueryDto,
   LoanDetailResponse,
+  LoansDistributionsQueryDto,
+  LoanDistributionsResponseData,
 } from './../types/kross-client/loans';
 import { KrossClientBase } from './base';
 import { FunctionRegistered, KrossClientOptions } from '../types';
@@ -18,6 +20,10 @@ export class Loans extends KrossClientBase {
   loanRepayments: FunctionRegistered<LoanRepaymentResponse, LoansQueryDto>;
   loanConfigs: FunctionRegistered<LoanConfigResponse, LoansQueryDto>;
   loanDetail: FunctionRegistered<LoanDetailResponse, LoanDetailQueryDto>;
+  loanDistributions: FunctionRegistered<
+    LoanDistributionsResponseData,
+    LoansDistributionsQueryDto
+  >;
   constructor(options: KrossClientOptions) {
     super(options);
     this.loanConfigs = Loans.registerFunction<
@@ -44,6 +50,13 @@ export class Loans extends KrossClientBase {
       LoanDetailQueryDto
     >({
       url: '/loan-detail',
+      method: 'get',
+    });
+    this.loanDistributions = Loans.registerFunction<
+      LoanDistributionsResponseData,
+      LoansDistributionsQueryDto
+    >({
+      url: '/loan-distributions',
       method: 'get',
     });
   }
@@ -145,6 +158,17 @@ export class Loans extends KrossClientBase {
             enabled: enabled !== undefined ? enabled : true,
           }
         );
+      },
+      loanDistributions: (
+        LoansDistributionsQueryDto?: LoansDistributionsQueryDto
+      ) => {
+        return useQuery('loanConfigs', async () => {
+          return this.loanDistributions(LoansDistributionsQueryDto).then(
+            res => {
+              return res.data;
+            }
+          );
+        });
       },
     };
   }
