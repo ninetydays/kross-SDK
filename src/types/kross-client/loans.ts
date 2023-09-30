@@ -8,6 +8,30 @@ export type LoansQueryDto = {
   filter?: string;
   join?: string;
 };
+export type LoansDistributionsQueryDto = {
+  select?: string;
+  skip?: string;
+  take?: string;
+  order?: string;
+  filter?: string;
+  join?: string;
+};
+export type LoanDistributionsResponseData = {
+  id: string;
+  userId: string;
+  repaymentId: string;
+  noteId: string;
+  amount: string;
+  principal: string;
+  interest: string;
+  fee: string;
+  feeVat: string;
+  incomeTax: string;
+  localTax: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export type LoanResponseData = {
   id: string;
   no: number;
