@@ -416,6 +416,10 @@ export class User extends KrossClientBase {
               (doneNotesSummary?.originPrincipal || 0) +
               (doneNotesSummary?.interest || 0);
 
+            const cumulativeInvestmentPrincipal =
+              (doneNotesSummary?.originPrincipal || 0) +
+              repaymentScheduledAmount;
+
             const soldOffNoteCount = soldOffNoteData?.count;
             const soldOffNoteAmount = soldOffNoteData?.buriedPrincipal;
 
@@ -442,6 +446,8 @@ export class User extends KrossClientBase {
 
               soldOffNoteCount,
               soldOffNoteAmount,
+
+              cumulativeInvestmentPrincipal,
             };
           },
         });
