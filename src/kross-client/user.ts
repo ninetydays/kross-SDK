@@ -205,7 +205,7 @@ export class User extends KrossClientBase {
       getDepositReportResponse,
       DepositReportQueryDto
     >({
-      url: 'users/soldoff-notes',
+      url: 'users/deposit-report',
       method: 'get',
     });
   }
