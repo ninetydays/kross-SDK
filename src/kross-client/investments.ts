@@ -13,6 +13,7 @@ import {
   NotesByOwnersNameResponse,
   tradeNotesResponse,
   SoldOffNotesResponse,
+  NoteTransferResponse,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
@@ -30,6 +31,10 @@ export class Investments extends KrossClientBase {
   >;
   soldOffNoteList: FunctionRegistered<
     SoldOffNotesResponse,
+    InvestmentsWengeQueryDto
+  >;
+  noteTransferLogs: FunctionRegistered<
+    NoteTransferResponse,
     InvestmentsWengeQueryDto
   >;
 
@@ -73,6 +78,13 @@ export class Investments extends KrossClientBase {
       url: '/users/soldoff-notes',
       method: 'get',
     });
+    this.noteTransferLogs = Investments.registerFunction<
+      NoteTransferResponse,
+      InvestmentsWengeQueryDto
+    >({
+      url: '/note-transfer-logs',
+      method: 'get',
+    });
   }
   tradeNotes(notes: tradeNotesDto) {
     return this.instance.post<tradeNotesResponse>('/notes/trade', notes);
@@ -107,6 +119,18 @@ export class Investments extends KrossClientBase {
           queryKey: 'investmentList',
           queryFn: async () => {
             return this.investmentList(investmentsWengeQueryDto).then(res => {
+              return res.data;
+            });
+          },
+        });
+      },
+      noteTransferLogs: (
+        investmentsWengeQueryDto?: InvestmentsWengeQueryDto
+      ) => {
+        return useQuery({
+          queryKey: 'noteTransferLogs',
+          queryFn: async () => {
+            return this.noteTransferLogs(investmentsWengeQueryDto).then(res => {
               return res.data;
             });
           },
