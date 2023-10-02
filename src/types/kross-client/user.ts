@@ -293,6 +293,25 @@ export type getCorporationResponse = {
   state: string;
   chargeMobile: string;
 };
+export type getDepositReportResponse = {
+  bankCode: number;
+  accountNo: string;
+  vAccountNo: number;
+  totalAssetsAmount: number;
+  notesAmount: number;
+  totalExpectedReturn: number;
+  depositsAmount: number;
+  notes: any;
+  businessNumber: string;
+};
+export type DepositReportQueryDto = {
+  select?: string;
+  skip?: string;
+  take?: string;
+  order?: string;
+  filter?: string;
+  join?: string;
+};
 export type getSoldOffNotesResponse = {
   id: string;
   productId: string;

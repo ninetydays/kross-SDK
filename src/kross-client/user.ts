@@ -37,6 +37,8 @@ import {
   updateCorporationResponse,
   getSoldOffNotesResponse,
   SoldOffNotesQueryDto,
+  getDepositReportResponse,
+  DepositReportQueryDto,
 } from '../types/kross-client/user';
 import { updateCorporationDto } from '../types/kross-client/corporations';
 
@@ -71,6 +73,10 @@ export class User extends KrossClientBase {
   getSoldOffNotes: FunctionRegistered<
     getSoldOffNotesResponse,
     SoldOffNotesQueryDto
+  >;
+  getDepositReport: FunctionRegistered<
+    getDepositReportResponse,
+    DepositReportQueryDto
   >;
   constructor(options: KrossClientOptions) {
     super(options);
@@ -191,6 +197,13 @@ export class User extends KrossClientBase {
     this.getSoldOffNotes = User.registerFunction<
       getSoldOffNotesResponse,
       SoldOffNotesQueryDto
+    >({
+      url: 'users/soldoff-notes',
+      method: 'get',
+    });
+    this.getDepositReport = User.registerFunction<
+      getDepositReportResponse,
+      DepositReportQueryDto
     >({
       url: 'users/soldoff-notes',
       method: 'get',
@@ -566,6 +579,16 @@ export class User extends KrossClientBase {
           queryKey: 'getSoldOffNotes',
           queryFn: async () => {
             return this.getSoldOffNotes(SoldOffNotesQueryDto).then(res => {
+              return res.data;
+            });
+          },
+        });
+      },
+      getDepositReport: (DepositReportQueryDto?: DepositReportQueryDto) => {
+        return useQuery({
+          queryKey: 'getDepositReport',
+          queryFn: async () => {
+            return this.getDepositReport(DepositReportQueryDto).then(res => {
               return res.data;
             });
           },

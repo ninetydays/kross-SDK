@@ -295,4 +295,12 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
+  it('gets Deposit Report', async () => {
+    const { getDepositReport } = client.useUserHooks();
+    const { result } = renderHook(() => getDepositReport(), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 };
