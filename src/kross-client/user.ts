@@ -35,6 +35,8 @@ import {
   UserFilesResponse,
   getCorporationResponse,
   updateCorporationResponse,
+  getSoldOffNotesResponse,
+  SoldOffNotesQueryDto,
 } from '../types/kross-client/user';
 import { updateCorporationDto } from '../types/kross-client/corporations';
 
@@ -66,6 +68,10 @@ export class User extends KrossClientBase {
   userNoteLogs: FunctionRegistered<UserNoteLogsResponse, UserWengeQueryDto>;
   portfolio: FunctionRegistered<PortfolioResponse>;
   getCorporations: FunctionRegistered<getCorporationResponse>;
+  getSoldOffNotes: FunctionRegistered<
+    getSoldOffNotesResponse,
+    SoldOffNotesQueryDto
+  >;
   constructor(options: KrossClientOptions) {
     super(options);
     this.userNoteLogs = User.registerFunction<
@@ -181,6 +187,13 @@ export class User extends KrossClientBase {
     >({
       url: 'users/password',
       method: 'patch',
+    });
+    this.getSoldOffNotes = User.registerFunction<
+      getSoldOffNotesResponse,
+      SoldOffNotesQueryDto
+    >({
+      url: 'users/soldoff-notes',
+      method: 'get',
     });
   }
 
@@ -547,6 +560,16 @@ export class User extends KrossClientBase {
             this.updateCorporation(updateCorporation)
         );
         return mutation;
+      },
+      getSoldOffNotes: (SoldOffNotesQueryDto?: SoldOffNotesQueryDto) => {
+        return useQuery({
+          queryKey: 'getSoldOffNotes',
+          queryFn: async () => {
+            return this.getSoldOffNotes(SoldOffNotesQueryDto).then(res => {
+              return res.data;
+            });
+          },
+        });
       },
     };
   }
