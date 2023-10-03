@@ -311,6 +311,7 @@ export type DepositReportQueryDto = {
   order?: string;
   filter?: string;
   join?: string;
+  date?: Date | string;
 };
 export type getSoldOffNotesResponse = {
   id: string;
