@@ -129,6 +129,24 @@ export type SoldOffNotesData = {
 
 export type SoldOffNotesResponse = FunctionResponse<SoldOffNotesData>;
 
+export type NoteTransferLogsData = {
+  id: string;
+  buyerId: string;
+  sellerId: string;
+  sellerNoteId: string;
+  buyerNoteId: string;
+  originAmount: string;
+  tradePrice: string;
+  loanId: string;
+  documentId: string;
+  state: string;
+  processDate: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type NoteTransferResponse = FunctionResponse<NoteTransferLogsData>;
+
 export type NotesByOwnersNameResponseData = {
   id: string;
   createdAt: string;

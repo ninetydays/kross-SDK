@@ -225,4 +225,14 @@ export const investment = () => {
       expect(data).toBeDefined();
     });
   });
+  it('gets note transfer logs', async () => {
+    const { noteTransferLogs } = client.useInvestmentHooks();
+    const { result } = renderHook(() => noteTransferLogs({}), {
+      wrapper,
+    });
+    await waitFor(async () => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
+    });
+  });
 };
