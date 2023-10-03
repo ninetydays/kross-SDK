@@ -287,4 +287,23 @@ export const user = () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
+  it('gets sold off notes', async () => {
+    const { getSoldOffNotes } = client.useUserHooks();
+    const { result } = renderHook(() => getSoldOffNotes({ take: '5' }), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+  it('gets Deposit Report', async () => {
+    const { getDepositReport } = client.useUserHooks();
+    const { result } = renderHook(
+      () => getDepositReport({ date: '2023-02-01' }),
+      {
+        wrapper,
+      }
+    );
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
 };

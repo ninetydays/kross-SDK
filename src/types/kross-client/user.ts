@@ -293,7 +293,61 @@ export type getCorporationResponse = {
   state: string;
   chargeMobile: string;
 };
-
+export type getDepositReportResponse = {
+  bankCode: number;
+  accountNo: string;
+  vAccountNo: number;
+  totalAssetsAmount: number;
+  notesAmount: number;
+  totalExpectedReturn: number;
+  depositsAmount: number;
+  notes: any;
+  businessNumber: string;
+};
+export type DepositReportQueryDto = {
+  select?: string;
+  skip?: string;
+  take?: string;
+  order?: string;
+  filter?: string;
+  join?: string;
+  date?: Date | string;
+};
+export type getSoldOffNotesResponse = {
+  id: string;
+  productId: string;
+  productCode: string;
+  applicantId: string;
+  memberId: string;
+  state: string;
+  rate: number;
+  feeRate: number;
+  period: number;
+  fundAmount: number;
+  investedAmount: number;
+  returnedAmount: number;
+  expectedAmount: number;
+  feeAmount: number;
+  taxAmount: number;
+  escrowAmount: number;
+  principal: number;
+  interest: number;
+  originPrincipal: number;
+  startAt: string;
+  issueAt: string;
+  returnAt: string;
+  doneAt: string;
+  createdAt: string;
+  updatedAt: string;
+};
+export type SoldOffNotesQueryDto = {
+  select?: string;
+  skip?: string;
+  take?: string;
+  order?: string;
+  filter?: string;
+  join?: string;
+};
 export type updateCorporationResponse = {
   corpRegNo: 'string';
   businessNo: 'string';
