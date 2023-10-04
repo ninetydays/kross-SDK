@@ -320,7 +320,7 @@ export class User extends KrossClientBase {
         });
       },
 
-      myPageData: () => {
+      myPageData: ({enabled} : {enabled?: boolean}) => {
         return useQuery({
           cacheTime: 0,
           queryKey: 'myPageData',
@@ -476,6 +476,7 @@ export class User extends KrossClientBase {
               cumulativeInvestmentPrincipal,
             };
           },
+          enabled: enabled === undefined ? true : enabled,
         });
       },
       userRegister: () => {
