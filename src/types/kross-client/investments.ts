@@ -69,12 +69,12 @@ export type InvestmentCancelResponse =
 
 export type NotesResponseData = {
   id: number;
+  createdAt: Date;
+  updatedAt: Date;
   productId: number;
   productCode: string;
   applicantId: number;
-  userId: number;
   memberId: number;
-  amount: number;
   rate: number;
   feeRate: number;
   period: number;
@@ -88,15 +88,19 @@ export type NotesResponseData = {
   expectedAmount: number;
   feeAmount: number;
   taxAmount: number;
-  escrowAmount: number;
-  guaranteeId: string;
+  state: string;
+  data: Record<string, unknown>;
   principal: number;
   interest: number;
   originPrincipal: number;
-  state: string;
-  data: Record<string, unknown>;
-  createdAt: Date;
-  updatedAt: Date;
+  userId: number;
+  documentId: number;
+  kftcContractId: string;
+  transfer: boolean;
+  kftcInvestmentRegisterId: string;
+  paymentDate: string;
+  dueDate: string;
+  repaymentDate: string;
 };
 
 export type SoldOffNotesData = {
