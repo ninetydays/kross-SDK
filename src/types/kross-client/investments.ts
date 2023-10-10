@@ -184,7 +184,7 @@ export type NotesByOwnersNameResponseData = {
   userName: string;
 };
 
-export type NotesResponse = FunctionResponse<NotesResponseData>;
+export type NotesResponse = NotesResponseData[];
 export type NotesByOwnersNameResponse =
   FunctionResponse<NotesByOwnersNameResponseData>;
 
