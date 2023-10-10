@@ -320,7 +320,7 @@ export class User extends KrossClientBase {
         });
       },
 
-      myPageData: () => {
+      myPageData: ({ enabled }: { enabled?: boolean }) => {
         return useQuery({
           cacheTime: 0,
           queryKey: 'myPageData',
@@ -368,6 +368,8 @@ export class User extends KrossClientBase {
             const { data: soldOffNoteData = {} }: any = soldOffNotesRes;
 
             const amountInAccount = accountData?.data?.amount || 0;
+            const availableWithdrawAmount =
+              accountData?.data?.available_withdraw_amount || 0;
 
             // Assets and cummulative return content
             const delayNotesSummary =
@@ -452,6 +454,7 @@ export class User extends KrossClientBase {
             return {
               totalAssetAmount,
               amountInAccount,
+              availableWithdrawAmount,
 
               repaymentDelayAmount,
               repaymentDelayCount,
@@ -476,6 +479,7 @@ export class User extends KrossClientBase {
               cumulativeInvestmentPrincipal,
             };
           },
+          enabled: enabled === undefined ? true : enabled,
         });
       },
       userRegister: () => {
