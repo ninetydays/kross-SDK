@@ -136,7 +136,7 @@ export const user = () => {
 
   it('gets myPage data', async () => {
     const { myPageData } = client.useUserHooks();
-    const { result } = renderHook(() => myPageData(), {
+    const { result } = renderHook(() => myPageData({}), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
