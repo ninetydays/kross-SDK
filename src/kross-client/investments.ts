@@ -14,32 +14,44 @@ import {
   tradeNotesResponse,
   SoldOffNotesResponse,
   NoteTransferResponse,
+  NoteSummaryResponse,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
     InvestmentListResponse,
     InvestmentsWengeQueryDto
   >;
+
   notes: FunctionRegistered<NotesResponse, InvestmentsWengeQueryDto>;
+
   notesByOwnersName: FunctionRegistered<
     NotesByOwnersNameResponse,
     InvestmentsWengeQueryDto
   >;
+
   transactionLogs: FunctionRegistered<
     TransactionResponse,
     InvestmentsWengeQueryDto
   >;
+
   soldOffNoteList: FunctionRegistered<
     SoldOffNotesResponse,
     InvestmentsWengeQueryDto
   >;
+
   noteTransferLogs: FunctionRegistered<
     NoteTransferResponse,
     InvestmentsWengeQueryDto
   >;
 
+  noteSummary: FunctionRegistered<
+    NoteSummaryResponse,
+    InvestmentsWengeQueryDto
+  >;
+
   constructor(options: KrossClientOptions) {
     super(options);
+
     this.transactionLogs = Investments.registerFunction<
       TransactionResponse,
       InvestmentsWengeQueryDto
@@ -71,6 +83,7 @@ export class Investments extends KrossClientBase {
       url: '/investments',
       method: 'get',
     });
+
     this.soldOffNoteList = Investments.registerFunction<
       SoldOffNotesResponse,
       InvestmentsWengeQueryDto
@@ -78,11 +91,20 @@ export class Investments extends KrossClientBase {
       url: '/users/soldoff-notes',
       method: 'get',
     });
+
     this.noteTransferLogs = Investments.registerFunction<
       NoteTransferResponse,
       InvestmentsWengeQueryDto
     >({
       url: '/note-transfer-logs',
+      method: 'get',
+    });
+
+    this.noteSummary = Investments.registerFunction<
+      NoteSummaryResponse,
+      InvestmentsWengeQueryDto
+    >({
+      url: '/notes/summary',
       method: 'get',
     });
   }

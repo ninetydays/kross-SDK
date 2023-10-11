@@ -1,4 +1,5 @@
 import { FunctionResponse } from './index';
+
 export type InvestmentsWengeQueryDto = {
   select?: string;
   skip?: string;
@@ -29,12 +30,14 @@ export type InvestmentRegisterDto = {
   amount: number;
   loan_id: number;
 };
+
 export type tradeNotesDto = {
   note_id: number;
   origin_amount: number;
   trade_price: number;
   idempotency_key?: string;
 };
+
 export type tradeNotesResponse = {
   data: {
     idempotency_key: string;
@@ -44,6 +47,7 @@ export type tradeNotesResponse = {
     message: string;
   };
 };
+
 export type InvestmentCauseResponse = {
   okay: boolean;
   error: {
@@ -189,6 +193,7 @@ export type NotesByOwnersNameResponseData = {
 };
 
 export type NotesResponse = NotesResponseData[];
+
 export type NotesByOwnersNameResponse =
   FunctionResponse<NotesByOwnersNameResponseData>;
 
@@ -221,3 +226,22 @@ export interface InvestmentData {
   kftcInvestmentRegisterId: string;
   kftcContractId: null | string;
 }
+
+export type NoteSummary = {
+  state: string;
+  count: string;
+  investedAmount: number;
+  buriedPrincipal: number;
+  principal: number;
+  originPrincipal: number;
+  interest: number;
+  feeAmount: number;
+  taxAmount: number;
+  yearPretaxInterest: number;
+  expectedPretaxInterest: number;
+  yearInterest: number;
+  yearTaxAmount: number;
+  returnRatio: number;
+};
+
+export type NoteSummaryResponse = NoteSummary[];
