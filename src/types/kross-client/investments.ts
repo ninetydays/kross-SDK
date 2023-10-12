@@ -227,7 +227,7 @@ export interface InvestmentData {
   kftcContractId: null | string;
 }
 
-export type NoteSummary = {
+export type NotesSummary = {
   state: string;
   count: string;
   investedAmount: number;
@@ -244,4 +244,4 @@ export type NoteSummary = {
   returnRatio: number;
 };
 
-export type NoteSummaryResponse = NoteSummary[];
+export type NotesSummaryResponse = NotesSummary[];

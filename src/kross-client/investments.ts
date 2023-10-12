@@ -14,7 +14,7 @@ import {
   tradeNotesResponse,
   SoldOffNotesResponse,
   NoteTransferResponse,
-  NoteSummaryResponse,
+  NotesSummaryResponse,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
@@ -44,8 +44,8 @@ export class Investments extends KrossClientBase {
     InvestmentsWengeQueryDto
   >;
 
-  noteSummary: FunctionRegistered<
-    NoteSummaryResponse,
+  notesSummary: FunctionRegistered<
+    NotesSummaryResponse,
     InvestmentsWengeQueryDto
   >;
 
@@ -100,8 +100,8 @@ export class Investments extends KrossClientBase {
       method: 'get',
     });
 
-    this.noteSummary = Investments.registerFunction<
-      NoteSummaryResponse,
+    this.notesSummary = Investments.registerFunction<
+      NotesSummaryResponse,
       InvestmentsWengeQueryDto
     >({
       url: '/notes/summary',
