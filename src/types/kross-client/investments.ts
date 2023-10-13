@@ -72,7 +72,7 @@ export type InvestmentCancelResponse =
   FunctionResponse<InvestmentCancelReponseData>;
 
 export type NotesResponseData = {
-  id: number;
+  id: string;
   createdAt: Date;
   updatedAt: Date;
   productId: number;
