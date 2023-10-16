@@ -24,6 +24,17 @@ export type UserQueryDto = {
   include?: Record<string, unknown>;
 };
 
+export type NoticeUsDto = {
+  title: string;
+  context: string;
+};
+
+export type NoticeUsResponseData = {
+  success: true;
+};
+
+export type NoticeUsResponse = FunctionResponse<NoticeUsResponseData>;
+
 export type UserUpdateDto = {
   password?: string;
   email?: string;
@@ -354,6 +365,15 @@ export type DepositReportQueryDto = {
   join?: string;
   date?: Date | string;
 };
+
+export type IndustryCodesResponseData = {
+  code: string;
+  name: string;
+};
+
+export type IndustryCodesResponse = FunctionResponse<
+  IndustryCodesResponseData[]
+>;
 export type getSoldOffNotesResponse = {
   id: string;
   productId: string;
