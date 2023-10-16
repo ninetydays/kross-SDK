@@ -1,4 +1,6 @@
 import {
+  NoticeUsDto,
+  NoticeUsResponse,
   PasswordCheckDto,
   PasswordCheckResponse,
   PasswordResetDto,
@@ -45,6 +47,7 @@ import {
 import { updateCorporationDto } from '../types/kross-client/corporations';
 
 export class User extends KrossClientBase {
+  noticeUs: FunctionRegistered<NoticeUsResponse, NoticeUsDto>;
   userNotes: FunctionRegistered<UserNotesResponse, UserNotesQueryDto>;
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
   getVirtualAccCertificate: FunctionRegistered<AccountCertificateResponse>;
@@ -217,6 +220,11 @@ export class User extends KrossClientBase {
     >({
       url: 'users/deposit-report',
       method: 'get',
+    });
+
+    this.noticeUs = User.registerFunction<NoticeUsResponse, NoticeUsDto>({
+      url: '/notice-us',
+      method: 'post',
     });
   }
 
@@ -646,6 +654,12 @@ export class User extends KrossClientBase {
             });
           },
         });
+      },
+      noticeUs: () => {
+        const mutation = useMutation((noticeUsDto: NoticeUsDto) =>
+          this.noticeUs(noticeUsDto)
+        );
+        return mutation;
       },
     };
   }

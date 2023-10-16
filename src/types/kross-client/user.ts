@@ -24,6 +24,17 @@ export type UserQueryDto = {
   include?: Record<string, unknown>;
 };
 
+export type NoticeUsDto = {
+  title: string;
+  context: string;
+};
+
+export type NoticeUsResponseData = {
+  success: true;
+};
+
+export type NoticeUsResponse = FunctionResponse<NoticeUsResponseData>;
+
 export type UserUpdateDto = {
   password?: string;
   email?: string;
