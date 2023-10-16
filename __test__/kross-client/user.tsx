@@ -36,7 +36,7 @@ export const user = () => {
     });
     await act(async () => {
       await result.current.mutateAsync({
-        keyid: '29@kross.kr',
+        keyid: 'mad@kross.kr',
         password: 'Kross123!',
       });
     });
