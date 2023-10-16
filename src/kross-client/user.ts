@@ -1,4 +1,5 @@
 import {
+  IndustryCodesResponse,
   NoticeUsDto,
   NoticeUsResponse,
   PasswordCheckDto,
@@ -47,6 +48,7 @@ import {
 import { updateCorporationDto } from '../types/kross-client/corporations';
 
 export class User extends KrossClientBase {
+  industryCodes: FunctionRegistered<IndustryCodesResponse, UserWengeQueryDto>;
   noticeUs: FunctionRegistered<NoticeUsResponse, NoticeUsDto>;
   userNotes: FunctionRegistered<UserNotesResponse, UserNotesQueryDto>;
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
@@ -86,6 +88,13 @@ export class User extends KrossClientBase {
   >;
   constructor(options: KrossClientOptions) {
     super(options);
+    this.industryCodes = User.registerFunction<
+      IndustryCodesResponse,
+      UserWengeQueryDto
+    >({
+      url: '/industry-codes',
+      method: 'get',
+    });
     this.userNotes = User.registerFunction<
       UserNotesResponse,
       UserNotesQueryDto
@@ -243,6 +252,16 @@ export class User extends KrossClientBase {
 
   useUserHooks() {
     return {
+      getIndustryCodes: (userWengeQueryDto?: UserWengeQueryDto) => {
+        return useQuery({
+          queryKey: 'getIndustryCodes',
+          queryFn: async () => {
+            return this.industryCodes(userWengeQueryDto).then(res => {
+              return res.data;
+            });
+          },
+        });
+      },
       userNotes: (
         userNotesQueryDto?: UserNotesQueryDto,
         cacheTime?: number,

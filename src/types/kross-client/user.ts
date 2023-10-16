@@ -365,6 +365,15 @@ export type DepositReportQueryDto = {
   join?: string;
   date?: Date | string;
 };
+
+export type IndustryCodesResponseData = {
+  code: string;
+  name: string;
+};
+
+export type IndustryCodesResponse = FunctionResponse<
+  IndustryCodesResponseData[]
+>;
 export type getSoldOffNotesResponse = {
   id: string;
   productId: string;
