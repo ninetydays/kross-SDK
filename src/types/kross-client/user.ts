@@ -1,4 +1,4 @@
-import { FunctionResponse } from './index';
+import { FunctionResponse, LoanResponseData } from './index';
 export type UserWengeQueryDto = {
   select?: string;
   skip?: string;
@@ -6,6 +6,12 @@ export type UserWengeQueryDto = {
   order?: string;
   filter?: string;
   join?: string;
+};
+
+export type UserNotesQueryDto = {
+  state?: string;
+  skip?: string;
+  take?: string;
 };
 
 export type UserQueryDto = {
@@ -131,6 +137,41 @@ export type UserData = {
   notifyOnNewProducts: boolean;
   notifyOnRepayments: boolean;
 };
+
+export type UserNotesData = {
+  id: number;
+  productId: number;
+  productCode: string;
+  applicantId: number;
+  userId: number;
+  memberId: number;
+  amount: number;
+  rate: number;
+  feeRate: number;
+  period: number;
+  startAt: string;
+  issueAt: string;
+  returnAt: string;
+  doneAt: Date;
+  fundAmount: number;
+  investedAmount: number;
+  returnedAmount: number;
+  expectedAmount: number;
+  feeAmount: number;
+  taxAmount: number;
+  escrowAmount: number;
+  guaranteeId: string;
+  principal: number;
+  interest: number;
+  originPrincipal: number;
+  state: string;
+  data: Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
+  loan?: LoanResponseData;
+};
+
+export type UserNotesResponse = FunctionResponse<UserNotesData>;
 
 export type UserResponseData = UserData[];
 
