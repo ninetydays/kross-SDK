@@ -36,10 +36,27 @@ export const user = () => {
     });
     await act(async () => {
       await result.current.mutateAsync({
-        keyid: 'mad@kross.kr',
+        keyid: '29@kross.kr',
         password: 'Kross123!',
       });
     });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
+  it('gets current user notes data', async () => {
+    const { userNotes } = client.useUserHooks();
+    const { result } = renderHook(
+      () =>
+        userNotes({
+          state: 'delay',
+          take: '20',
+        }),
+      {
+        wrapper,
+      }
+    );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
