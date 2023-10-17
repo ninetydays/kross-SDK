@@ -220,7 +220,7 @@ export type UserUpdateResponse = {
   notifyOnRepayments: boolean;
 };
 
-export type UserResponse = FunctionResponse<UserResponseData>;
+export type UserResponse = UserResponseData;
 
 export type PasswordUpdateDto = {
   oldPassword: string;

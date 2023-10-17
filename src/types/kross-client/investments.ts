@@ -1,4 +1,5 @@
 import { FunctionResponse } from './index';
+
 export type InvestmentsWengeQueryDto = {
   select?: string;
   skip?: string;
@@ -29,12 +30,14 @@ export type InvestmentRegisterDto = {
   amount: number;
   loan_id: number;
 };
+
 export type tradeNotesDto = {
   note_id: number;
   origin_amount: number;
   trade_price: number;
   idempotency_key?: string;
 };
+
 export type tradeNotesResponse = {
   data: {
     idempotency_key: string;
@@ -44,6 +47,7 @@ export type tradeNotesResponse = {
     message: string;
   };
 };
+
 export type InvestmentCauseResponse = {
   okay: boolean;
   error: {
@@ -68,13 +72,13 @@ export type InvestmentCancelResponse =
   FunctionResponse<InvestmentCancelReponseData>;
 
 export type NotesResponseData = {
-  id: number;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
   productId: number;
   productCode: string;
   applicantId: number;
-  userId: number;
   memberId: number;
-  amount: number;
   rate: number;
   feeRate: number;
   period: number;
@@ -88,15 +92,19 @@ export type NotesResponseData = {
   expectedAmount: number;
   feeAmount: number;
   taxAmount: number;
-  escrowAmount: number;
-  guaranteeId: string;
+  state: string;
+  data: Record<string, unknown>;
   principal: number;
   interest: number;
   originPrincipal: number;
-  state: string;
-  data: Record<string, unknown>;
-  createdAt: Date;
-  updatedAt: Date;
+  userId: number;
+  documentId: number;
+  kftcContractId: string;
+  transfer: boolean;
+  kftcInvestmentRegisterId: string;
+  paymentDate: string;
+  dueDate: string;
+  repaymentDate: string;
 };
 
 export type SoldOffNotesData = {
@@ -184,7 +192,8 @@ export type NotesByOwnersNameResponseData = {
   userName: string;
 };
 
-export type NotesResponse = FunctionResponse<NotesResponseData>;
+export type NotesResponse = NotesResponseData[];
+
 export type NotesByOwnersNameResponse =
   FunctionResponse<NotesByOwnersNameResponseData>;
 
@@ -217,3 +226,22 @@ export interface InvestmentData {
   kftcInvestmentRegisterId: string;
   kftcContractId: null | string;
 }
+
+export type NotesSummary = {
+  state: string;
+  count: string;
+  investedAmount: number;
+  buriedPrincipal: number;
+  principal: number;
+  originPrincipal: number;
+  interest: number;
+  feeAmount: number;
+  taxAmount: number;
+  yearPretaxInterest: number;
+  expectedPretaxInterest: number;
+  yearInterest: number;
+  yearTaxAmount: number;
+  returnRatio: number;
+};
+
+export type NotesSummaryResponse = NotesSummary[];
