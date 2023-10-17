@@ -1,4 +1,7 @@
 import {
+  IndustryCodesResponse,
+  NoticeUsDto,
+  NoticeUsResponse,
   PasswordCheckDto,
   PasswordCheckResponse,
   PasswordResetDto,
@@ -9,9 +12,11 @@ import {
   PasswordUpdateResponse,
   PortfolioResponse,
   SignedUrlResponse,
+  UserNotesQueryDto,
+  UserNotesResponse,
 } from './../types/kross-client/user';
 import { KrossClientBase } from './base';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useInfiniteQuery } from 'react-query';
 import {
   FunctionRegistered,
   GetAuthTokenResponse,
@@ -43,6 +48,9 @@ import {
 import { updateCorporationDto } from '../types/kross-client/corporations';
 
 export class User extends KrossClientBase {
+  industryCodes: FunctionRegistered<IndustryCodesResponse, UserWengeQueryDto>;
+  noticeUs: FunctionRegistered<NoticeUsResponse, NoticeUsDto>;
+  userNotes: FunctionRegistered<UserNotesResponse, UserNotesQueryDto>;
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
   getVirtualAccCertificate: FunctionRegistered<AccountCertificateResponse>;
   checkVirtualAccount: FunctionRegistered<VirtualAccountCheckResponse>;
@@ -80,6 +88,20 @@ export class User extends KrossClientBase {
   >;
   constructor(options: KrossClientOptions) {
     super(options);
+    this.industryCodes = User.registerFunction<
+      IndustryCodesResponse,
+      UserWengeQueryDto
+    >({
+      url: '/industry-codes',
+      method: 'get',
+    });
+    this.userNotes = User.registerFunction<
+      UserNotesResponse,
+      UserNotesQueryDto
+    >({
+      url: '/users/notes',
+      method: 'get',
+    });
     this.userNoteLogs = User.registerFunction<
       UserNoteLogsResponse,
       UserWengeQueryDto
@@ -208,6 +230,11 @@ export class User extends KrossClientBase {
       url: 'users/deposit-report',
       method: 'get',
     });
+
+    this.noticeUs = User.registerFunction<NoticeUsResponse, NoticeUsDto>({
+      url: '/notice-us',
+      method: 'post',
+    });
   }
 
   signedURL(fileName: string) {
@@ -225,6 +252,55 @@ export class User extends KrossClientBase {
 
   useUserHooks() {
     return {
+      getIndustryCodes: (userWengeQueryDto?: UserWengeQueryDto) => {
+        return useQuery({
+          queryKey: 'getIndustryCodes',
+          queryFn: async () => {
+            return this.industryCodes(userWengeQueryDto).then(res => {
+              return res.data;
+            });
+          },
+        });
+      },
+      userNotes: (
+        userNotesQueryDto?: UserNotesQueryDto,
+        cacheTime?: number,
+        enabled?: boolean
+      ) => {
+        return useInfiniteQuery(
+          ['userNotes', { ...userNotesQueryDto }],
+          async ({ pageParam = 0 }) => {
+            const skip = (
+              pageParam *
+              (isNaN(parseInt(userNotesQueryDto?.take as string, 10))
+                ? 0
+                : parseInt(userNotesQueryDto?.take as string, 10))
+            ).toString();
+            const notesData = await this.userNotes({
+              ...userNotesQueryDto,
+              skip,
+            });
+            const myHeaders = new Headers(notesData?.headers);
+            const notesCount = myHeaders.get('x-total-count');
+            const result = {
+              notes: notesData?.data,
+              notesCount: notesCount,
+            };
+            const notesArray = Object.values(result || []);
+            return notesArray;
+          },
+          {
+            getNextPageParam: (lastPage, pages) => {
+              if (lastPage.length === 0) {
+                return null;
+              }
+              return pages?.length;
+            },
+            cacheTime: cacheTime !== undefined ? cacheTime : 300000,
+            enabled: enabled !== undefined ? enabled : true,
+          }
+        );
+      },
       userNoteLogs: (userWengeQueryDto?: UserWengeQueryDto) => {
         return useQuery({
           queryKey: 'userNoteLogs',
@@ -597,6 +673,12 @@ export class User extends KrossClientBase {
             });
           },
         });
+      },
+      noticeUs: () => {
+        const mutation = useMutation((noticeUsDto: NoticeUsDto) =>
+          this.noticeUs(noticeUsDto)
+        );
+        return mutation;
       },
     };
   }

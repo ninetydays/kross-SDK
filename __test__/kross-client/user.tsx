@@ -45,6 +45,23 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
+  it('gets current user notes data', async () => {
+    const { userNotes } = client.useUserHooks();
+    const { result } = renderHook(
+      () =>
+        userNotes({
+          state: 'delay',
+          take: '20',
+        }),
+      {
+        wrapper,
+      }
+    );
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
   it('gets current user data details', async () => {
     const { userData } = client.useUserHooks();
     const { result } = renderHook(() => userData({}), {
@@ -303,6 +320,29 @@ export const user = () => {
         wrapper,
       }
     );
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
+  it('notifies operation team ', async () => {
+    const { noticeUs } = client.useUserHooks();
+    const { result } = renderHook(() => noticeUs(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        title: 'Hello World',
+        context: 'Hello World',
+      });
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+  it('gets industry codes for personal borrower EDD', async () => {
+    const { getIndustryCodes } = client.useUserHooks();
+    const { result } = renderHook(() => getIndustryCodes({ take: '5' }), {
+      wrapper,
+    });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
   });
