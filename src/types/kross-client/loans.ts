@@ -132,10 +132,12 @@ export type LoanDetailData = {
   title: string;
   content: string;
   files: string[];
-  loan: Record<string, unknown>; // You can replace "unknown" with a more specific type if you have one
-  loanApplication: Record<string, unknown>; // You can replace "unknown" with a more specific type if you have one
+  loan?: Record<string, unknown>;
+  loanApplication?: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;
+  inquiry?: Record<string, unknown>;
+  borrwerInfo?: Record<string, unknown>;
 };
 
 export type LoanDetailResponse = FunctionResponse<LoanDetailData>;
