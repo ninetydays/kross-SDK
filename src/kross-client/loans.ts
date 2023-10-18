@@ -66,6 +66,12 @@ export class Loans extends KrossClientBase {
       `/loans/${loanId}/payment-schedule`
     );
   }
+
+  loanDetails(loanDetailId: number) {
+    return this.instance.get<LoanDetailResponse>(
+      `/loan-detail/${loanDetailId}`
+    );
+  }
   useLoanHooks() {
     return {
       loanConfigs: (loansQueryDto?: LoansQueryDto) => {
@@ -168,6 +174,13 @@ export class Loans extends KrossClientBase {
               return res.data;
             }
           );
+        });
+      },
+      loanDetails: (loanDetailId: number) => {
+        return useQuery('loanDetails', async () => {
+          return this.loanDetails(loanDetailId).then(res => {
+            return res.data;
+          });
         });
       },
     };
