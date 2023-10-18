@@ -245,3 +245,13 @@ export type NotesSummary = {
 };
 
 export type NotesSummaryResponse = NotesSummary[];
+
+export type ReturnOnInvestments = {
+  principal: number;
+  returnBeforeTax: number;
+  feeAmount: number;
+  taxAmount: number;
+  returnAfterTax: number;
+  returnRateBeforeTax: number;
+  returnRateAfterTax: number;
+};
