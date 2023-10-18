@@ -246,7 +246,7 @@ export type NotesSummary = {
 
 export type NotesSummaryResponse = NotesSummary[];
 
-export type ReturnOfInvestments = {
+export type ReturnOnInvestments = {
   principal: number;
   returnBeforeTax: number;
   feeAmount: number;
