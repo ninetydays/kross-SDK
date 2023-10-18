@@ -50,7 +50,7 @@ export class Investments extends KrossClientBase {
     InvestmentsWengeQueryDto
   >;
 
-  returnOfInvestments: FunctionRegistered<ReturnOnInvestments>;
+  returnOnInvestments: FunctionRegistered<ReturnOnInvestments>;
 
   constructor(options: KrossClientOptions) {
     super(options);
@@ -111,7 +111,7 @@ export class Investments extends KrossClientBase {
       method: 'get',
     });
 
-    this.returnOfInvestments =
+    this.returnOnInvestments =
       Investments.registerFunction<ReturnOnInvestments>({
         url: '/investments/roi',
         method: 'get',
