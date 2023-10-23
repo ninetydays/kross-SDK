@@ -180,7 +180,7 @@ export class User extends KrossClientBase {
     });
 
     this.portfolio = User.registerFunction<PortfolioResponse>({
-      url: '/sienna/portfolio',
+      url: '/users/portfolio',
       method: 'get',
     });
 
