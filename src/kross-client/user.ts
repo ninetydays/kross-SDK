@@ -380,12 +380,13 @@ export class User extends KrossClientBase {
       userData: ({
         userQuery = {},
         enabled,
+        cacheTime = 0,
       }: {
         userQuery?: UserWengeQueryDto;
         enabled?: boolean;
+        cacheTime?: number;
       }) => {
         return useQuery({
-          cacheTime: 0,
           queryKey: 'userData',
           queryFn: async () => {
             return this.userData(userQuery).then(res => {
@@ -393,12 +394,18 @@ export class User extends KrossClientBase {
             });
           },
           enabled: enabled === undefined ? true : enabled,
+          cacheTime: cacheTime,
         });
       },
 
-      myPageData: ({ enabled }: { enabled?: boolean }) => {
+      myPageData: ({
+        enabled,
+        cacheTime = 60000,
+      }: {
+        enabled?: boolean;
+        cacheTime?: number;
+      }) => {
         return useQuery({
-          cacheTime: 0,
           queryKey: 'myPageData',
           queryFn: async () => {
             const accountDataPromise = this.accountData();
@@ -556,6 +563,7 @@ export class User extends KrossClientBase {
             };
           },
           enabled: enabled === undefined ? true : enabled,
+          cacheTime: cacheTime,
         });
       },
       userRegister: () => {
@@ -604,15 +612,18 @@ export class User extends KrossClientBase {
         );
         return mutation;
       },
-      portfolio: ({ enabled }: { enabled?: boolean } = {}) => {
+      portfolio: ({
+        enabled,
+        cacheTime = 60000,
+      }: { enabled?: boolean; cacheTime?: number } = {}) => {
         return useQuery({
-          cacheTime: 0,
           queryKey: 'portfolio',
           queryFn: async () => {
             return this.portfolio().then(res => {
               return res.data;
             });
           },
+          cacheTime: cacheTime,
           enabled: enabled ?? true,
         });
       },
