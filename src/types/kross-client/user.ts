@@ -290,7 +290,7 @@ export type PasswordResetResponseData = {
 
 export type PasswordResetResponse = FunctionResponse<PasswordResetResponseData>;
 
-export type PortfolioResponseData = {
+export type PortfolioResponse = {
   depositsAmount: number;
   notesAmount: number;
   totalAssetsAmount: number;
@@ -304,8 +304,6 @@ export type PortfolioResponseData = {
   totalRepaymentAmount: number;
   notes: any[];
 };
-
-export type PortfolioResponse = FunctionResponse<PortfolioResponseData>;
 
 type SignedUrlSuccess = {
   url: string;
