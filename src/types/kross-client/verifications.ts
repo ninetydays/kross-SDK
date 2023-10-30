@@ -74,9 +74,10 @@ export type UseBTokenResponseData = {
 };
 
 export type PhoneVerificationDto = {
-  name: string;
-  phone: string;
-  birthdate: string;
+  name?: string;
+  phone?: string;
+  birthdate?: string;
+  type?: string;
 };
 
 export type PhoneVerificationResponseData = {
