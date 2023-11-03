@@ -147,6 +147,9 @@ export type UserData = {
   depositControl: boolean;
   notifyOnNewProducts: boolean;
   notifyOnRepayments: boolean;
+  nationalityCode: string;
+  documentState: string | null;
+  eddVerified: boolean;
 };
 
 export type UserNotesData = {
