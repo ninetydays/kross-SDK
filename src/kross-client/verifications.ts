@@ -13,6 +13,8 @@ import {
   VerificationsResponse,
   EddVerificationDto,
   EddVerificationResponse,
+  CreateVerificationDto,
+  CreateVerificationResponse,
 } from '../types/kross-client/verifications';
 import { KrossClientOptions, FunctionRegistered } from '../types';
 export class Verifications extends KrossClientBase {
@@ -54,6 +56,13 @@ export class Verifications extends KrossClientBase {
     return this.instance.post<UseBTokenResponse>(
       '/verifications/useb/token',
       useBTokenDto
+    );
+  }
+
+  createVerification(createVerificationDto: CreateVerificationDto) {
+    return this.instance.post<CreateVerificationResponse>(
+      '/verifications',
+      createVerificationDto
     );
   }
 
@@ -119,6 +128,13 @@ export class Verifications extends KrossClientBase {
       eddVerification: () => {
         const mutation = useMutation((eddVerificationDto: EddVerificationDto) =>
           this.eddVerification(eddVerificationDto)
+        );
+        return mutation;
+      },
+      createVerification: () => {
+        const mutation = useMutation(
+          (createVerificationDto: CreateVerificationDto) =>
+            this.createVerification(createVerificationDto)
         );
         return mutation;
       },

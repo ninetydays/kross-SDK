@@ -31,14 +31,14 @@ export const verifications = () => {
     });
   });
 
-  it('gets authToken and refreshToken', async () => {
+  it.only('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
     });
     await act(async () => {
       await result.current.mutateAsync({
-        keyid: 'batman6@kross.kr',
+        keyid: 'aziyatalik4@gmail.com',
         password: 'Kross123!',
       });
     });
@@ -169,6 +169,30 @@ export const verifications = () => {
         transactionPurpose: 'test',
         job: 'test',
         fundingSource: 'test',
+      });
+    });
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
+    });
+  }, 30000);
+
+  it.only('creates any verification type', async () => {
+    const { createVerification } = client.useVerificationHook();
+    const { result } = renderHook(() => createVerification(), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({
+        certification: 'kross',
+        type: 'investor_knowledge',
+        encodedData: {
+          q1: 'test1',
+          q2: 'test2',
+          q3: 'test3',
+          q4: 'test4'
+        },
+        expireDate: '20241114',
       });
     });
     await waitFor(() => {

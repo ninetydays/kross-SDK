@@ -11,6 +11,27 @@ export type IdCardVerificationsDto = {
   issueNo2: string;
 };
 
+export type CreateVerificationDto = {
+  certification?: string;
+  type?: string;
+  encodedData?: Record<string, unknown>;
+  expireDate?: string;
+};
+
+export type CreateVerificationData = {
+  id: string;
+  userId: string;
+  type: string;
+  certification: string;
+  encodedData: Record<string, unknown>;
+  expireDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type CreateVerificationResponse =
+  FunctionResponse<CreateVerificationData>;
+
 export type VerificationsWengeDto = {
   select?: string;
   skip?: string;
