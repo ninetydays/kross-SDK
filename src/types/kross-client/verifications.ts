@@ -12,8 +12,8 @@ export type IdCardVerificationsDto = {
 };
 
 export type CreateVerificationDto = {
-  certification?: string;
   type?: string;
+  certification?: string;
   encodedData?: Record<string, unknown>;
   expireDate?: string;
 };

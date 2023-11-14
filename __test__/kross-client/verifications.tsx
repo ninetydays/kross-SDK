@@ -31,7 +31,7 @@ export const verifications = () => {
     });
   });
 
-  it.only('gets authToken and refreshToken', async () => {
+  it('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -177,7 +177,7 @@ export const verifications = () => {
     });
   }, 30000);
 
-  it.only('creates any verification type', async () => {
+  it('creates any verification type', async () => {
     const { createVerification } = client.useVerificationHook();
     const { result } = renderHook(() => createVerification(), {
       wrapper,
@@ -190,7 +190,7 @@ export const verifications = () => {
           q1: 'test1',
           q2: 'test2',
           q3: 'test3',
-          q4: 'test4'
+          q4: 'test4',
         },
         expireDate: '20241114',
       });
