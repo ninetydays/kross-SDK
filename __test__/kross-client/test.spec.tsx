@@ -7,6 +7,7 @@ import { InquiryTest } from './inquiry';
 import { verifications } from './verifications';
 import { generalInfo } from './general-info';
 import { signContractTest } from './sign-contract';
+import { fcmManagement } from './fcm-management';
 
 describe('Base test for login and updateToken', base);
 describe('Account', account);
@@ -17,3 +18,4 @@ describe('Inquiry', InquiryTest);
 describe('verifications', verifications);
 describe('general-info', generalInfo);
 describe('general-info', signContractTest);
+describe('FCM Management', fcmManagement);

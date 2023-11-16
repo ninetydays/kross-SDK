@@ -8,6 +8,7 @@ import { Verifications } from './verifications';
 import { Inquiry } from './inquiry';
 import { GeneralInfo } from './general-info';
 import { SignContract } from './sign-contract';
+import { FCMManagement } from './fcm-management';
 export class KrossClient extends KrossClientBase {
   verifications: Verifications;
   account: Account;
@@ -17,6 +18,7 @@ export class KrossClient extends KrossClientBase {
   inquiries: Inquiry;
   generalInfo: GeneralInfo;
   signContract: SignContract;
+  FCMManagement: FCMManagement;
   constructor(options: KrossClientOptions) {
     super(options);
     this.account = new Account(options);
@@ -27,6 +29,7 @@ export class KrossClient extends KrossClientBase {
     this.verifications = new Verifications(options);
     this.generalInfo = new GeneralInfo(options);
     this.signContract = new SignContract(options);
+    this.FCMManagement = new FCMManagement(options);
   }
 }
 
@@ -41,4 +44,5 @@ export {
   Inquiry,
   GeneralInfo,
   SignContract,
+  FCMManagement,
 };
