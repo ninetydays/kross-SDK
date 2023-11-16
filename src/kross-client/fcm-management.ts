@@ -28,9 +28,15 @@ export class FCMManagement extends KrossClientBase {
   }
 
   updateFCMToken(fcmUpdateDto: UpdateFCMTokenDto) {
-    return this.instance.put<FCMTokenCreationResponse>(
+    return this.instance.patch<FCMTokenCreationResponse>(
       `/fcm-tokens/${fcmUpdateDto.deviceId}`,
       fcmUpdateDto
+    );
+  }
+
+  deleteFCMToken(deviceId: string) {
+    return this.instance.delete<FCMTokenCreationResponse>(
+      `/fcm-tokens/${deviceId}`
     );
   }
 
@@ -52,7 +58,7 @@ export class FCMManagement extends KrossClientBase {
       },
 
       updateFCMToken: () => {
-        const mutation = useMutation((fcmTokenDto: FCMTokenDto) =>
+        const mutation = useMutation((fcmTokenDto: UpdateFCMTokenDto) =>
           this.updateFCMToken(fcmTokenDto)
         );
         return mutation;
