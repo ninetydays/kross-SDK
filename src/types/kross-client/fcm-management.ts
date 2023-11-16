@@ -34,5 +34,5 @@ export type UpdateFCMTokenDto = {
   deviceId: string;
   token: string;
   deviceType: string;
-  userId: string;
+  userId?: string;
 };
