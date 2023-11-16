@@ -23,7 +23,7 @@ export type FCMTokenDto = {
   token: string;
   deviceId: string;
   deviceType: string;
-  userId?: string;
+  userId?: string | null;
 };
 
 export type FCMTokenCreationResponse = FunctionResponse<
@@ -34,5 +34,5 @@ export type UpdateFCMTokenDto = {
   deviceId: string;
   token: string;
   deviceType: string;
-  userId?: string;
+  userId?: string | null;
 };
