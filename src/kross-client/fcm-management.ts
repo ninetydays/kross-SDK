@@ -63,6 +63,13 @@ export class FCMManagement extends KrossClientBase {
         );
         return mutation;
       },
+
+      deleteFCMToken: () => {
+        const mutation = useMutation((deviceId: string) =>
+          this.deleteFCMToken(deviceId)
+        );
+        return mutation;
+      },
     };
   }
 }
