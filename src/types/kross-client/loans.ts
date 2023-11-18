@@ -76,6 +76,7 @@ export type LoanResponseData = {
   investmentId: number | null;
   reservedAt: Date;
   investableLimit?: number;
+  code?: string;
 };
 
 export type LoansResponse = Array<LoanResponseData>;
