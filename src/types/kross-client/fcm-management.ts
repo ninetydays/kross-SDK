@@ -36,3 +36,12 @@ export type UpdateFCMTokenDto = {
   deviceType: string;
   userId?: string | null;
 };
+
+export type FCMQuery = {
+  select?: string | undefined;
+  skip?: string | undefined;
+  take?: string | undefined;
+  order?: string | undefined;
+  filter?: string | undefined;
+  join?: string | undefined;
+};
