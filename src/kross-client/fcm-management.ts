@@ -1,5 +1,6 @@
 import { KrossClientBase } from './base';
 import {
+  FCMQuery,
   FCMTokenCreationResponse,
   FCMTokenDto,
   FCMTokenResponse,
@@ -10,14 +11,16 @@ import {
 import { useMutation, useQuery } from 'react-query';
 
 export class FCMManagement extends KrossClientBase {
-  fcmTokens: FunctionRegistered<FCMTokenResponse>;
+  fcmTokens: FunctionRegistered<FCMTokenResponse, FCMQuery>;
   createFCMToken: FunctionRegistered<FCMTokenCreationResponse, FCMTokenDto>;
   constructor(options: KrossClientOptions) {
     super(options);
-    this.fcmTokens = FCMManagement.registerFunction<FCMTokenResponse>({
-      url: '/fcm-tokens',
-      method: 'get',
-    });
+    this.fcmTokens = FCMManagement.registerFunction<FCMTokenResponse, FCMQuery>(
+      {
+        url: '/fcm-tokens',
+        method: 'get',
+      }
+    );
     this.createFCMToken = FCMManagement.registerFunction<
       FCMTokenCreationResponse,
       FCMTokenDto
@@ -42,9 +45,9 @@ export class FCMManagement extends KrossClientBase {
 
   useFCMTokenHook() {
     return {
-      fcmTokens: () => {
-        return useQuery(['fcmtokens'], async () => {
-          return this.fcmTokens().then(res => {
+      fcmTokens: (fcmQuery?: FCMQuery) => {
+        return useQuery(['fcmtokens', { ...fcmQuery }], async () => {
+          return this.fcmTokens(fcmQuery).then(res => {
             return res.data;
           });
         });
