@@ -45,12 +45,18 @@ export class FCMManagement extends KrossClientBase {
 
   useFCMTokenHook() {
     return {
-      fcmTokens: (fcmQuery?: FCMQuery) => {
-        return useQuery(['fcmtokens', { ...fcmQuery }], async () => {
-          return this.fcmTokens(fcmQuery).then(res => {
-            return res.data;
-          });
-        });
+      fcmTokens: (fcmQuery?: FCMQuery, enabled?: boolean) => {
+        return useQuery(
+          ['fcmtokens', { ...fcmQuery }],
+          async () => {
+            return this.fcmTokens(fcmQuery).then(res => {
+              return res.data;
+            });
+          },
+          {
+            enabled: enabled !== undefined ? enabled : true,
+          }
+        );
       },
 
       createFCMToken: () => {
