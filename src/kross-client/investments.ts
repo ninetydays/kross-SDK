@@ -393,13 +393,10 @@ export class Investments extends KrossClientBase {
 
             const kftcTotalLimit = kftcInvestInquiry?.data?.limit || 0;
 
-            const availableAmountToWithdrawInAccount =
-              availableWithdrawAmount || 0;
-
             const investmentAmountLimit = Math.min(
-              availableAmountToWithdrawInAccount,
+              availableWithdrawAmount,
               kftcInvestmentLimit < 0
-                ? availableAmountToWithdrawInAccount
+                ? availableWithdrawAmount
                 : kftcInvestmentLimit
             );
 
