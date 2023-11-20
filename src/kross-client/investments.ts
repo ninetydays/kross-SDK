@@ -368,6 +368,8 @@ export class Investments extends KrossClientBase {
             );
             const accountData: any = await this.get('/users/account');
 
+            console.log('accountData:', accountData);
+
             const kftcInvestmentLimit =
               kftcInvestInquiry?.data?.data?.code === 'A8151' ||
               accountData.v_account_no === '06641151567461'
