@@ -30,7 +30,7 @@ export const investment = () => {
     });
   });
 
-  it.only('gets authToken and refreshToken', async () => {
+  it('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -176,7 +176,7 @@ export const investment = () => {
     });
   });
 
-  it.only('get investment limit for user', async () => {
+  it('get investment limit for user', async () => {
     const { investmentLimit } = client.useInvestmentHooks();
     const enabled = true;
     const { result } = renderHook(() => investmentLimit(enabled), {
@@ -184,7 +184,6 @@ export const investment = () => {
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
-    console.log("user: ", result.current.data);
   });
 
   it('get returnOnInvestments', async () => {
