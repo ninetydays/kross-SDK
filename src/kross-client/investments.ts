@@ -363,24 +363,30 @@ export class Investments extends KrossClientBase {
           enabled: enabled !== undefined ? enabled : true,
           queryKey: 'invesmentLimit',
           queryFn: async () => {
-            const kftcInvestInquiry: any = await this.get(
-              '/kftc/invest-inquiry'
-            );
-            const accountData: any = await this.get('/users/account');
+            const kftcInvestInquiryData: any = this.get('/kftc/invest-inquiry');
+            const user = this.get('/users', {
+              params: {
+                select: 'isCorp',
+              },
+            });
+            const account: any = this.get('/users/account');
 
-            console.log('accountData:');
+            const [userDataRes, accountDataRes, kftcInvestInquiryRes] =
+              await Promise.all([user, account, kftcInvestInquiryData]);
 
-            const kftcInvestmentLimit =
-              kftcInvestInquiry?.data?.data?.code === 'A8151' ||
-              accountData?.data?.data?.v_account_no === '06641151567461'
-                ? -1
-                : (kftcInvestInquiry?.data?.data?.limit || 0) -
-                  (kftcInvestInquiry?.data?.data?.balance || 0);
+            const { data: userData = [] }: any = userDataRes;
+            const { data: accountData = [] }: any = accountDataRes;
+            const { data: kftcInvestInquiry = [] }: any = kftcInvestInquiryRes;
 
-            const kftcTotalLimit = kftcInvestInquiry?.data?.data?.limit || 0;
+            const kftcInvestmentLimit = userData?.[0]?.isCorp
+              ? -1
+              : (kftcInvestInquiry?.data?.limit || 0) -
+                (kftcInvestInquiry?.data?.balance || 0);
+
+            const kftcTotalLimit = kftcInvestInquiry?.data?.limit || 0;
 
             const availableAmountToWithdrawInAccount =
-              accountData?.data?.data?.available_withdraw_amount || 0;
+              accountData?.data?.available_withdraw_amount || 0;
 
             const investmentAmountLimit = Math.min(
               availableAmountToWithdrawInAccount,
