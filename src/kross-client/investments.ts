@@ -367,17 +367,21 @@ export class Investments extends KrossClientBase {
             const user = this.get('/users', {
               params: {
                 select: 'isCorp',
+                join: 'account',
               },
             });
-            const account: any = this.get('/users/account');
-
-            const [userDataRes, accountDataRes, kftcInvestInquiryRes] =
-              await Promise.all([user, account, kftcInvestInquiryData]);
+            const [userDataRes, kftcInvestInquiryRes] = await Promise.all([
+              user,
+              kftcInvestInquiryData,
+            ]);
 
             const { data: userData = [] }: any = userDataRes;
-            const { data: accountData = [] }: any = accountDataRes;
             const { data: kftcInvestInquiry = [] }: any = kftcInvestInquiryRes;
-
+            const availableWithdrawAmount =
+              (parseInt(userData?.[0]?.account?.amount, 10) ?? 0) -
+              (parseInt(userData?.[0]?.account?.pendingWithdrawal, 10) ?? 0) -
+              (parseInt(userData?.[0]?.account?.pendingInvestment, 10) ?? 0) -
+              (parseInt(userData?.[0]?.account?.pendingEtc, 10) ?? 0);
             const kftcInvestmentLimit = userData?.[0]?.isCorp
               ? -1
               : (kftcInvestInquiry?.data?.limit || 0) -
@@ -386,7 +390,7 @@ export class Investments extends KrossClientBase {
             const kftcTotalLimit = kftcInvestInquiry?.data?.limit || 0;
 
             const availableAmountToWithdrawInAccount =
-              accountData?.data?.available_withdraw_amount || 0;
+              availableWithdrawAmount || 0;
 
             const investmentAmountLimit = Math.min(
               availableAmountToWithdrawInAccount,
