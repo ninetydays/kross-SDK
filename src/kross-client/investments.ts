@@ -377,11 +377,15 @@ export class Investments extends KrossClientBase {
 
             const { data: userData = [] }: any = userDataRes;
             const { data: kftcInvestInquiry = [] }: any = kftcInvestInquiryRes;
+            const getUserFieldValue = (field: string) =>
+              parseInt(userData?.[0]?.account?.[field], 10) || 0;
+
             const availableWithdrawAmount =
-              (parseInt(userData?.[0]?.account?.amount, 10) ?? 0) -
-              (parseInt(userData?.[0]?.account?.pendingWithdrawal, 10) ?? 0) -
-              (parseInt(userData?.[0]?.account?.pendingInvestment, 10) ?? 0) -
-              (parseInt(userData?.[0]?.account?.pendingEtc, 10) ?? 0);
+              getUserFieldValue('amount') -
+              getUserFieldValue('pendingWithdrawal') -
+              getUserFieldValue('pendingInvestment') -
+              getUserFieldValue('pendingEtc');
+
             const kftcInvestmentLimit = userData?.[0]?.isCorp
               ? -1
               : (kftcInvestInquiry?.data?.limit || 0) -
