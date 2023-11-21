@@ -43,6 +43,12 @@ export class FCMManagement extends KrossClientBase {
     );
   }
 
+  tokenExist(deviceId: string) {
+    return this.instance.get<FCMTokenCreationResponse>(
+      `/fcm-tokens/${deviceId}/exists`
+    );
+  }
+
   useFCMTokenHook() {
     return {
       fcmTokens: (fcmQuery?: FCMQuery, enabled?: boolean) => {
@@ -78,6 +84,13 @@ export class FCMManagement extends KrossClientBase {
           this.deleteFCMToken(deviceId)
         );
         return mutation;
+      },
+      tokenExist: (deviceId: string) => {
+        return useQuery(['fcmtokens', { deviceId }], async () => {
+          return this.tokenExist(deviceId).then(res => {
+            return res.data;
+          });
+        });
       },
     };
   }
