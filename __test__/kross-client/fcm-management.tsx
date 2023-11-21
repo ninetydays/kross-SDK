@@ -75,9 +75,15 @@ export const fcmManagement = () => {
 
   it('check If fcm Token exist', async () => {
     const { tokenExist } = client.useFCMTokenHook();
-    const { result } = renderHook(() => tokenExist('sdnfkjdsv7823bfdvs8y3hrbj32kr23refwef32r24treg43r34t2ef234243r23'), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () =>
+        tokenExist(
+          'sdnfkjdsv7823bfdvs8y3hrbj32kr23refwef32r24treg43r34t2ef234243r23'
+        ),
+      {
+        wrapper,
+      }
+    );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeDefined();
