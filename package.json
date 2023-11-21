@@ -1,13 +1,11 @@
 {
   "name": "kross-sdk",
-  "version": "1.0.8-beta.695",
+  "version": "1.0.8-beta.696",
   "description": "90days SDK for login, sigup and loans",
   "main": "dist/index.js",
   "browser": "dist/index.web.js",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "test": "jest",
     "build": "rm -rf dist && webpack",
@@ -49,13 +47,7 @@
     "type": "git",
     "url": "git+https://github.com/ninetydays/sign-SDK.git"
   },
-  "keywords": [
-    "90days",
-    "authentication",
-    "sign",
-    "login",
-    "loans"
-  ],
+  "keywords": ["90days", "authentication", "sign", "login", "loans"],
   "prepublish": "npm build",
   "author": "Jscripter-pk",
   "license": "ISC",
