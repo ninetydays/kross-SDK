@@ -415,8 +415,29 @@ export class User extends KrossClientBase {
                 filter: 'state||$eq||funding',
               },
             });
-            const notesSummaryDataPromise = this.get('/notes/summary');
-
+            const notesSummaryDataDonePromise = this.get('/notes/summary', {
+              params: {
+                state: 'done',
+              },
+            });
+            const notesSummaryDataInvestingPromise = this.get(
+              '/notes/summary',
+              {
+                params: {
+                  state: 'investing',
+                },
+              }
+            );
+            const notesSummaryDataDelayPromise = this.get('/notes/summary', {
+              params: {
+                state: 'delay',
+              },
+            });
+            const notesSummaryDataLatePromise = this.get('/notes/summary', {
+              params: {
+                state: 'late',
+              },
+            });
             const repaymentsScheduledDataPromise = this.get('/notes', {
               params: {
                 filter: 'state||$eq||investing',
@@ -430,70 +451,55 @@ export class User extends KrossClientBase {
             const [
               accountDataRes,
               investmentsAppliedToDataRes,
-              notesSummaryDataRes,
+              doneNotesSummary,
+              investingNotesSumary,
+              delayNotesSummary,
+              lateNotesSummary,
               repaymentsScheduledDataRes,
               soldOffNotesRes,
             ] = await Promise.all([
               accountDataPromise,
               investmentsAppliedToDataPromise,
-              notesSummaryDataPromise,
+              notesSummaryDataDonePromise,
+              notesSummaryDataInvestingPromise,
+              notesSummaryDataDelayPromise,
+              notesSummaryDataLatePromise,
               repaymentsScheduledDataPromise,
               soldOffNotesPromise,
             ]);
 
+            const { data: doneData = [] }: any = doneNotesSummary;
+            const { data: investingData = [] }: any = investingNotesSumary;
+            const { data: lateData = [] }: any = lateNotesSummary;
+            const { data: delayData = [] }: any = delayNotesSummary;
             const { data: accountData = [] }: any = accountDataRes;
             const { data: investmentsAppliedToData = [] }: any =
               investmentsAppliedToDataRes;
-            const { data: notesSummaryData = [] }: any = notesSummaryDataRes;
             const { data: repaymentsScheduledData = [] }: any =
               repaymentsScheduledDataRes;
-
             const { data: soldOffNoteData = {} }: any = soldOffNotesRes;
-
             const amountInAccount = accountData?.data?.amount || 0;
             const availableWithdrawAmount =
               accountData?.data?.available_withdraw_amount || 0;
 
-            // Assets and cummulative return content
-            const delayNotesSummary =
-              notesSummaryData?.find((notesObject: any) => {
-                return notesObject.state === 'delay';
-              }) || {};
-
-            const lateNotesSummary =
-              notesSummaryData?.find((notesObject: any) => {
-                return notesObject.state === 'late';
-              }) || {};
-
-            const investingNotesSumary =
-              notesSummaryData?.find((notesObject: any) => {
-                return notesObject.state === 'investing';
-              }) || {};
-
-            const doneNotesSummary =
-              notesSummaryData?.find((notesObject: any) => {
-                return notesObject.state === 'done';
-              }) || {};
-
             const totalAssetAmount =
               amountInAccount +
-              (investingNotesSumary?.originPrincipal || 0) -
-              (investingNotesSumary?.principal || 0) +
-              (delayNotesSummary?.originPrincipal || 0) -
-              (delayNotesSummary?.principal || 0);
+              (investingData?.originPrincipal || 0) -
+              (investingData?.principal || 0) +
+              (delayData?.originPrincipal || 0) -
+              (delayData?.principal || 0);
 
             const cummulativeReturnOnInvestment =
-              (doneNotesSummary?.interest || 0) -
-              (doneNotesSummary?.taxAmount || 0) -
-              (doneNotesSummary?.feeAmount || 0);
+              (doneData?.interest || 0) -
+              (doneData?.taxAmount || 0) -
+              (doneData?.feeAmount || 0);
 
             // delay, late repayments
-            const repaymentLateCount = lateNotesSummary?.count || 0;
-            const repaymentLateAmount = lateNotesSummary?.buriedPrincipal || 0;
+            const repaymentLateCount = lateData?.count || 0;
+            const repaymentLateAmount = lateData?.buriedPrincipal || 0;
 
-            const repaymentDelayAmount =
-              delayNotesSummary?.buriedPrincipal || 0;
-            const repaymentDelayCount = delayNotesSummary?.count || 0;
+            const repaymentDelayAmount = delayData?.buriedPrincipal || 0;
+            const repaymentDelayCount = delayData?.count || 0;
 
             // Investment Applied To content
             const investmentAppliedCount =
@@ -507,7 +513,7 @@ export class User extends KrossClientBase {
                 : 0;
 
             // Repayment Scheduled content
-            const repaymentScheduledCount = investingNotesSumary?.count || 0;
+            const repaymentScheduledCount = investingData?.count || 0;
             const repaymentScheduledRate = repaymentsScheduledData
               ? (
                   repaymentsScheduledData?.reduce(
@@ -518,18 +524,16 @@ export class User extends KrossClientBase {
                 ).toFixed(2)
               : 0;
             const repaymentScheduledAmount =
-              (investingNotesSumary?.originPrincipal || 0) -
-              (investingNotesSumary?.principal || 0) +
-              (investingNotesSumary?.investingNotesSumary || 0);
+              (investingData?.originPrincipal || 0) -
+              (investingData?.principal || 0) +
+              (investingData?.investingNotesSumary || 0);
             // Repayment Done content
-            const repaymentDoneCount = doneNotesSummary?.count || 0;
+            const repaymentDoneCount = doneData?.count || 0;
             const repaymentDoneAmount =
-              (doneNotesSummary?.originPrincipal || 0) +
-              (doneNotesSummary?.interest || 0);
+              (doneData?.originPrincipal || 0) + (doneData?.interest || 0);
 
             const cumulativeInvestmentPrincipal =
-              (doneNotesSummary?.originPrincipal || 0) +
-              repaymentScheduledAmount;
+              (doneData?.originPrincipal || 0) + repaymentScheduledAmount;
 
             const soldOffNoteCount = soldOffNoteData?.count;
             const soldOffNoteAmount = soldOffNoteData?.buriedPrincipal;
