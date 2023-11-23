@@ -405,9 +405,9 @@ export class User extends KrossClientBase {
         enabled?: boolean;
         cacheTime?: number;
       }) => {
-        return useQuery({
-          queryKey: 'myPageData',
-          queryFn: async () => {
+        return useQuery(
+          ['myPageData'],
+          async () => {
             const accountDataPromise = this.accountData();
             const investmentsAppliedToDataPromise = this.get('/investments', {
               params: {
@@ -566,9 +566,11 @@ export class User extends KrossClientBase {
               cumulativeInvestmentPrincipal,
             };
           },
-          enabled: enabled === undefined ? true : enabled,
-          cacheTime: cacheTime,
-        });
+          {
+            enabled: enabled === undefined ? true : enabled,
+            cacheTime: cacheTime,
+          }
+        );
       },
       userRegister: () => {
         const mutation = useMutation(
