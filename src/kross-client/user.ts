@@ -397,6 +397,89 @@ export class User extends KrossClientBase {
           cacheTime: cacheTime,
         });
       },
+      investPageSummary: ({
+        enabled,
+        cacheTime = 60000,
+      }: {
+        enabled?: boolean;
+        cacheTime?: number;
+      }) => {
+        return useQuery(
+          ['investPageSummary'],
+          async () => {
+            const accountDataPromise = this.accountData();
+            const investmentsAppliedToDataPromise = this.get('/investments', {
+              params: {
+                select: 'id,amount,state',
+                filter: 'state||$eq||funding',
+              },
+            });
+            const notesSummaryDataInvestingPromise = this.get(
+              '/notes/summary',
+              {
+                params: {
+                  state: 'investing',
+                },
+              }
+            );
+            const notesSummaryDataDelayPromise = this.get('/notes/summary', {
+              params: {
+                state: 'delay',
+              },
+            });
+
+            const [
+              accountDataRes,
+              investmentsAppliedToDataRes,
+              investingNotesSumary,
+              delayNotesSummary,
+            ] = await Promise.all([
+              accountDataPromise,
+              investmentsAppliedToDataPromise,
+              notesSummaryDataInvestingPromise,
+              notesSummaryDataDelayPromise,
+            ]);
+            const { data: investingData = [] }: any = investingNotesSumary;
+            const { data: delayData = [] }: any = delayNotesSummary;
+            const { data: accountData = [] }: any = accountDataRes;
+            const { data: investmentsAppliedToData = [] }: any =
+              investmentsAppliedToDataRes;
+            const amountInAccount = accountData?.data?.amount || 0;
+            const availableWithdrawAmount =
+              accountData?.data?.available_withdraw_amount || 0;
+
+            const totalAssetAmount =
+              amountInAccount +
+              (investingData?.originPrincipal || 0) -
+              (investingData?.principal || 0) +
+              (delayData?.originPrincipal || 0) -
+              (delayData?.principal || 0);
+
+            // Investment Applied To content
+            const investmentAppliedCount =
+              investmentsAppliedToData?.length || 0;
+            const investmentAppliedToAmount =
+              investmentsAppliedToData?.length !== 0
+                ? investmentsAppliedToData?.reduce(
+                    (acc: number, cur: { amount: number }) => acc + cur.amount,
+                    0
+                  )
+                : 0;
+
+            return {
+              totalAssetAmount,
+              amountInAccount,
+              availableWithdrawAmount,
+              investmentAppliedCount,
+              investmentAppliedToAmount,
+            };
+          },
+          {
+            enabled: enabled === undefined ? true : enabled,
+            cacheTime: cacheTime,
+          }
+        );
+      },
 
       myPageData: ({
         enabled,
