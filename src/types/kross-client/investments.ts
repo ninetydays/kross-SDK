@@ -255,3 +255,7 @@ export type ReturnOnInvestments = {
   returnRateBeforeTax: number;
   returnRateAfterTax: number;
 };
+
+export type NotesSummaryQueryDto = {
+  state: string;
+};
