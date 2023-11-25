@@ -29,7 +29,7 @@ export const user = () => {
     });
   });
 
-  it.only('gets authToken and refreshToken', async () => {
+  it('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -151,9 +151,27 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it.only('gets myPage data', async () => {
+  it('gets myPage data', async () => {
     const { myPageData } = client.useUserHooks();
     const { result } = renderHook(() => myPageData({}), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
+  it('gets invest summaries data', async () => {
+    const { investPageSummary } = client.useUserHooks();
+    const { result } = renderHook(() => investPageSummary({}), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
+  it('gets notes summaries data', async () => {
+    const { noteSummary } = client.useUserHooks();
+    const { result } = renderHook(() => noteSummary({}), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
