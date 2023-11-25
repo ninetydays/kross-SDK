@@ -444,11 +444,11 @@ export class User extends KrossClientBase {
             const { data: accountData = [] }: any = accountDataRes;
             const { data: investmentsAppliedToData = [] }: any =
               investmentsAppliedToDataRes;
-            const amountInAccount = accountData?.data?.amount || 0;
-            const availableWithdrawAmount =
+            const amountInAccount: number = accountData?.data?.amount || 0;
+            const availableWithdrawAmount: number =
               accountData?.data?.available_withdraw_amount || 0;
 
-            const totalAssetAmount =
+            const totalAssetAmount: number =
               amountInAccount +
               (investingData?.originPrincipal || 0) -
               (investingData?.principal || 0) +
@@ -456,15 +456,15 @@ export class User extends KrossClientBase {
               (delayData?.principal || 0);
 
             // Investment Applied To content
-            const investmentAppliedCount =
+            const investmentAppliedCount: number =
               investmentsAppliedToData?.length || 0;
-            const investmentAppliedToAmount =
-              investmentsAppliedToData?.length !== 0
-                ? investmentsAppliedToData?.reduce(
-                    (acc: number, cur: { amount: number }) => acc + cur.amount,
-                    0
-                  )
-                : 0;
+            const investmentAppliedToAmount: number = (
+              investmentsAppliedToData || []
+            ).reduce(
+              (acc: number, cur: { amount?: number }) =>
+                acc + (cur?.amount || 0),
+              0
+            );
 
             return {
               totalAssetAmount,
@@ -481,9 +481,122 @@ export class User extends KrossClientBase {
         );
       },
 
+      noteSummary: ({
+        enabled,
+        cacheTime,
+      }: {
+        enabled?: boolean;
+        cacheTime?: number;
+      }) => {
+        return useQuery(
+          ['noteSummary'],
+          async () => {
+            /* will be used by only web
+             default caching time 5mins. Data barely change */
+
+            const notesSummaryDataDonePromise = this.get('/notes/summary', {
+              params: {
+                state: 'done',
+              },
+            });
+            const notesSummaryDataInvestingPromise = this.get(
+              '/notes/summary',
+              {
+                params: {
+                  state: 'investing',
+                },
+              }
+            );
+            const notesSummaryDataDelayPromise = this.get('/notes/summary', {
+              params: {
+                state: 'delay',
+              },
+            });
+            const notesSummaryDataLatePromise = this.get('/notes/summary', {
+              params: {
+                state: 'late',
+              },
+            });
+
+            const soldOffNotesPromise = this.get(
+              '/users/soldoff-notes/summary'
+            );
+
+            const [
+              doneNotesSummary,
+              investingNotesSumary,
+              delayNotesSummary,
+              lateNotesSummary,
+              soldOffNotesRes,
+            ] = await Promise.all([
+              notesSummaryDataDonePromise,
+              notesSummaryDataInvestingPromise,
+              notesSummaryDataDelayPromise,
+              notesSummaryDataLatePromise,
+              soldOffNotesPromise,
+            ]);
+
+            const { data: doneData = [] }: any = doneNotesSummary;
+            const { data: investingData = [] }: any = investingNotesSumary;
+            const { data: lateData = [] }: any = lateNotesSummary;
+            const { data: delayData = [] }: any = delayNotesSummary;
+            const { data: soldOffNoteData = {} }: any = soldOffNotesRes;
+            const repaymentLateCount: number = lateData?.count || 0;
+            const repaymentLateAmount: number = lateData?.buriedPrincipal || 0;
+
+            const repaymentDelayAmount: number =
+              delayData?.buriedPrincipal || 0;
+            const repaymentDelayCount: number = delayData?.count || 0;
+
+            // Repayment Scheduled content
+            const repaymentScheduledCount: number = investingData?.count || 0;
+            const delayRemainPrincipal: number =
+              (delayData?.originPrincipal || 0) - (delayData?.principal || 0);
+            const repaymentScheduledAmount: number =
+              (investingData?.originPrincipal || 0) -
+              (investingData?.principal || 0);
+
+            // Repayment Done content
+            const repaymentDoneCount: number = doneData?.count || 0;
+            const repaymentDoneAmount: number =
+              (doneData?.originPrincipal || 0) + (doneData?.interest || 0);
+
+            const cumulativeInvestmentPrincipal: number =
+              (doneData?.principal || 0) +
+              (investingData?.originPrincipal || 0) +
+              delayRemainPrincipal;
+
+            const soldOffNoteCount: number = soldOffNoteData?.count;
+            const soldOffNoteAmount: number = soldOffNoteData?.buriedPrincipal;
+
+            return {
+              repaymentDoneCount,
+              repaymentDoneAmount,
+
+              repaymentScheduledCount,
+              repaymentScheduledAmount,
+
+              repaymentDelayAmount,
+              repaymentDelayCount,
+
+              repaymentLateAmount,
+              repaymentLateCount,
+
+              soldOffNoteCount,
+              soldOffNoteAmount,
+
+              cumulativeInvestmentPrincipal,
+            };
+          },
+          {
+            enabled: enabled === undefined ? true : enabled,
+            cacheTime: cacheTime,
+          }
+        );
+      },
       myPageData: ({
         enabled,
-        cacheTime = 60000,
+        cacheTime,
       }: {
         enabled?: boolean;
         cacheTime?: number;
@@ -491,6 +604,9 @@ export class User extends KrossClientBase {
         return useQuery(
           ['myPageData'],
           async () => {
+            /* used only for app
+            default caching 5mins */
+
             const accountDataPromise = this.accountData();
             const investmentsAppliedToDataPromise = this.get('/investments', {
               params: {
@@ -516,20 +632,11 @@ export class User extends KrossClientBase {
                 state: 'delay',
               },
             });
-            const notesSummaryDataLatePromise = this.get('/notes/summary', {
-              params: {
-                state: 'late',
-              },
-            });
             const repaymentsScheduledDataPromise = this.get('/notes', {
               params: {
                 filter: 'state||$eq||investing',
               },
             });
-
-            const soldOffNotesPromise = this.get(
-              '/users/soldoff-notes/summary'
-            );
 
             const [
               accountDataRes,
@@ -537,67 +644,51 @@ export class User extends KrossClientBase {
               doneNotesSummary,
               investingNotesSumary,
               delayNotesSummary,
-              lateNotesSummary,
               repaymentsScheduledDataRes,
-              soldOffNotesRes,
             ] = await Promise.all([
               accountDataPromise,
               investmentsAppliedToDataPromise,
               notesSummaryDataDonePromise,
               notesSummaryDataInvestingPromise,
               notesSummaryDataDelayPromise,
-              notesSummaryDataLatePromise,
               repaymentsScheduledDataPromise,
-              soldOffNotesPromise,
             ]);
 
             const { data: doneData = [] }: any = doneNotesSummary;
             const { data: investingData = [] }: any = investingNotesSumary;
-            const { data: lateData = [] }: any = lateNotesSummary;
             const { data: delayData = [] }: any = delayNotesSummary;
             const { data: accountData = [] }: any = accountDataRes;
             const { data: investmentsAppliedToData = [] }: any =
               investmentsAppliedToDataRes;
             const { data: repaymentsScheduledData = [] }: any =
               repaymentsScheduledDataRes;
-            const { data: soldOffNoteData = {} }: any = soldOffNotesRes;
-            const amountInAccount = accountData?.data?.amount || 0;
-            const availableWithdrawAmount =
-              accountData?.data?.available_withdraw_amount || 0;
+            const amountInAccount: number = accountData?.data?.amount || 0;
 
-            const totalAssetAmount =
+            const totalAssetAmount: number =
               amountInAccount +
               (investingData?.originPrincipal || 0) -
               (investingData?.principal || 0) +
               (delayData?.originPrincipal || 0) -
               (delayData?.principal || 0);
 
-            const cummulativeReturnOnInvestment =
+            const cummulativeReturnOnInvestment: number =
               (doneData?.interest || 0) -
               (doneData?.taxAmount || 0) -
               (doneData?.feeAmount || 0);
 
-            // delay, late repayments
-            const repaymentLateCount = lateData?.count || 0;
-            const repaymentLateAmount = lateData?.buriedPrincipal || 0;
-
-            const repaymentDelayAmount = delayData?.buriedPrincipal || 0;
-            const repaymentDelayCount = delayData?.count || 0;
-
             // Investment Applied To content
-            const investmentAppliedCount =
+            const investmentAppliedCount: number =
               investmentsAppliedToData?.length || 0;
-            const investmentAppliedToAmount =
-              investmentsAppliedToData?.length !== 0
-                ? investmentsAppliedToData?.reduce(
-                    (acc: number, cur: { amount: number }) => acc + cur.amount,
-                    0
-                  )
-                : 0;
-
+            const investmentAppliedToAmount: number = (
+              investmentsAppliedToData || []
+            ).reduce(
+              (acc: number, cur: { amount?: number }) =>
+                acc + (cur?.amount || 0),
+              0
+            );
             // Repayment Scheduled content
-            const repaymentScheduledCount = investingData?.count || 0;
-            const repaymentScheduledRate = repaymentsScheduledData
+            const repaymentScheduledCount: number = investingData?.count || 0;
+            const repaymentScheduledRate: string = repaymentsScheduledData
               ? (
                   repaymentsScheduledData?.reduce(
                     (acc: number, cur: { rate: number; feeRate: number }) =>
@@ -605,48 +696,26 @@ export class User extends KrossClientBase {
                     0
                   ) / (repaymentScheduledCount || 1)
                 ).toFixed(2)
-              : 0;
-            const repaymentScheduledAmount =
+              : '0';
+            const repaymentScheduledAmount: number =
               (investingData?.originPrincipal || 0) -
-              (investingData?.principal || 0) +
-              (investingData?.investingNotesSumary || 0);
+              (investingData?.principal || 0);
+
             // Repayment Done content
-            const repaymentDoneCount = doneData?.count || 0;
-            const repaymentDoneAmount =
+            const repaymentDoneCount: number = doneData?.count || 0;
+            const repaymentDoneAmount: number =
               (doneData?.originPrincipal || 0) + (doneData?.interest || 0);
-
-            const cumulativeInvestmentPrincipal =
-              (doneData?.originPrincipal || 0) + repaymentScheduledAmount;
-
-            const soldOffNoteCount = soldOffNoteData?.count;
-            const soldOffNoteAmount = soldOffNoteData?.buriedPrincipal;
-
             return {
               totalAssetAmount,
               amountInAccount,
-              availableWithdrawAmount,
-
-              repaymentDelayAmount,
-              repaymentDelayCount,
-
-              repaymentLateAmount,
-              repaymentLateCount,
-
               investmentAppliedCount,
               investmentAppliedToAmount,
-
-              repaymentScheduledCount,
               repaymentScheduledRate,
               repaymentScheduledAmount,
 
               repaymentDoneCount,
               repaymentDoneAmount,
               cummulativeReturnOnInvestment,
-
-              soldOffNoteCount,
-              soldOffNoteAmount,
-
-              cumulativeInvestmentPrincipal,
             };
           },
           {

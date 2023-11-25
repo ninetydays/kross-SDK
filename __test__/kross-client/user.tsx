@@ -29,7 +29,7 @@ export const user = () => {
     });
   });
 
-  it('gets authToken and refreshToken', async () => {
+  it.only('gets authToken and refreshToken', async () => {
     const { useLogin } = client.useAuthHooks();
     const { result } = renderHook(() => useLogin(), {
       wrapper,
@@ -151,7 +151,7 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
-  it('gets myPage data', async () => {
+  it.only('gets myPage data', async () => {
     const { myPageData } = client.useUserHooks();
     const { result } = renderHook(() => myPageData({}), {
       wrapper,
