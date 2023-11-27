@@ -160,6 +160,24 @@ export const user = () => {
     expect(result.current.data).toBeDefined();
   });
 
+  it('gets invest summaries data', async () => {
+    const { investPageSummary } = client.useUserHooks();
+    const { result } = renderHook(() => investPageSummary({}), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
+  it('gets notes summaries data', async () => {
+    const { noteSummary } = client.useUserHooks();
+    const { result } = renderHook(() => noteSummary({}), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+
   it.skip('register a user', async () => {
     const { userRegister } = client.useUserHooks();
     const { result } = renderHook(() => userRegister(), {
