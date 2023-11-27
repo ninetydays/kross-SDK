@@ -147,8 +147,6 @@ export class Loans extends KrossClientBase {
               }
               return pages?.length;
             },
-            cacheTime: 0,
-            staleTime: 0,
           }
         );
       },
