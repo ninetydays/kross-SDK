@@ -479,11 +479,7 @@ export class User extends KrossClientBase {
         );
       },
 
-      noteSummary: ({
-        enabled,
-      }: {
-        enabled?: boolean;
-      }) => {
+      noteSummary: ({ enabled }: { enabled?: boolean }) => {
         return useQuery(
           ['noteSummary'],
           async () => {
@@ -589,11 +585,7 @@ export class User extends KrossClientBase {
           }
         );
       },
-      myPageData: ({
-        enabled,
-      }: {
-        enabled?: boolean;
-      }) => {
+      myPageData: ({ enabled }: { enabled?: boolean }) => {
         return useQuery(
           ['myPageData'],
           async () => {
