@@ -399,7 +399,6 @@ export class User extends KrossClientBase {
       },
       investPageSummary: ({
         enabled,
-        cacheTime = 60000,
       }: {
         enabled?: boolean;
         cacheTime?: number;
@@ -476,17 +475,14 @@ export class User extends KrossClientBase {
           },
           {
             enabled: enabled === undefined ? true : enabled,
-            cacheTime: cacheTime,
           }
         );
       },
 
       noteSummary: ({
         enabled,
-        cacheTime,
       }: {
         enabled?: boolean;
-        cacheTime?: number;
       }) => {
         return useQuery(
           ['noteSummary'],
@@ -590,16 +586,13 @@ export class User extends KrossClientBase {
           },
           {
             enabled: enabled === undefined ? true : enabled,
-            cacheTime: cacheTime,
           }
         );
       },
       myPageData: ({
         enabled,
-        cacheTime,
       }: {
         enabled?: boolean;
-        cacheTime?: number;
       }) => {
         return useQuery(
           ['myPageData'],
@@ -720,7 +713,6 @@ export class User extends KrossClientBase {
           },
           {
             enabled: enabled === undefined ? true : enabled,
-            cacheTime: cacheTime,
           }
         );
       },
@@ -772,7 +764,6 @@ export class User extends KrossClientBase {
       },
       portfolio: ({
         enabled,
-        cacheTime = 60000,
       }: { enabled?: boolean; cacheTime?: number } = {}) => {
         return useQuery({
           queryKey: 'portfolio',
@@ -781,7 +772,6 @@ export class User extends KrossClientBase {
               return res.data;
             });
           },
-          cacheTime: cacheTime,
           enabled: enabled ?? true,
         });
       },
