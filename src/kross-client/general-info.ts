@@ -66,11 +66,17 @@ export class GeneralInfo extends KrossClientBase {
         });
       },
       todayStats: () => {
-        return useQuery('todayStats', async () => {
-          return this.todayStats().then(res => {
-            return res.data;
-          });
-        });
+        return useQuery(
+          'todayStats',
+          async () => {
+            return this.todayStats().then(res => {
+              return res.data;
+            });
+          },
+          {
+            staleTime: 60000,
+          }
+        );
       },
       contactUs: () => {
         const mutation = useMutation((contactUsDto: ContactUsDto) =>
