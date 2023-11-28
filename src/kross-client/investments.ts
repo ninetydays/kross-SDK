@@ -383,11 +383,19 @@ export class Investments extends KrossClientBase {
               getUserFieldValue('pendingInvestment') -
               getUserFieldValue('pendingEtc');
 
-            const kftcInvestmentLimit =
-              userData?.[0]?.isCorp || userData?.[0]?.kftcType === 'I130'
-                ? -1
-                : (kftcInvestInquiry?.data?.limit || 0) -
-                  (kftcInvestInquiry?.data?.balance || 0);
+            const isCorporateUser = userData?.[0]?.isCorp || false;
+            const isI130KftcType = userData?.[0]?.kftcType === 'I130' || false;
+
+            let kftcInvestmentLimit;
+
+            if (isCorporateUser || isI130KftcType) {
+              kftcInvestmentLimit = -1;
+            } else {
+              const remainingKftc =
+                (kftcInvestInquiry?.data?.limit || 0) -
+                (kftcInvestInquiry?.data?.balance || 0);
+              kftcInvestmentLimit = remainingKftc < 0 ? 0 : remainingKftc;
+            }
 
             const kftcTotalLimit = kftcInvestInquiry?.data?.limit || 0;
 
