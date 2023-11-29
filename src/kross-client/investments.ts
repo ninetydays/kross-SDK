@@ -363,7 +363,7 @@ export class Investments extends KrossClientBase {
             const kftcInvestInquiryData: any = this.get('/kftc/invest-inquiry');
             const user = this.get('/users', {
               params: {
-                select: 'isCorp',
+                select: 'isCorp,kftcType',
                 join: 'account',
               },
             });
@@ -385,7 +385,6 @@ export class Investments extends KrossClientBase {
 
             const isCorporateUser = userData?.[0]?.isCorp || false;
             const isI130KftcType = userData?.[0]?.kftcType === 'I130' || false;
-
             let kftcInvestmentLimit;
 
             if (isCorporateUser || isI130KftcType) {
