@@ -538,7 +538,6 @@ export class User extends KrossClientBase {
             const repaymentDelayAmount: number =
               delayData?.buriedPrincipal || 0;
             const repaymentDelayCount: number = delayData?.count || 0;
-
             // Repayment Scheduled content
             const repaymentScheduledCount: number = investingData?.count || 0;
             const delayRemainPrincipal: number =
@@ -560,6 +559,17 @@ export class User extends KrossClientBase {
             const soldOffNoteCount: number = soldOffNoteData?.count;
             const soldOffNoteAmount: number = soldOffNoteData?.buriedPrincipal;
 
+            const totalAmount =
+              repaymentDoneAmount +
+              (investingData?.principal || 0) +
+              (delayData?.principal || 0) +
+              (lateData?.principal + 0);
+            const totalCount =
+              repaymentDoneCount +
+              repaymentScheduledCount +
+              repaymentDelayCount +
+              repaymentLateCount;
+
             return {
               repaymentDoneCount,
               repaymentDoneAmount,
@@ -577,6 +587,9 @@ export class User extends KrossClientBase {
               soldOffNoteAmount,
 
               cumulativeInvestmentPrincipal,
+
+              totalCount,
+              totalAmount,
             };
           },
           {
