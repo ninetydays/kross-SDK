@@ -78,7 +78,6 @@ export class Verifications extends KrossClientBase {
         enabled?: boolean
       ) => {
         return useQuery({
-          cacheTime: 0,
           enabled: enabled !== undefined ? enabled : true,
           queryKey: 'verifications',
           queryFn: async () => {
