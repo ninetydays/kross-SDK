@@ -294,18 +294,9 @@ export type PasswordResetResponseData = {
 export type PasswordResetResponse = FunctionResponse<PasswordResetResponseData>;
 
 export type PortfolioResponse = {
-  depositsAmount: number;
-  notesAmount: number;
   totalAssetsAmount: number;
-  totalNotes: number;
-  totalExpectedReturn: number;
-  returnAfterTax: number;
-  actualReturn: number;
-  totalTodayInvestment: number;
-  totalInvestmentAmount: number;
   totalTodayRepayment: number;
-  totalRepaymentAmount: number;
-  notes: any[];
+  totalTodayExpectAmount: number;
 };
 
 type SignedUrlSuccess = {
