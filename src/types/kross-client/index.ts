@@ -65,3 +65,7 @@ export type UserRegisterDto = {
   verificationType?: string;
   verificationData?: Record<string, unknown>;
 };
+
+export interface AxiosCustomRequestConfig extends AxiosRequestConfig {
+  retryCount: number;
+}
