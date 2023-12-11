@@ -1,11 +1,17 @@
 import { useMutation, useQuery } from 'react-query';
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+} from 'axios';
 import {
   KrossClientOptions,
   FunctionOptions,
   LoginDto,
   LoginResponse,
   GetAuthTokenResponse,
+  AxiosCustomRequestConfig,
 } from '../types';
 import { hmacTokenFunction } from '../utils/encryptor';
 import jwt_decode from 'jwt-decode';
@@ -112,10 +118,22 @@ export class KrossClientBase {
             if (this?.forceLogoutCallback) await this.forceLogoutCallback();
           }
         }
-
-        return config;
       }
     );
+
+    this.instance.interceptors.response.use(undefined, (error: AxiosError) => {
+      const config = error.config as AxiosCustomRequestConfig;
+      const retryCount = config.retryCount || 1;
+      const statusString = error.response?.status.toString() || '';
+      if (retryCount < 3 && statusString[0] === '5') {
+        console.log('retry:', retryCount, config.url, error.response?.status);
+        return this.instance.request({
+          ...config,
+          retryCount: retryCount + 1,
+        } as AxiosRequestConfig);
+      }
+      return Promise.reject(error);
+    });
   }
   login({ keyid, password, refreshExpiresIn }: LoginDto) {
     const loginDto = refreshExpiresIn
