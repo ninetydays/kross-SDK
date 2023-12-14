@@ -54,6 +54,7 @@ export type UserUpdateDto = {
   depositControl?: boolean;
   notifyOnNewProducts?: boolean;
   notifyOnRepayments?: boolean;
+  consentToCollectMarketingInfo?: boolean;
 };
 
 export type kftcBalanceResponseData = {
