@@ -117,9 +117,8 @@ export class KrossClientBase {
             this.refreshToken = null;
             if (this?.forceLogoutCallback) await this.forceLogoutCallback();
           }
-
-          return config;
         }
+        return config;
       }
     );
   }
