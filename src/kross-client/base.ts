@@ -117,25 +117,10 @@ export class KrossClientBase {
             this.refreshToken = null;
             if (this?.forceLogoutCallback) await this.forceLogoutCallback();
           }
-
-          return config;
         }
+        return config;
       }
     );
-
-    this.instance.interceptors.response.use(undefined, (error: AxiosError) => {
-      const config = error.config as AxiosCustomRequestConfig;
-      const retryCount = config.retryCount || 1;
-      const statusString = error.response?.status.toString() || '';
-      if (retryCount < 3 && statusString[0] === '5') {
-        console.log('retry:', retryCount, config.url, error.response?.status);
-        return this.instance.request({
-          ...config,
-          retryCount: retryCount + 1,
-        } as AxiosRequestConfig);
-      }
-      return Promise.reject(error);
-    });
   }
   login({ keyid, password, refreshExpiresIn }: LoginDto) {
     const loginDto = refreshExpiresIn

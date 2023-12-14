@@ -13,6 +13,7 @@ export type AccountRegisterDto = {
   bankId: string;
   accountNumber: string;
   name: string;
+  consentToCollectMarketingInfo: boolean;
 };
 
 export type AccountVerifyDto = {
