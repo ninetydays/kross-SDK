@@ -112,7 +112,6 @@ export class Loans extends KrossClientBase {
             ).toString();
             const loan = await this.loanData({
               ...loansQueryDto,
-              join: 'investments',
               skip,
             });
             const loansArray = Object.values(loan?.data);
