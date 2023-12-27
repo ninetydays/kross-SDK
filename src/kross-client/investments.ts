@@ -171,7 +171,7 @@ export class Investments extends KrossClientBase {
           },
         });
       },
-      returnOnInvestments: (returnOnInvestments: ReturnOnInvestmentsDto) => {
+      returnOnInvestments: (returnOnInvestments?: ReturnOnInvestmentsDto) => {
         return useQuery({
           queryKey: 'returnOnInvestments',
           queryFn: async () => {
