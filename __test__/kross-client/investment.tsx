@@ -192,7 +192,7 @@ export const investment = () => {
     const endDate = format(new Date(), 'yyyy-MM-dd');
     const startDate = format(subMonths(curDate, 1), 'yyyy-MM-dd');
     const { result } = renderHook(
-      () => returnOnInvestments(startDate, endDate),
+      () => returnOnInvestments({ startDate, endDate }),
       {
         wrapper,
       }

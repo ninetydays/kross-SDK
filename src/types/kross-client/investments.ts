@@ -256,6 +256,11 @@ export type ReturnOnInvestments = {
   returnRateAfterTax: number;
 };
 
+export type ReturnOnInvestmentsDto = {
+  startDate?: string;
+  endDate?: string;
+};
+
 export type NotesSummaryQueryDto = {
   state: string;
 };

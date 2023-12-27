@@ -17,6 +17,7 @@ import {
   NotesSummaryResponse,
   ReturnOnInvestments,
   NotesSummaryQueryDto,
+  ReturnOnInvestmentsDto,
 } from '../types/kross-client/investments';
 export class Investments extends KrossClientBase {
   investmentList: FunctionRegistered<
@@ -48,7 +49,10 @@ export class Investments extends KrossClientBase {
 
   notesSummary: FunctionRegistered<NotesSummaryResponse, NotesSummaryQueryDto>;
 
-  returnOnInvestments: FunctionRegistered<ReturnOnInvestments>;
+  returnOnInvestments: FunctionRegistered<
+    ReturnOnInvestments,
+    ReturnOnInvestmentsDto
+  >;
 
   constructor(options: KrossClientOptions) {
     super(options);
@@ -109,11 +113,13 @@ export class Investments extends KrossClientBase {
       method: 'get',
     });
 
-    this.returnOnInvestments =
-      Investments.registerFunction<ReturnOnInvestments>({
-        url: '/investments/roi',
-        method: 'get',
-      });
+    this.returnOnInvestments = Investments.registerFunction<
+      ReturnOnInvestments,
+      ReturnOnInvestmentsDto
+    >({
+      url: '/investments/roi',
+      method: 'get',
+    });
   }
   tradeNotes(notes: tradeNotesDto) {
     return this.instance.post<tradeNotesResponse>('/notes/trade', notes);
@@ -165,14 +171,13 @@ export class Investments extends KrossClientBase {
           },
         });
       },
-      returnOnInvestments: (startDate: string, endDate: string) => {
+      returnOnInvestments: (returnOnInvestments?: ReturnOnInvestmentsDto) => {
         return useQuery({
           queryKey: 'returnOnInvestments',
           queryFn: async () => {
-            const returnOnInvestmentData: any = await this.get(
-              `/investments/roi?startDate=${startDate}&endDate=${endDate}`
-            );
-            return returnOnInvestmentData?.data;
+            return this.returnOnInvestments(returnOnInvestments).then(res => {
+              return res.data;
+            });
           },
         });
       },
