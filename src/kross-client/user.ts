@@ -414,11 +414,7 @@ export class User extends KrossClientBase {
             });
             const notesSummaryDataInvestingPromise = this.get(
               '/notes/summary',
-              {
-                params: {
-                  state: 'investing',
-                },
-              }
+              { params: { state: 'investing' } }
             );
             const notesSummaryDataDelayPromise = this.get('/notes/summary', {
               params: {
@@ -443,6 +439,8 @@ export class User extends KrossClientBase {
             const { data: investmentsAppliedToData = [] }: any =
               investmentsAppliedToDataRes;
             const amountInAccount: number = accountData?.data?.amount || 0;
+            const pendingInvestment: number =
+              accountData?.data?.pending_investment || 0;
             const availableWithdrawAmount: number =
               accountData?.data?.available_withdraw_amount || 0;
 
@@ -467,6 +465,7 @@ export class User extends KrossClientBase {
             return {
               totalAssetAmount,
               amountInAccount,
+              pendingInvestment,
               availableWithdrawAmount,
               investmentAppliedCount,
               investmentAppliedToAmount,
