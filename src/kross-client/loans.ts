@@ -95,7 +95,7 @@ export class Loans extends KrossClientBase {
           });
         });
       },
-      loanData: (loansQueryDto?: LoansQueryDto) => {
+      loanData: (loansQueryDto?: LoansQueryDto, enabled?: boolean) => {
         return useInfiniteQuery(
           [
             'loanData',
@@ -146,6 +146,7 @@ export class Loans extends KrossClientBase {
               }
               return pages?.length;
             },
+            enabled: enabled !== undefined ? enabled : true,
           }
         );
       },
