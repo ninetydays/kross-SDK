@@ -128,7 +128,7 @@ export type LoanDetailQueryDto = {
   id: string | number;
 };
 
-export declare type LoanDetailData = {
+export type LoanDetailResponse = {
   id: number;
   title: string;
   content: HTMLAllCollection;
@@ -144,5 +144,3 @@ export declare type LoanDetailData = {
   description?: HTMLAllCollection;
   potentialRisk?: HTMLAllCollection;
 };
-
-export type LoanDetailResponse = LoanDetailData;
