@@ -128,17 +128,21 @@ export type LoanDetailQueryDto = {
   id: string | number;
 };
 
-export type LoanDetailData = {
+export declare type LoanDetailData = {
   id: number;
   title: string;
-  content: string;
+  content: HTMLAllCollection;
   files: string[];
   loan?: Record<string, unknown>;
   loanApplication?: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;
   inquiry?: Record<string, unknown>;
-  borrwerInfo?: Record<string, unknown>;
+  borrowerInfo?: Record<string, any>;
+  quarterSalesInfos?: Record<string, any>[];
+  investmentPoint?: HTMLAllCollection;
+  description?: HTMLAllCollection;
+  potentialRisk?: HTMLAllCollection;
 };
 
-export type LoanDetailResponse = FunctionResponse<LoanDetailData>;
+export type LoanDetailResponse = LoanDetailData;
