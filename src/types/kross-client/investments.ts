@@ -256,6 +256,7 @@ export type ReturnOnInvestments = {
 export type ReturnOnInvestmentsDto = {
   startDate?: string;
   endDate?: string;
+  roiType: string;
 };
 
 export type NotesSummaryQueryDto = {
