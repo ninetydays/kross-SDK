@@ -237,10 +237,7 @@ export type NotesSummary = {
   interest: number;
   feeAmount: number;
   taxAmount: number;
-  yearPretaxInterest: number;
   expectedPretaxInterest: number;
-  yearInterest: number;
-  yearTaxAmount: number;
   returnRatio: number;
 };
 
