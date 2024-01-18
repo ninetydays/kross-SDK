@@ -12,6 +12,7 @@ export type UserNotesQueryDto = {
   state?: string;
   skip?: string;
   take?: string;
+  join?: string;
 };
 
 export type UserQueryDto = {
