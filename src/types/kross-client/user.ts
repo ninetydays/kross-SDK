@@ -34,7 +34,21 @@ export type NoticeUsResponseData = {
   success: true;
 };
 
+export type NotificationsResponseData = {
+  id: number;
+  type: 'string';
+  content: 'string';
+  status: 'string';
+  userId: 'string';
+  data: Record<string, unknown>;
+  createdAt: 'string';
+  updatedAt: 'string';
+};
+
 export type NoticeUsResponse = FunctionResponse<NoticeUsResponseData>;
+export type NotificationsResponse = FunctionResponse<
+  NotificationsResponseData[]
+>;
 
 export type UserUpdateDto = {
   password?: string;
@@ -315,6 +329,7 @@ type SignedUrlFail = {
 export type SignedUrlResponse = FunctionResponse<
   SignedUrlSuccess | SignedUrlFail
 >;
+export type NotificationResponse = FunctionResponse;
 
 export type UserFilesResponse = {
   files: ['string'];
