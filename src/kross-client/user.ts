@@ -14,6 +14,7 @@ import {
   SignedUrlResponse,
   UserNotesQueryDto,
   UserNotesResponse,
+  NotificationsResponse,
 } from './../types/kross-client/user';
 import { KrossClientBase } from './base';
 import { useQuery, useMutation, useInfiniteQuery } from 'react-query';
@@ -44,12 +45,14 @@ import {
   SoldOffNotesQueryDto,
   getDepositReportResponse,
   DepositReportQueryDto,
+  NotificationResponse,
 } from '../types/kross-client/user';
 import { updateCorporationDto } from '../types/kross-client/corporations';
 
 export class User extends KrossClientBase {
   industryCodes: FunctionRegistered<IndustryCodesResponse, UserWengeQueryDto>;
   noticeUs: FunctionRegistered<NoticeUsResponse, NoticeUsDto>;
+  notifications: FunctionRegistered<NotificationsResponse, UserWengeQueryDto>;
   userNotes: FunctionRegistered<UserNotesResponse, UserNotesQueryDto>;
   kftcBalance: FunctionRegistered<kftcBalanceResponse>;
   getVirtualAccCertificate: FunctionRegistered<AccountCertificateResponse>;
@@ -235,6 +238,26 @@ export class User extends KrossClientBase {
       url: '/notice-us',
       method: 'post',
     });
+
+    this.notifications = User.registerFunction<
+      NotificationsResponse,
+      UserWengeQueryDto
+    >({
+      url: '/notifications',
+      method: 'get',
+    });
+  }
+
+  markNotificationAsRead(notificationId: number) {
+    return this.instance.get<NotificationResponse>(
+      `/notifications/${notificationId}/mark-as-read`
+    );
+  }
+
+  markNotificationAsUnread(notificationId: number) {
+    return this.instance.get<NotificationResponse>(
+      `/notifications/${notificationId}/mark-as-unread`
+    );
   }
 
   signedURL(fileName: string) {
@@ -257,6 +280,16 @@ export class User extends KrossClientBase {
           queryKey: 'getIndustryCodes',
           queryFn: async () => {
             return this.industryCodes(userWengeQueryDto).then(res => {
+              return res.data;
+            });
+          },
+        });
+      },
+      getNotifications: (userWengeQueryDto?: UserWengeQueryDto) => {
+        return useQuery({
+          queryKey: 'getNotifications',
+          queryFn: async () => {
+            return this.notifications(userWengeQueryDto).then(res => {
               return res.data;
             });
           },
