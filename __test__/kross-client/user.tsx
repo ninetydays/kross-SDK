@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { User } from '../../src/kross-client/user';
 import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
+
 export const user = () => {
   let client: User;
   const baseURL = 'https://olive-dev.kross.kr';
@@ -16,6 +17,7 @@ export const user = () => {
       },
     },
   });
+
   const wrapper = ({ children }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
@@ -359,6 +361,14 @@ export const user = () => {
   it('gets industry codes for personal borrower EDD', async () => {
     const { getIndustryCodes } = client.useUserHooks();
     const { result } = renderHook(() => getIndustryCodes({ take: '5' }), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeDefined();
+  });
+  it('get user notification', async () => {
+    const { getNotifications } = client.useUserHooks();
+    const { result } = renderHook(() => getNotifications(true, { take: '5' }), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
