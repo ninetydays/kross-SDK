@@ -248,13 +248,13 @@ export class User extends KrossClientBase {
     });
   }
 
-  markNotificationAsRead(notificationId: number) {
+  markNotificationAsRead(notificationId: string) {
     return this.instance.get<NotificationResponse>(
       `/notifications/${notificationId}/mark-as-read`
     );
   }
 
-  markNotificationAsUnread(notificationId: number) {
+  markNotificationAsUnread(notificationId: string) {
     return this.instance.get<NotificationResponse>(
       `/notifications/${notificationId}/mark-as-unread`
     );
