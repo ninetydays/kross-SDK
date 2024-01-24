@@ -368,7 +368,7 @@ export const user = () => {
   });
   it('get user notification', async () => {
     const { getNotifications } = client.useUserHooks();
-    const { result } = renderHook(() => getNotifications({ take: '5' }), {
+    const { result } = renderHook(() => getNotifications(true, { take: '5' }), {
       wrapper,
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));

@@ -285,7 +285,10 @@ export class User extends KrossClientBase {
           },
         });
       },
-      getNotifications: (userWengeQueryDto?: UserWengeQueryDto) => {
+      getNotifications: (
+        enabled: boolean,
+        userWengeQueryDto?: UserWengeQueryDto
+      ) => {
         return useQuery({
           queryKey: 'getNotifications',
           queryFn: async () => {
@@ -293,6 +296,7 @@ export class User extends KrossClientBase {
               return res.data;
             });
           },
+          enabled,
         });
       },
       userNotes: (
