@@ -85,12 +85,18 @@ export class FCMManagement extends KrossClientBase {
         );
         return mutation;
       },
-      tokenExist: (deviceId: string) => {
-        return useQuery(['fcmtokens', { deviceId }], async () => {
-          return this.tokenExist(deviceId).then(res => {
-            return res.data;
-          });
-        });
+      tokenExist: (deviceId: string, enabled?: boolean) => {
+        return useQuery(
+          ['fcmtokens', { deviceId }],
+          async () => {
+            return this.tokenExist(deviceId).then((res: { data: any }) => {
+              return res.data;
+            });
+          },
+          {
+            enabled: enabled !== undefined ? enabled : true,
+          }
+        );
       },
     };
   }
