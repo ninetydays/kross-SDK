@@ -95,6 +95,7 @@ export class FCMManagement extends KrossClientBase {
           },
           {
             enabled: enabled !== undefined ? enabled : true,
+            cacheTime: 0,
           }
         );
       },
