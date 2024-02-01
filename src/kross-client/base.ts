@@ -1,17 +1,11 @@
 import { useMutation, useQuery } from 'react-query';
-import axios, {
-  AxiosError,
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-} from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import {
   KrossClientOptions,
   FunctionOptions,
   LoginDto,
   LoginResponse,
   GetAuthTokenResponse,
-  AxiosCustomRequestConfig,
 } from '../types';
 import { hmacTokenFunction } from '../utils/encryptor';
 import jwt_decode from 'jwt-decode';
