@@ -416,7 +416,6 @@ export class User extends KrossClientBase {
       userData: ({
         userQuery = {},
         enabled,
-        cacheTime = 0,
       }: {
         userQuery?: UserWengeQueryDto;
         enabled?: boolean;
@@ -430,7 +429,6 @@ export class User extends KrossClientBase {
             });
           },
           enabled: enabled === undefined ? true : enabled,
-          cacheTime: cacheTime,
         });
       },
       investPageSummary: ({

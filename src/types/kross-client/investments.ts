@@ -1,4 +1,4 @@
-import { FunctionResponse } from './index';
+import { FunctionResponse, LoanResponseData } from './index';
 
 export type InvestmentsWengeQueryDto = {
   select?: string;
@@ -105,6 +105,7 @@ export type NotesResponseData = {
   paymentDate: string;
   dueDate: string;
   repaymentDate: string;
+  loan?: LoanResponseData;
 };
 
 export type SoldOffNotesData = {
@@ -256,6 +257,7 @@ export type ReturnOnInvestments = {
 export type ReturnOnInvestmentsDto = {
   startDate?: string;
   endDate?: string;
+  roiType: string;
 };
 
 export type NotesSummaryQueryDto = {
