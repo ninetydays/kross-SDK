@@ -32,7 +32,7 @@ export type FCMTokenCreationResponse = FunctionResponse<
 
 export type UpdateFCMTokenDto = {
   deviceId: string;
-  token: string;
+  token?: string;
   deviceType: string;
   userId?: string | null;
 };
