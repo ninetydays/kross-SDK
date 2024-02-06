@@ -30,11 +30,20 @@ export type FCMTokenCreationResponse = FunctionResponse<
   FCMTokenSuccess | FCMTokenFailure
 >;
 
+type ConfigType = {
+  accountBalance: number;
+  interest: number;
+  names: string[];
+  period: number;
+  repayment: boolean;
+};
+
 export type UpdateFCMTokenDto = {
   deviceId: string;
   token?: string;
   deviceType: string;
   userId?: string | null;
+  config?: ConfigType;
 };
 
 export type FCMQuery = {
