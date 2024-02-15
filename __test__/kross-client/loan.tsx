@@ -100,6 +100,16 @@ export const loan = () => {
       expect(data?.pages).toBeDefined();
     });
   });
+  it('gets id of the loan-repayments', async () => {
+    const { loanRepaymentsPending } = client.useLoanHooks();
+    const { result } = renderHook(() => loanRepaymentsPending(), {
+      wrapper,
+    });
+    await waitFor(() => {
+      const { data } = result.current;
+      expect(data).toBeDefined();
+    });
+  });
   it('get loan detail', async () => {
     const { loanDetail } = client.useLoanHooks();
     const { result } = renderHook(() => loanDetail('39'), {

@@ -14,10 +14,12 @@ import {
   LoanRepaymentResponse,
   LoansQueryDto,
   LoanResponseData,
+  LoanRepaymentPendingResponse,
 } from '../types/kross-client/loans';
 export class Loans extends KrossClientBase {
   loanData: FunctionRegistered<LoansResponse, LoansQueryDto>;
   loanRepayments: FunctionRegistered<LoanRepaymentResponse, LoansQueryDto>;
+  loanRepaymentsPending: FunctionRegistered<LoanRepaymentPendingResponse>;
   loanConfigs: FunctionRegistered<LoanConfigResponse, LoansQueryDto>;
   loanDetail: FunctionRegistered<LoanDetailResponse, LoanDetailQueryDto>;
   loanDistributions: FunctionRegistered<
@@ -45,6 +47,11 @@ export class Loans extends KrossClientBase {
       url: '/loans',
       method: 'get',
     });
+    this.loanRepaymentsPending =
+      Loans.registerFunction<LoanRepaymentPendingResponse>({
+        url: '/loan-repayments/pending',
+        method: 'get',
+      });
     this.loanDetail = Loans.registerFunction<
       LoanDetailResponse,
       LoanDetailQueryDto
@@ -91,6 +98,13 @@ export class Loans extends KrossClientBase {
       loanPaymentSchedule: (loanId: number) => {
         return useQuery('loanPaymentSchedule', async () => {
           return this.loanPaymentSchedule(loanId).then(res => {
+            return res.data;
+          });
+        });
+      },
+      loanRepaymentsPending: () => {
+        return useQuery('loanRepaymentsPending', async () => {
+          return this.loanRepaymentsPending().then(res => {
             return res.data;
           });
         });
