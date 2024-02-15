@@ -122,6 +122,12 @@ export type LoanRepaymentReponseData = {
   updatedAt: Date;
 };
 
+export type LoanRepaymentPendingReponseData = {
+  id: number;
+};
+export type LoanRepaymentPendingResponse =
+  FunctionResponse<LoanRepaymentPendingReponseData>;
+
 export type LoanRepaymentResponse = FunctionResponse<LoanRepaymentReponseData>;
 
 export type LoanDetailQueryDto = {
