@@ -36,19 +36,17 @@ export type NoticeUsResponseData = {
 
 export type NotificationsResponseData = {
   id: number;
-  type: 'string';
-  content: 'string';
-  status: 'string';
-  userId: 'string';
+  type: string;
+  content: string;
+  status: string;
+  userId: string;
   data: Record<string, unknown>;
-  createdAt: 'string';
-  updatedAt: 'string';
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type NoticeUsResponse = FunctionResponse<NoticeUsResponseData>;
-export type NotificationsResponse = FunctionResponse<
-  NotificationsResponseData[]
->;
+export type NotificationsResponse = NotificationsResponseData[];
 
 export type UserUpdateDto = {
   password?: string;
@@ -419,11 +417,11 @@ export type SoldOffNotesQueryDto = {
   join?: string;
 };
 export type updateCorporationResponse = {
-  corpRegNo: 'string';
-  businessNo: 'string';
-  chargeMobile: 'string';
-  chargeName: 'string';
-  ceoName: 'string';
-  state: 'string';
+  corpRegNo: string;
+  businessNo: string;
+  chargeMobile: string;
+  chargeName: string;
+  ceoName: string;
+  state: string;
   data: any;
 };
