@@ -46,9 +46,7 @@ export type NotificationsResponseData = {
 };
 
 export type NoticeUsResponse = FunctionResponse<NoticeUsResponseData>;
-export type NotificationsResponse = FunctionResponse<
-  NotificationsResponseData[]
->;
+export type NotificationsResponse = NotificationsResponseData[];
 
 export type UserUpdateDto = {
   password?: string;

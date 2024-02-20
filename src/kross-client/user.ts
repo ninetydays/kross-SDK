@@ -289,15 +289,31 @@ export class User extends KrossClientBase {
         enabled: boolean,
         userWengeQueryDto?: UserWengeQueryDto
       ) => {
-        return useQuery({
-          queryKey: 'getNotifications',
-          queryFn: async () => {
-            return this.notifications(userWengeQueryDto).then(res => {
-              return res.data;
+        return useInfiniteQuery(
+          ['userWengeQueryDto', { ...userWengeQueryDto }],
+          async ({ pageParam = 0 }) => {
+            const skip = (
+              pageParam *
+              (isNaN(parseInt(userWengeQueryDto?.take as string, 10))
+                ? 0
+                : parseInt(userWengeQueryDto?.take as string, 10))
+            ).toString();
+            const notificationsData = await this.notifications({
+              ...userWengeQueryDto,
+              skip,
             });
+            return notificationsData?.data || [];
           },
-          enabled,
-        });
+          {
+            getNextPageParam: (lastPage, pages) => {
+              if (lastPage.length === 0) {
+                return null;
+              }
+              return pages?.length;
+            },
+            enabled: enabled !== undefined ? enabled : true,
+          }
+        );
       },
       userNotes: (
         userNotesQueryDto?: UserNotesQueryDto,
