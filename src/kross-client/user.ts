@@ -290,7 +290,7 @@ export class User extends KrossClientBase {
         userWengeQueryDto?: UserWengeQueryDto
       ) => {
         return useInfiniteQuery(
-          ['userWengeQueryDto', { ...userWengeQueryDto }],
+          ['getNotifications', { ...userWengeQueryDto }],
           async ({ pageParam = 0 }) => {
             const skip = (
               pageParam *
