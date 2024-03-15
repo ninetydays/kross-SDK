@@ -49,7 +49,7 @@ export type IdOcrVerificationsDto = {
 };
 
 export type IdOcrVerificationsResponseData = {
-  data: Record<string, unknown>;
+  data: string;
   success: boolean;
   message: string;
   error_code: string;

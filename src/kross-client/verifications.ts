@@ -1,3 +1,4 @@
+import { DecryptionManager } from './../utils/decryptionManager';
 import { KrossClientBase } from './base';
 import { useMutation, useQuery } from 'react-query';
 import {
@@ -15,6 +16,8 @@ import {
   EddVerificationResponse,
 } from '../types/kross-client/verifications';
 import { KrossClientOptions, FunctionRegistered } from '../types';
+import { AsymEncrypter } from '@ninetydays/kross-utils/dist/encrypter';
+
 export class Verifications extends KrossClientBase {
   verifications: FunctionRegistered<
     VerificationsResponse,
@@ -33,22 +36,49 @@ export class Verifications extends KrossClientBase {
     });
   }
 
-  idCardVerification(idCardVerificationDto: IdCardVerificationsDto) {
+  idCardVerification(params: {
+    idCardVerificationDto: IdCardVerificationsDto;
+    encKey: string;
+  }) {
+    const { idCardVerificationDto, encKey } = params;
+    const encrypter = new AsymEncrypter(encKey);
+
+    const strigifiedData = JSON.stringify(idCardVerificationDto);
+    const encryptedData = encrypter.encrypt(strigifiedData);
     return this.instance.post<IdCardVerificationsResponse>(
       '/verifications/idcard',
-      idCardVerificationDto
+      { encryptedData }
     );
   }
-  idOcrVerification(idOcrVerificationsDto: IdOcrVerificationsDto) {
-    return this.instance.post<IdOcrVerificationsResponse>(
-      '/verifications/idcard/ocr',
-      idOcrVerificationsDto,
-      {
-        headers: {
-          'Content-type': 'multipart/form-data',
-        },
-      }
-    );
+  async idOcrVerification(idOcrVerificationsDto: IdOcrVerificationsDto) {
+    try {
+      const response = await this.instance.post<IdOcrVerificationsResponse>(
+        '/verifications/idcard/ocr',
+        idOcrVerificationsDto,
+        {
+          headers: {
+            'Content-type': 'multipart/form-data',
+          },
+        }
+      );
+
+      const data: string = response.data.data as unknown as string;
+
+      const secret_key = data?.substring(0, 10);
+      const enc = data?.substring(10);
+
+      // Assuming the encrypted data is in response.data
+      const decryptionManager = new DecryptionManager(); // Create an instance of DecryptionManager
+
+      const decryptedData = decryptionManager.decrypt(enc, secret_key); // Decrypt the response data
+
+      response.data.data = decryptedData; // Replace the encrypted data with the decrypted data
+      return response; // Return decrypted data
+    } catch (error) {
+      // Handle errors here
+      console.error('Error in idOcrVerification:', error);
+      throw error;
+    }
   }
   useBToken(useBTokenDto: UseBTokenDto) {
     return this.instance.post<UseBTokenResponse>(
@@ -90,8 +120,10 @@ export class Verifications extends KrossClientBase {
       },
       idCardVerification: () => {
         const mutation = useMutation(
-          (idCardVerificationDto: IdCardVerificationsDto) =>
-            this.idCardVerification(idCardVerificationDto)
+          (params: {
+            idCardVerificationDto: IdCardVerificationsDto;
+            encKey: string;
+          }) => this.idCardVerification(params)
         );
         return mutation;
       },
