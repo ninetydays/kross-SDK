@@ -131,7 +131,12 @@ export class Investments extends KrossClientBase {
       investments
     );
   }
-
+  investmentRegisterSSE(investments: InvestmentRegisterDto[]) {
+    return this.instance.post<InvestmentRegisterResponse>(
+      '/investments/request',
+      investments
+    );
+  }
   investmentCancel(investmentId: number) {
     return this.instance.patch<InvestmentCancelResponse>(
       `/investments/${investmentId}/cancel`,
@@ -313,6 +318,13 @@ export class Investments extends KrossClientBase {
         const mutation = useMutation(
           (investmentRegisterDto: InvestmentRegisterDto[]) =>
             this.investmentRegister(investmentRegisterDto)
+        );
+        return mutation;
+      },
+      investmentRegisterSSE: () => {
+        const mutation = useMutation(
+          (investmentRegisterDto: InvestmentRegisterDto[]) =>
+            this.investmentRegisterSSE(investmentRegisterDto)
         );
         return mutation;
       },
