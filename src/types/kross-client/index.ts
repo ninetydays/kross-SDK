@@ -33,6 +33,7 @@ export type FunctionResponse<T = unknown> = {
   data?: T;
   okay: boolean;
   message?: string;
+  success?: boolean;
 };
 
 export type FunctionRegistered<O = unknown, I = unknown> = (

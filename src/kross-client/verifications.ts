@@ -62,18 +62,27 @@ export class Verifications extends KrossClientBase {
         }
       );
 
-      const data: string = response.data.data as unknown as string;
+      if (response?.data?.success) {
+        const data: string = response.data.data as unknown as string;
 
-      const secret_key = data?.substring(0, 10);
-      const enc = data?.substring(10);
+        const secret_key = data?.substring(0, 10);
+        const enc = data?.substring(10);
 
-      // Assuming the encrypted data is in response.data
-      const decryptionManager = new DecryptionManager(); // Create an instance of DecryptionManager
+        const decryptionManager = new DecryptionManager();
 
-      const decryptedData = decryptionManager.decrypt(enc, secret_key); // Decrypt the response data
+        const decryptedData = decryptionManager.decrypt(enc, secret_key); // Decrypt the response data
 
-      response.data.data = decryptedData; // Replace the encrypted data with the decrypted data
-      return response; // Return decrypted data
+        response.data.data = decryptedData; // Replace the encrypted data with the decrypted data
+        return response; // Return decrypted data
+      } else {
+        return {
+          ...response,
+          data: {
+            ...response?.data,
+            success: false,
+          },
+        };
+      }
     } catch (error) {
       // Handle errors here
       console.error('Error in idOcrVerification:', error);
