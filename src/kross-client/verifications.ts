@@ -62,7 +62,7 @@ export class Verifications extends KrossClientBase {
         }
       );
 
-      if (response?.data?.data) {
+      if (response?.data?.success) {
         const data: string = response.data.data as unknown as string;
 
         const secret_key = data?.substring(0, 10);
